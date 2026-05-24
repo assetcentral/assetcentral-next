@@ -180,9 +180,11 @@ export default function Article() {
           when remitted to the UK. The UK taxes worldwide income on the
           arising basis for most residents — you owe UK tax on the rent when
           it&rsquo;s <em>earned</em>, not when you transfer it back. The
-          remittance basis exists but applies only to non-domiciled residents
-          and was significantly restricted from April 2025; most UK-domiciled
-          landlords with Dubai property cannot use it.
+          historic remittance basis was abolished from 6 April 2025 and
+          replaced with the Foreign Income and Gains (FIG) regime, which is
+          limited to qualifying new arrivals only. Most UK-domiciled
+          landlords with Dubai property have no remittance-basis option
+          available.
         </Callout>
 
         <InlineNewsletter />
@@ -266,14 +268,16 @@ export default function Article() {
           </li>
           <li>
             <strong>UAE entity (FZE / mainland LLC)</strong> — the UAE
-            introduced 9% corporate tax in June 2023 with a SAR 375k
-            exemption. For most small residential portfolios this is below the
-            threshold — a UAE entity may pay 0% UAE corporate tax. But
-            <em> you&rsquo;re still UK tax resident</em>, so the UAE entity&rsquo;s
-            profits get attributed to you under UK Controlled Foreign Company
-            (CFC) rules and taxed in the UK anyway. The structure adds
-            complexity without saving UK tax — generally not worth it for
-            personal residential landlords.
+            introduced 9% corporate tax in June 2023 with an AED 375k
+            exemption (note: AED, not SAR — the threshold is roughly £80k
+            of profit). For most small residential portfolios this is below
+            the threshold and a UAE entity may pay 0% UAE corporate tax. But
+            <em> you&rsquo;re still UK tax resident</em>, so HMRC&rsquo;s
+            Transfer of Assets Abroad (TAAR) anti-avoidance rules
+            (ITA 2007 s.720 onwards) attribute the UAE entity&rsquo;s income
+            to you for UK tax purposes anyway. The structure adds complexity
+            without saving UK tax — generally not worth it for personal
+            residential landlords.
           </li>
           <li>
             <strong>Offshore structure (BVI / Jersey / Guernsey)</strong> —
