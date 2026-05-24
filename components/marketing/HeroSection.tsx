@@ -64,20 +64,21 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Social-proof strip — flag order tuned for the May 2026 ad
-          campaign: 🇬🇧 + 🇦🇪 lead because the UK Google Ads campaign
-          targets British investors who own or are buying Dubai
-          property. The testimonial below also speaks for that
-          cross-border cohort. */}
+      {/* Social-proof strip — market-agnostic. Markets ordered by user
+          base size (GCC + UK biggest, then EU). The testimonial is a
+          cross-border example without leaning into any one geo, so
+          visitors from any of our 9 supported markets see themselves
+          in it. Campaign-specific framings (UK·Dubai etc.) live on
+          dedicated landing pages, not the homepage. */}
       <div className="border-y border-[var(--color-border)] bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-10 py-5 flex flex-col lg:flex-row gap-4 lg:gap-10 items-start lg:items-center justify-between">
           <p
             className="text-[13px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Used by landlords in <span aria-hidden>🇬🇧</span> UK ·{" "}
-            <span aria-hidden>🇦🇪</span> UAE · <span aria-hidden>🇸🇦</span> Saudi ·{" "}
-            <span aria-hidden>🇴🇲</span> Oman · <span aria-hidden>🇬🇷</span> Greece ·{" "}
+            Used by landlords in <span aria-hidden>🇦🇪</span> UAE ·{" "}
+            <span aria-hidden>🇸🇦</span> Saudi · <span aria-hidden>🇴🇲</span> Oman ·{" "}
+            <span aria-hidden>🇬🇧</span> UK · <span aria-hidden>🇬🇷</span> Greece ·{" "}
             <span aria-hidden>🇵🇹</span> Portugal · <span aria-hidden>🇫🇷</span> France
           </p>
           <blockquote
@@ -85,12 +86,11 @@ export function HeroSection() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <span className="italic">
-              &ldquo;I&rsquo;ve got a flat in Manchester, a BTL in Reading and two off-plan
-              in Dubai Marina. Three currencies, three sets of rules. AssetCentral
-              is the first thing that actually held all of it in one place.&rdquo;
+              &ldquo;I found out my Athens apartment was yielding 2.1% net. I thought
+              it was fine. It wasn&rsquo;t.&rdquo;
             </span>
             <span className="block text-[12px] text-[var(--color-muted)] mt-1 not-italic">
-              Private landlord · UK &amp; Dubai
+              Private landlord, 10 properties · Dubai &amp; Greece
             </span>
           </blockquote>
         </div>
