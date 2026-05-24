@@ -1,11 +1,18 @@
 # Netlify build configuration for assetcentral-next (marketing site).
 #
-# When Netlify auto-deploys from GitHub (or runs `netlify deploy` from
-# CLI), it reads this file to know what to build and where to find the
-# output. Keeping the config in-repo means:
-#   • Build settings stay in version control (no silent dashboard drift)
-#   • Any future hand-off or re-link works automatically
-#   • Preview deploys + production deploys use the same settings
+# Consolidated single source of truth (May 2026). Previously the project
+# also had `public/netlify.toml` (leftover from drag-and-drop deploys)
+# and `public/_redirects` — keeping all three in play caused the
+# /signup → app.assetcentral.ai redirect to silently not fire because
+# the duplicate netlify.toml inside the publish dir was confusing
+# Netlify's config resolution. Everything now lives here.
+#
+# When Netlify auto-deploys from GitHub, it reads this file to know:
+#   • what to build       — [build].command
+#   • where the output is — [build].publish
+#   • what redirects fire — [[redirects]] blocks
+#   • what headers to set — [[headers]] blocks
+#   • what env to expose  — [build.environment]
 
 [build]
   # `npm run build` runs `next build`. With `output: "export"` set in
@@ -21,3 +28,42 @@
   # this, Netlify picks its current default which can shift unexpectedly
   # between builds.
   NODE_VERSION = "22"
+
+# ─── Redirects ────────────────────────────────────────────────────────────────
+# /signup and /login live on the dashboard app at app.assetcentral.ai —
+# users clicking trial / login CTAs on the marketing site cross to the
+# auth product. `force = true` makes Netlify intercept even when a static
+# file exists at that path. Query strings are preserved automatically by
+# Netlify for off-site redirects.
+
+[[redirects]]
+  from = "/signup"
+  to = "https://app.assetcentral.ai/signup"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/login"
+  to = "https://app.assetcentral.ai/login"
+  status = 302
+  force = true
+
+# ─── Security headers ─────────────────────────────────────────────────────────
+# Same policy the legacy static site used. Applies to every response
+# served by Netlify (HTML + assets alike).
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-XSS-Protection = "1; mode=block"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Aggressive caching for Next's hashed static assets. Hashes change
+# whenever content does, so immutable + 1yr max-age is safe.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
