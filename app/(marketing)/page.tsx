@@ -9,6 +9,7 @@ import { LeadMagnetsSection } from "@/components/marketing/LeadMagnetsSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
+import { UkDubaiBand } from "@/components/marketing/UkDubaiBand";
 
 export const metadata: Metadata = {
   title: "AssetCentral — Your Real Estate PA | Property Portfolio Intelligence",
@@ -34,6 +35,12 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <HeroSection />
+      {/* UK·Dubai targeting band — sits between Hero and ProblemSection
+          so paid traffic (May 2026 UK Google Ads campaign for British
+          investors with Dubai property) gets message-match within the
+          first scroll. Permanent fixture; doesn't hurt other audiences
+          since the rest of the page covers them. */}
+      <UkDubaiBand />
       <ProblemSection />
       <div id="how-it-works" />
       <ProductDemoTabs />

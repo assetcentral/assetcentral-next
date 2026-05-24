@@ -15,6 +15,12 @@ function encode(data: Record<string, string>) {
 export function LeadCapture() {
   const [email, setEmail] = useState("");
   const [portfolioSize, setPortfolioSize] = useState("");
+  // 2026-05-24: Added geography cohort selector. The May 2026 UK
+  // Google Ads campaign targets British investors with Dubai property —
+  // we want to segment incoming leads by region so post-signup nurture
+  // can be tuned per cohort (UK-only get UK BTL content; UK+UAE get
+  // cross-border tax content; UAE-only get Dubai-specific content).
+  const [geoCohort, setGeoCohort] = useState("");
   const [bot, setBot] = useState(""); // honeypot
   const [status, setStatus] = useState<Status>("idle");
 
@@ -31,6 +37,7 @@ export function LeadCapture() {
           "form-name": FORM_NAME,
           email,
           portfolio_size: portfolioSize,
+          geo_cohort: geoCohort,
           "bot-field": bot,
         }),
       });
@@ -38,6 +45,7 @@ export function LeadCapture() {
       setStatus("ok");
       setEmail("");
       setPortfolioSize("");
+      setGeoCohort("");
     } catch {
       setStatus("error");
     }
@@ -90,7 +98,7 @@ export function LeadCapture() {
               data-netlify="true"
               data-netlify-honeypot="bot-field"
               onSubmit={onSubmit}
-              className="mt-8 grid sm:grid-cols-[1.5fr_1fr_auto] gap-3"
+              className="mt-8 grid sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_auto] gap-3"
               style={{ fontFamily: "var(--font-sans)" }}
             >
               {/* Netlify needs the form name in a hidden input for JS submissions */}
@@ -140,6 +148,30 @@ export function LeadCapture() {
                 </select>
               </label>
 
+              {/* Geo cohort — feeds post-signup segmentation. Required
+                  for the UK Google Ads campaign so we can measure
+                  conversion specifically among UK-resident /
+                  UK+Dubai-portfolio prospects. */}
+              <label className="block">
+                <span className="sr-only">Where are your properties?</span>
+                <select
+                  name="geo_cohort"
+                  required
+                  value={geoCohort}
+                  onChange={(e) => setGeoCohort(e.target.value)}
+                  className="w-full rounded-md border border-[var(--color-border)] bg-white px-3 py-3 text-[14.5px] text-[var(--color-ink)] focus:border-[var(--color-navy)] focus:outline-none focus:ring-2 focus:ring-[var(--color-navy)]/10"
+                >
+                  <option value="">Where are your properties?</option>
+                  <option value="uk_only">UK only</option>
+                  <option value="uk_dubai">UK + Dubai / UAE</option>
+                  <option value="uk_other">UK + other (EU, etc.)</option>
+                  <option value="dubai_only">Dubai / UAE only</option>
+                  <option value="gcc_other">Saudi / Oman / other GCC</option>
+                  <option value="eu_only">EU only (Greece, Portugal, etc.)</option>
+                  <option value="other">Other / mixed</option>
+                </select>
+              </label>
+
               <button
                 type="submit"
                 disabled={status === "submitting"}
@@ -149,7 +181,7 @@ export function LeadCapture() {
               </button>
 
               {status === "error" && (
-                <p className="sm:col-span-3 text-[13px] text-[var(--color-negative)]">
+                <p className="sm:col-span-2 lg:col-span-4 text-[13px] text-[var(--color-negative)]">
                   Something went wrong. Try again, or email{" "}
                   <a
                     href="mailto:hello@assetcentral.ai"
@@ -161,7 +193,7 @@ export function LeadCapture() {
                 </p>
               )}
 
-              <p className="sm:col-span-3 text-[12.5px] text-[var(--color-muted)]">
+              <p className="sm:col-span-2 lg:col-span-4 text-[12.5px] text-[var(--color-muted)]">
                 We&rsquo;ll only use your email for the newsletter. See our{" "}
                 <a href="/privacy" className="underline">
                   privacy policy

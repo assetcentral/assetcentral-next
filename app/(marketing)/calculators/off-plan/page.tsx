@@ -2,9 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Off-Plan Rolling-Return Calculator | AssetCentral",
+  // Title + description tuned for the audience the May-2026 Google Ads
+  // campaign targets: UK residents (especially British investors who
+  // own or are considering Dubai off-plan property). "Dubai off-plan"
+  // and "UK investor" are both in the meta description so paid + organic
+  // search results match the campaign keywords directly.
+  title: "Dubai Off-Plan Calculator — assign now or hold? | AssetCentral",
   description:
-    "Should you assign now or hold to handover? Rolling month-by-month model for off-plan property with cost of money, payment plan, scenario snapshots, value-path chart, and live DLD market comps. Free with a 14-day AssetCentral trial.",
+    "Should you assign your Dubai off-plan unit now or hold to handover? A rolling month-by-month model with cost of money, payment plan, three scenarios and live DLD market comps. Used by UK and GCC investors weighing the exit decision. Free with a 14-day trial.",
   alternates: { canonical: "/calculators/off-plan" },
 };
 
@@ -54,6 +59,24 @@ export default function OffPlanLandingPage() {
             against the underlying economics — now usable without a
             spreadsheet open.
           </p>
+          {/* Audience callout — speaks directly to the UK-resident
+              British investor who owns or is considering Dubai off-plan.
+              This is the persona the May 2026 Google Ads campaign
+              targets (UK + Dubai geos). Visible above the fold so paid
+              traffic gets message-match within the first scroll. */}
+          <div
+            className="mt-6 inline-flex items-start gap-3 max-w-3xl rounded-lg border border-[var(--color-border)] bg-white px-4 py-3"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            <span aria-hidden className="text-[18px] leading-none mt-0.5">🇬🇧🇦🇪</span>
+            <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
+              <strong>Used by British investors holding Dubai off-plan.</strong>{" "}
+              Models the decision in AED, shows walk-away cash in your own
+              currency, and runs the same scenario stress-tests an asset
+              manager would on a UK BTL — for property you can&rsquo;t walk
+              past on the way to work.
+            </p>
+          </div>
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               href="/signup?plan=pro_monthly"

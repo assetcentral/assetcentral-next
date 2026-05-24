@@ -76,6 +76,16 @@ const articles = [
       "How to read a short-term rental operator statement, what to expect for the commission, and three questions to ask before renewing.",
     readMins: 6,
   },
+  {
+    // Added May 2026 — feeds the UK Google Ads campaign targeting
+    // British investors with Dubai property. High organic-search
+    // potential for "UK tax Dubai rental" type queries.
+    slug: "uk-tax-on-dubai-property",
+    title: "UK tax on Dubai property: what British landlords need to know",
+    blurb:
+      "Income tax on Dubai rental via SA106, UK CGT on sale, SDLT surcharge implications, and personal-vs-corporate structuring. Plain-language orientation for UK residents owning Dubai property.",
+    readMins: 10,
+  },
 ];
 
 export default function ResourcesPage() {
