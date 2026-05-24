@@ -1,0 +1,5 @@
+# /signup and /login live on the dashboard app at app.assetcentral.ai.
+# These rules forward marketing-site clicks (including any ?plan=pro / ?plan=team
+# query strings) to the dashboard so the user lands on the right auth flow.
+/signup    https://app.assetcentral.ai/signup    302!
+/login     https://app.assetcentral.ai/login     302!

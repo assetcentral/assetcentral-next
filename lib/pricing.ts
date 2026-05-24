@@ -1,0 +1,68 @@
+import { CURRENCY_SYMBOLS } from "./currency";
+
+/** Currencies in which subscriptions are billed. */
+export const BILLING_CURRENCIES = ["EUR", "USD", "GBP", "AED"] as const;
+export type BillingCurrency = (typeof BILLING_CURRENCIES)[number];
+
+export function isBillingCurrency(v: unknown): v is BillingCurrency {
+  return typeof v === "string" && (BILLING_CURRENCIES as readonly string[]).includes(v);
+}
+
+/** Pretty per-currency labels for pricing UI. */
+export const BILLING_CURRENCY_LABEL: Record<BillingCurrency, string> = {
+  EUR: "EUR · €",
+  USD: "USD · $",
+  GBP: "GBP · £",
+  AED: "AED · د.إ",
+};
+
+export type PlanId = "free" | "pro" | "team" | "enterprise";
+
+type Price = { monthly: number; annual: number };
+
+/**
+ * Per-market subscription pricing. Not derived from FX — these are the actual
+ * prices we bill in each currency. Annual = 10 months of the monthly rate
+ * (the "save 2 months" convention).
+ */
+export const PLAN_PRICES: Record<
+  Exclude<PlanId, "free" | "enterprise">,
+  Record<BillingCurrency, Price>
+> = {
+  pro: {
+    EUR: { monthly: 49, annual: 490 },
+    USD: { monthly: 59, annual: 590 },
+    GBP: { monthly: 39, annual: 390 },
+    AED: { monthly: 249, annual: 2490 },
+  },
+  team: {
+    EUR: { monthly: 199, annual: 1990 },
+    USD: { monthly: 240, annual: 2400 },
+    GBP: { monthly: 189, annual: 1890 },
+    AED: { monthly: 990, annual: 9900 },
+  },
+};
+
+/** Pick the best billing currency for a detected display currency. */
+export function billingFor(displayCode: string): BillingCurrency {
+  if (isBillingCurrency(displayCode)) return displayCode;
+  // CHF and unsupported codes → default to EUR (closest market).
+  return "EUR";
+}
+
+export function formatPrice(amount: number, code: BillingCurrency): string {
+  const symbol = CURRENCY_SYMBOLS[code];
+  return `${symbol}${amount.toLocaleString("en-GB")}`;
+}
+
+/** Annual monthly-equivalent: annual price divided by 12, rounded. */
+export function annualMonthlyEquiv(annual: number): number {
+  return Math.round(annual / 12);
+}
+
+/** Savings (months equivalent of monthly cost) vs paying monthly for a year. */
+export function annualSavings(price: Price, code: BillingCurrency): string {
+  const monthlyYear = price.monthly * 12;
+  const save = monthlyYear - price.annual;
+  return formatPrice(save, code);
+}

@@ -1,0 +1,23 @@
+# Netlify build configuration for assetcentral-next (marketing site).
+#
+# When Netlify auto-deploys from GitHub (or runs `netlify deploy` from
+# CLI), it reads this file to know what to build and where to find the
+# output. Keeping the config in-repo means:
+#   • Build settings stay in version control (no silent dashboard drift)
+#   • Any future hand-off or re-link works automatically
+#   • Preview deploys + production deploys use the same settings
+
+[build]
+  # `npm run build` runs `next build`. With `output: "export"` set in
+  # next.config.ts, that emits a fully-static site to the `out/` folder.
+  command = "npm run build"
+  # The directory Netlify uploads to its CDN. Must match the path
+  # `next build` writes to under `output: "export"` mode.
+  publish = "out"
+
+[build.environment]
+  # Pin Node to LTS 22 — Next.js 16 requires Node 18.17+ and we want a
+  # version that's actively maintained by Netlify's build image. Without
+  # this, Netlify picks its current default which can shift unexpectedly
+  # between builds.
+  NODE_VERSION = "22"

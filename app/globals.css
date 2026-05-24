@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colours — from Prompt K design system */
+  --color-navy: #1a1a2e;
+  --color-navy-light: #252545;
+  --color-accent: #4f6ef7;
+  --color-positive: #16a34a;
+  --color-warning: #d97706;
+  --color-negative: #dc2626;
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-surface: #f8fafc;
+
+  /* Fonts wired via next/font in app/layout.tsx */
+  --font-display: var(--font-instrument-serif);
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display headings get the serif by default. Opt-out with font-sans. */
+h1, h2, h3 {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* Tabular numbers in mockups */
+.num {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
