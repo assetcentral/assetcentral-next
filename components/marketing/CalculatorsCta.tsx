@@ -10,7 +10,7 @@ const calcs: Calc[] = [
   {
     slug: "mortgage",
     name: "Mortgage Calculator",
-    blurb: "Country rules for 8 markets — UAE, UK, EU.",
+    blurb: "Country rules for 10 markets — GCC (UAE, Oman, Saudi), UK, EU.",
   },
   {
     slug: "irr",

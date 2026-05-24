@@ -24,7 +24,7 @@ const calcs: Calc[] = [
     slug: "mortgage",
     name: "Mortgage Calculator",
     blurb:
-      "Country-specific rules for 8 markets. Monthly payment, stamp duty / transfer tax, LTV limits, cash needed at completion.",
+      "Country-specific rules for 10 markets including the full GCC. Monthly payment, stamp duty / transfer tax, LTV limits, cash needed at completion.",
     inputs: ["Country", "Resident or non-resident", "Property price", "Deposit", "Rate", "Term", "Loan type"],
   },
   {
