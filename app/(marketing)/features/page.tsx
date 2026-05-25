@@ -58,7 +58,7 @@ export default function FeaturesPage() {
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              AssetCentral does the four things a professional asset manager does for a property fund — but for a private landlord with anywhere from a single investment property to 50, across one or more countries.
+              AssetCentral does the four things a professional asset manager does for a property fund — but for a private owner with anywhere from a single investment property to 50, across one or more countries.
             </p>
           </div>
         </div>
@@ -181,7 +181,7 @@ const features: FeatureBlock[] = [
     number: "01",
     jobName: "The Set-Up",
     jobHeadline: "See what's going on",
-    intro: "Before you can improve your portfolio, you need to see it clearly. Most landlords don't.",
+    intro: "Before you can improve your portfolio, you need to see it clearly. Most owners don't.",
     blocks: [
       {
         title: "Your whole portfolio. One number that actually means something.",

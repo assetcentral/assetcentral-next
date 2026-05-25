@@ -55,7 +55,7 @@ export function CalculatorsCta() {
             className="mt-4 text-[16.5px] leading-[1.6] text-[var(--color-muted)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Our calculators are free, always. No account required. Used by thousands of landlords to evaluate investments before they buy.
+            Our calculators are free, always. No account required. Used by thousands of investors to evaluate properties before they buy.
           </p>
         </div>
 

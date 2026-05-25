@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About | AssetCentral",
   description:
-    "AssetCentral was built by an experienced entrepreneur who hit every problem of owning property without a family office handling it for him. A Real Estate PA for hands-on private landlords.",
+    "AssetCentral was built by an experienced entrepreneur who hit every problem of owning property without a family office handling it for him. A Real Estate PA for hands-on private owners.",
   alternates: { canonical: "/about" },
 };
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
             Four jobs: sets up visibility so you actually see what&rsquo;s going on, actively improves yield (including checking whether your operators are earning their commission), grinds through the operational checks, and helps with better decisions on timing, buying, and selling. In plain English: a Real Estate PA.
           </p>
           <p>
-            It&rsquo;s for private landlords with anywhere from a second property to 50, often across multiple countries — managing their portfolio alongside a career or other business. Not first-time buyers. Not REITs. Not developers. Above 50 assets, we offer custom enterprise plans.
+            It&rsquo;s for private owners with anywhere from a second property to 50, often across multiple countries — managing their portfolio alongside a career or other business. Not first-time buyers. Not REITs. Not developers. Above 50 assets, we offer custom enterprise plans.
           </p>
         </div>
 

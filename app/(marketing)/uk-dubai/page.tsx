@@ -29,12 +29,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Manage your UK and Dubai property in one place | AssetCentral",
   description:
-    "For British landlords with UK BTL and Dubai property. Track rents in GBP and AED side-by-side, model off-plan assignment decisions, stay on top of UK tax — all from one workspace. Free 14-day trial, no card required.",
+    "For British owners with UK BTL and Dubai property. Track rents in GBP and AED side-by-side, model off-plan assignment decisions, stay on top of UK tax — all from one workspace. Free 14-day trial, no card required.",
   alternates: { canonical: "/uk-dubai" },
   openGraph: {
     title: "Manage your UK and Dubai property in one place | AssetCentral",
     description:
-      "For British landlords with UK BTL and Dubai property. One workspace for both currencies, both tax regimes, both timezones.",
+      "For British owners with UK BTL and Dubai property. One workspace for both currencies, both tax regimes, both timezones.",
     type: "website",
   },
 };
@@ -71,7 +71,7 @@ export default function UkDubaiLanding() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             UK BTL, Dubai off-plan, AED service charges, GBP mortgage
-            payments. Most landlords with property in both countries end up
+            payments. Most owners with property in both countries end up
             in a spreadsheet graveyard. AssetCentral holds the whole portfolio
             in one workspace — GBP and AED side-by-side, both tax regimes,
             both timezones.
@@ -257,7 +257,7 @@ export default function UkDubaiLanding() {
                 className="mt-4 inline-flex items-center text-[14px] font-semibold text-[var(--color-accent)] hover:underline"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Read: UK tax on Dubai property — what British landlords need to know →
+                Read: UK tax on Dubai property — what British owners need to know →
               </Link>
             </div>
           </div>

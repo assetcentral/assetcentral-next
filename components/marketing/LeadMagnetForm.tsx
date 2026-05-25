@@ -62,7 +62,7 @@ export function LeadMagnetForm({ magnet, magnetName, downloadPath }: Props) {
         </div>
         <p className="text-[14.5px] text-[var(--color-ink)] leading-[1.55] mb-5">
           Click below to download the PDF. We&rsquo;ve also added you to the monthly
-          newsletter for landlords managing 2–50 properties. Unsubscribe in one click anytime.
+          newsletter for owners managing 2–50 properties. Unsubscribe in one click anytime.
         </p>
         <a
           href={downloadPath}

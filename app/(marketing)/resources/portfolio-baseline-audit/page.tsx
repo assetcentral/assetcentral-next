@@ -7,7 +7,7 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 const SLUG = "portfolio-baseline-audit";
 const TITLE = "Know what you actually own — the portfolio baseline audit";
 const DESCRIPTION =
-  "Most landlords think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head. Here is how to do it.";
+  "Most owners think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head. Here is how to do it.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | AssetCentral`,
@@ -42,7 +42,7 @@ export default function Article() {
       <ArticleLayout
         slug={SLUG}
         title="Know what you actually own — the portfolio baseline audit"
-        description="Most landlords think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head. Here is how to do it."
+        description="Most owners think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head. Here is how to do it."
         date="23 May 2026"
         readMins={9}
         related={[
@@ -53,7 +53,7 @@ export default function Article() {
         ]}
       >
         <p>
-          Ask a landlord with five properties what their portfolio yield is and you will get a confident number. Five percent. Six. Sometimes seven. Ask them to show you the calculation that produced the number and the answer becomes vaguer. It&rsquo;s usually the rent across the portfolio divided by what they paid, minus something for costs they remember to mention.
+          Ask an owner with five properties what their portfolio yield is and you will get a confident number. Five percent. Six. Sometimes seven. Ask them to show you the calculation that produced the number and the answer becomes vaguer. It&rsquo;s usually the rent across the portfolio divided by what they paid, minus something for costs they remember to mention.
         </p>
         <p>
           That figure — the one in the owner&rsquo;s head — is almost always wrong. Not because owners are careless, but because the way human memory weights property numbers is systematically optimistic. Last year&rsquo;s low service charge gets remembered as the recurring figure. The fixed-rate mortgage from three years ago gets remembered even though it reverted last quarter. The two months of void in 2024 gets discounted as an unusual event. The result is a mental yield that is typically 80–200 basis points above the actual yield on the spreadsheet.
@@ -113,13 +113,13 @@ export default function Article() {
           <strong>Layer 1: gross numbers.</strong> Annual rent per property, total annual rent, gross yield against current value. This is the headline number. It&rsquo;s also the only one most owners compute. It&rsquo;s the least useful of the three.
         </p>
         <p>
-          <strong>Layer 2: net numbers.</strong> Annual rent minus running costs minus average vacancy minus interest. This is the cash the property actually produces. For most portfolios, the net figure is 50–65% of gross. The first time most landlords see this number cleanly, it&rsquo;s lower than they expected.
+          <strong>Layer 2: net numbers.</strong> Annual rent minus running costs minus average vacancy minus interest. This is the cash the property actually produces. For most portfolios, the net figure is 50–65% of gross. The first time most owners see this number cleanly, it&rsquo;s lower than they expected.
         </p>
         <p>
           <strong>Layer 3: returns on equity.</strong> Net cash divided by equity invested (purchase price + capex minus current debt outstanding). This is the return that&rsquo;s actually competing with other places you could put the money. For leveraged portfolios this is usually higher than the net yield against value; for cash purchases the two are identical. <a href="/calculators/irr" className="underline hover:text-[var(--color-accent)]">The IRR calculator</a> handles this directly.
         </p>
         <p>
-          A landlord with five properties, three currencies, and two countries needs the layers visible side-by-side. The discipline isn&rsquo;t hard. Doing it once is straightforward. Doing it consistently — once a quarter, every quarter — is what most owners fall off.
+          An owner with five properties, three currencies, and two countries needs the layers visible side-by-side. The discipline isn&rsquo;t hard. Doing it once is straightforward. Doing it consistently — once a quarter, every quarter — is what most owners fall off.
         </p>
 
         <H2>What the audit reveals — every time</H2>

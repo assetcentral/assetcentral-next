@@ -76,7 +76,7 @@ export function HeroSection() {
             className="text-[13px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Used by landlords in <span aria-hidden>🇦🇪</span> UAE ·{" "}
+            Used by owners in <span aria-hidden>🇦🇪</span> UAE ·{" "}
             <span aria-hidden>🇸🇦</span> Saudi · <span aria-hidden>🇴🇲</span> Oman ·{" "}
             <span aria-hidden>🇬🇧</span> UK · <span aria-hidden>🇬🇷</span> Greece ·{" "}
             <span aria-hidden>🇵🇹</span> Portugal · <span aria-hidden>🇫🇷</span> France
@@ -90,7 +90,7 @@ export function HeroSection() {
               it was fine. It wasn&rsquo;t.&rdquo;
             </span>
             <span className="block text-[12px] text-[var(--color-muted)] mt-1 not-italic">
-              Private landlord, 10 properties · Dubai &amp; Greece
+              Private owner, 10 properties · Dubai &amp; Greece
             </span>
           </blockquote>
         </div>

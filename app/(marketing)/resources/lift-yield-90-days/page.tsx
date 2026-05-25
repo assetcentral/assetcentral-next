@@ -7,7 +7,7 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 const SLUG = "lift-yield-90-days";
 const TITLE = "Lift portfolio yield in 90 days — the four levers";
 const DESCRIPTION =
-  "Four levers move yield. Most landlords pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days, with worked Dubai numbers.";
+  "Four levers move yield. Most owners pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days, with worked Dubai numbers.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | AssetCentral`,
@@ -42,7 +42,7 @@ export default function Article() {
       <ArticleLayout
         slug={SLUG}
         title="Lift portfolio yield in 90 days — the four levers"
-        description="Four levers move yield. Most landlords pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days, with worked Dubai numbers."
+        description="Four levers move yield. Most owners pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days, with worked Dubai numbers."
         date="23 May 2026"
         readMins={10}
         related={[
@@ -53,13 +53,13 @@ export default function Article() {
         ]}
       >
         <p>
-          Most landlords trying to improve yield reach for one lever. The lender. Or the agent. Or the rent. The result is usually a 30–60 basis point gain in one part of the P&L, while two or three other levers continue to drag the average down. A portfolio yield isn&rsquo;t set by your best move; it&rsquo;s set by the weakest line on the spreadsheet.
+          Most owners trying to improve yield reach for one lever. The lender. Or the agent. Or the rent. The result is usually a 30–60 basis point gain in one part of the P&L, while two or three other levers continue to drag the average down. A portfolio yield isn&rsquo;t set by your best move; it&rsquo;s set by the weakest line on the spreadsheet.
         </p>
         <p>
           Four levers actually move rental yield. Pulled one at a time, they each add modestly. Pulled in sequence over 90 days, they routinely add 150–250 basis points to net yield — and the order they&rsquo;re pulled in matters more than how hard you pull on any one of them.
         </p>
         <p>
-          The right order goes from lowest-risk to highest-risk: cost first, then rent, then use, then capex. Most landlords pull them in reverse, which is why most yield-improvement attempts feel like work for very little reward.
+          The right order goes from lowest-risk to highest-risk: cost first, then rent, then use, then capex. Most owners pull them in reverse, which is why most yield-improvement attempts feel like work for very little reward.
         </p>
 
         <H2>Lever 1 — Cost (no risk, biggest underweight)</H2>
@@ -70,7 +70,7 @@ export default function Article() {
           The five cost lines to audit, in order of typical opportunity size:
         </p>
         <p>
-          <strong>Mortgage rate.</strong> If you&rsquo;re on a standard variable or a reverted rate, this is almost certainly your single largest yield leak. A UK landlord paying 7.5% SVR when 4.8% five-year fixed deals are available is losing roughly 270bps of yield on the leveraged portion of the property. The same maths applies in the UAE where EIBOR + 2% spreads have widened since 2024. <a href="/calculators/mortgage" className="underline hover:text-[var(--color-accent)]">Use the mortgage calculator</a> to model the refinance before you call the broker.
+          <strong>Mortgage rate.</strong> If you&rsquo;re on a standard variable or a reverted rate, this is almost certainly your single largest yield leak. A UK owner paying 7.5% SVR when 4.8% five-year fixed deals are available is losing roughly 270bps of yield on the leveraged portion of the property. The same maths applies in the UAE where EIBOR + 2% spreads have widened since 2024. <a href="/calculators/mortgage" className="underline hover:text-[var(--color-accent)]">Use the mortgage calculator</a> to model the refinance before you call the broker.
         </p>
         <p>
           <strong>Service charge.</strong> Dubai service charges across the major towers rose 4–9% annually between 2023 and 2025. Most owners pay the invoice without comparing to last year. A Marina 2-bed paying AED 28/sqft when the building average is AED 22/sqft is sitting on a recoverable 25–30% saving — usually achievable by formally challenging the OA budget at the next AGM.
@@ -142,7 +142,7 @@ export default function Article() {
           The discipline here is brutal. A capex decision is a separate investment, not a maintenance decision. Each project needs to clear an IRR hurdle on its own — typically 15%+ net of tax, given the illiquidity. The question isn&rsquo;t &ldquo;will this improvement increase rent?&rdquo; (almost always yes). The question is &ldquo;will it increase rent by enough to pay back inside the relevant hold period?&rdquo;
         </p>
         <p>
-          The four highest-IRR capex categories for landlords, in approximate order:
+          The four highest-IRR capex categories for owners, in approximate order:
         </p>
         <p>
           <strong>1. EPC / efficiency upgrades.</strong> Often the highest-IRR work in 2026 because the regulatory backstop (UK MEES, French passoires thermiques rules) means the property becomes unlettable without it. The IRR includes the avoided cost of having no rental income at all, which is rarely modelled but always real.

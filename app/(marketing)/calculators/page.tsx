@@ -87,7 +87,7 @@ export default function CalculatorsHubPage() {
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Used by thousands of landlords before they buy, sell, or refinance. No account required. Save your results and import them into your portfolio later.
+              Used by thousands of investors before they buy, sell, or refinance. No account required. Save your results and import them into your portfolio later.
             </p>
           </div>
         </div>

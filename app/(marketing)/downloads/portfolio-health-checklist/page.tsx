@@ -3,10 +3,10 @@ import { LeadMagnetLayout } from "@/components/marketing/LeadMagnetLayout";
 
 const TITLE = "Portfolio Health Checklist";
 const DESCRIPTION =
-  "The 24 things every private landlord with 2–50 properties should review every quarter. Per-asset checks, portfolio-wide checks, and an action priority framework. Free PDF.";
+  "The 24 things every private owner with 2–50 properties should review every quarter. Per-asset checks, portfolio-wide checks, and an action priority framework. Free PDF.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} · Free PDF for private landlords | AssetCentral`,
+  title: `${TITLE} · Free PDF for private owners | AssetCentral`,
   description: DESCRIPTION,
   alternates: { canonical: "/downloads/portfolio-health-checklist" },
   openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
@@ -40,7 +40,7 @@ export default function Page() {
         downloadPath="/downloads/portfolio-health-checklist.pdf"
         eyebrow="Quarterly review · free download"
         title="The Portfolio Health Checklist"
-        subtitle="The 24 things every private landlord should review every quarter. Per-asset checks, portfolio-wide checks, and an action priority framework. Most landlords skip half. The half they skip is usually where the money is."
+        subtitle="The 24 things every private owner should review every quarter. Per-asset checks, portfolio-wide checks, and an action priority framework. Most owners skip half. The half they skip is usually where the money is."
         insideHeading="What's inside"
         insideBullets={[
           "8 per-asset checks: real net yield, cashflow reconciliation, operator statement verification, tenancy status, loan reversion, insurance, service charge, capex pipeline",
@@ -48,7 +48,7 @@ export default function Page() {
           "Action priority framework — red / amber / yellow / green, with timing rules for each tier",
           "How each check maps to AssetCentral's automation (and which ones still need you)",
         ]}
-        whoFor="Private landlords with 2–50 properties who want a structured, repeatable quarterly review."
+        whoFor="Private owners with 2–50 properties who want a structured, repeatable quarterly review."
         pageCount={4}
       />
     </>

@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://assetcentral.ai"),
   title: {
-    default: "AssetCentral — Your Real Estate PA | Property Portfolio Intelligence",
+    default: "AssetCentral — The AI-powered return platform for property owners",
     template: "%s | AssetCentral",
   },
   description:
@@ -54,7 +54,7 @@ const organisationSchema = {
   logo: "https://assetcentral.ai/og-image.png",
   email: "hello@assetcentral.ai",
   description:
-    "AI-powered Real Estate PA for private landlords. Track real yield, verify operator statements, manage cashflow across multi-country portfolios.",
+    "AI-powered return platform for private property owners. Track real yield, verify operator statements, manage cashflow across multi-country portfolios.",
   legalName: "LOMOND CONSULTING FZE",
   address: {
     "@type": "PostalAddress",

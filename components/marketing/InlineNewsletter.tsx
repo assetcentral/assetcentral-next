@@ -76,7 +76,7 @@ export function InlineNewsletter({
         className="text-[14px] text-[var(--color-ink)] leading-[1.55] mb-4"
         style={{ fontFamily: "var(--font-sans)" }}
       >
-        Written for landlords managing 2–50 properties. No fluff, no upsells. Unsubscribe in one click.
+        Written for owners managing 2–50 properties. No fluff, no upsells. Unsubscribe in one click.
       </p>
       <form
         name={FORM_NAME}

@@ -54,7 +54,7 @@ export default function Article() {
       >
         <p>
           A mortgage is a contract that bundles two separate decisions: how you repay
-          the principal, and how the interest rate behaves over time. Most landlords
+          the principal, and how the interest rate behaves over time. Most owners
           treat &ldquo;the mortgage&rdquo; as a single product to compare on rate alone,
           which is why so many end up locked into structures that don&rsquo;t suit them.
           This guide separates those two decisions and walks through the five structures
@@ -193,7 +193,7 @@ export default function Article() {
         <p>
           The implicit deal: the bank gives you a teaser rate to win your business,
           knowing that when the fix ends you&rsquo;ll either pay the high SVR or
-          remortgage. In practice almost every active landlord remortgages 2–3 months
+          remortgage. In practice almost every active investor remortgages 2–3 months
           before the fix ends, which is why the UK has a thriving mortgage-broker industry.
         </p>
 

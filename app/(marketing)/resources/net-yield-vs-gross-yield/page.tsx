@@ -53,10 +53,10 @@ export default function Article() {
       ]}
     >
       <p>
-        Ask a landlord what their property earns and you will usually get a gross-yield answer. &ldquo;The Dubai apartment is yielding 7%.&rdquo; &ldquo;The Athens place gives me 5%.&rdquo; These numbers are the rent divided by the property&rsquo;s value, and they are what every property listing site, agent, and developer leads with. They are also almost completely useless for making investment decisions.
+        Ask an owner what their property earns and you will usually get a gross-yield answer. &ldquo;The Dubai apartment is yielding 7%.&rdquo; &ldquo;The Athens place gives me 5%.&rdquo; These numbers are the rent divided by the property&rsquo;s value, and they are what every property listing site, agent, and developer leads with. They are also almost completely useless for making investment decisions.
       </p>
       <p>
-        Net yield — what the property actually earns after everything that has to be paid — is usually 30% to 50% lower than gross. The gap is where most landlords lose money without realising it.
+        Net yield — what the property actually earns after everything that has to be paid — is usually 30% to 50% lower than gross. The gap is where most owners lose money without realising it.
       </p>
 
       <H2>What gross yield includes — and what it ignores</H2>
@@ -106,14 +106,14 @@ export default function Article() {
         Net yield on equity (your deposit + costs ≈ AED 600,000) — <strong>4.8%</strong>
       </Callout>
       <p>
-        Two numbers come out of this — net yield on full property value, and net yield on the equity you actually have invested (sometimes called cash-on-cash). Both are legitimate. Most institutional investors look at both. Most private landlords look at neither.
+        Two numbers come out of this — net yield on full property value, and net yield on the equity you actually have invested (sometimes called cash-on-cash). Both are legitimate. Most institutional investors look at both. Most private owners look at neither.
       </p>
 
       <InlineNewsletter />
 
       <H2>Why the gap matters</H2>
       <p>
-        A landlord who genuinely believes their portfolio is yielding 7% is making decisions on the wrong number. They may turn down a refinancing offer that improves cash-on-cash from 4.8% to 6.5%. They may accept a 25% STR commission they would push back on if they could see what was left after it. They may keep an Athens apartment with negative monthly cashflow because the gross number looks reasonable on paper.
+        An owner who genuinely believes their portfolio is yielding 7% is making decisions on the wrong number. They may turn down a refinancing offer that improves cash-on-cash from 4.8% to 6.5%. They may accept a 25% STR commission they would push back on if they could see what was left after it. They may keep an Athens apartment with negative monthly cashflow because the gross number looks reasonable on paper.
       </p>
       <p>
         The difference between gross and net is also the difference between a comparable property in two different markets. A 5% gross yield in a low-service-charge French market can produce a higher net yield than a 7% gross yield in Dubai. Comparing gross-to-gross misses the point.
@@ -121,7 +121,7 @@ export default function Article() {
 
       <H2>The simple rule</H2>
       <p>
-        When you hear a yield number, ask which version. If the answer is &ldquo;gross&rdquo;, mentally take 30–50% off the top before deciding what to do with it. If the answer is &ldquo;net&rdquo;, ask what costs were included. Most importantly: do the calculation on your own properties at least once a year. The first time most landlords do it, the result is uncomfortable. That discomfort is the whole point.
+        When you hear a yield number, ask which version. If the answer is &ldquo;gross&rdquo;, mentally take 30–50% off the top before deciding what to do with it. If the answer is &ldquo;net&rdquo;, ask what costs were included. Most importantly: do the calculation on your own properties at least once a year. The first time most owners do it, the result is uncomfortable. That discomfort is the whole point.
       </p>
 
       <CtaBox

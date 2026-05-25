@@ -12,7 +12,7 @@ const problems: Problem[] = [
   {
     title: "The operator black box",
     body:
-      "Your STR operator charges 25% commission. Your long-term property manager charges 5%. Do you actually check their statements? Most landlords don't. They see the net figure in their bank and assume it's roughly right. It often isn't.",
+      "Your STR operator charges 25% commission. Your long-term property manager charges 5%. Do you actually check their statements? Most owners don't. They see the net figure in their bank and assume it's roughly right. It often isn't.",
   },
   {
     title: "The timing trap",
@@ -41,7 +41,7 @@ export function ProblemSection() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Most landlords don&rsquo;t know what their portfolio is actually earning.
+            Most owners don&rsquo;t know what their portfolio is actually earning.
           </h2>
         </div>
 

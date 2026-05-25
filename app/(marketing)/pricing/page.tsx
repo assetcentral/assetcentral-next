@@ -25,7 +25,7 @@ const productSchema = {
   "@type": "Product",
   name: "AssetCentral",
   description:
-    "Property portfolio management platform for private landlords with 2–50 properties across multiple countries.",
+    "Property portfolio management platform for private owners with 2–50 properties across multiple countries.",
   brand: { "@type": "Brand", name: "AssetCentral" },
   offers: [
     {

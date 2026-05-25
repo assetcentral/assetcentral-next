@@ -173,7 +173,7 @@ export default function Article() {
 
       <H2>The one thing that always fails</H2>
       <p>
-        Hoping the market recovers in the 60 days before handover. It might. It usually doesn&rsquo;t. The landlords who get into trouble are the ones who waited because they didn&rsquo;t want to crystallise the decision. Run all four options in writing — even if you don&rsquo;t want to. The exercise of writing them down forces clarity.
+        Hoping the market recovers in the 60 days before handover. It might. It usually doesn&rsquo;t. The owners who get into trouble are the ones who waited because they didn&rsquo;t want to crystallise the decision. Run all four options in writing — even if you don&rsquo;t want to. The exercise of writing them down forces clarity.
       </p>
 
       <CtaBox

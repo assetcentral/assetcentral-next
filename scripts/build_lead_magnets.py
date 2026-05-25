@@ -264,7 +264,7 @@ def build_portfolio_checklist():
     story.append(Paragraph("Portfolio Health Checklist", s["title"]))
     story.append(
         Paragraph(
-            "The 24 things every private landlord with 2–50 properties should review every quarter. "
+            "The 24 things every private owner with 2–50 properties should review every quarter. "
             "Most people skip half of them. The half they skip is usually where the money is.",
             s["intro"],
         )
@@ -408,7 +408,7 @@ def build_offplan_tree():
     story.append(
         Paragraph(
             "Stage payment due. Cash tight. Four options, three decision questions, and the documents "
-            "each path requires. Built for landlords with one or more off-plan units approaching handover "
+            "each path requires. Built for owners with one or more off-plan units approaching handover "
             "in 6–12 months.",
             s["intro"],
         )
@@ -492,7 +492,7 @@ def build_offplan_tree():
 
     story.append(PageBreak())
 
-    story.append(section_band("Common mistakes", "What we see when landlords get stuck.", color=NEGATIVE))
+    story.append(section_band("Common mistakes", "What we see when owners get stuck.", color=NEGATIVE))
     story.append(Spacer(1, 10))
     story.append(Paragraph("<b>Waiting.</b> Hoping the market recovers in the 60 days before handover. It sometimes does. Usually it doesn't. The cost of starting refinancing 12 weeks before handover is small. The cost of not having an option at handover is unbounded.", s["body"]))
     story.append(Paragraph("<b>Single-path planning.</b> Picking one option and ignoring the others. Always model all four. The exercise of writing them out forces clarity.", s["body"]))

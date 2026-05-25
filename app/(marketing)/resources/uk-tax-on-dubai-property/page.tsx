@@ -6,7 +6,7 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "uk-tax-on-dubai-property";
 const TITLE =
-  "UK tax on Dubai property: what British landlords need to know";
+  "UK tax on Dubai property: what British owners need to know";
 const DESCRIPTION =
   "Income tax on Dubai rental, CGT on sale, SDLT surcharge implications, and personal-vs-corporate structuring. Plain-language orientation for UK residents owning Dubai property. Not tax advice.";
 
@@ -183,7 +183,7 @@ export default function Article() {
           historic remittance basis was abolished from 6 April 2025 and
           replaced with the Foreign Income and Gains (FIG) regime, which is
           limited to qualifying new arrivals only. Most UK-domiciled
-          landlords with Dubai property have no remittance-basis option
+          owners with Dubai property have no remittance-basis option
           available.
         </Callout>
 
@@ -277,7 +277,7 @@ export default function Article() {
             (ITA 2007 s.720 onwards) attribute the UAE entity&rsquo;s income
             to you for UK tax purposes anyway. The structure adds complexity
             without saving UK tax — generally not worth it for personal
-            residential landlords.
+            residential owners.
           </li>
           <li>
             <strong>Offshore structure (BVI / Jersey / Guernsey)</strong> —
@@ -301,7 +301,7 @@ export default function Article() {
         <p>
           The UK and UAE signed a comprehensive double-tax treaty in April
           2016 (effective in the UK from January 2017). The treaty exists,
-          but for the typical UK-resident landlord with Dubai rental, it
+          but for the typical UK-resident owner with Dubai rental, it
           doesn&rsquo;t reduce your bill — there&rsquo;s no UAE tax to credit
           against your UK liability.
         </p>
@@ -352,7 +352,7 @@ export default function Article() {
           <li>
             <strong>Keep clean records in both currencies.</strong> AED for the
             Dubai accounts, GBP-equivalent for the UK return. You&rsquo;ll
-            need both at filing time and many landlords reconstruct them after
+            need both at filing time and many owners reconstruct them after
             the fact from incomplete records.
           </li>
           <li>

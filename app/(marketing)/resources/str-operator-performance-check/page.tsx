@@ -55,7 +55,7 @@ export default function Article() {
         25% is the headline number. It is what STR operators across Dubai, Lisbon, Athens, and parts of southern Spain charge to manage your short-term rental: listing, guest comms, cleaning coordination, dynamic pricing, channel management. Some charge less (18–22% in competitive markets); some charge more (30%+ in luxury segments). In all cases the question is the same: are you getting your money&rsquo;s worth?
       </p>
       <p>
-        Most landlords cannot answer this. They see what hits their bank account, divide by what they thought the apartment could earn, and conclude things are roughly fine. They are not always wrong. They are not always right either. Here is how to actually check.
+        Most owners cannot answer this. They see what hits their bank account, divide by what they thought the apartment could earn, and conclude things are roughly fine. They are not always wrong. They are not always right either. Here is how to actually check.
       </p>
 
       <H2>What you are paying for, in plain English</H2>
@@ -121,7 +121,7 @@ export default function Article() {
         <strong>You are paying 25%+ effective commission for a 1-bedroom apartment doing AED 100k+ gross annually.</strong> That is AED 25k a year going to the operator. For that money you can hire a virtual assistant for guest comms, set up Airbnb&rsquo;s own pricing tool, and pay cleaners directly. Self-management of a single high-revenue unit is a 5–8 hours per month commitment that can save AED 15k+ annually.
       </p>
       <p>
-        Self-managing a portfolio of three or more STR units is a part-time job. Most landlords either accept the agency cost or eventually stop doing STR. The middle path — self-manage the highest-revenue unit, agency the rest — is rarely considered but often optimal.
+        Self-managing a portfolio of three or more STR units is a part-time job. Most owners either accept the agency cost or eventually stop doing STR. The middle path — self-manage the highest-revenue unit, agency the rest — is rarely considered but often optimal.
       </p>
 
       <H2>The honest version</H2>

@@ -61,7 +61,7 @@ export function SaveResultForm({ calc, calcName, summary }: Props) {
           Saved. Check your inbox.
         </div>
         <p className="mt-1 text-[14.5px] text-[var(--color-ink)] leading-[1.55]">
-          We&rsquo;ll email you a copy of this {calcName.toLowerCase()} result, plus our monthly newsletter for landlords managing 2–50 properties. Unsubscribe in one click anytime.
+          We&rsquo;ll email you a copy of this {calcName.toLowerCase()} result, plus our monthly newsletter for owners managing 2–50 properties. Unsubscribe in one click anytime.
         </p>
       </div>
     );

@@ -8,7 +8,7 @@ const SLUG = "mortgage-rules-by-country";
 const TITLE =
   "Mortgage rules by country: how the UAE, UK, France, Spain, Portugal, Greece, Germany, and Switzerland differ";
 const DESCRIPTION =
-  "LTV caps, term limits, transfer taxes, stress tests, and the rules non-residents actually run into. A reference for landlords buying across borders.";
+  "LTV caps, term limits, transfer taxes, stress tests, and the rules non-residents actually run into. A reference for investors buying across borders.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | AssetCentral`,
@@ -100,7 +100,7 @@ export default function Article() {
           <li>
             <strong>Transaction costs.</strong> Transfer tax, stamp duty, notary, agent,
             lender fees. Range from ~3% in Greece to ~12% in France. This is the
-            sleeper cost most landlords underestimate by half.
+            sleeper cost most owners underestimate by half.
           </li>
         </ol>
 
@@ -159,7 +159,7 @@ export default function Article() {
           <strong>Rate structure.</strong> Fix-then-revert is the dominant model:
           2-year, 5-year, or 10-year fix, then reverts to the lender&rsquo;s Standard
           Variable Rate (SVR) which is typically 2–4 percentage points higher than the
-          headline fixed rate. Active landlords remortgage 2–3 months before the fix
+          headline fixed rate. Active investors remortgage 2–3 months before the fix
           ends.
         </p>
 
@@ -385,7 +385,7 @@ export default function Article() {
           <li>
             <strong>Transaction costs are bigger than you think.</strong> The minimum is
             ~5% (Greece resale), the maximum is ~13% (Spanish region + new-build VAT
-            combinations). Most landlords underestimate by 30–50% on first cross-border
+            combinations). Most owners underestimate by 30–50% on first cross-border
             purchases.
           </li>
           <li>

@@ -70,6 +70,6 @@ export function softwareApplicationSchema() {
       { "@type": "Offer", price: "199", priceCurrency: "EUR", name: "Team" },
     ],
     description:
-      "AI-powered property portfolio management platform for private landlords. Real net yield, multi-currency cashflow, AI document ingestion, operator-statement verification, sell-vs-hold modelling.",
+      "AI-powered property portfolio management platform for private owners. Real net yield, multi-currency cashflow, AI document ingestion, operator-statement verification, sell-vs-hold modelling.",
   };
 }

@@ -72,7 +72,7 @@ export function LeadCapture() {
               className="mt-4 text-[16px] leading-[1.55] text-[var(--color-ink)]"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              One practical guide a month — written for landlords managing 2 to 50 properties. Quarterly portfolio benchmarks. No fluff, no upsells. Unsubscribe in one click.
+              One practical guide a month — written for owners managing 2 to 50 properties. Quarterly portfolio benchmarks. No fluff, no upsells. Unsubscribe in one click.
             </p>
           </div>
 

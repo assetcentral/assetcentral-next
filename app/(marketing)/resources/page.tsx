@@ -5,7 +5,7 @@ import { LeadMagnetsSection } from "@/components/marketing/LeadMagnetsSection";
 export const metadata: Metadata = {
   title: "Guides for serious property investors | AssetCentral",
   description:
-    "Practical, specific guides for financially literate landlords. Net yield, off-plan handover, STR operator performance.",
+    "Practical, specific guides for financially literate owners. Net yield, off-plan handover, STR operator performance.",
   alternates: { canonical: "/resources" },
 };
 
@@ -14,14 +14,14 @@ const articles = [
     slug: "portfolio-baseline-audit",
     title: "Know what you actually own — the portfolio baseline audit",
     blurb:
-      "Most landlords think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head.",
+      "Most owners think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head.",
     readMins: 9,
   },
   {
     slug: "lift-yield-90-days",
     title: "Lift portfolio yield in 90 days — the four levers",
     blurb:
-      "Four levers move yield. Most landlords pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days.",
+      "Four levers move yield. Most owners pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days.",
     readMins: 10,
   },
   {
@@ -29,7 +29,7 @@ const articles = [
     title:
       "Keep yield from sliding back — the 11 things quietly eroding your portfolio",
     blurb:
-      "Lifting yield is the easy part. The hard part is keeping it there. The eleven yield killers most landlords miss, grouped by category, with the alerts that catch each one.",
+      "Lifting yield is the easy part. The hard part is keeping it there. The eleven yield killers most owners miss, grouped by category, with the alerts that catch each one.",
     readMins: 8,
   },
   {
@@ -81,7 +81,7 @@ const articles = [
     // British investors with Dubai property. High organic-search
     // potential for "UK tax Dubai rental" type queries.
     slug: "uk-tax-on-dubai-property",
-    title: "UK tax on Dubai property: what British landlords need to know",
+    title: "UK tax on Dubai property: what British owners need to know",
     blurb:
       "Income tax on Dubai rental via SA106, UK CGT on sale, SDLT surcharge implications, and personal-vs-corporate structuring. Plain-language orientation for UK residents owning Dubai property.",
     readMins: 10,
@@ -110,7 +110,7 @@ export default function ResourcesPage() {
               className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Not a blog. No opinion pieces, listicles, or &ldquo;10 tips&rdquo; content. Only practical, specific guides written for a financially literate landlord.
+              Not a blog. No opinion pieces, listicles, or &ldquo;10 tips&rdquo; content. Only practical, specific guides written for a financially literate owner.
             </p>
           </div>
         </div>

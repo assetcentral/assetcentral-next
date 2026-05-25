@@ -12,7 +12,7 @@ const jobs: Job[] = [
     number: "01",
     name: "The Set-Up",
     headline: "See what's going on",
-    tagline: "Most landlords have never seen their real net yield.",
+    tagline: "Most owners have never seen their real net yield.",
     bullets: [
       "Real net yield per asset — after mortgage, costs, fees, vacancy, tax",
       "Every asset in one dashboard, every currency converted automatically",
@@ -79,7 +79,7 @@ export function FourJobsSection() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Four things a professional asset manager does. Now available to every landlord.
+            Four things a professional asset manager does. Now available to every owner.
           </h2>
         </div>
 

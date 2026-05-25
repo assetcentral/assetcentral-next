@@ -7,7 +7,7 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 const SLUG = "yield-protection";
 const TITLE = "Keep yield from sliding back — the 11 things quietly eroding your portfolio";
 const DESCRIPTION =
-  "Lifting yield is the easy part. The hard part is keeping it there. The 11 yield killers most landlords miss, grouped by category, with the alerts that catch each one.";
+  "Lifting yield is the easy part. The hard part is keeping it there. The 11 yield killers most owners miss, grouped by category, with the alerts that catch each one.";
 
 export const metadata: Metadata = {
   title: `${TITLE} | AssetCentral`,
@@ -42,7 +42,7 @@ export default function Article() {
       <ArticleLayout
         slug={SLUG}
         title="Keep yield from sliding back — the 11 things quietly eroding your portfolio"
-        description="Lifting yield is the easy part. The hard part is keeping it there. The 11 yield killers most landlords miss, grouped by category, with the alerts that catch each one."
+        description="Lifting yield is the easy part. The hard part is keeping it there. The 11 yield killers most owners miss, grouped by category, with the alerts that catch each one."
         date="23 May 2026"
         readMins={8}
         related={[
@@ -53,7 +53,7 @@ export default function Article() {
         ]}
       >
         <p>
-          Most landlord conversations focus on lifting yield. Refinance the mortgage, push the rent, switch to short-stay, refit the kitchen. These moves matter, and they work. But the harder problem — the one nobody writes guides about — is keeping the yield up once you have it.
+          Most owner conversations focus on lifting yield. Refinance the mortgage, push the rent, switch to short-stay, refit the kitchen. These moves matter, and they work. But the harder problem — the one nobody writes guides about — is keeping the yield up once you have it.
         </p>
         <p>
           Yield is a moving baseline. Every quarter, something quietly shifts against you. Service-charge invoices arrive a little higher than last year. A fixed-rate period ends and the lender drops you onto a 200bps-worse variable. A tenant gives notice and the flat sits empty for six weeks instead of two. The Dubai service charge index reposts and your tower is up 9%. None of these is a crisis on its own. Compounded across a portfolio over 24 months, they routinely shave 100–200 basis points off net yield without anyone noticing.
@@ -76,7 +76,7 @@ export default function Article() {
           The defence: shop every policy every two years, even if just to use the quote as a renegotiation tool with the incumbent.
         </p>
         <p>
-          <strong>3. Mortgage rate reset.</strong> The most painful yield killer because it's the largest single line on most landlord P&Ls. A UK fix-then-revert mortgage moves to the lender's standard variable rate the day after the fixed period ends — often 3–4% above what was just paid. Same pattern in the UAE: most three-year fixed deals revert to EIBOR + 2%. A 5-year-old portfolio with three properties resetting in different quarters can lose 250–400bps of net yield in a single year without any single moment that screamed &ldquo;act now&rdquo;.
+          <strong>3. Mortgage rate reset.</strong> The most painful yield killer because it's the largest single line on most owner P&Ls. A UK fix-then-revert mortgage moves to the lender's standard variable rate the day after the fixed period ends — often 3–4% above what was just paid. Same pattern in the UAE: most three-year fixed deals revert to EIBOR + 2%. A 5-year-old portfolio with three properties resetting in different quarters can lose 250–400bps of net yield in a single year without any single moment that screamed &ldquo;act now&rdquo;.
         </p>
         <p>
           The defence: every fixed-rate property needs a 90-day-out alert before the reset date. Refinance options take 6–8 weeks to arrange; finding out two weeks before reset is too late.
@@ -127,7 +127,7 @@ export default function Article() {
 
         <H2>Tax and regulatory drift — two structural risks</H2>
         <p>
-          <strong>10. Non-resident tax rules.</strong> France, Spain, and Portugal have all tightened non-resident rental taxation in the last 36 months. The UK's Section 24 changes hit higher-rate-tax landlords through the late 2010s and continue to bite. Switzerland's wealth tax catches owners who haven't realised they're tax-resident through extended stays. Owners with cross-border portfolios discover most of these changes by accident, usually when their accountant brings them up months after they took effect.
+          <strong>10. Non-resident tax rules.</strong> France, Spain, and Portugal have all tightened non-resident rental taxation in the last 36 months. The UK's Section 24 changes hit higher-rate-tax owners through the late 2010s and continue to bite. Switzerland's wealth tax catches owners who haven't realised they're tax-resident through extended stays. Owners with cross-border portfolios discover most of these changes by accident, usually when their accountant brings them up months after they took effect.
         </p>
         <p>
           The defence: at least one annual review with someone who handles cross-border property tax. Self-assessment software won't catch the regime changes that matter.
@@ -157,7 +157,7 @@ export default function Article() {
           • Annual capex calendar (boiler, EICR, gas safety)
         </Callout>
         <p>
-          A defensive landlord doesn&rsquo;t need to think about yield every day. They need a system that pings them at the eight moments per portfolio per year when yield can slip — and then they need to act on the ping.
+          A defensive owner doesn&rsquo;t need to think about yield every day. They need a system that pings them at the eight moments per portfolio per year when yield can slip — and then they need to act on the ping.
         </p>
 
         <H2>What &ldquo;defence&rdquo; actually looks like</H2>
@@ -168,7 +168,7 @@ export default function Article() {
           That single-record-per-property discipline is what AssetCentral automates. The eight alert types above run continuously, the documents are filed automatically when they arrive in the inbox, and the comparison against last year happens without anyone having to remember to do it.
         </p>
         <p>
-          The point isn&rsquo;t that defending yield is impossible by hand. Plenty of landlords do it with a Notion page and a calendar full of reminders. The point is that the alternative is silent erosion. A portfolio that loses 100bps of yield a year because nobody noticed the small things is losing 30,000 EUR on a million-EUR portfolio. Compounded over the hold period, that&rsquo;s the difference between a good real-estate decade and a mediocre one.
+          The point isn&rsquo;t that defending yield is impossible by hand. Plenty of owners do it with a Notion page and a calendar full of reminders. The point is that the alternative is silent erosion. A portfolio that loses 100bps of yield a year because nobody noticed the small things is losing 30,000 EUR on a million-EUR portfolio. Compounded over the hold period, that&rsquo;s the difference between a good real-estate decade and a mediocre one.
         </p>
 
         <CtaBox

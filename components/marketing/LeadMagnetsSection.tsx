@@ -6,7 +6,7 @@ const magnets = [
     eyebrow: "Quarterly review",
     title: "Portfolio Health Checklist",
     blurb:
-      "24 checks every private landlord should run quarterly. Per-asset, portfolio-wide, plus an action-priority framework.",
+      "24 checks every private owner should run quarterly. Per-asset, portfolio-wide, plus an action-priority framework.",
     pages: 4,
   },
   {

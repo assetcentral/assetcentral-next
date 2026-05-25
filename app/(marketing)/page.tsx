@@ -23,7 +23,7 @@ const jsonLd = {
   name: "AssetCentral",
   applicationCategory: "FinanceApplication",
   offers: { "@type": "Offer", price: "49", priceCurrency: "EUR" },
-  description: "Property portfolio intelligence platform for private landlords.",
+  description: "Property portfolio intelligence platform for private owners.",
 };
 
 export default function HomePage() {

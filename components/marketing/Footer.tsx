@@ -90,7 +90,7 @@ export function Footer() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           <div>
-            © 2026 AssetCentral. Built for landlords, not institutions.
+            © 2026 AssetCentral. Built for owners, not institutions.
           </div>
           <div>
             AssetCentral is software for tracking and analysing property portfolios. Information and outputs on this site and in the product are not financial, tax, legal, or investment advice. Always consult a qualified, licensed adviser before making any property, tax, or financing decision. See our{" "}
