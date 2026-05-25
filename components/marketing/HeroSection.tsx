@@ -19,17 +19,17 @@ export function HeroSection() {
           {/* copy */}
           <div>
             <h1
-              className="text-[44px] leading-[1.05] sm:text-[56px] lg:text-[64px] lg:leading-[1.02] text-[var(--color-navy)]"
+              className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Your Real Estate PA. Finally.
+              The AI-powered return platform for property owners
             </h1>
 
             <p
               className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              AssetCentral manages your property portfolio the way a professional asset manager would — but it works for you, not a fund. Built for private landlords with 2 to 50 properties — from a second home to a multi-country portfolio.
+              Real data. Better decisions. Better returns. Built for private owners with 2 to 50 properties — from a second home to a multi-country portfolio.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
