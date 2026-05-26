@@ -11,10 +11,10 @@ import Link from "next/link";
 
 const TITLE = "Partner with AssetCentral.ai";
 const DESCRIPTION =
-  "Earn from every property owner you introduce. Professional partners — accountants, IFAs, wealth managers, property managers, brokers — earn commission + recurring revenue. Existing customers refer friends for credit.";
+  "Two ways to partner with AssetCentral.ai — bring us your clients as a professional partner, or your friends as an ambassador. Upfront commission + recurring revenue on every introduction. Built for accountants, IFAs, wealth managers, property managers and brokers.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} · Earn from every property owner you introduce`,
+  title: `${TITLE} · Earn alongside the owners you advise`,
   description: DESCRIPTION,
   alternates: { canonical: "/partners" },
   openGraph: {
@@ -106,7 +106,7 @@ export default function PartnersPage() {
             className="text-[44px] lg:text-[64px] leading-[1.04] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Earn from every property owner you introduce.
+            Partner with AssetCentral.ai.
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
