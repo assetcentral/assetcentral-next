@@ -98,7 +98,11 @@ export function ProductDemoTabs() {
 
         {/* Panel */}
         <div className="mt-8 grid lg:grid-cols-[1fr_320px] gap-8 items-start">
-          <div className="min-h-[520px] min-w-0">
+          {/* min-h only at lg+ where the side caption sits next to the
+              panel and we need consistent height across tabs. At <lg
+              the caption stacks above/below so a tall min-h leaves
+              dead whitespace beneath shorter tab content. */}
+          <div className="lg:min-h-[520px] min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}

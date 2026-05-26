@@ -44,22 +44,29 @@ export function StickyCta({
   return (
     <div
       aria-hidden={!visible}
-      className={`fixed inset-x-0 bottom-0 z-40 transition-transform duration-200 ${
+      // pb-[env(safe-area-inset-bottom)] sits the bar above the iOS
+      // home-indicator on iPhones — without it the bar overlaps the
+      // indicator and the dismiss button moves into a tap-dead-zone.
+      className={`fixed inset-x-0 bottom-0 z-40 pb-[env(safe-area-inset-bottom)] transition-transform duration-200 ${
         visible ? "translate-y-0 pointer-events-auto" : "translate-y-full pointer-events-none"
       }`}
     >
       <div
-        className="mx-auto max-w-3xl m-3 sm:m-4 rounded-xl bg-[var(--color-navy)] text-white shadow-[0_18px_50px_-15px_rgba(15,23,42,0.45)] p-3 sm:p-4 flex items-center gap-3"
+        className="mx-auto max-w-3xl m-3 sm:m-4 rounded-xl bg-[var(--color-navy)] text-white shadow-[0_18px_50px_-15px_rgba(15,23,42,0.45)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         <div className="flex-1 min-w-0">
-          <div className="text-[13.5px] sm:text-[14px] leading-snug text-white/90 truncate sm:whitespace-normal">
+          {/* Don't truncate on mobile — at 375px the CTA + dismiss
+              consume enough horizontal space that the message gets
+              chopped mid-sentence. Letting it wrap to 2 lines is the
+              better trade. */}
+          <div className="text-[13px] sm:text-[14px] leading-snug text-white/90">
             {message}
           </div>
         </div>
         <Link
           href={href}
-          className="plausible-event-name=signup_cta_click plausible-event-location=sticky inline-flex items-center justify-center whitespace-nowrap min-h-[40px] sm:min-h-[44px] rounded-md bg-white text-[var(--color-navy)] text-[13.5px] sm:text-[14px] font-semibold px-3.5 sm:px-5 hover:bg-slate-100 transition-colors"
+          className="plausible-event-name=signup_cta_click plausible-event-location=sticky inline-flex items-center justify-center whitespace-nowrap min-h-[44px] rounded-md bg-white text-[var(--color-navy)] text-[13.5px] sm:text-[14px] font-semibold px-3.5 sm:px-5 hover:bg-slate-100 transition-colors"
         >
           {label} →
         </Link>
@@ -72,7 +79,10 @@ export function StickyCta({
             setDismissed(true);
           }}
           aria-label="Dismiss"
-          className="inline-flex items-center justify-center w-9 h-9 rounded-md text-white/75 hover:text-white hover:bg-white/10 transition-colors"
+          // 44×44 minimum touch target so it doesn't get mis-tapped
+          // against the adjacent primary CTA on mobile. Adds an
+          // explicit ml to push it slightly clear of the CTA edge.
+          className="ml-0.5 inline-flex items-center justify-center w-11 h-11 rounded-md text-white/75 hover:text-white hover:bg-white/10 transition-colors shrink-0"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
             <path d="M18 6 6 18" />

@@ -300,9 +300,12 @@ export function DashboardMockup() {
         </div>
       </div>
 
-      {/* floating attribution badge */}
+      {/* Floating attribution badge. Sits inside the mockup's bottom
+          edge (bottom-2) rather than below it (-bottom-3) so it doesn't
+          overlap the social-proof strip that follows the hero on mobile
+          viewports. Desktop layout has enough space below either way. */}
       <div
-        className="absolute -bottom-3 right-4 px-2.5 py-1 rounded-md bg-[var(--color-navy)] text-white text-[10px] tracking-wide shadow-md"
+        className="absolute bottom-2 right-4 px-2.5 py-1 rounded-md bg-[var(--color-navy)] text-white text-[10px] tracking-wide shadow-md"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         Live portfolio · sample data

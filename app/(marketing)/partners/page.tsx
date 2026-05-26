@@ -470,15 +470,19 @@ export default function PartnersPage() {
             className="mt-9 flex flex-wrap items-center justify-center gap-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
+            {/* Full-width on mobile so the long labels ("Existing
+                customer? Find your link →") don't shrink to min-content
+                / unequal sizes; auto width from sm where they sit
+                comfortably side by side. */}
             <Link
               href="/partners/apply"
-              className="inline-flex items-center justify-center min-h-[48px] rounded-md bg-white text-[var(--color-navy)] px-6 text-[14.5px] font-medium hover:bg-white/90 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] rounded-md bg-white text-[var(--color-navy)] px-6 text-[14.5px] font-medium hover:bg-white/90 transition-colors"
             >
               Apply in 2 minutes →
             </Link>
             <Link
               href="https://app.assetcentral.ai/dashboard/partner"
-              className="inline-flex items-center justify-center min-h-[48px] rounded-md border border-white/20 text-white px-6 text-[14.5px] font-medium hover:bg-white/5 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] rounded-md border border-white/20 text-white px-6 text-[14.5px] font-medium hover:bg-white/5 transition-colors"
             >
               Existing customer? Find your link →
             </Link>

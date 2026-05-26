@@ -94,7 +94,11 @@ export function PricingClient() {
               </span>
             )}
 
-            <div className="ml-auto flex items-center gap-2">
+            {/* ml-auto on sm+ pushes the currency selector to the right
+                edge of the row. On mobile we drop it so the selector
+                wraps below the toggle and left-aligns naturally — the
+                right-aligned single-item line looked broken at 375px. */}
+            <div className="sm:ml-auto flex items-center gap-2">
               <label
                 htmlFor="billing-currency"
                 className="text-[12.5px] text-[var(--color-muted)]"
@@ -289,9 +293,13 @@ function PlanCardLayout({
 }) {
   return (
     <article
+      // mt-3 on the popular card so the absolute-positioned "-top-3"
+      // badge has room to render without overflowing the parent grid's
+      // top edge on cold scroll (especially when the grid is the very
+      // first thing in viewport on mobile).
       className={`relative rounded-2xl bg-white p-7 lg:p-8 flex flex-col ${
         popular
-          ? "border-2 border-[var(--color-navy)] shadow-[0_24px_60px_-25px_rgba(26,26,46,0.35)]"
+          ? "mt-3 border-2 border-[var(--color-navy)] shadow-[0_24px_60px_-25px_rgba(26,26,46,0.35)]"
           : "border border-[var(--color-border)]"
       }`}
     >

@@ -59,7 +59,11 @@ export function CalculatorsCta() {
           </p>
         </div>
 
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {/* 3-up at lg matches the calculators index page's layout
+            (app/(marketing)/calculators/page.tsx). 5-up was borderline
+            cramped at ~190px per tile and inconsistent with the
+            sibling page. */}
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {calcs.map((c) => (
             <Link
               key={c.slug}

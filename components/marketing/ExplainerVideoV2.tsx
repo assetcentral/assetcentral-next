@@ -75,23 +75,26 @@ export const SHOTS_60: Shot[] = [
   { id: 12, duration:  7000 }, // Closing brand frame (silent outro)
 ];
 
-// 93-second walkthrough cut for /demo/get-started. Tuned to the Kristen
-// VO (see /public/demo-vo-get-started-script.md). 5s silent intro, then
-// the four input methods, then three "output" beats, then closing CTA.
+// 67-second beginner tutorial — "How to Use AssetCentral in 60 Seconds".
+// Step-labeled walkthrough: welcome → add property → upload/manual →
+// AI structures → dashboard → tools → scenarios → AI insights → export
+// → closing. Designed to play silent in the browser (the page passes the
+// `silent` prop) so the user can layer their own VO + music externally.
 //
-// Reuses Scene 7 (dashboard cards) + Scene 9 (AI scans) for two of the
-// three output beats — those scenes already nail those moments and
-// keeping them shared means improvements to the originals propagate.
+// Timing tuned for comfortable reading: each scene gets 6–8s so a first-
+// time viewer has time to read the step label + see the action without
+// feeling rushed.
 export const SHOTS_GET_STARTED: Shot[] = [
-  { id: 20, duration:  5000 }, // Welcome — "Setting up your first property"
-  { id: 21, duration:  9000 }, // Way 1 — Type the address
-  { id: 22, duration: 10000 }, // Way 2 — Upload a document
-  { id: 23, duration: 10000 }, // Way 3 — Forward an email
-  { id: 24, duration: 10000 }, // Way 4 — Snap on WhatsApp
-  { id:  7, duration: 11000 }, // Output 1 — Dashboard cards
-  { id: 25, duration: 10000 }, // Output 2 — Alerts
-  { id:  9, duration: 11000 }, // Output 3 — AI scans / insight
-  { id: 26, duration:  7000 }, // Closing CTA
+  { id: 30, duration: 6000 }, // Welcome
+  { id: 31, duration: 8000 }, // Step 1 — Add your property (rich product chrome)
+  { id: 32, duration: 8500 }, // Step 2 — Four ways to add data (upload / manual / email / WhatsApp)
+  { id: 33, duration: 7500 }, // Step 3 — AI structures the data
+  { id: 34, duration: 7500 }, // Step 4 — See the key numbers
+  { id: 35, duration: 7000 }, // Step 5 — Choose the right tool
+  { id: 36, duration: 7500 }, // Step 6 — Compare scenarios
+  { id: 37, duration: 7000 }, // Step 7 — AI explains the numbers
+  { id: 38, duration: 6500 }, // Step 8 — Export a clear report
+  { id: 39, duration: 4500 }, // Closing
 ];
 
 // Subtitle cues — pacing tuned to feel comfortable to read while the
@@ -541,12 +544,18 @@ export function ExplainerVideoV2({
         )}
       </div>
 
-      {/* Click-to-start overlay */}
+      {/* Click-to-start overlay — fully opaque so the scaled canvas
+          underneath isn't visible at all pre-play. At <md the canvas
+          renders at ~0.195 scale and table text in scenes becomes
+          ~2px tall — a blurry smudge if the overlay let any peek
+          through. Fully opaque = clean poster appearance, then
+          playback auto-fullscreens (see startPlayback) so the canvas
+          renders at a readable scale. */}
       {!playing && (
         <button
           onClick={startPlayback}
           className="absolute inset-0 z-50 flex items-center justify-center cursor-pointer group"
-          style={{ backgroundColor: "rgba(10,14,39,0.92)" }}
+          style={{ backgroundColor: NAVY }}
         >
           <div className="flex flex-col items-center gap-5">
             <div
@@ -787,7 +796,8 @@ function Scene({ id }: { id: number }) {
     case 10: return <Scene10 />;
     case 11: return <Scene11 />;
     case 12: return <Scene12 />;
-    // Get-started video scenes
+    // Earlier get-started timeline (kept in file but no longer wired into
+    // SHOTS_GET_STARTED — replaced by the 30–39 tutorial below).
     case 20: return <SceneGetStartedWelcome />;
     case 21: return <SceneTypeAddress />;
     case 22: return <SceneUploadDoc />;
@@ -795,6 +805,17 @@ function Scene({ id }: { id: number }) {
     case 24: return <SceneWhatsAppSnap />;
     case 25: return <SceneAlertsOutput />;
     case 26: return <SceneGetStartedClose />;
+    // "How to Use AssetCentral in 60 Seconds" — current /demo/get-started
+    case 30: return <SceneTutorialWelcome />;
+    case 31: return <SceneStep1AddProperty />;
+    case 32: return <SceneStep2UploadOrManual />;
+    case 33: return <SceneStep3AIStructures />;
+    case 34: return <SceneStep4Dashboard />;
+    case 35: return <SceneStep5Tools />;
+    case 36: return <SceneStep6Scenarios />;
+    case 37: return <SceneStep7AIInsights />;
+    case 38: return <SceneStep8Export />;
+    case 39: return <SceneTutorialClose />;
     default: return null;
   }
 }
@@ -2790,6 +2811,1263 @@ function SceneGetStartedClose() {
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
         Free to try · No card required · Cancel anytime
+      </motion.div>
+    </div>
+  );
+}
+
+// ===========================================================================
+// "How to Use AssetCentral in 60 Seconds" tutorial scenes (IDs 30–39)
+// ===========================================================================
+//
+// Step-labeled beginner tutorial: walks a first-time visitor through what to
+// click first, how to add a property, how the AI structures data, what the
+// outputs look like, and how to export a report. Replaces the earlier
+// /demo/get-started timeline (scenes 20–26 remain in file for now but are
+// no longer wired into SHOTS_GET_STARTED).
+//
+// Visual language: each scene is a single focused product-UI mockup with a
+// "STEP N" eyebrow + clear primary action. Calm, beginner-friendly.
+
+// ── Shared step badge used by all tutorial scenes ───────────────────────────
+function StepBadge({ n, label }: { n: number; label: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="inline-flex items-center gap-[0.8vw] mb-[2vw]"
+      style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+    >
+      <span
+        className="inline-flex items-center justify-center w-[2vw] h-[2vw] rounded-full text-[1vw] font-semibold"
+        style={{ backgroundColor: ACCENT, color: "white" }}
+      >
+        {n}
+      </span>
+      <span className="text-[12px] uppercase tracking-[0.25em] text-white/55">
+        Step {n} — {label}
+      </span>
+    </motion.div>
+  );
+}
+
+// ── Animated cursor — fades in, glides to target, clicks ────────────────────
+function Cursor({ x, y, delay }: { x: string; y: string; delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: "-15vw", y: "-10vw" }}
+      animate={{ opacity: [0, 1, 1, 1], x: 0, y: 0, scale: [1, 1, 0.9, 1] }}
+      transition={{
+        duration: 1.6,
+        delay,
+        times: [0, 0.1, 0.8, 1],
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      className="absolute pointer-events-none z-20"
+      style={{ left: x, top: y }}
+    >
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M4 2 L4 18 L9 14 L11.5 21 L14.5 20 L12 13 L18 13 Z"
+          fill="white"
+          stroke="black"
+          strokeWidth="1"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </motion.div>
+  );
+}
+
+// ── Scene 30: Welcome ───────────────────────────────────────────────────────
+function SceneTutorialWelcome() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-[6%]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="text-[12px] uppercase tracking-[0.3em] text-white/45 mb-5"
+        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+      >
+        How to use AssetCentral in 60 seconds
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="text-[4.5vw] text-white leading-[1.05] tracking-tight"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Welcome to AssetCentral
+      </motion.div>
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.9, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+        className="h-[1.5px] mt-6"
+        style={{ backgroundColor: ACCENT, width: "18%", opacity: 0.6 }}
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 2.0 }}
+        className="mt-6 text-[1.9vw] text-white/80"
+        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+      >
+        Your AI real estate return platform.
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 3.0 }}
+        className="mt-8 text-[1.1vw] text-white/45"
+        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+      >
+        Add a property. See the numbers. Decide with confidence.
+      </motion.div>
+    </div>
+  );
+}
+
+// ── Scene 31: Step 1 — Add your property ────────────────────────────────────
+// Full SaaS product chrome: brand logo + user card at the top of a sectioned
+// sidebar (Overview / Tools / Account), then a main panel with a real top bar,
+// breadcrumb, KPI strip, and an empty-state "Add your first property" CTA
+// with a contextual tip about the 4 input channels. Designed to look like
+// the actual product, not a placeholder.
+
+// Small inline icons used by the sidebar. Kept as tiny SVGs so they sit at
+// any scale without external assets.
+function MenuIcon({ kind }: { kind: string }) {
+  const stroke = "currentColor";
+  const sw = "1.6";
+  const common = {
+    width: "100%",
+    height: "100%",
+    viewBox: "0 0 24 24",
+    fill: "none" as const,
+    stroke,
+    strokeWidth: sw,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (kind) {
+    case "dashboard":
+      return (<svg {...common}><rect x="3" y="3" width="7" height="9" /><rect x="14" y="3" width="7" height="5" /><rect x="14" y="12" width="7" height="9" /><rect x="3" y="16" width="7" height="5" /></svg>);
+    case "properties":
+      return (<svg {...common}><path d="M3 21 L3 10 L12 3 L21 10 L21 21 Z" /><path d="M9 21 L9 14 L15 14 L15 21" /></svg>);
+    case "cashflow":
+      return (<svg {...common}><path d="M4 17 L9 12 L13 16 L20 8" /><path d="M14 8 L20 8 L20 14" /></svg>);
+    case "documents":
+      return (<svg {...common}><path d="M7 3 L17 3 L21 7 L21 21 L7 21 Z" /><path d="M17 3 L17 7 L21 7" /><path d="M10 12 L18 12 M10 16 L18 16" /></svg>);
+    case "reports":
+      return (<svg {...common}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 14 L7 17 M12 9 L12 17 M17 11 L17 17" /></svg>);
+    case "alerts":
+      return (<svg {...common}><path d="M6 16 L6 11 A6 6 0 0 1 18 11 L18 16 L20 18 L4 18 Z" /><path d="M10 21 A2 2 0 0 0 14 21" /></svg>);
+    case "irr":
+      return (<svg {...common}><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8 L16 8 M8 12 L12 12 M8 16 L14 16" /></svg>);
+    case "rent":
+      return (<svg {...common}><circle cx="12" cy="12" r="9" /><path d="M9 9 L15 15 M9 15 L15 9" /></svg>);
+    case "holdsell":
+      return (<svg {...common}><path d="M6 12 L10 16 L18 8" /><circle cx="12" cy="12" r="9" /></svg>);
+    case "refi":
+      return (<svg {...common}><path d="M4 8 L20 8 M16 4 L20 8 L16 12" /><path d="M20 16 L4 16 M8 12 L4 16 L8 20" /></svg>);
+    case "market":
+      return (<svg {...common}><circle cx="12" cy="12" r="9" /><path d="M3 12 L21 12 M12 3 A12 12 0 0 1 12 21 A12 12 0 0 1 12 3" /></svg>);
+    case "settings":
+      return (<svg {...common}><circle cx="12" cy="12" r="3" /><path d="M12 2 L13 5 L16 4 L17 7 L20 8 L19 11 L22 12 L19 13 L20 16 L17 17 L16 20 L13 19 L12 22 L11 19 L8 20 L7 17 L4 16 L5 13 L2 12 L5 11 L4 8 L7 7 L8 4 L11 5 Z" /></svg>);
+    case "team":
+      return (<svg {...common}><circle cx="9" cy="9" r="3" /><circle cx="17" cy="11" r="2.5" /><path d="M3 19 C3 16 6 14 9 14 C12 14 15 16 15 19" /><path d="M14 19 C14 17 16 16 17 16 C19 16 21 17 21 19" /></svg>);
+    default:
+      return null;
+  }
+}
+
+interface MenuItem {
+  key: string;
+  label: string;
+  icon: string;
+  badge?: string;
+  active?: boolean;
+}
+
+function SidebarSection({ heading, items, delay }: { heading: string; items: MenuItem[]; delay: number }) {
+  return (
+    <div className="mb-[1vw]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay }}
+        className="text-[0.65vw] uppercase tracking-[0.18em] text-gray-400 px-[0.7vw] mb-[0.4vw]"
+        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+      >
+        {heading}
+      </motion.div>
+      {items.map((item, i) => (
+        <motion.div
+          key={item.key}
+          initial={{ opacity: 0, x: -4 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.35, delay: delay + 0.1 + i * 0.04 }}
+          className="flex items-center gap-[0.5vw] px-[0.7vw] py-[0.4vw] rounded-md mb-[0.15vw] mx-[0.3vw]"
+          style={{
+            fontFamily: "var(--font-sans, sans-serif)",
+            backgroundColor: item.active ? "rgba(79,110,247,0.10)" : "transparent",
+            color: item.active ? ACCENT : "#4b5563",
+            fontWeight: item.active ? 600 : 400,
+          }}
+        >
+          <span className="w-[0.9vw] h-[0.9vw] shrink-0 inline-flex items-center justify-center">
+            <MenuIcon kind={item.icon} />
+          </span>
+          <span className="text-[0.85vw] flex-1">{item.label}</span>
+          {item.badge && (
+            <span
+              className="text-[0.65vw] px-[0.35vw] py-[0.1vw] rounded-full tabular-nums"
+              style={{
+                backgroundColor: item.active ? ACCENT : "#e5e7eb",
+                color: item.active ? "white" : "#6b7280",
+              }}
+            >
+              {item.badge}
+            </span>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function SceneStep1AddProperty() {
+  const OVERVIEW: MenuItem[] = [
+    { key: "dashboard", label: "Dashboard",  icon: "dashboard" },
+    { key: "properties", label: "Properties", icon: "properties", badge: "0", active: true },
+    { key: "cashflow",  label: "Cashflow",   icon: "cashflow" },
+    { key: "documents", label: "Documents",  icon: "documents" },
+    { key: "reports",   label: "Reports",    icon: "reports" },
+    { key: "alerts",    label: "Alerts",     icon: "alerts" },
+  ];
+  const TOOLS: MenuItem[] = [
+    { key: "irr",      label: "IRR Calculator", icon: "irr" },
+    { key: "rent",     label: "Rent Review",    icon: "rent" },
+    { key: "holdsell", label: "Hold / Sell",    icon: "holdsell" },
+    { key: "refi",     label: "Refinance",      icon: "refi" },
+    { key: "market",   label: "Market data",    icon: "market" },
+  ];
+  const ACCOUNT: MenuItem[] = [
+    { key: "settings", label: "Settings", icon: "settings" },
+    { key: "team",     label: "Team",     icon: "team" },
+  ];
+
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={1} label="Add your property" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[1.5vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Start by adding one property.
+      </motion.div>
+
+      {/* Product chrome */}
+      <div className="flex-1 rounded-xl bg-white shadow-2xl overflow-hidden flex">
+        {/* ── Sidebar ─────────────────────────────────────────────────── */}
+        <div className="w-[18%] border-r border-gray-200 bg-gray-50 flex flex-col">
+          {/* Brand */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="px-[1vw] py-[1vw] border-b border-gray-200 flex items-center gap-[0.5vw]"
+          >
+            <div
+              className="w-[1.6vw] h-[1.6vw] rounded-md flex items-center justify-center text-white text-[0.85vw] font-semibold"
+              style={{ backgroundColor: "#0a0e27", fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              AC
+            </div>
+            <div style={{ fontFamily: "var(--font-display, serif)" }}>
+              <div className="text-[1vw] text-gray-900 leading-none">
+                AssetCentral<span style={{ color: ACCENT }}>.ai</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* User card */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="px-[1vw] py-[0.7vw] border-b border-gray-200 flex items-center gap-[0.5vw]"
+          >
+            <div
+              className="w-[1.4vw] h-[1.4vw] rounded-full inline-flex items-center justify-center text-white text-[0.7vw] font-semibold"
+              style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              JH
+            </div>
+            <div className="min-w-0">
+              <div className="text-[0.78vw] text-gray-900 truncate" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                James Harvey
+              </div>
+              <div className="text-[0.65vw] text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                Pro plan
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Sections */}
+          <div className="flex-1 pt-[0.7vw] overflow-hidden">
+            <SidebarSection heading="Overview" items={OVERVIEW} delay={0.5} />
+            <SidebarSection heading="Tools"    items={TOOLS}    delay={0.95} />
+            <SidebarSection heading="Account"  items={ACCOUNT}  delay={1.35} />
+          </div>
+        </div>
+
+        {/* ── Main panel ──────────────────────────────────────────────── */}
+        <div className="flex-1 flex flex-col">
+          {/* Top bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="px-[1.5vw] py-[0.8vw] border-b border-gray-200 flex items-center justify-between"
+          >
+            <div className="flex items-center gap-[0.5vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              <span className="text-[0.8vw] text-gray-400">Dashboard</span>
+              <span className="text-[0.8vw] text-gray-300">/</span>
+              <span className="text-[0.9vw] text-gray-900 font-semibold">Properties</span>
+            </div>
+            <div className="flex items-center gap-[0.6vw]">
+              {/* Search pill */}
+              <div
+                className="flex items-center gap-[0.4vw] px-[0.6vw] py-[0.3vw] rounded-md bg-gray-100 text-gray-400"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                <span className="text-[0.85vw]">⌕</span>
+                <span className="text-[0.75vw]">Search properties</span>
+              </div>
+              {/* Bell */}
+              <div className="w-[1.2vw] h-[1.2vw] inline-flex items-center justify-center text-gray-500 relative">
+                <span className="text-[0.95vw]">⌃</span>
+                <span
+                  className="absolute -top-[0.1vw] -right-[0.1vw] w-[0.4vw] h-[0.4vw] rounded-full"
+                  style={{ backgroundColor: NEGATIVE }}
+                />
+              </div>
+              {/* Avatar */}
+              <div
+                className="w-[1.4vw] h-[1.4vw] rounded-full inline-flex items-center justify-center text-white text-[0.7vw] font-semibold"
+                style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                JH
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Page body */}
+          <div className="flex-1 p-[1.5vw] flex flex-col">
+            {/* Page title */}
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mb-[1vw]"
+            >
+              <div
+                className="text-[1.6vw] text-gray-900 leading-tight"
+                style={{ fontFamily: "var(--font-display, serif)" }}
+              >
+                Welcome, James.
+              </div>
+              <div
+                className="text-[0.9vw] text-gray-500 mt-[0.2vw]"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                Let&rsquo;s set up your first property.
+              </div>
+            </motion.div>
+
+            {/* KPI strip — zeroed-out so it's clearly pre-data */}
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="grid grid-cols-3 gap-[0.8vw] mb-[1.2vw]"
+            >
+              {[
+                { label: "Properties",      value: "0",   sub: "Add to begin" },
+                { label: "Annual rent",     value: "—",   sub: "Pending data" },
+                { label: "Portfolio yield", value: "—",   sub: "Pending data" },
+              ].map((k) => (
+                <div
+                  key={k.label}
+                  className="rounded-lg border border-gray-200 px-[1vw] py-[0.7vw] bg-gray-50/50"
+                >
+                  <div
+                    className="text-[0.7vw] uppercase tracking-wider text-gray-400"
+                    style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {k.label}
+                  </div>
+                  <div
+                    className="text-[1.6vw] text-gray-900 leading-none mt-[0.2vw] tabular-nums"
+                    style={{ fontFamily: "var(--font-display, serif)" }}
+                  >
+                    {k.value}
+                  </div>
+                  <div
+                    className="text-[0.7vw] text-gray-500 mt-[0.3vw]"
+                    style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {k.sub}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Add-property CTA card */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="flex-1 rounded-xl border-2 border-dashed flex flex-col items-center justify-center relative"
+              style={{ borderColor: `${ACCENT}55`, backgroundColor: `${ACCENT}06` }}
+            >
+              {/* House icon */}
+              <div
+                className="w-[2.8vw] h-[2.8vw] rounded-full inline-flex items-center justify-center mb-[0.8vw]"
+                style={{ backgroundColor: `${ACCENT}18` }}
+              >
+                <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 21 L3 10 L12 3 L21 10 L21 21 Z" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M9 21 L9 14 L15 14 L15 21" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <div
+                className="text-[1.4vw] text-gray-900 mb-[0.3vw]"
+                style={{ fontFamily: "var(--font-display, serif)" }}
+              >
+                Add your first property
+              </div>
+              <div
+                className="text-[0.9vw] text-gray-500 mb-[1vw] max-w-[60%] text-center"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                Address, purchase price, rent, financing, ownership — start with what you have.
+              </div>
+              {/* Big button */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.1 }}
+                className="rounded-lg px-[1.8vw] py-[0.8vw] text-[1.05vw] font-semibold inline-flex items-center gap-[0.5vw] shadow-lg relative"
+                style={{ backgroundColor: ACCENT, color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                <span className="text-[1.3vw] leading-none">+</span>
+                Add property
+                <motion.span
+                  animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0, 0.5] }}
+                  transition={{ duration: 1.8, delay: 1.8, repeat: Infinity }}
+                  className="absolute inset-0 rounded-lg"
+                  style={{ border: `0.18vw solid ${ACCENT}` }}
+                />
+              </motion.div>
+
+              {/* Hint chips for the 4 channels */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.6 }}
+                className="mt-[1.2vw] flex items-center gap-[0.5vw] flex-wrap justify-center"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                {[
+                  "Upload a file",
+                  "Forward an email",
+                  "Send via WhatsApp",
+                  "Enter manually",
+                ].map((t) => (
+                  <span
+                    key={t}
+                    className="text-[0.75vw] text-gray-600 px-[0.6vw] py-[0.25vw] rounded-full bg-white border border-gray-200"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </motion.div>
+
+              {/* Cursor click */}
+              <Cursor x="52%" y="74%" delay={2.3} />
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 32: Step 2 — Four ways to add data ────────────────────────────────
+// AI-era input options: not just upload / manual, but also forward an email
+// or send via WhatsApp. Card layout is 2×2 so all four affordances are
+// visible at once — viewer instantly grasps that AssetCentral meets them
+// wherever their data already lives.
+function SceneStep2UploadOrManual() {
+  const CARDS = [
+    {
+      title: "Upload a file",
+      desc: "Rent roll, lease, mortgage statement, Excel or PDF.",
+      meta: ".pdf · .xlsx · .csv · .docx",
+      iconPath: "M12 16 L12 4 M6 10 L12 4 L18 10 M4 16 L4 20 L20 20 L20 16",
+      iconColor: ACCENT,
+      iconBg: `${ACCENT}15`,
+      delay: 0.4,
+    },
+    {
+      title: "Enter manually",
+      desc: "Step-by-step form. No spreadsheets required.",
+      meta: "About 2 minutes",
+      iconPath: "M4 6 L20 6 M4 12 L20 12 M4 18 L14 18",
+      iconColor: ACCENT,
+      iconBg: `${ACCENT}15`,
+      delay: 0.55,
+    },
+    {
+      title: "Forward an email",
+      desc: "Each property gets its own inbox — statements file themselves.",
+      meta: "marina@in.assetcentral.ai",
+      iconPath: "M3 6 L21 6 L21 18 L3 18 Z M3 6 L12 13 L21 6",
+      iconColor: ACCENT,
+      iconBg: `${ACCENT}15`,
+      delay: 0.7,
+      mono: true,
+    },
+    {
+      title: "Send via WhatsApp",
+      desc: "Snap a photo of an invoice or receipt on your phone — AI files it.",
+      meta: "Photos · voice notes · PDFs",
+      // WhatsApp speech-bubble glyph
+      iconPath: "M5 19 L7 15 A8 8 0 1 1 9 17 Z",
+      iconColor: "#16a34a",
+      iconBg: "rgba(22,163,74,0.12)",
+      delay: 0.85,
+    },
+  ];
+
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={2} label="Add your data" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[1.5vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Four ways to add data. Use whichever you already use.
+      </motion.div>
+      <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-[1.2vw]">
+        {CARDS.map((c) => (
+          <motion.div
+            key={c.title}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: c.delay, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-xl bg-white shadow-2xl p-[1.5vw] flex items-center gap-[1.2vw]"
+          >
+            <div
+              className="shrink-0 w-[4vw] h-[4vw] rounded-full flex items-center justify-center"
+              style={{ backgroundColor: c.iconBg }}
+            >
+              <svg width="45%" height="45%" viewBox="0 0 24 24" fill="none">
+                <path
+                  d={c.iconPath}
+                  stroke={c.iconColor}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div
+                className="text-[1.5vw] text-gray-900 mb-[0.3vw] leading-tight"
+                style={{ fontFamily: "var(--font-display, serif)" }}
+              >
+                {c.title}
+              </div>
+              <div
+                className="text-[1vw] text-gray-500 leading-snug"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                {c.desc}
+              </div>
+              <div
+                className="mt-[0.6vw] text-[0.85vw] text-gray-400"
+                style={{
+                  fontFamily: c.mono
+                    ? "var(--font-mono, monospace)"
+                    : "var(--font-sans, sans-serif)",
+                }}
+              >
+                {c.meta}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 33: Step 3 — AI structures the data ───────────────────────────────
+function SceneStep3AIStructures() {
+  const FIELDS = [
+    { label: "Address",        value: "12 Marina Mansions, Dubai",     delay: 2.2 },
+    { label: "Purchase price", value: "AED 1,950,000",                 delay: 2.5 },
+    { label: "Acquisition",    value: "14 Mar 2024",                   delay: 2.8 },
+    { label: "Annual rent",    value: "AED 142,000",                   delay: 3.1, accent: true },
+    { label: "Tenant",         value: "S. Reynolds",                   delay: 3.4 },
+    { label: "Tenancy end",    value: "31 May 2027",                   delay: 3.7 },
+    { label: "Mortgage",       value: "AED 1,365,000 · 4.2%",          delay: 4.0 },
+    { label: "Service charge", value: "AED 18,400 / yr",               delay: 4.3 },
+  ];
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={3} label="AI structures your data" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Scattered information becomes a clear investment view.
+      </motion.div>
+      <div className="flex-1 grid grid-cols-[1fr_auto_1fr] gap-[1.5vw] items-center">
+        {/* Left — messy input */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.2vw] h-full overflow-hidden"
+        >
+          <div className="text-[0.9vw] uppercase tracking-wider text-white/40 mb-[0.6vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+            Your inputs
+          </div>
+          {["lease.pdf", "rent-roll.xlsx", "mortgage-statement.pdf", "service-invoice.pdf", "operator-report-q1.pdf"].map((f, i) => (
+            <motion.div
+              key={f}
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.7 + i * 0.15 }}
+              className="flex items-center gap-[0.6vw] py-[0.45vw]"
+            >
+              <span className="text-[0.85vw] text-red-400 font-semibold" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                {f.split('.').pop()?.toUpperCase()}
+              </span>
+              <span className="text-[1.05vw] text-white/80" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                {f}
+              </span>
+            </motion.div>
+          ))}
+        </motion.div>
+        {/* Centre arrow with AI label */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 1.7 }}
+          className="flex flex-col items-center justify-center"
+        >
+          <div
+            className="px-[1vw] py-[0.4vw] rounded-full text-[0.95vw] font-semibold mb-[0.6vw]"
+            style={{ backgroundColor: ACCENT, color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
+          >
+            AI
+          </div>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12 L19 12 M13 6 L19 12 L13 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </motion.div>
+        {/* Right — structured fields */}
+        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.2vw] h-full">
+          <div className="text-[0.9vw] uppercase tracking-wider text-white/40 mb-[0.6vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+            Structured property
+          </div>
+          {FIELDS.map((r) => (
+            <motion.div
+              key={r.label}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: r.delay }}
+              className="flex items-center justify-between py-[0.35vw] border-b border-white/[0.06]"
+            >
+              <span className="text-[0.95vw] text-white/55" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                {r.label}
+              </span>
+              <span
+                className="text-[1.05vw] tabular-nums"
+                style={{
+                  fontFamily: "var(--font-sans, sans-serif)",
+                  color: r.accent ? ACCENT : "rgba(255,255,255,0.92)",
+                }}
+              >
+                {r.value}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 34: Step 4 — See the key numbers ──────────────────────────────────
+function SceneStep4Dashboard() {
+  const KPIS = [
+    { label: "Current rent",      value: "AED 142,000",  unit: "/ year",      delay: 0.6 },
+    { label: "Net yield",         value: "5.8%",         unit: "after costs", delay: 0.9, accent: POSITIVE },
+    { label: "Annual cashflow",   value: "AED 28,400",   unit: "post-debt",   delay: 1.2, accent: POSITIVE },
+    { label: "Occupancy",         value: "Tenanted",     unit: "12 months",   delay: 1.5 },
+    { label: "Estimated 5yr IRR", value: "12.4%",        unit: "modelled",    delay: 1.8, accent: POSITIVE },
+    { label: "Risk flags",        value: "1",            unit: "rate reset",  delay: 2.1, accent: WARNING },
+  ];
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={4} label="See the key numbers" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Your property dashboard.
+      </motion.div>
+      <div className="flex-1 grid grid-cols-3 gap-[1.2vw]">
+        {KPIS.map((k) => (
+          <motion.div
+            key={k.label}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: k.delay }}
+            className="rounded-lg bg-white shadow-lg p-[1.5vw] flex flex-col justify-center"
+          >
+            <div
+              className="text-[0.9vw] uppercase tracking-wider text-gray-500 mb-[0.4vw]"
+              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              {k.label}
+            </div>
+            <div
+              className="text-[2.4vw] tabular-nums leading-none"
+              style={{
+                fontFamily: "var(--font-display, serif)",
+                color: k.accent ?? "#0a0e27",
+              }}
+            >
+              {k.value}
+            </div>
+            <div
+              className="text-[0.9vw] text-gray-500 mt-[0.35vw]"
+              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              {k.unit}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 35: Step 5 — Choose the right tool ────────────────────────────────
+function SceneStep5Tools() {
+  const TOOLS = [
+    { name: "IRR Calculator",          desc: "Project long-term returns",      delay: 0.6 },
+    { name: "Rent Review",             desc: "Test rent uplifts on cashflow",   delay: 0.85 },
+    { name: "Hold / Sell",             desc: "Model exit vs continued hold",    delay: 1.1 },
+    { name: "Refinance",               desc: "Compare rates and lenders",       delay: 1.35 },
+    { name: "STR vs Long-let",         desc: "Short-term vs annual let",        delay: 1.6 },
+    { name: "Portfolio Dashboard",     desc: "Roll-up across all properties",   delay: 1.85 },
+  ];
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={5} label="Choose the right tool" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Pick a tool for the question you need to answer.
+      </motion.div>
+      <div className="flex-1 grid grid-cols-3 gap-[1.2vw]">
+        {TOOLS.map((t) => (
+          <motion.div
+            key={t.name}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: t.delay }}
+            className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.3vw] hover:bg-white/[0.05]"
+          >
+            <div
+              className="text-[1.4vw] text-white mb-[0.4vw]"
+              style={{ fontFamily: "var(--font-display, serif)" }}
+            >
+              {t.name}
+            </div>
+            <div
+              className="text-[1vw] text-white/55 leading-snug"
+              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              {t.desc}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 36: Step 6 — Compare scenarios ────────────────────────────────────
+// Each card shows a concrete set of test inputs + the modelled outputs +
+// delta-vs-base. Designed to read as a real scenario tool, not a marketing
+// mockup — the viewer should immediately see that changing one input ripples
+// through to yield, cashflow and IRR.
+interface ScenarioInput { label: string; value: string; highlight?: boolean }
+interface ScenarioOutput { label: string; value: string; delta: string | null }
+interface Scenario {
+  name: string;
+  sub: string;
+  tone: "neutral" | "positive";
+  delay: number;
+  inputs: ScenarioInput[];
+  outputs: ScenarioOutput[];
+}
+function SceneStep6Scenarios() {
+  const SCENARIOS: Scenario[] = [
+    {
+      name: "Base case",
+      sub: "Today's rent · no changes",
+      tone: "neutral" as const,
+      delay: 0.5,
+      inputs: [
+        { label: "Annual rent",   value: "AED 142,000" },
+        { label: "Occupancy",     value: "12 months" },
+        { label: "Service charge", value: "AED 18,400" },
+      ],
+      outputs: [
+        { label: "Net yield",         value: "5.8%",        delta: null },
+        { label: "Annual cashflow",   value: "AED 28,400",  delta: null },
+        { label: "5yr IRR",           value: "12.4%",       delta: null },
+      ],
+    },
+    {
+      name: "Improved rent",
+      sub: "Uplift to market at next renewal",
+      tone: "positive" as const,
+      delay: 1.0,
+      inputs: [
+        { label: "Annual rent",   value: "AED 156,000", highlight: true },
+        { label: "Occupancy",     value: "12 months" },
+        { label: "Service charge", value: "AED 18,400" },
+      ],
+      outputs: [
+        { label: "Net yield",         value: "6.6%",        delta: "+0.8 pp" },
+        { label: "Annual cashflow",   value: "AED 40,200",  delta: "+ AED 11.8k" },
+        { label: "5yr IRR",           value: "13.9%",       delta: "+1.5 pp" },
+      ],
+    },
+    {
+      name: "Switch to STR",
+      sub: "Short-term let · operator-managed",
+      tone: "positive" as const,
+      delay: 1.5,
+      inputs: [
+        { label: "Annual rent",    value: "AED 198,000", highlight: true },
+        { label: "Occupancy",      value: "78%",         highlight: true },
+        { label: "Operator fee",   value: "20%" },
+      ],
+      outputs: [
+        { label: "Net yield",         value: "7.4%",        delta: "+1.6 pp" },
+        { label: "Annual cashflow",   value: "AED 52,800",  delta: "+ AED 24.4k" },
+        { label: "5yr IRR",           value: "15.1%",       delta: "+2.7 pp" },
+      ],
+    },
+  ];
+
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={6} label="Compare scenarios" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[1.5vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Same property. Three test cases. Compared in one view.
+      </motion.div>
+      <div className="flex-1 grid grid-cols-3 gap-[1.2vw]">
+        {SCENARIOS.map((s, i) => {
+          const isPositive = s.tone === "positive";
+          return (
+            <motion.div
+              key={s.name}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: s.delay }}
+              className="rounded-xl p-[1.2vw] flex flex-col"
+              style={{
+                backgroundColor: isPositive ? `${POSITIVE}10` : "rgba(255,255,255,0.04)",
+                border: isPositive ? `1px solid ${POSITIVE}40` : "1px solid rgba(255,255,255,0.1)",
+              }}
+            >
+              {/* Header */}
+              <div className="flex items-baseline justify-between mb-[0.2vw]">
+                <div
+                  className="text-[0.8vw] uppercase tracking-wider"
+                  style={{
+                    fontFamily: "var(--font-sans, sans-serif)",
+                    color: isPositive ? POSITIVE : "rgba(255,255,255,0.5)",
+                  }}
+                >
+                  Scenario {i + 1}
+                </div>
+                {isPositive && (
+                  <div
+                    className="text-[0.7vw] uppercase tracking-wider px-[0.4vw] py-[0.15vw] rounded"
+                    style={{
+                      fontFamily: "var(--font-sans, sans-serif)",
+                      backgroundColor: POSITIVE,
+                      color: "white",
+                    }}
+                  >
+                    ↑ vs base
+                  </div>
+                )}
+              </div>
+              <div
+                className="text-[1.5vw] text-white leading-tight"
+                style={{ fontFamily: "var(--font-display, serif)" }}
+              >
+                {s.name}
+              </div>
+              <div
+                className="text-[0.9vw] text-white/55 mb-[0.9vw]"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                {s.sub}
+              </div>
+
+              {/* Inputs section */}
+              <div
+                className="text-[0.7vw] uppercase tracking-wider text-white/40 mb-[0.35vw]"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                Inputs
+              </div>
+              <div className="space-y-[0.2vw] mb-[0.9vw]">
+                {s.inputs.map((r) => (
+                  <div key={r.label} className="flex items-center justify-between">
+                    <span
+                      className="text-[0.85vw] text-white/55"
+                      style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                    >
+                      {r.label}
+                    </span>
+                    <span
+                      className="text-[0.95vw] tabular-nums"
+                      style={{
+                        fontFamily: "var(--font-sans, sans-serif)",
+                        color: r.highlight ? ACCENT : "rgba(255,255,255,0.92)",
+                        fontWeight: r.highlight ? 600 : 400,
+                      }}
+                    >
+                      {r.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div
+                className="h-px w-full mb-[0.6vw]"
+                style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
+              />
+
+              {/* Outputs section */}
+              <div
+                className="text-[0.7vw] uppercase tracking-wider text-white/40 mb-[0.35vw]"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                Modelled outputs
+              </div>
+              <div className="space-y-[0.5vw] mt-auto">
+                {s.outputs.map((o) => (
+                  <div key={o.label}>
+                    <div
+                      className="text-[0.75vw] uppercase tracking-wider text-white/45"
+                      style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                    >
+                      {o.label}
+                    </div>
+                    <div className="flex items-baseline gap-[0.5vw]">
+                      <span
+                        className="text-[1.4vw] tabular-nums leading-none"
+                        style={{
+                          fontFamily: "var(--font-display, serif)",
+                          color: isPositive ? POSITIVE : "white",
+                        }}
+                      >
+                        {o.value}
+                      </span>
+                      {o.delta && (
+                        <span
+                          className="text-[0.8vw] tabular-nums"
+                          style={{
+                            fontFamily: "var(--font-sans, sans-serif)",
+                            color: POSITIVE,
+                          }}
+                        >
+                          {o.delta}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 37: Step 7 — AI explains what the numbers mean ────────────────────
+function SceneStep7AIInsights() {
+  const INSIGHTS = [
+    {
+      heading: "Review the rent level",
+      detail: "Current rent sits ~8% below comparable Dubai Marina 2-beds. Consider an uplift at next renewal.",
+      delay: 0.6,
+    },
+    {
+      heading: "STR may improve income",
+      detail: "Switching to short-term let could lift annual cashflow by ~AED 24,400. Operator due-diligence advised.",
+      delay: 1.4,
+    },
+    {
+      heading: "Refinance worth modelling",
+      detail: "If new rate is below 3.8%, refinancing improves IRR by ~1.2 percentage points over 5 years.",
+      delay: 2.2,
+    },
+  ];
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={7} label="AI explains the numbers" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Real recommendations, not just data.
+      </motion.div>
+      <div className="flex-1 flex flex-col gap-[1vw]">
+        {INSIGHTS.map((r) => (
+          <motion.div
+            key={r.heading}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: r.delay }}
+            className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.3vw] flex items-start gap-[1vw]"
+          >
+            <div
+              className="shrink-0 w-[2.5vw] h-[2.5vw] rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${ACCENT}25` }}
+            >
+              <span
+                className="text-[1.2vw] font-semibold"
+                style={{ color: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                AI
+              </span>
+            </div>
+            <div>
+              <div
+                className="text-[1.4vw] text-white mb-[0.3vw]"
+                style={{ fontFamily: "var(--font-display, serif)" }}
+              >
+                {r.heading}
+              </div>
+              <div
+                className="text-[1.05vw] text-white/60 leading-snug"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                {r.detail}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 38: Step 8 — Export / share ───────────────────────────────────────
+function SceneStep8Export() {
+  return (
+    <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
+      <StepBadge n={8} label="Export a clear report" />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Share with your advisor, lender, or partners.
+      </motion.div>
+      <div className="flex-1 grid grid-cols-[1.3fr_1fr] gap-[2vw] items-center">
+        {/* Report preview */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="rounded-lg bg-white shadow-2xl p-[1.8vw] relative"
+        >
+          <div className="flex items-center justify-between mb-[1vw]">
+            <div>
+              <div className="text-[0.85vw] uppercase tracking-wider text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                AssetCentral · Property report
+              </div>
+              <div className="text-[1.4vw] text-gray-900 mt-[0.2vw]" style={{ fontFamily: "var(--font-display, serif)" }}>
+                12 Marina Mansions, Dubai
+              </div>
+            </div>
+            <div className="text-[0.85vw] text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              May 2026
+            </div>
+          </div>
+          {[
+            { l: "Net yield",    v: "5.8%" },
+            { l: "Cashflow",     v: "AED 28,400 / yr" },
+            { l: "5yr IRR",      v: "12.4%" },
+            { l: "Risk flags",   v: "Rate reset 90d" },
+          ].map((r, i) => (
+            <motion.div
+              key={r.l}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 1.0 + i * 0.15 }}
+              className="flex items-center justify-between py-[0.5vw] border-b border-gray-100"
+            >
+              <span className="text-[1vw] text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.l}</span>
+              <span className="text-[1.1vw] text-gray-900 tabular-nums" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.v}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+        {/* Action buttons */}
+        <div className="flex flex-col gap-[1vw]">
+          <motion.div
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 1.8 }}
+            className="rounded-lg px-[1.5vw] py-[1.2vw] text-[1.3vw] font-semibold inline-flex items-center justify-center gap-[0.6vw]"
+            style={{ backgroundColor: ACCENT, color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 4 L12 16 M6 10 L12 16 L18 10 M4 20 L20 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Export PDF report
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 2.1 }}
+            className="rounded-lg px-[1.5vw] py-[1.2vw] text-[1.3vw] inline-flex items-center justify-center gap-[0.6vw]"
+            style={{
+              border: "1px solid rgba(255,255,255,0.2)",
+              color: "white",
+              fontFamily: "var(--font-sans, sans-serif)",
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M4 12 L20 12 M14 6 L20 12 L14 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Share with advisor
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Scene 39: Closing ───────────────────────────────────────────────────────
+function SceneTutorialClose() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-[6%]">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="text-[2.6vw] text-white/85 leading-tight"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Real data.
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.4 }}
+        className="text-[2.6vw] text-white/85 leading-tight"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Better decisions.
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.8 }}
+        className="text-[3vw] leading-tight"
+        style={{ color: ACCENT, fontFamily: "var(--font-display, serif)" }}
+      >
+        Better returns.
+      </motion.div>
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.9, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        className="h-px mt-[2vw]"
+        style={{ backgroundColor: "rgba(255,255,255,0.25)", width: "20%" }}
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 2.0 }}
+        className="mt-[1.5vw] text-[1.8vw] text-white"
+        style={{ fontFamily: "var(--font-display, serif)" }}
+      >
+        Start with one property today.
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 2.5 }}
+        className="mt-[0.6vw] text-[1.1vw] text-white/50"
+        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+      >
+        AssetCentral.ai · Free to try · No card required
       </motion.div>
     </div>
   );
