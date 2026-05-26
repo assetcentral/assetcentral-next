@@ -177,6 +177,7 @@ export function ExplainerVideoV2({
   totalMs = 120000,
   variantLabel,
   embedded = false,
+  silent = false,
 }: {
   shots?: Shot[];
   subtitles?: Subtitle[];
@@ -187,12 +188,20 @@ export function ExplainerVideoV2({
   /** When true, render inside a contained 16:9 frame for embedding in a
    *  marketing page. Default false renders full-bleed for screen recording. */
   embedded?: boolean;
+  /** When true, the variant has NO voice-over by design (visuals only).
+   *  Suppresses the audio element + the sound toggle in controls so
+   *  users don't think the audio is broken. Used by the get-started
+   *  walkthrough which is fully self-explanatory visually. */
+  silent?: boolean;
 } = {}) {
   const [playing, setPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isRecordMode, setIsRecordMode] = useState(false);
   const [showSubs, setShowSubs] = useState(true);
-  const [withSound, setWithSound] = useState(true);
+  // `silent` variants permanently disable sound — toggle / URL params
+  // don't override. For variants that have a VO, `withSound` defaults
+  // on and can be muted via the toggle or ?sound=0 / ?nosound.
+  const [withSound, setWithSound] = useState(!silent);
   const [elapsedMs, setElapsedMs] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startRef = useRef<number>(Date.now());
@@ -231,7 +240,11 @@ export function ExplainerVideoV2({
       const params = new URLSearchParams(window.location.search);
       setIsRecordMode(params.has("record"));
       if (params.get("subs") === "0" || params.has("nosubs")) setShowSubs(false);
-      if (params.get("sound") === "0" || params.has("nosound")) setWithSound(false);
+      // Sound URL params are ignored for `silent` variants — no VO exists
+      // to mute. For VO variants, ?sound=0 / ?nosound force-mute.
+      if (!silent && (params.get("sound") === "0" || params.has("nosound"))) {
+        setWithSound(false);
+      }
     }
   }, []);
 

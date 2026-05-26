@@ -121,7 +121,7 @@ export default function GetStartedPage() {
               embedded
               shots={SHOTS_GET_STARTED}
               subtitles={[]}
-              audioSrc="/demo-vo-get-started.mp3"
+              silent
               totalMs={93000}
               variantLabel=""
             />

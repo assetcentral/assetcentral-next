@@ -3,14 +3,21 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+// Nav order is deliberate:
+//   • Watch first — pure orientation for a first-time visitor with the
+//     lowest commitment (60 seconds, just press play).
+//   • Features / Calculators / Pricing / Partners — the product surface.
+//   • Resources + Get started together at the end — both are "go deeper"
+//     entry points (Resources is the written guides; Get started is the
+//     90-second walkthrough video showing HOW to use the product).
 const navLinks = [
-  { href: "/demo/get-started", label: "Get started" },
   { href: "/demo/60", label: "Watch" },
   { href: "/features", label: "Features" },
   { href: "/calculators", label: "Calculators" },
   { href: "/pricing", label: "Pricing" },
   { href: "/partners", label: "Partners" },
   { href: "/resources", label: "Resources" },
+  { href: "/demo/get-started", label: "Get started" },
 ];
 
 export function Nav() {
