@@ -41,11 +41,23 @@ export function HeroSection() {
                 Start free — 14 days
               </Link>
               <Link
-                href="#how-it-works"
-                className="inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md border border-[var(--color-border)] bg-white text-[var(--color-ink)] text-[15px] font-medium hover:border-[var(--color-navy)] transition-colors"
+                href="/demo/60"
+                className="plausible-event-name=explainer_click plausible-event-location=hero inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-[48px] px-5 py-3 rounded-md border border-[var(--color-border)] bg-white text-[var(--color-ink)] text-[15px] font-medium hover:border-[var(--color-navy)] transition-colors"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                See how it works
+                {/* Inline play icon — avoids font-emoji rendering inconsistency
+                    across OSes (Windows/Linux often miss colour-glyph fallback) */}
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden
+                  className="shrink-0"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                Watch the explainer
               </Link>
             </div>
 

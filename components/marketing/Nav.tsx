@@ -4,9 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const navLinks = [
+  { href: "/demo/get-started", label: "Get started" },
+  { href: "/demo/60", label: "Watch" },
   { href: "/features", label: "Features" },
   { href: "/calculators", label: "Calculators" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/partners", label: "Partners" },
   { href: "/resources", label: "Resources" },
 ];
 
@@ -54,6 +57,7 @@ export function Nav() {
           href="/"
           onClick={() => setOpen(false)}
           className="flex items-center gap-2 font-display text-xl text-[var(--color-navy)]"
+          aria-label="AssetCentral.ai — home"
         >
           <span
             aria-hidden
@@ -62,7 +66,9 @@ export function Nav() {
           >
             AC
           </span>
-          AssetCentral
+          <span>
+            AssetCentral<span className="text-[var(--color-accent)]">.ai</span>
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

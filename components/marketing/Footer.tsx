@@ -13,6 +13,7 @@ const columns = [
   {
     heading: "Resources",
     links: [
+      { href: "/demo/get-started", label: "Get started (90s)" },
       { href: "/resources", label: "All guides" },
       { href: "/resources/net-yield-vs-gross-yield", label: "Net yield guide" },
       { href: "/resources/str-operator-performance-check", label: "STR operator check" },
@@ -24,6 +25,7 @@ const columns = [
     heading: "Company",
     links: [
       { href: "/about", label: "About" },
+      { href: "/partners", label: "Partners" },
       { href: "/privacy", label: "Privacy" },
       { href: "/terms", label: "Terms" },
       { href: "mailto:hello@assetcentral.ai", label: "Contact" },
@@ -90,7 +92,7 @@ export function Footer() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           <div>
-            © 2026 AssetCentral. Built for owners, not institutions.
+            © 2026 AssetCentral.ai · Built for owners.
           </div>
           <div>
             AssetCentral is software for tracking and analysing property portfolios. Information and outputs on this site and in the product are not financial, tax, legal, or investment advice. Always consult a qualified, licensed adviser before making any property, tax, or financing decision. See our{" "}

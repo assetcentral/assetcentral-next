@@ -53,6 +53,13 @@ interface AttributionShape {
   msclkid: string | null;
   ttclid: string | null;
   li_fat_id: string | null;
+  // Partner ref code from `?ref=XXXX` URL param. Captured FIRST-touch
+  // (same logic as UTMs) so the partner who originally introduced the
+  // visitor keeps attribution even if the user wanders the site and
+  // signs up days later via a different entry point. Resolved to a
+  // `partners.code` row by the signup action, and recorded on
+  // `users.referred_by_partner_code` for the lifetime of the account.
+  partner_ref: string | null;
   // Rolling pageview trail — list of path+search strings in chronological
   // order. Each entry is added on a fresh pageview; we never dedupe
   // because the order matters more than uniqueness.
@@ -96,6 +103,10 @@ function capture() {
     msclkid: firstTouchExists ? existing!.msclkid : paramOrNull("msclkid"),
     ttclid: firstTouchExists ? existing!.ttclid : paramOrNull("ttclid"),
     li_fat_id: firstTouchExists ? existing!.li_fat_id : paramOrNull("li_fat_id"),
+    // Partner code from ?ref=XXXX. Uppercase + 6–12 chars enforced server-
+    // side at signup; we still trim/upper-case here so the cookie stores
+    // the canonical form and the signup form picks up a clean value.
+    partner_ref: firstTouchExists ? existing!.partner_ref : normalizeRef(paramOrNull("ref")),
 
     pageview_paths: appendPath(
       existing?.pageview_paths ?? [],
@@ -144,6 +155,7 @@ function readAttrCookie(): AttributionShape | null {
       msclkid: parsed.msclkid ?? null,
       ttclid: parsed.ttclid ?? null,
       li_fat_id: parsed.li_fat_id ?? null,
+      partner_ref: parsed.partner_ref ?? null,
       pageview_paths: Array.isArray(parsed.pageview_paths) ? parsed.pageview_paths : [],
     };
   } catch {
@@ -169,6 +181,17 @@ function writeAttrCookie(attribution: AttributionShape) {
     parts.push("Secure");
   }
   document.cookie = parts.join("; ");
+}
+
+/** Canonicalise a partner ref code from a URL: trim whitespace, upper-case,
+ *  strip anything that isn't [A-Z0-9]. Returns null for empty / nonsense
+ *  values so we don't pollute the cookie with garbage. The server still
+ *  validates against the partners table — this is just hygiene. */
+function normalizeRef(raw: string | null): string | null {
+  if (!raw) return null;
+  const cleaned = raw.trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (cleaned.length < 3 || cleaned.length > 24) return null;
+  return cleaned;
 }
 
 function readCookie(name: string): string | null {
