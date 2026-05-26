@@ -428,7 +428,7 @@ export default function PartnersPage() {
             className="text-[32px] lg:text-[44px] leading-[1.08] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            The honest answers.
+            Quick questions, answered.
           </h2>
           <dl className="mt-10 divide-y divide-[var(--color-border)] border-y border-[var(--color-border)]">
             {FAQ.map((row) => (
