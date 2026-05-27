@@ -21,7 +21,7 @@
 // pinned to the bottom-safe zone for LinkedIn / TikTok autoplay.
 
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 const NAVY = "#0a0e27"; // slightly deeper than v1's #1a1a2e for premium contrast
 const ACCENT = "#4f6ef7";
@@ -206,6 +206,10 @@ export function ExplainerVideoV2({
   // on and can be muted via the toggle or ?sound=0 / ?nosound.
   const [withSound, setWithSound] = useState(!silent);
   const [elapsedMs, setElapsedMs] = useState(0);
+  // Fullscreen state mirrors document.fullscreenElement. Kept as React
+  // state (not just ref) so the toggle button icon re-renders when the
+  // user presses Escape / browser-exits fullscreen.
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startRef = useRef<number>(Date.now());
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -329,6 +333,32 @@ export function ExplainerVideoV2({
     }
   };
 
+  // Toggle native browser fullscreen on the explainer frame. Used by the
+  // control-bar button (desktop + mobile). On mobile, startPlayback already
+  // requests fullscreen automatically — this lets the user re-enter if
+  // they've exited, or escape on demand. iOS Safari uses the webkit-prefixed
+  // API; we feature-detect and fall through safely if neither is available.
+  const toggleFullscreen = () => {
+    if (typeof document === "undefined" || !frameRef.current) return;
+    const docAny = document as Document & {
+      webkitFullscreenElement?: Element;
+      webkitExitFullscreen?: () => Promise<void>;
+    };
+    const elAny = frameRef.current as HTMLElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+    };
+    const inFs = !!(document.fullscreenElement || docAny.webkitFullscreenElement);
+    try {
+      if (inFs) {
+        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        else if (docAny.webkitExitFullscreen) docAny.webkitExitFullscreen();
+      } else {
+        if (elAny.requestFullscreen) elAny.requestFullscreen().catch(() => {});
+        else if (elAny.webkitRequestFullscreen) elAny.webkitRequestFullscreen();
+      }
+    } catch { /* ignore — gracefully no-op */ }
+  };
+
   // Stop — end the session entirely. Returns to the click-to-play overlay.
   const stopPlayback = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -348,11 +378,16 @@ export function ExplainerVideoV2({
   };
 
   // When the user exits fullscreen (system gesture, escape key, or back
-  // button), reset orientation lock so the page can rotate freely again.
+  // button), reset orientation lock so the page can rotate freely again
+  // AND sync the isFullscreen state so the toggle-button icon updates.
+  // Covers Webkit's prefixed event too — iOS Safari only fires that one.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const handleExit = () => {
-      if (!document.fullscreenElement) {
+    const handleChange = () => {
+      const docAny = document as Document & { webkitFullscreenElement?: Element };
+      const inFs = !!(document.fullscreenElement || docAny.webkitFullscreenElement);
+      setIsFullscreen(inFs);
+      if (!inFs) {
         try {
           const orient = (window.screen?.orientation ?? null) as
             (ScreenOrientation & { unlock?: () => void }) | null;
@@ -362,8 +397,12 @@ export function ExplainerVideoV2({
         } catch { /* ignore */ }
       }
     };
-    document.addEventListener("fullscreenchange", handleExit);
-    return () => document.removeEventListener("fullscreenchange", handleExit);
+    document.addEventListener("fullscreenchange", handleChange);
+    document.addEventListener("webkitfullscreenchange", handleChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleChange);
+      document.removeEventListener("webkitfullscreenchange", handleChange);
+    };
   }, []);
 
   const replay = () => {
@@ -655,6 +694,36 @@ export function ExplainerVideoV2({
                 <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
                 <path d="M3 3v5h5" />
               </svg>
+            </button>
+
+            {/* Fullscreen toggle */}
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+              className="shrink-0 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center text-white"
+            >
+              {isFullscreen ? (
+                // Collapse / exit icon — four arrows pointing inward
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M9 3v4H5" />
+                  <path d="M3 9h4V5" />
+                  <path d="M15 3v4h4" />
+                  <path d="M21 9h-4V5" />
+                  <path d="M9 21v-4H5" />
+                  <path d="M3 15h4v4" />
+                  <path d="M15 21v-4h4" />
+                  <path d="M21 15h-4v4" />
+                </svg>
+              ) : (
+                // Expand / enter icon — four arrows pointing outward
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M3 9V3h6" />
+                  <path d="M21 9V3h-6" />
+                  <path d="M3 15v6h6" />
+                  <path d="M21 15v6h-6" />
+                </svg>
+              )}
             </button>
 
             {/* Stop / close */}
@@ -2830,24 +2899,44 @@ function SceneGetStartedClose() {
 // "STEP N" eyebrow + clear primary action. Calm, beginner-friendly.
 
 // ── Shared step badge used by all tutorial scenes ───────────────────────────
+// Step header — much more prominent than the original tiny eyebrow line.
+// Reads as a real section header: numbered badge + bold "STEP N" label +
+// the action verb. Used at the top of every tutorial scene.
 function StepBadge({ n, label }: { n: number; label: string }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="inline-flex items-center gap-[0.8vw] mb-[2vw]"
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="inline-flex items-center gap-[1vw] mb-[1.2vw]"
       style={{ fontFamily: "var(--font-sans, sans-serif)" }}
     >
+      {/* Numbered badge — much bigger, with a soft glow */}
       <span
-        className="inline-flex items-center justify-center w-[2vw] h-[2vw] rounded-full text-[1vw] font-semibold"
-        style={{ backgroundColor: ACCENT, color: "white" }}
+        className="inline-flex items-center justify-center w-[3.4vw] h-[3.4vw] rounded-full text-[2vw] font-bold shrink-0"
+        style={{
+          backgroundColor: ACCENT,
+          color: "white",
+          boxShadow: `0 0 0 0.4vw ${ACCENT}25, 0 0.4vw 1.2vw rgba(79,110,247,0.35)`,
+        }}
       >
         {n}
       </span>
-      <span className="text-[12px] uppercase tracking-[0.25em] text-white/55">
-        Step {n} — {label}
-      </span>
+      {/* "STEP N" pill + action label on two lines for visual hierarchy */}
+      <div className="flex flex-col">
+        <span
+          className="text-[1.1vw] uppercase tracking-[0.28em] font-bold leading-tight"
+          style={{ color: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          Step {n} of 8
+        </span>
+        <span
+          className="text-[1.8vw] uppercase tracking-[0.05em] font-semibold leading-tight mt-[0.15vw]"
+          style={{ color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          {label}
+        </span>
+      </div>
     </motion.div>
   );
 }
@@ -2913,7 +3002,7 @@ function SceneTutorialWelcome() {
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 2.0 }}
-        className="mt-6 text-[1.9vw] text-white/80"
+        className="mt-6 text-[2.2vw] text-white/80"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
         Your AI real estate return platform.
@@ -2922,7 +3011,7 @@ function SceneTutorialWelcome() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 3.0 }}
-        className="mt-8 text-[1.1vw] text-white/45"
+        className="mt-8 text-[1.75vw] text-white/45"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
         Add a property. See the numbers. Decide with confidence.
@@ -3000,7 +3089,7 @@ function SidebarSection({ heading, items, delay }: { heading: string; items: Men
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay }}
-        className="text-[0.65vw] uppercase tracking-[0.18em] text-gray-400 px-[0.7vw] mb-[0.4vw]"
+        className="text-[1.2vw] uppercase tracking-[0.18em] text-gray-400 px-[0.7vw] mb-[0.4vw]"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
         {heading}
@@ -3022,10 +3111,10 @@ function SidebarSection({ heading, items, delay }: { heading: string; items: Men
           <span className="w-[0.9vw] h-[0.9vw] shrink-0 inline-flex items-center justify-center">
             <MenuIcon kind={item.icon} />
           </span>
-          <span className="text-[0.85vw] flex-1">{item.label}</span>
+          <span className="text-[1.45vw] flex-1">{item.label}</span>
           {item.badge && (
             <span
-              className="text-[0.65vw] px-[0.35vw] py-[0.1vw] rounded-full tabular-nums"
+              className="text-[1.2vw] px-[0.35vw] py-[0.1vw] rounded-full tabular-nums"
               style={{
                 backgroundColor: item.active ? ACCENT : "#e5e7eb",
                 color: item.active ? "white" : "#6b7280",
@@ -3068,7 +3157,7 @@ function SceneStep1AddProperty() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[1.5vw]"
+        className="text-[3vw] text-white leading-tight mb-[1.5vw]"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Start by adding one property.
@@ -3086,13 +3175,13 @@ function SceneStep1AddProperty() {
             className="px-[1vw] py-[1vw] border-b border-gray-200 flex items-center gap-[0.5vw]"
           >
             <div
-              className="w-[1.6vw] h-[1.6vw] rounded-md flex items-center justify-center text-white text-[0.85vw] font-semibold"
+              className="w-[1.6vw] h-[1.6vw] rounded-md flex items-center justify-center text-white text-[1.45vw] font-semibold"
               style={{ backgroundColor: "#0a0e27", fontFamily: "var(--font-sans, sans-serif)" }}
             >
               AC
             </div>
             <div style={{ fontFamily: "var(--font-display, serif)" }}>
-              <div className="text-[1vw] text-gray-900 leading-none">
+              <div className="text-[1.6vw] text-gray-900 leading-none">
                 AssetCentral<span style={{ color: ACCENT }}>.ai</span>
               </div>
             </div>
@@ -3106,16 +3195,16 @@ function SceneStep1AddProperty() {
             className="px-[1vw] py-[0.7vw] border-b border-gray-200 flex items-center gap-[0.5vw]"
           >
             <div
-              className="w-[1.4vw] h-[1.4vw] rounded-full inline-flex items-center justify-center text-white text-[0.7vw] font-semibold"
+              className="w-[1.4vw] h-[1.4vw] rounded-full inline-flex items-center justify-center text-white text-[1.25vw] font-semibold"
               style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
             >
               JH
             </div>
             <div className="min-w-0">
-              <div className="text-[0.78vw] text-gray-900 truncate" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              <div className="text-[1.35vw] text-gray-900 truncate" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
                 James Harvey
               </div>
-              <div className="text-[0.65vw] text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              <div className="text-[1.2vw] text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
                 Pro plan
               </div>
             </div>
@@ -3139,9 +3228,9 @@ function SceneStep1AddProperty() {
             className="px-[1.5vw] py-[0.8vw] border-b border-gray-200 flex items-center justify-between"
           >
             <div className="flex items-center gap-[0.5vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-              <span className="text-[0.8vw] text-gray-400">Dashboard</span>
-              <span className="text-[0.8vw] text-gray-300">/</span>
-              <span className="text-[0.9vw] text-gray-900 font-semibold">Properties</span>
+              <span className="text-[1.4vw] text-gray-400">Dashboard</span>
+              <span className="text-[1.4vw] text-gray-300">/</span>
+              <span className="text-[1.5vw] text-gray-900 font-semibold">Properties</span>
             </div>
             <div className="flex items-center gap-[0.6vw]">
               {/* Search pill */}
@@ -3149,12 +3238,12 @@ function SceneStep1AddProperty() {
                 className="flex items-center gap-[0.4vw] px-[0.6vw] py-[0.3vw] rounded-md bg-gray-100 text-gray-400"
                 style={{ fontFamily: "var(--font-sans, sans-serif)" }}
               >
-                <span className="text-[0.85vw]">⌕</span>
-                <span className="text-[0.75vw]">Search properties</span>
+                <span className="text-[1.45vw]">⌕</span>
+                <span className="text-[1.3vw]">Search properties</span>
               </div>
               {/* Bell */}
               <div className="w-[1.2vw] h-[1.2vw] inline-flex items-center justify-center text-gray-500 relative">
-                <span className="text-[0.95vw]">⌃</span>
+                <span className="text-[1.55vw]">⌃</span>
                 <span
                   className="absolute -top-[0.1vw] -right-[0.1vw] w-[0.4vw] h-[0.4vw] rounded-full"
                   style={{ backgroundColor: NEGATIVE }}
@@ -3162,7 +3251,7 @@ function SceneStep1AddProperty() {
               </div>
               {/* Avatar */}
               <div
-                className="w-[1.4vw] h-[1.4vw] rounded-full inline-flex items-center justify-center text-white text-[0.7vw] font-semibold"
+                className="w-[1.4vw] h-[1.4vw] rounded-full inline-flex items-center justify-center text-white text-[1.25vw] font-semibold"
                 style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
               >
                 JH
@@ -3180,13 +3269,13 @@ function SceneStep1AddProperty() {
               className="mb-[1vw]"
             >
               <div
-                className="text-[1.6vw] text-gray-900 leading-tight"
+                className="text-[2.25vw] text-gray-900 leading-tight"
                 style={{ fontFamily: "var(--font-display, serif)" }}
               >
                 Welcome, James.
               </div>
               <div
-                className="text-[0.9vw] text-gray-500 mt-[0.2vw]"
+                className="text-[1.5vw] text-gray-500 mt-[0.2vw]"
                 style={{ fontFamily: "var(--font-sans, sans-serif)" }}
               >
                 Let&rsquo;s set up your first property.
@@ -3210,19 +3299,19 @@ function SceneStep1AddProperty() {
                   className="rounded-lg border border-gray-200 px-[1vw] py-[0.7vw] bg-gray-50/50"
                 >
                   <div
-                    className="text-[0.7vw] uppercase tracking-wider text-gray-400"
+                    className="text-[1.25vw] uppercase tracking-wider text-gray-400"
                     style={{ fontFamily: "var(--font-sans, sans-serif)" }}
                   >
                     {k.label}
                   </div>
                   <div
-                    className="text-[1.6vw] text-gray-900 leading-none mt-[0.2vw] tabular-nums"
+                    className="text-[2.25vw] text-gray-900 leading-none mt-[0.2vw] tabular-nums"
                     style={{ fontFamily: "var(--font-display, serif)" }}
                   >
                     {k.value}
                   </div>
                   <div
-                    className="text-[0.7vw] text-gray-500 mt-[0.3vw]"
+                    className="text-[1.25vw] text-gray-500 mt-[0.3vw]"
                     style={{ fontFamily: "var(--font-sans, sans-serif)" }}
                   >
                     {k.sub}
@@ -3250,13 +3339,13 @@ function SceneStep1AddProperty() {
                 </svg>
               </div>
               <div
-                className="text-[1.4vw] text-gray-900 mb-[0.3vw]"
+                className="text-[2.05vw] text-gray-900 mb-[0.3vw]"
                 style={{ fontFamily: "var(--font-display, serif)" }}
               >
                 Add your first property
               </div>
               <div
-                className="text-[0.9vw] text-gray-500 mb-[1vw] max-w-[60%] text-center"
+                className="text-[1.5vw] text-gray-500 mb-[1vw] max-w-[60%] text-center"
                 style={{ fontFamily: "var(--font-sans, sans-serif)" }}
               >
                 Address, purchase price, rent, financing, ownership — start with what you have.
@@ -3266,10 +3355,10 @@ function SceneStep1AddProperty() {
                 initial={{ opacity: 0, scale: 0.94 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
-                className="rounded-lg px-[1.8vw] py-[0.8vw] text-[1.05vw] font-semibold inline-flex items-center gap-[0.5vw] shadow-lg relative"
+                className="rounded-lg px-[1.8vw] py-[0.8vw] text-[1.65vw] font-semibold inline-flex items-center gap-[0.5vw] shadow-lg relative"
                 style={{ backgroundColor: ACCENT, color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
               >
-                <span className="text-[1.3vw] leading-none">+</span>
+                <span className="text-[1.95vw] leading-none">+</span>
                 Add property
                 <motion.span
                   animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0, 0.5] }}
@@ -3295,7 +3384,7 @@ function SceneStep1AddProperty() {
                 ].map((t) => (
                   <span
                     key={t}
-                    className="text-[0.75vw] text-gray-600 px-[0.6vw] py-[0.25vw] rounded-full bg-white border border-gray-200"
+                    className="text-[1.3vw] text-gray-600 px-[0.6vw] py-[0.25vw] rounded-full bg-white border border-gray-200"
                   >
                     {t}
                   </span>
@@ -3366,7 +3455,7 @@ function SceneStep2UploadOrManual() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[1.5vw]"
+        className="text-[3vw] text-white leading-tight mb-[1.5vw]"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Four ways to add data. Use whichever you already use.
@@ -3396,19 +3485,19 @@ function SceneStep2UploadOrManual() {
             </div>
             <div className="flex-1 min-w-0">
               <div
-                className="text-[1.5vw] text-gray-900 mb-[0.3vw] leading-tight"
+                className="text-[2.15vw] text-gray-900 mb-[0.3vw] leading-tight"
                 style={{ fontFamily: "var(--font-display, serif)" }}
               >
                 {c.title}
               </div>
               <div
-                className="text-[1vw] text-gray-500 leading-snug"
+                className="text-[1.6vw] text-gray-500 leading-snug"
                 style={{ fontFamily: "var(--font-sans, sans-serif)" }}
               >
                 {c.desc}
               </div>
               <div
-                className="mt-[0.6vw] text-[0.85vw] text-gray-400"
+                className="mt-[0.6vw] text-[1.45vw] text-gray-400"
                 style={{
                   fontFamily: c.mono
                     ? "var(--font-mono, monospace)"
@@ -3427,157 +3516,664 @@ function SceneStep2UploadOrManual() {
 
 // ── Scene 33: Step 3 — AI structures the data ───────────────────────────────
 function SceneStep3AIStructures() {
-  const FIELDS = [
-    { label: "Address",        value: "12 Marina Mansions, Dubai",     delay: 2.2 },
-    { label: "Purchase price", value: "AED 1,950,000",                 delay: 2.5 },
-    { label: "Acquisition",    value: "14 Mar 2024",                   delay: 2.8 },
-    { label: "Annual rent",    value: "AED 142,000",                   delay: 3.1, accent: true },
-    { label: "Tenant",         value: "S. Reynolds",                   delay: 3.4 },
-    { label: "Tenancy end",    value: "31 May 2027",                   delay: 3.7 },
-    { label: "Mortgage",       value: "AED 1,365,000 · 4.2%",          delay: 4.0 },
-    { label: "Service charge", value: "AED 18,400 / yr",               delay: 4.3 },
+  // Each input file carries source + size + date + a parsing-progress
+  // value (1 = complete). Progress bars draw to 100% as the scan line
+  // sweeps, making the page feel actively processing rather than static.
+  const INPUTS = [
+    { name: "tenancy-contract.pdf",   src: "Gmail",     srcColour: "#ea4335", size: "412 KB", date: "12 May", fields: 5, delay: 0.45 },
+    { name: "rent-roll-Q2.xlsx",      src: "Email",     srcColour: "#4f6ef7", size: "38 KB",  date: "08 May", fields: 3, delay: 0.65 },
+    { name: "mortgage-statement.pdf", src: "Drive",     srcColour: "#34a853", size: "1.2 MB", date: "30 Apr", fields: 4, delay: 0.85 },
+    { name: "ac-invoice-photo.jpg",   src: "WhatsApp",  srcColour: "#25d366", size: "2.4 MB", date: "22 Apr", fields: 2, delay: 1.05 },
+    { name: "operator-report.pdf",    src: "Upload",    srcColour: "#9ca3af", size: "856 KB", date: "15 Apr", fields: 6, delay: 1.25 },
+    { name: "service-charge-q1.pdf",  src: "Email",     srcColour: "#4f6ef7", size: "224 KB", date: "12 Apr", fields: 2, delay: 1.45 },
   ];
+
+  // Structured fields grouped by category. Each group carries its own
+  // completeness % so the viewer sees the AI has covered every section.
+  const GROUPS = [
+    {
+      heading: "Property",
+      delay: 2.2,
+      completeness: 100,
+      fields: [
+        { label: "Address",        value: "12 Marina Mansions, Dubai", conf: 100 },
+        { label: "Purchase price", value: "AED 1,950,000",             conf: 98  },
+        { label: "Acquisition",    value: "14 Mar 2024",               conf: 100 },
+      ],
+    },
+    {
+      heading: "Tenancy",
+      delay: 2.8,
+      completeness: 98,
+      fields: [
+        { label: "Annual rent",    value: "AED 142,000",       conf: 99, accent: true },
+        { label: "Tenant",         value: "S. Reynolds",       conf: 96 },
+        { label: "Lease ends",     value: "31 May 2027",       conf: 100 },
+      ],
+    },
+    {
+      heading: "Financing & costs",
+      delay: 3.4,
+      completeness: 95,
+      fields: [
+        { label: "Mortgage",       value: "AED 1,365,000 · 4.2%", conf: 97 },
+        { label: "Service charge", value: "AED 18,400 / yr",      conf: 94 },
+      ],
+    },
+  ];
+
+  const totalFields = INPUTS.reduce((acc, f) => acc + f.fields, 0);
+
   return (
     <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
       <StepBadge n={3} label="AI structures your data" />
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
-        style={{ fontFamily: "var(--font-display, serif)" }}
-      >
-        Scattered information becomes a clear investment view.
-      </motion.div>
-      <div className="flex-1 grid grid-cols-[1fr_auto_1fr] gap-[1.5vw] items-center">
-        {/* Left — messy input */}
+      {/* Headline + processing-stats banner */}
+      <div className="flex items-end justify-between gap-[1.5vw] mb-[1.2vw] flex-wrap">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-[3vw] text-white leading-tight max-w-[55%]"
+          style={{ fontFamily: "var(--font-display, serif)" }}
+        >
+          Scattered information becomes a clear investment view.
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex items-center gap-[1.2vw]"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          {[
+            { v: `${INPUTS.length}`, l: "Files in" },
+            { v: `${totalFields}`,   l: "Fields out" },
+            { v: "1.4s",             l: "Process time" },
+            { v: "97%",              l: "Avg confidence" },
+          ].map((s, i) => (
+            <div
+              key={s.l}
+              className="text-right"
+              style={{ borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.1)" : "none", paddingLeft: i > 0 ? "1.2vw" : "0" }}
+            >
+              <div
+                className="text-[2.05vw] tabular-nums leading-none"
+                style={{ color: i === 3 ? POSITIVE : "white", fontFamily: "var(--font-display, serif)" }}
+              >
+                {s.v}
+              </div>
+              <div className="text-[1.25vw] uppercase tracking-wider text-white/45 mt-[0.2vw]">
+                {s.l}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="flex-1 grid grid-cols-[1.05fr_auto_1.15fr] gap-[1.2vw] items-stretch min-h-0">
+        {/* ── Left — inbox of raw inputs ─────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.2vw] h-full overflow-hidden"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="rounded-xl border border-white/10 bg-white/[0.03] p-[1.1vw] flex flex-col"
         >
-          <div className="text-[0.9vw] uppercase tracking-wider text-white/40 mb-[0.6vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-            Your inputs
-          </div>
-          {["lease.pdf", "rent-roll.xlsx", "mortgage-statement.pdf", "service-invoice.pdf", "operator-report-q1.pdf"].map((f, i) => (
-            <motion.div
-              key={f}
-              initial={{ opacity: 0, x: -6 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.7 + i * 0.15 }}
-              className="flex items-center gap-[0.6vw] py-[0.45vw]"
+          <div className="flex items-center justify-between mb-[0.7vw]">
+            <div className="text-[1.4vw] uppercase tracking-wider text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              Your inputs
+            </div>
+            <div
+              className="inline-flex items-center gap-[0.3vw] text-[1.25vw] px-[0.5vw] py-[0.1vw] rounded-full"
+              style={{ backgroundColor: `${ACCENT}1f`, color: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
             >
-              <span className="text-[0.85vw] text-red-400 font-semibold" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-                {f.split('.').pop()?.toUpperCase()}
-              </span>
-              <span className="text-[1.05vw] text-white/80" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-                {f}
-              </span>
-            </motion.div>
-          ))}
+              <motion.span
+                animate={{ opacity: [1, 0.4, 1] }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+                className="inline-block w-[0.35vw] h-[0.35vw] rounded-full"
+                style={{ backgroundColor: ACCENT }}
+              />
+              Parsing
+            </div>
+          </div>
+          <div className="space-y-[0.5vw]">
+            {INPUTS.map((f) => (
+              <motion.div
+                key={f.name}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: f.delay }}
+                className="rounded-lg border border-white/10 bg-white/[0.04] p-[0.65vw]"
+              >
+                <div className="flex items-center gap-[0.7vw]">
+                  {/* Document thumbnail */}
+                  <div
+                    className="shrink-0 w-[1.9vw] h-[2.3vw] rounded-sm relative flex flex-col gap-[0.15vw] p-[0.25vw]"
+                    style={{ backgroundColor: "rgba(255,255,255,0.85)" }}
+                  >
+                    <div className="h-[0.18vw] rounded-sm w-[80%]" style={{ backgroundColor: "rgba(0,0,0,0.25)" }} />
+                    <div className="h-[0.18vw] rounded-sm w-[60%]" style={{ backgroundColor: "rgba(0,0,0,0.18)" }} />
+                    <div className="h-[0.18vw] rounded-sm w-[90%]" style={{ backgroundColor: "rgba(0,0,0,0.18)" }} />
+                    <div className="h-[0.18vw] rounded-sm w-[50%] mt-auto" style={{ backgroundColor: "rgba(0,0,0,0.18)" }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-[0.4vw]">
+                      <div className="text-[1.45vw] text-white truncate" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                        {f.name}
+                      </div>
+                      <span
+                        className="shrink-0 text-[0.85vw] tabular-nums px-[0.4vw] py-[0.08vw] rounded-full"
+                        style={{ backgroundColor: `${POSITIVE}25`, color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        +{f.fields}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-[0.4vw] mt-[0.15vw]">
+                      <span
+                        className="text-[1.2vw] uppercase tracking-wider px-[0.4vw] py-[0.08vw] rounded-full"
+                        style={{ backgroundColor: f.srcColour + "33", color: f.srcColour, fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        {f.src}
+                      </span>
+                      <span className="text-[1.2vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                        {f.size}
+                      </span>
+                      <span className="text-[1.2vw] text-white/30">·</span>
+                      <span className="text-[1.2vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                        {f.date}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                {/* Parsing progress bar — animates from 0 → 100% */}
+                <div
+                  className="mt-[0.45vw] h-[0.25vw] rounded-full overflow-hidden"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
+                >
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 0.9, delay: f.delay + 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="h-full rounded-full"
+                    style={{ backgroundColor: POSITIVE }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
-        {/* Centre arrow with AI label */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 1.7 }}
-          className="flex flex-col items-center justify-center"
-        >
-          <div
-            className="px-[1vw] py-[0.4vw] rounded-full text-[0.95vw] font-semibold mb-[0.6vw]"
+
+        {/* ── Centre — AI processing pillar ─────────────────────────── */}
+        <div className="flex flex-col items-center justify-center gap-[0.6vw]">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 1.7 }}
+            className="px-[1vw] py-[0.45vw] rounded-full text-[1.5vw] font-semibold shadow-lg"
             style={{ backgroundColor: ACCENT, color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
           >
             AI
-          </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12 L19 12 M13 6 L19 12 L13 18" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-        {/* Right — structured fields */}
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.2vw] h-full">
-          <div className="text-[0.9vw] uppercase tracking-wider text-white/40 mb-[0.6vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-            Structured property
-          </div>
-          {FIELDS.map((r) => (
+          </motion.div>
+          {/* Animated downward scan line */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.8 }}
+            className="relative w-[2px] h-[8vw] rounded-full overflow-hidden"
+            style={{ backgroundColor: "rgba(79,110,247,0.18)" }}
+          >
             <motion.div
-              key={r.label}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: r.delay }}
-              className="flex items-center justify-between py-[0.35vw] border-b border-white/[0.06]"
-            >
-              <span className="text-[0.95vw] text-white/55" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-                {r.label}
-              </span>
-              <span
-                className="text-[1.05vw] tabular-nums"
-                style={{
-                  fontFamily: "var(--font-sans, sans-serif)",
-                  color: r.accent ? ACCENT : "rgba(255,255,255,0.92)",
-                }}
-              >
-                {r.value}
-              </span>
-            </motion.div>
-          ))}
+              className="absolute left-0 right-0 h-[20%] rounded-full"
+              style={{ background: `linear-gradient(180deg, transparent, ${ACCENT}, transparent)` }}
+              animate={{ top: ["-20%", "100%"] }}
+              transition={{ duration: 1.4, delay: 2.0, repeat: Infinity, ease: "linear" }}
+            />
+          </motion.div>
+          <motion.svg
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 1.9 }}
+            width="32" height="32" viewBox="0 0 24 24" fill="none"
+          >
+            <path d="M12 4 L12 20 M6 14 L12 20 L18 14" stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </motion.svg>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 2.0 }}
+            className="text-[1.25vw] uppercase tracking-wider text-white/45 text-center max-w-[6vw]"
+            style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+          >
+            Reads · classifies · links
+          </motion.div>
         </div>
+
+        {/* ── Right — structured property record ────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 2.0 }}
+          className="rounded-xl border border-white/10 bg-white/[0.03] p-[1.1vw] flex flex-col"
+        >
+          <div className="flex items-center justify-between mb-[0.6vw]">
+            <div className="text-[1.4vw] uppercase tracking-wider text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              Structured property
+            </div>
+            <div
+              className="inline-flex items-center gap-[0.3vw] text-[1.25vw] px-[0.5vw] py-[0.15vw] rounded-full"
+              style={{ backgroundColor: `${POSITIVE}25`, color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              <svg width="1.25vw" height="1.25vw" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 12 L10 17 L19 8" />
+              </svg>
+              Ready
+            </div>
+          </div>
+          <div className="space-y-[0.7vw]">
+            {GROUPS.map((g) => (
+              <motion.div
+                key={g.heading}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: g.delay }}
+                className="rounded-lg overflow-hidden"
+                style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+              >
+                {/* Group header strip */}
+                <div
+                  className="flex items-center justify-between px-[0.7vw] py-[0.4vw]"
+                  style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+                >
+                  <div className="flex items-center gap-[0.5vw]">
+                    <span
+                      className="text-[1.25vw] uppercase tracking-wider"
+                      style={{ color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-sans, sans-serif)" }}
+                    >
+                      {g.heading}
+                    </span>
+                    <span
+                      className="text-[0.85vw] tabular-nums"
+                      style={{ color: "rgba(255,255,255,0.35)", fontFamily: "var(--font-mono, monospace)" }}
+                    >
+                      {g.fields.length} fields
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-[0.5vw]">
+                    <div
+                      className="w-[3vw] h-[0.35vw] rounded-full overflow-hidden"
+                      style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
+                    >
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${g.completeness}%` }}
+                        transition={{ duration: 1.0, delay: g.delay + 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: POSITIVE }}
+                      />
+                    </div>
+                    <span
+                      className="text-[0.85vw] tabular-nums"
+                      style={{ color: POSITIVE, fontFamily: "var(--font-mono, monospace)" }}
+                    >
+                      {g.completeness}%
+                    </span>
+                  </div>
+                </div>
+                {/* Fields */}
+                <div>
+                  {g.fields.map((r, fi) => (
+                    <div
+                      key={r.label}
+                      className="flex items-center justify-between px-[0.7vw] py-[0.35vw]"
+                      style={{
+                        borderTop: fi > 0 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                        backgroundColor: r.accent ? `${ACCENT}0d` : "transparent",
+                      }}
+                    >
+                      <span
+                        className="text-[1.45vw] text-white/55"
+                        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        {r.label}
+                      </span>
+                      <div className="flex items-center gap-[0.5vw]">
+                        <span
+                          className="text-[0.85vw] tabular-nums px-[0.35vw] py-[0.05vw] rounded-full"
+                          style={{
+                            backgroundColor: r.conf === 100 ? `${POSITIVE}25` : "rgba(255,255,255,0.08)",
+                            color: r.conf === 100 ? POSITIVE : "rgba(255,255,255,0.55)",
+                            fontFamily: "var(--font-mono, monospace)",
+                          }}
+                        >
+                          {r.conf}%
+                        </span>
+                        <span
+                          className="text-[1.55vw] tabular-nums"
+                          style={{
+                            fontFamily: "var(--font-sans, sans-serif)",
+                            color: r.accent ? ACCENT : "rgba(255,255,255,0.92)",
+                            fontWeight: r.accent ? 600 : 400,
+                          }}
+                        >
+                          {r.value}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </div>
   );
 }
 
 // ── Scene 34: Step 4 — See the key numbers ──────────────────────────────────
+// Each KPI card now carries: icon, label, hero number, comparison delta,
+// trend sparkline / status indicator, and a context line ("vs target"
+// or "YoY +0.4 pp"). Reads as a real product dashboard tile.
 function SceneStep4Dashboard() {
+  // Each KPI now carries a full "tile worth of content":
+  //   • Period pill (top-right) — gives temporal context
+  //   • Icon + label header
+  //   • Big hero number
+  //   • Unit + sub-line
+  //   • Comparison delta with directional icon
+  //   • Sub-metrics breakdown (e.g. Gross / Costs / Net) — reads like a real dashboard
+  //   • Sparkline / ring / status visual
+  //   • Footer status line ("Healthy · last updated 2h ago")
   const KPIS = [
-    { label: "Current rent",      value: "AED 142,000",  unit: "/ year",      delay: 0.6 },
-    { label: "Net yield",         value: "5.8%",         unit: "after costs", delay: 0.9, accent: POSITIVE },
-    { label: "Annual cashflow",   value: "AED 28,400",   unit: "post-debt",   delay: 1.2, accent: POSITIVE },
-    { label: "Occupancy",         value: "Tenanted",     unit: "12 months",   delay: 1.5 },
-    { label: "Estimated 5yr IRR", value: "12.4%",        unit: "modelled",    delay: 1.8, accent: POSITIVE },
-    { label: "Risk flags",        value: "1",            unit: "rate reset",  delay: 2.1, accent: WARNING },
+    {
+      label: "Annual rent",
+      value: "AED 142k",
+      unit: "/ year · gross",
+      delay: 0.6,
+      accent: "#0a0e27",
+      period: "12 months",
+      compare: "+ AED 8k YoY",
+      compareTone: POSITIVE,
+      icon: "rent",
+      // 12-month rent trend — gentle climb to current
+      trend: [128, 130, 132, 135, 138, 138, 140, 140, 142, 142, 142, 142],
+      target: 145,
+      subMetrics: [
+        { label: "Monthly",    value: "AED 11,833" },
+        { label: "Per sqft",   value: "AED 142" },
+      ],
+      status: { text: "On track", tone: POSITIVE },
+    },
+    {
+      label: "Net yield",
+      value: "5.8%",
+      unit: "after every cost",
+      delay: 0.85,
+      accent: POSITIVE,
+      period: "12 months",
+      compare: "vs target 6.0%",
+      compareTone: WARNING,
+      icon: "yield",
+      trend: [5.2, 5.3, 5.4, 5.5, 5.5, 5.6, 5.7, 5.7, 5.7, 5.8, 5.8, 5.8],
+      target: 6.0,
+      subMetrics: [
+        { label: "Gross",      value: "7.3%" },
+        { label: "Costs drag", value: "−1.5 pp" },
+      ],
+      status: { text: "Below target", tone: WARNING },
+    },
+    {
+      label: "Annual cashflow",
+      value: "AED 28.4k",
+      unit: "post-debt service",
+      delay: 1.1,
+      accent: POSITIVE,
+      period: "12 months",
+      compare: "+ AED 3.1k YoY",
+      compareTone: POSITIVE,
+      icon: "cashflow",
+      trend: [2.0, 2.1, 2.3, 2.4, 2.3, 2.4, 2.5, 2.3, 2.4, 2.5, 2.4, 2.7],
+      target: 30,
+      subMetrics: [
+        { label: "Income",     value: "AED 142k" },
+        { label: "Debt + ops", value: "AED 113.6k" },
+      ],
+      status: { text: "Healthy", tone: POSITIVE },
+    },
+    {
+      label: "Occupancy",
+      value: "100%",
+      unit: "Tenanted · S. Reynolds",
+      delay: 1.35,
+      accent: POSITIVE,
+      period: "12 months",
+      compare: "0 voids in last 24 mo",
+      compareTone: POSITIVE,
+      icon: "occupancy",
+      ring: 100,
+      subMetrics: [
+        { label: "Lease ends",   value: "31 May 2027" },
+        { label: "Renewal",      value: "in 14 months" },
+      ],
+      status: { text: "Stable", tone: POSITIVE },
+    },
+    {
+      label: "5yr IRR",
+      value: "12.4%",
+      unit: "modelled · base case",
+      delay: 1.6,
+      accent: POSITIVE,
+      period: "5 years",
+      compare: "+1.6 pp vs peer median",
+      compareTone: POSITIVE,
+      icon: "irr",
+      trend: [9.8, 10.2, 10.7, 11.0, 11.3, 11.5, 11.8, 12.0, 12.1, 12.2, 12.3, 12.4],
+      target: 12,
+      subMetrics: [
+        { label: "Cap appr.",    value: "+2.8%/yr" },
+        { label: "Leveraged",    value: "65% LTV" },
+      ],
+      status: { text: "Above peers", tone: POSITIVE },
+    },
+    {
+      label: "Risk flags",
+      value: "1",
+      unit: "Action required",
+      delay: 1.85,
+      accent: WARNING,
+      period: "Live",
+      compare: "Mortgage rate reset",
+      compareTone: WARNING,
+      icon: "alert",
+      subMetrics: [
+        { label: "Severity",  value: "Medium" },
+        { label: "Due",       value: "in 90 days" },
+      ],
+      status: { text: "Review needed", tone: WARNING },
+    },
   ];
+
   return (
     <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
       <StepBadge n={4} label="See the key numbers" />
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
-        style={{ fontFamily: "var(--font-display, serif)" }}
-      >
-        Your property dashboard.
-      </motion.div>
-      <div className="flex-1 grid grid-cols-3 gap-[1.2vw]">
+      <div className="flex items-baseline justify-between mb-[1.5vw]">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-[3vw] text-white leading-tight"
+          style={{ fontFamily: "var(--font-display, serif)" }}
+        >
+          Your property dashboard.
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="inline-flex items-center gap-[0.5vw] text-[1.35vw] text-white/55"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          <motion.span
+            animate={{ opacity: [1, 0.4, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity }}
+            className="inline-block w-[0.4vw] h-[0.4vw] rounded-full"
+            style={{ backgroundColor: POSITIVE }}
+          />
+          Live · updated just now
+        </motion.div>
+      </div>
+      <div className="flex-1 grid grid-cols-3 gap-[1.1vw]">
         {KPIS.map((k) => (
           <motion.div
             key={k.label}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: k.delay }}
-            className="rounded-lg bg-white shadow-lg p-[1.5vw] flex flex-col justify-center"
+            className="rounded-xl bg-white shadow-lg p-[1.1vw] flex flex-col relative overflow-hidden"
           >
+            {/* Left accent stripe */}
             <div
-              className="text-[0.9vw] uppercase tracking-wider text-gray-500 mb-[0.4vw]"
-              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
-            >
-              {k.label}
+              className="absolute left-0 top-0 bottom-0 w-[0.25vw]"
+              style={{ backgroundColor: k.accent }}
+            />
+            {/* Header row: icon + label, period pill */}
+            <div className="flex items-start justify-between mb-[0.5vw] pl-[0.5vw]">
+              <div className="flex items-center gap-[0.5vw]">
+                <KpiIcon kind={k.icon} colour={k.accent} />
+                <div
+                  className="text-[1.35vw] uppercase tracking-wider text-gray-500"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {k.label}
+                </div>
+              </div>
+              <div
+                className="text-[0.85vw] uppercase tracking-wider px-[0.45vw] py-[0.15vw] rounded-full"
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.05)",
+                  color: "rgba(0,0,0,0.5)",
+                  fontFamily: "var(--font-sans, sans-serif)",
+                }}
+              >
+                {k.period}
+              </div>
+            </div>
+            {/* Big number + delta */}
+            <div className="pl-[0.5vw] flex items-baseline gap-[0.7vw]">
+              <span
+                className="text-[2.6vw] tabular-nums leading-none"
+                style={{ fontFamily: "var(--font-display, serif)", color: k.accent }}
+              >
+                {k.value}
+              </span>
+              <span
+                className="inline-flex items-center gap-[0.25vw] text-[1.3vw] tabular-nums"
+                style={{ color: k.compareTone, fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                {k.compareTone === POSITIVE && (
+                  <svg width="1.25vw" height="1.25vw" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                    <path d="M12 4 L20 14 L14 14 L14 20 L10 20 L10 14 L4 14 Z" />
+                  </svg>
+                )}
+                {k.compareTone === WARNING && (
+                  <svg width="1.3vw" height="1.3vw" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M12 3 L22 21 L2 21 Z" />
+                    <path d="M12 10 L12 15" />
+                  </svg>
+                )}
+                {k.compare}
+              </span>
             </div>
             <div
-              className="text-[2.4vw] tabular-nums leading-none"
-              style={{
-                fontFamily: "var(--font-display, serif)",
-                color: k.accent ?? "#0a0e27",
-              }}
-            >
-              {k.value}
-            </div>
-            <div
-              className="text-[0.9vw] text-gray-500 mt-[0.35vw]"
+              className="text-[1.3vw] text-gray-500 mt-[0.3vw] pl-[0.5vw]"
               style={{ fontFamily: "var(--font-sans, sans-serif)" }}
             >
               {k.unit}
+            </div>
+
+            {/* Sub-metrics breakdown */}
+            <div className="mt-[0.9vw] pl-[0.5vw] grid grid-cols-2 gap-[0.5vw]">
+              {k.subMetrics.map((m) => (
+                <div
+                  key={m.label}
+                  className="rounded-md px-[0.5vw] py-[0.4vw]"
+                  style={{ backgroundColor: "rgba(0,0,0,0.03)" }}
+                >
+                  <div
+                    className="text-[0.78vw] uppercase tracking-wider"
+                    style={{ color: "rgba(0,0,0,0.45)", fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {m.label}
+                  </div>
+                  <div
+                    className="text-[1.35vw] tabular-nums mt-[0.05vw]"
+                    style={{ color: "rgba(0,0,0,0.85)", fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {m.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Trend / ring / pill visual */}
+            <div className="mt-[0.8vw] pl-[0.5vw]">
+              {k.trend && (
+                <KpiSparkline
+                  series={k.trend}
+                  colour={k.accent}
+                  delay={k.delay + 0.3}
+                  target={k.target}
+                />
+              )}
+              {k.ring !== undefined && (
+                <KpiRing pct={k.ring} colour={k.accent} delay={k.delay + 0.3} />
+              )}
+              {!k.trend && k.ring === undefined && (
+                <div className="flex items-center gap-[0.5vw]">
+                  <div
+                    className="flex-1 h-[0.7vw] rounded-full overflow-hidden"
+                    style={{ backgroundColor: "rgba(0,0,0,0.06)" }}
+                  >
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "33%" }}
+                      transition={{ duration: 1.0, delay: k.delay + 0.5 }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: k.accent }}
+                    />
+                  </div>
+                  <span
+                    className="text-[0.85vw] tabular-nums"
+                    style={{ color: k.accent, fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    1 of 3
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Footer status */}
+            <div
+              className="mt-auto pt-[0.7vw] pl-[0.5vw] flex items-center justify-between border-t"
+              style={{ borderTopColor: "rgba(0,0,0,0.06)" }}
+            >
+              <div className="flex items-center gap-[0.35vw]">
+                <span
+                  className="inline-block w-[0.35vw] h-[0.35vw] rounded-full"
+                  style={{ backgroundColor: k.status.tone }}
+                />
+                <span
+                  className="text-[0.85vw] uppercase tracking-wider"
+                  style={{ color: k.status.tone, fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {k.status.text}
+                </span>
+              </div>
+              <span
+                className="text-[0.78vw]"
+                style={{ color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                Just now
+              </span>
             </div>
           </motion.div>
         ))}
@@ -3586,16 +4182,258 @@ function SceneStep4Dashboard() {
   );
 }
 
+// Sparkline used inside dashboard KPI cards.
+//
+// Reveal animation uses an animated clipPath rectangle (width 0 → 100)
+// instead of stroke pathLength. pathLength is unreliable with
+// vectorEffect="non-scaling-stroke" because the browser computes the
+// path's total length BEFORE applying the stroke scaling, which produces
+// a mismatched dasharray — visually that's "broken / incomplete" lines.
+// clipPath is rock-solid because it operates in viewBox-space directly.
+//
+// Renders (all inside the clipped group except dot + target line):
+//   • Filled area under the curve
+//   • Line on top
+// Outside the clip:
+//   • Dashed target line (no animation gate on this)
+//   • End-point dot + soft ring
+function KpiSparkline({
+  series,
+  colour,
+  delay,
+  target,
+}: {
+  series: number[];
+  colour: string;
+  delay: number;
+  target?: number;
+}) {
+  const clipId = useId();
+  // Include target in min/max so the dashed line always sits inside the chart.
+  const min = Math.min(...series, target ?? series[0]);
+  const max = Math.max(...series, target ?? series[0]);
+  const range = max - min || 1;
+  // ViewBox: 100 wide × 30 tall. Y inverted (SVG top-down).
+  const pts = series.map((v, i) => ({
+    x: (i / (series.length - 1)) * 100,
+    y: 30 - ((v - min) / range) * 26 - 2,
+  }));
+  const linePath = `M ${pts.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" L ")}`;
+  const fillPath = `${linePath} L 100,30 L 0,30 Z`;
+  const targetY = target !== undefined ? 30 - ((target - min) / range) * 26 - 2 : null;
+  const endPt = pts[pts.length - 1];
+
+  return (
+    <svg
+      viewBox="0 0 100 30"
+      preserveAspectRatio="none"
+      className="w-full"
+      style={{ height: "3vw", overflow: "visible" }}
+      aria-hidden
+    >
+      <defs>
+        <clipPath id={`spark-${clipId}`}>
+          <motion.rect
+            x="0"
+            y="-2"
+            height="34"
+            initial={{ width: 0 }}
+            animate={{ width: 100 }}
+            transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+          />
+        </clipPath>
+      </defs>
+
+      {/* Clipped group — fill + line both revealed left-to-right */}
+      <g clipPath={`url(#spark-${clipId})`}>
+        <path
+          d={fillPath}
+          fill={colour}
+          fillOpacity="0.18"
+          stroke="none"
+        />
+        <path
+          d={linePath}
+          fill="none"
+          stroke={colour}
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </g>
+
+      {/* Target line — dashed horizontal at the target value (not clipped) */}
+      {targetY !== null && (
+        <motion.line
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: delay + 0.7 }}
+          x1="0"
+          y1={targetY}
+          x2="100"
+          y2={targetY}
+          stroke="rgba(0,0,0,0.32)"
+          strokeWidth="0.7"
+          strokeDasharray="1.5 1.5"
+          vectorEffect="non-scaling-stroke"
+        />
+      )}
+
+      {/* End-point dot — pops in after the reveal completes */}
+      <motion.circle
+        cx={endPt.x}
+        cy={endPt.y}
+        r="2.5"
+        fill={colour}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: delay + 1.15, ease: [0.16, 1, 0.3, 1] }}
+        vectorEffect="non-scaling-stroke"
+      />
+      {/* Outer halo ring around the end-point dot */}
+      <motion.circle
+        cx={endPt.x}
+        cy={endPt.y}
+        r="4.2"
+        fill="none"
+        stroke={colour}
+        strokeWidth="1.2"
+        strokeOpacity="0.35"
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: delay + 1.25 }}
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
+
+// Circular progress ring — used for occupancy, target progress etc.
+function KpiRing({ pct, colour, delay }: { pct: number; colour: string; delay: number }) {
+  const radius = 14;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - pct / 100);
+  return (
+    <div className="flex items-center gap-[0.5vw]">
+      <svg width="2.6vw" height="2.6vw" viewBox="0 0 36 36" aria-hidden>
+        <circle cx="18" cy="18" r={radius} stroke="rgba(0,0,0,0.08)" strokeWidth="3.5" fill="none" />
+        <motion.circle
+          cx="18" cy="18" r={radius}
+          stroke={colour}
+          strokeWidth="3.5"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          initial={{ strokeDashoffset: circumference }}
+          animate={{ strokeDashoffset: offset }}
+          transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+          transform="rotate(-90 18 18)"
+        />
+      </svg>
+      <span
+        className="text-[1.4vw] uppercase tracking-wider"
+        style={{ color: colour, fontFamily: "var(--font-sans, sans-serif)" }}
+      >
+        On time
+      </span>
+    </div>
+  );
+}
+
+// Inline icon set for KPI cards.
+function KpiIcon({ kind, colour }: { kind: string; colour: string }) {
+  const props = {
+    width: "1.1vw",
+    height: "1.1vw",
+    viewBox: "0 0 24 24",
+    fill: "none" as const,
+    stroke: colour,
+    strokeWidth: "1.8",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (kind) {
+    case "rent":
+      return (<svg {...props}><path d="M4 10 L4 21 L20 21 L20 10" /><path d="M2 10 L12 3 L22 10" /><path d="M10 21 L10 14 L14 14 L14 21" /></svg>);
+    case "yield":
+      return (<svg {...props}><circle cx="12" cy="12" r="9" /><path d="M9 13 L11 15 L15 9" /></svg>);
+    case "cashflow":
+      return (<svg {...props}><path d="M4 17 L9 12 L13 16 L20 8" /><path d="M14 8 L20 8 L20 14" /></svg>);
+    case "occupancy":
+      return (<svg {...props}><circle cx="12" cy="8" r="3" /><path d="M5 21 C5 17 8 15 12 15 C16 15 19 17 19 21" /></svg>);
+    case "irr":
+      return (<svg {...props}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 14 L7 17 M12 9 L12 17 M17 11 L17 17" /></svg>);
+    case "alert":
+      return (<svg {...props}><path d="M12 3 L22 21 L2 21 Z" /><path d="M12 10 L12 15" /><circle cx="12" cy="18" r="0.4" fill={colour} stroke="none" /></svg>);
+    default:
+      return null;
+  }
+}
+
 // ── Scene 35: Step 5 — Choose the right tool ────────────────────────────────
+// Each tool card carries: colour-coded icon, name, description, a "what
+// this answers" sample question, and a mini preview of what the tool
+// actually outputs (bar chart, big number, scenarios, comparison ring etc).
+// Reads as a real product tools menu, not a flat list of strings.
 function SceneStep5Tools() {
   const TOOLS = [
-    { name: "IRR Calculator",          desc: "Project long-term returns",      delay: 0.6 },
-    { name: "Rent Review",             desc: "Test rent uplifts on cashflow",   delay: 0.85 },
-    { name: "Hold / Sell",             desc: "Model exit vs continued hold",    delay: 1.1 },
-    { name: "Refinance",               desc: "Compare rates and lenders",       delay: 1.35 },
-    { name: "STR vs Long-let",         desc: "Short-term vs annual let",        delay: 1.6 },
-    { name: "Portfolio Dashboard",     desc: "Roll-up across all properties",   delay: 1.85 },
+    {
+      name: "IRR Calculator",
+      desc: "Project long-term returns",
+      question: "What will my 5-year return be?",
+      icon: "irr",
+      colour: ACCENT,
+      preview: "irr",
+      delay: 0.55,
+    },
+    {
+      name: "Rent Review",
+      desc: "Test rent uplifts on cashflow",
+      question: "Should I raise the rent at renewal?",
+      icon: "rent",
+      colour: POSITIVE,
+      preview: "rent",
+      delay: 0.75,
+    },
+    {
+      name: "Hold / Sell",
+      desc: "Model exit vs continued hold",
+      question: "Should I sell now, or hold 5 more years?",
+      icon: "holdsell",
+      colour: ACCENT,
+      preview: "holdsell",
+      delay: 0.95,
+    },
+    {
+      name: "Refinance",
+      desc: "Compare rates and lenders",
+      question: "What if I refinance at a lower rate?",
+      icon: "refi",
+      colour: POSITIVE,
+      preview: "refi",
+      delay: 1.15,
+    },
+    {
+      name: "STR vs Long-let",
+      desc: "Short-term vs annual let",
+      question: "Will Airbnb beat my long-term tenant?",
+      icon: "str",
+      colour: WARNING,
+      preview: "str",
+      delay: 1.35,
+    },
+    {
+      name: "Portfolio Dashboard",
+      desc: "Roll-up across all properties",
+      question: "How is my whole portfolio performing?",
+      icon: "portfolio",
+      colour: ACCENT,
+      preview: "portfolio",
+      delay: 1.55,
+    },
   ];
+
   return (
     <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
       <StepBadge n={5} label="Choose the right tool" />
@@ -3603,31 +4441,58 @@ function SceneStep5Tools() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        className="text-[3vw] text-white leading-tight mb-[1.5vw]"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Pick a tool for the question you need to answer.
       </motion.div>
-      <div className="flex-1 grid grid-cols-3 gap-[1.2vw]">
+      <div className="flex-1 grid grid-cols-3 gap-[1vw]">
         {TOOLS.map((t) => (
           <motion.div
             key={t.name}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: t.delay }}
-            className="rounded-lg border border-white/10 bg-white/[0.03] p-[1.3vw] hover:bg-white/[0.05]"
+            className="rounded-xl border border-white/10 bg-white/[0.03] p-[1vw] flex flex-col relative overflow-hidden"
           >
-            <div
-              className="text-[1.4vw] text-white mb-[0.4vw]"
-              style={{ fontFamily: "var(--font-display, serif)" }}
-            >
-              {t.name}
+            {/* Header row — icon tile + name */}
+            <div className="flex items-start gap-[0.7vw] mb-[0.5vw]">
+              <div
+                className="shrink-0 w-[2.4vw] h-[2.4vw] rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: `${t.colour}22` }}
+              >
+                <ToolIcon kind={t.icon} colour={t.colour} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div
+                  className="text-[1.8vw] text-white leading-tight"
+                  style={{ fontFamily: "var(--font-display, serif)" }}
+                >
+                  {t.name}
+                </div>
+                <div
+                  className="text-[1.35vw] text-white/55 leading-snug mt-[0.15vw]"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {t.desc}
+                </div>
+              </div>
             </div>
+            {/* Sample question */}
             <div
-              className="text-[1vw] text-white/55 leading-snug"
-              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              className="rounded-md px-[0.7vw] py-[0.45vw] mb-[0.6vw] italic"
+              style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
             >
-              {t.desc}
+              <span
+                className="text-[1.4vw] text-white/65"
+                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                &ldquo;{t.question}&rdquo;
+              </span>
+            </div>
+            {/* Mini preview of the tool's output */}
+            <div className="mt-auto">
+              <ToolPreview kind={t.preview} colour={t.colour} delay={t.delay + 0.3} />
             </div>
           </motion.div>
         ))}
@@ -3636,13 +4501,312 @@ function SceneStep5Tools() {
   );
 }
 
+// Each tool gets a bespoke mini-visualisation: number, bars, scenarios,
+// ring etc. Kept tight (about 3vw tall) so cards stay scannable.
+function ToolPreview({ kind, colour, delay }: { kind: string; colour: string; delay: number }) {
+  switch (kind) {
+    case "irr":
+      // Big IRR number + larger sparkline beneath showing the projected
+      // return curve. The previous layout shoved a tiny 5×2vw sparkline
+      // into the bottom-right corner — barely readable. Now the chart
+      // gets its own row and renders ~3x larger so the trend is
+      // actually visible.
+      return (
+        <div className="space-y-[0.4vw]">
+          <div className="flex items-baseline justify-between">
+            <div
+              className="text-[1.25vw] uppercase tracking-wider text-white/40"
+              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              5yr IRR
+            </div>
+            <div
+              className="text-[2.4vw] tabular-nums leading-none"
+              style={{ color: colour, fontFamily: "var(--font-display, serif)" }}
+            >
+              12.4%
+            </div>
+          </div>
+          <div className="w-full h-[2.6vw]">
+            <KpiSparkline series={[8, 9, 10, 11, 11.5, 12, 12.4]} colour={colour} delay={delay} />
+          </div>
+          <div className="flex items-baseline justify-between text-[1.1vw] text-white/35" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+            <span>Y1 8.0%</span>
+            <span>Y5 12.4%</span>
+          </div>
+        </div>
+      );
+    case "rent":
+      // Two-bar comparison (current vs proposed) + uplift delta callout.
+      // Bars bumped from 0.4vw → 0.7vw thickness — the previous version
+      // was an almost-invisible hairline. The +14k delta is now a
+      // standalone pill so the user reads "14k more rent" without
+      // mental arithmetic.
+      return (
+        <div className="space-y-[0.45vw]">
+          {[
+            { label: "Current", v: 60, value: "142k" },
+            { label: "Uplifted", v: 95, value: "156k", accent: true },
+          ].map((r) => (
+            <div key={r.label}>
+              <div className="flex items-baseline justify-between mb-[0.15vw]">
+                <span className="text-[1.25vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.label}</span>
+                <span className="text-[1.4vw] tabular-nums" style={{ color: r.accent ? colour : "rgba(255,255,255,0.8)", fontFamily: "var(--font-sans, sans-serif)" }}>{r.value}</span>
+              </div>
+              <div className="h-[0.7vw] rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.07)" }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${r.v}%` }}
+                  transition={{ duration: 0.8, delay: delay + (r.accent ? 0.15 : 0), ease: [0.16, 1, 0.3, 1] }}
+                  className="h-full rounded-full"
+                  style={{ backgroundColor: r.accent ? colour : "rgba(255,255,255,0.3)" }}
+                />
+              </div>
+            </div>
+          ))}
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: delay + 0.5 }}
+            className="inline-flex items-center gap-[0.3vw] px-[0.5vw] py-[0.2vw] rounded-md text-[1.2vw] tabular-nums"
+            style={{ backgroundColor: `${POSITIVE}1a`, color: POSITIVE, border: `1px solid ${POSITIVE}40`, fontFamily: "var(--font-sans, sans-serif)" }}
+          >
+            <span>↑</span><span>+AED 14k/yr</span>
+          </motion.div>
+        </div>
+      );
+    case "holdsell":
+      // Hold vs sell — verdict pill + a real comparison chart showing
+      // the projected value gap. The old version just listed two
+      // numbers (2.1M vs 2.42M) with no visual showing the upward
+      // trajectory of "hold". Now there's a small value-projection
+      // sparkline that climbs from 2.1M → 2.42M with the delta
+      // marked at the peak.
+      return (
+        <div className="space-y-[0.45vw]">
+          <div
+            className="rounded-md px-[0.6vw] py-[0.35vw] flex items-center gap-[0.5vw]"
+            style={{ backgroundColor: `${POSITIVE}1a`, border: `1px solid ${POSITIVE}55` }}
+          >
+            <span className="inline-block w-[0.4vw] h-[0.4vw] rounded-full" style={{ backgroundColor: POSITIVE }} />
+            <span className="text-[1.35vw]" style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}>
+              Hold · +AED 320k over 5y
+            </span>
+          </div>
+          {/* Value-projection sparkline. Climbing curve from sell-now
+              floor (2.1M, dashed) to year-5 hold value (2.42M). */}
+          <div className="w-full h-[2vw]">
+            <KpiSparkline
+              series={[2.10, 2.16, 2.22, 2.29, 2.36, 2.42]}
+              colour={colour}
+              delay={delay + 0.1}
+              target={2.10}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-[0.4vw]">
+            <div>
+              <div className="text-[1.2vw] text-white/40 mb-[0.1vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>Sell now</div>
+              <div className="text-[1.55vw] tabular-nums" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-display, serif)" }}>2.1M</div>
+            </div>
+            <div className="text-right">
+              <div className="text-[1.2vw] text-white/40 mb-[0.1vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>Hold &amp; exit y5</div>
+              <div className="text-[1.55vw] tabular-nums" style={{ color: colour, fontFamily: "var(--font-display, serif)" }}>2.42M</div>
+            </div>
+          </div>
+        </div>
+      );
+    case "refi":
+      // Rate comparison — label per bar (clearer than the side-by-side
+      // header), thicker bars (0.5vw → 0.75vw), labelled value on the
+      // right of each bar so the user reads "Current 4.2%" / "New 3.6%"
+      // without scanning a separate header row. Savings line promoted
+      // to a prominent positive-tone chip.
+      return (
+        <div className="space-y-[0.35vw]">
+          {[
+            { label: "Current", rate: "4.2%", v: 100, accent: false },
+            { label: "New",     rate: "3.6%", v: 86,  accent: true  },
+          ].map((r) => (
+            <div key={r.label}>
+              <div className="flex items-baseline justify-between mb-[0.1vw]">
+                <span className="text-[1.2vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.label}</span>
+                <span className="text-[1.3vw] tabular-nums" style={{ color: r.accent ? colour : "rgba(255,255,255,0.75)", fontFamily: "var(--font-sans, sans-serif)" }}>{r.rate}</span>
+              </div>
+              <div className="h-[0.75vw] rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.07)" }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${r.v}%` }}
+                  transition={{ duration: 0.9, delay: delay + (r.accent ? 0.2 : 0), ease: [0.16, 1, 0.3, 1] }}
+                  className="h-full rounded-full"
+                  style={{ backgroundColor: r.accent ? colour : "rgba(255,255,255,0.3)" }}
+                />
+              </div>
+            </div>
+          ))}
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: delay + 0.55 }}
+            className="inline-flex items-center gap-[0.3vw] px-[0.5vw] py-[0.2vw] rounded-md text-[1.2vw] tabular-nums"
+            style={{ backgroundColor: `${POSITIVE}1a`, color: POSITIVE, border: `1px solid ${POSITIVE}40`, fontFamily: "var(--font-sans, sans-serif)" }}
+          >
+            <span>↓</span><span>Saves AED 8.2k/yr</span>
+          </motion.div>
+        </div>
+      );
+    case "str":
+      // Seasonal STR bars with a dashed long-let baseline overlaid.
+      // The previous version just showed STR bars — you couldn't tell
+      // visually whether STR was beating long-let on any given month.
+      // The dashed reference line at ~55% makes "above-the-line months
+      // = STR wins" instantly readable. Peak/trough months tinted
+      // amber/dim so the seasonal variance reads at a glance.
+      return (
+        <div>
+          <div className="flex items-baseline justify-between mb-[0.25vw]">
+            <span className="text-[1.25vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>STR monthly</span>
+            <span className="text-[1.3vw] tabular-nums" style={{ color: colour, fontFamily: "var(--font-sans, sans-serif)" }}>+ AED 24.4k/yr</span>
+          </div>
+          <div className="relative flex items-end gap-[0.15vw]" style={{ height: "2.4vw" }}>
+            {/* Long-let baseline — dashed horizontal at ~55% height. */}
+            <div
+              className="absolute left-0 right-0 z-10 pointer-events-none"
+              style={{
+                bottom: "55%",
+                borderTop: `1px dashed rgba(255,255,255,0.3)`,
+              }}
+            />
+            {[80, 72, 60, 45, 35, 30, 40, 50, 60, 70, 85, 95].map((h, i) => {
+              // Above baseline = STR wins (use accent colour at full
+              // opacity); below baseline = STR loses (dimmer).
+              const aboveBaseline = h >= 55
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${h}%` }}
+                  transition={{ duration: 0.5, delay: delay + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex-1 rounded-t-sm"
+                  style={{
+                    backgroundColor: aboveBaseline ? colour : `${colour}55`,
+                    minHeight: "2px",
+                  }}
+                />
+              )
+            })}
+          </div>
+          <div className="flex items-baseline justify-between mt-[0.2vw] text-[1.1vw] text-white/35" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+            <span>Jan</span>
+            <span style={{ color: "rgba(255,255,255,0.55)" }}>--- long-let</span>
+            <span>Dec</span>
+          </div>
+        </div>
+      );
+    case "portfolio":
+      // Roll-up across N properties. Replaced the previous flat-dot
+      // strip with per-property vertical yield bars — each bar's
+      // height reflects the property's relative yield, colour-coded
+      // for healthy vs flagged. A dashed portfolio-average line sits
+      // at 5.8% so the user sees instantly which properties are
+      // pulling the average up vs down. More informative at the same
+      // footprint.
+      return (
+        <div className="space-y-[0.35vw]">
+          <div className="flex items-baseline justify-between">
+            <div>
+              <div className="text-[1.2vw] uppercase tracking-wider text-white/40" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>Portfolio yield</div>
+              <div className="text-[2.15vw] tabular-nums leading-none mt-[0.1vw]" style={{ color: colour, fontFamily: "var(--font-display, serif)" }}>5.8%</div>
+            </div>
+            <div className="text-right">
+              <div className="text-[1.2vw] uppercase tracking-wider text-white/40" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>Equity</div>
+              <div className="text-[1.55vw] tabular-nums mt-[0.1vw]" style={{ color: "rgba(255,255,255,0.85)", fontFamily: "var(--font-sans, sans-serif)" }}>AED 4.2m</div>
+            </div>
+          </div>
+          {/* Per-property yield bars. Height = relative yield (0–9%
+              range). Amber = flagged underperformer. Dashed line =
+              portfolio average. */}
+          <div className="relative flex items-end gap-[0.2vw]" style={{ height: "1.8vw" }}>
+            <div
+              className="absolute left-0 right-0 z-10 pointer-events-none"
+              style={{ bottom: "65%", borderTop: "1px dashed rgba(255,255,255,0.35)" }}
+            />
+            {[
+              { h: 85, flagged: false },
+              { h: 78, flagged: false },
+              { h: 72, flagged: false },
+              { h: 30, flagged: true },
+              { h: 80, flagged: false },
+              { h: 76, flagged: false },
+              { h: 35, flagged: true },
+              { h: 82, flagged: false },
+            ].map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: `${p.h}%`, opacity: 1 }}
+                transition={{ duration: 0.5, delay: delay + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="flex-1 rounded-t-sm"
+                style={{ backgroundColor: p.flagged ? WARNING : POSITIVE, minHeight: "2px" }}
+              />
+            ))}
+          </div>
+          <div className="flex items-baseline justify-between text-[1.15vw] text-white/40" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+            <span>8 properties</span>
+            <span>--- avg 5.8%</span>
+            <span style={{ color: WARNING }}>2 flagged</span>
+          </div>
+        </div>
+      );
+    default:
+      return null;
+  }
+}
+
+function ToolIcon({ kind, colour }: { kind: string; colour: string }) {
+  const props = {
+    width: "55%",
+    height: "55%",
+    viewBox: "0 0 24 24",
+    fill: "none" as const,
+    stroke: colour,
+    strokeWidth: "1.8",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (kind) {
+    case "irr":
+      return (<svg {...props}><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 14 L7 17 M12 9 L12 17 M17 11 L17 17" /></svg>);
+    case "rent":
+      return (<svg {...props}><path d="M4 10 L4 21 L20 21 L20 10" /><path d="M2 10 L12 3 L22 10" /></svg>);
+    case "holdsell":
+      return (<svg {...props}><circle cx="12" cy="12" r="9" /><path d="M9 13 L11 15 L15 9" /></svg>);
+    case "refi":
+      return (<svg {...props}><path d="M4 8 L20 8 M16 4 L20 8 L16 12" /><path d="M20 16 L4 16 M8 12 L4 16 L8 20" /></svg>);
+    case "str":
+      return (<svg {...props}><circle cx="12" cy="12" r="9" /><path d="M3 12 L21 12" /><path d="M12 3 A12 12 0 0 1 12 21 A12 12 0 0 1 12 3" /></svg>);
+    case "portfolio":
+      return (<svg {...props}><rect x="3" y="3" width="7" height="9" /><rect x="14" y="3" width="7" height="5" /><rect x="14" y="12" width="7" height="9" /><rect x="3" y="16" width="7" height="5" /></svg>);
+    default:
+      return null;
+  }
+}
+
 // ── Scene 36: Step 6 — Compare scenarios ────────────────────────────────────
-// Each card shows a concrete set of test inputs + the modelled outputs +
-// delta-vs-base. Designed to read as a real scenario tool, not a marketing
-// mockup — the viewer should immediately see that changing one input ripples
-// through to yield, cashflow and IRR.
+// Each card is a rich, lived-in scenario card:
+//   • Top accent stripe (grey for base, green for positive scenarios)
+//   • Hero "Net yield" number with up/down arrow + delta pill
+//   • Horizontal comparison bars (yield / cashflow / IRR) showing magnitude
+//     relative to the strongest scenario in the set
+//   • Inputs section with icons + highlighted changed values
+//   • Mini 12-month cashflow sparkline at the bottom, animated draw-in
 interface ScenarioInput { label: string; value: string; highlight?: boolean }
-interface ScenarioOutput { label: string; value: string; delta: string | null }
+interface ScenarioOutput {
+  label: string;
+  value: string;
+  delta: string | null;
+  /** Numeric portion used for the comparison bar magnitude. */
+  numeric: number;
+}
 interface Scenario {
   name: string;
   sub: string;
@@ -3650,58 +4814,74 @@ interface Scenario {
   delay: number;
   inputs: ScenarioInput[];
   outputs: ScenarioOutput[];
+  /** 12 deterministic values for the cashflow sparkline (in AED/month). */
+  cashflowSeries: number[];
 }
 function SceneStep6Scenarios() {
   const SCENARIOS: Scenario[] = [
     {
       name: "Base case",
       sub: "Today's rent · no changes",
-      tone: "neutral" as const,
+      tone: "neutral",
       delay: 0.5,
       inputs: [
-        { label: "Annual rent",   value: "AED 142,000" },
-        { label: "Occupancy",     value: "12 months" },
-        { label: "Service charge", value: "AED 18,400" },
+        { label: "Annual rent",     value: "AED 142,000" },
+        { label: "Occupancy",       value: "12 months" },
+        { label: "Service charge",  value: "AED 18,400" },
       ],
       outputs: [
-        { label: "Net yield",         value: "5.8%",        delta: null },
-        { label: "Annual cashflow",   value: "AED 28,400",  delta: null },
-        { label: "5yr IRR",           value: "12.4%",       delta: null },
+        { label: "Net yield",       value: "5.8%",       delta: null, numeric: 5.8 },
+        { label: "Annual cashflow", value: "AED 28,400", delta: null, numeric: 28400 },
+        { label: "5yr IRR",         value: "12.4%",      delta: null, numeric: 12.4 },
       ],
+      // Flat-ish monthly cashflow with seasonal dips (lease anniversary, voids)
+      cashflowSeries: [2300, 2350, 2400, 2450, 2300, 2200, 2350, 2400, 2450, 2380, 2300, 2520],
     },
     {
       name: "Improved rent",
       sub: "Uplift to market at next renewal",
-      tone: "positive" as const,
+      tone: "positive",
       delay: 1.0,
       inputs: [
-        { label: "Annual rent",   value: "AED 156,000", highlight: true },
-        { label: "Occupancy",     value: "12 months" },
-        { label: "Service charge", value: "AED 18,400" },
+        { label: "Annual rent",     value: "AED 156,000", highlight: true },
+        { label: "Occupancy",       value: "12 months" },
+        { label: "Service charge",  value: "AED 18,400" },
       ],
       outputs: [
-        { label: "Net yield",         value: "6.6%",        delta: "+0.8 pp" },
-        { label: "Annual cashflow",   value: "AED 40,200",  delta: "+ AED 11.8k" },
-        { label: "5yr IRR",           value: "13.9%",       delta: "+1.5 pp" },
+        { label: "Net yield",       value: "6.6%",       delta: "+0.8 pp",       numeric: 6.6 },
+        { label: "Annual cashflow", value: "AED 40,200", delta: "+ AED 11.8k",   numeric: 40200 },
+        { label: "5yr IRR",         value: "13.9%",      delta: "+1.5 pp",       numeric: 13.9 },
       ],
+      // Step up at month 4 (renewal date), then steady at higher level
+      cashflowSeries: [2300, 2350, 2400, 3350, 3400, 3380, 3420, 3450, 3400, 3470, 3500, 3580],
     },
     {
       name: "Switch to STR",
       sub: "Short-term let · operator-managed",
-      tone: "positive" as const,
+      tone: "positive",
       delay: 1.5,
       inputs: [
-        { label: "Annual rent",    value: "AED 198,000", highlight: true },
-        { label: "Occupancy",      value: "78%",         highlight: true },
-        { label: "Operator fee",   value: "20%" },
+        { label: "Annual rent",     value: "AED 198,000", highlight: true },
+        { label: "Occupancy",       value: "78%",         highlight: true },
+        { label: "Operator fee",    value: "20%" },
       ],
       outputs: [
-        { label: "Net yield",         value: "7.4%",        delta: "+1.6 pp" },
-        { label: "Annual cashflow",   value: "AED 52,800",  delta: "+ AED 24.4k" },
-        { label: "5yr IRR",           value: "15.1%",       delta: "+2.7 pp" },
+        { label: "Net yield",       value: "7.4%",       delta: "+1.6 pp",       numeric: 7.4 },
+        { label: "Annual cashflow", value: "AED 52,800", delta: "+ AED 24.4k",   numeric: 52800 },
+        { label: "5yr IRR",         value: "15.1%",      delta: "+2.7 pp",       numeric: 15.1 },
       ],
+      // STR seasonality: high in winter (Q1, Q4), dip in summer
+      cashflowSeries: [5800, 5500, 4900, 3800, 3200, 2800, 3100, 3500, 4200, 5100, 5900, 6400],
     },
   ];
+
+  // Max values across the set — used to size the comparison bars relative
+  // to the strongest scenario. Adds a small headroom (×1.05) so the leader
+  // doesn't fully fill its bar (looks pinned/awkward at 100%).
+  const maxYield     = Math.max(...SCENARIOS.map((s) => s.outputs[0].numeric)) * 1.05;
+  const maxCashflow  = Math.max(...SCENARIOS.map((s) => s.outputs[1].numeric)) * 1.05;
+  const maxIrr       = Math.max(...SCENARIOS.map((s) => s.outputs[2].numeric)) * 1.05;
+  const maxes        = [maxYield, maxCashflow, maxIrr];
 
   return (
     <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
@@ -3710,7 +4890,7 @@ function SceneStep6Scenarios() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[1.5vw]"
+        className="text-[3vw] text-white leading-tight mb-[1.5vw]"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Same property. Three test cases. Compared in one view.
@@ -3718,136 +4898,266 @@ function SceneStep6Scenarios() {
       <div className="flex-1 grid grid-cols-3 gap-[1.2vw]">
         {SCENARIOS.map((s, i) => {
           const isPositive = s.tone === "positive";
+          const accentTone = isPositive ? POSITIVE : "rgba(255,255,255,0.35)";
+          const yieldOut = s.outputs[0];
           return (
             <motion.div
               key={s.name}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: s.delay }}
-              className="rounded-xl p-[1.2vw] flex flex-col"
+              className="relative rounded-xl flex flex-col overflow-hidden"
               style={{
-                backgroundColor: isPositive ? `${POSITIVE}10` : "rgba(255,255,255,0.04)",
-                border: isPositive ? `1px solid ${POSITIVE}40` : "1px solid rgba(255,255,255,0.1)",
+                background: isPositive
+                  ? `linear-gradient(180deg, ${POSITIVE}14 0%, rgba(255,255,255,0.025) 60%)`
+                  : "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 60%)",
+                border: isPositive ? `1px solid ${POSITIVE}40` : "1px solid rgba(255,255,255,0.12)",
               }}
             >
-              {/* Header */}
-              <div className="flex items-baseline justify-between mb-[0.2vw]">
-                <div
-                  className="text-[0.8vw] uppercase tracking-wider"
-                  style={{
-                    fontFamily: "var(--font-sans, sans-serif)",
-                    color: isPositive ? POSITIVE : "rgba(255,255,255,0.5)",
-                  }}
-                >
-                  Scenario {i + 1}
-                </div>
-                {isPositive && (
-                  <div
-                    className="text-[0.7vw] uppercase tracking-wider px-[0.4vw] py-[0.15vw] rounded"
-                    style={{
-                      fontFamily: "var(--font-sans, sans-serif)",
-                      backgroundColor: POSITIVE,
-                      color: "white",
-                    }}
-                  >
-                    ↑ vs base
-                  </div>
-                )}
-              </div>
+              {/* Top accent stripe — 6px high band along the top edge */}
               <div
-                className="text-[1.5vw] text-white leading-tight"
-                style={{ fontFamily: "var(--font-display, serif)" }}
-              >
-                {s.name}
-              </div>
-              <div
-                className="text-[0.9vw] text-white/55 mb-[0.9vw]"
-                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
-              >
-                {s.sub}
-              </div>
-
-              {/* Inputs section */}
-              <div
-                className="text-[0.7vw] uppercase tracking-wider text-white/40 mb-[0.35vw]"
-                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
-              >
-                Inputs
-              </div>
-              <div className="space-y-[0.2vw] mb-[0.9vw]">
-                {s.inputs.map((r) => (
-                  <div key={r.label} className="flex items-center justify-between">
-                    <span
-                      className="text-[0.85vw] text-white/55"
-                      style={{ fontFamily: "var(--font-sans, sans-serif)" }}
-                    >
-                      {r.label}
-                    </span>
-                    <span
-                      className="text-[0.95vw] tabular-nums"
-                      style={{
-                        fontFamily: "var(--font-sans, sans-serif)",
-                        color: r.highlight ? ACCENT : "rgba(255,255,255,0.92)",
-                        fontWeight: r.highlight ? 600 : 400,
-                      }}
-                    >
-                      {r.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Divider */}
-              <div
-                className="h-px w-full mb-[0.6vw]"
-                style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
+                className="h-[0.4vw] w-full"
+                style={{ backgroundColor: accentTone }}
               />
 
-              {/* Outputs section */}
-              <div
-                className="text-[0.7vw] uppercase tracking-wider text-white/40 mb-[0.35vw]"
-                style={{ fontFamily: "var(--font-sans, sans-serif)" }}
-              >
-                Modelled outputs
-              </div>
-              <div className="space-y-[0.5vw] mt-auto">
-                {s.outputs.map((o) => (
-                  <div key={o.label}>
-                    <div
-                      className="text-[0.75vw] uppercase tracking-wider text-white/45"
-                      style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+              <div className="p-[1.2vw] flex-1 flex flex-col">
+                {/* ── Header ─────────────────────────────────────────────── */}
+                <div className="flex items-center justify-between mb-[0.4vw]">
+                  <div className="flex items-center gap-[0.4vw]">
+                    <span
+                      className="inline-flex items-center justify-center w-[1.4vw] h-[1.4vw] rounded-full text-[1.3vw] font-semibold"
+                      style={{
+                        backgroundColor: isPositive ? POSITIVE : "rgba(255,255,255,0.12)",
+                        color: "white",
+                        fontFamily: "var(--font-sans, sans-serif)",
+                      }}
                     >
-                      {o.label}
+                      {i + 1}
+                    </span>
+                    <span
+                      className="text-[1.3vw] uppercase tracking-wider"
+                      style={{
+                        fontFamily: "var(--font-sans, sans-serif)",
+                        color: isPositive ? POSITIVE : "rgba(255,255,255,0.5)",
+                      }}
+                    >
+                      Scenario {i + 1}
+                    </span>
+                  </div>
+                  {isPositive && (
+                    <div
+                      className="inline-flex items-center gap-[0.25vw] text-[1.25vw] uppercase tracking-wider px-[0.5vw] py-[0.15vw] rounded-full"
+                      style={{
+                        fontFamily: "var(--font-sans, sans-serif)",
+                        backgroundColor: POSITIVE,
+                        color: "white",
+                      }}
+                    >
+                      <svg width="1.25vw" height="1.25vw" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M12 4 L20 14 L14 14 L14 20 L10 20 L10 14 L4 14 Z" />
+                      </svg>
+                      vs base
                     </div>
-                    <div className="flex items-baseline gap-[0.5vw]">
+                  )}
+                </div>
+                <div
+                  className="text-[2.15vw] text-white leading-tight"
+                  style={{ fontFamily: "var(--font-display, serif)" }}
+                >
+                  {s.name}
+                </div>
+                <div
+                  className="text-[1.45vw] text-white/55 mb-[1vw]"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {s.sub}
+                </div>
+
+                {/* ── Hero number: Net yield ───────────────────────────── */}
+                <div
+                  className="rounded-lg p-[0.9vw] mb-[1vw]"
+                  style={{
+                    backgroundColor: isPositive ? `${POSITIVE}1a` : "rgba(255,255,255,0.05)",
+                    border: isPositive ? `1px solid ${POSITIVE}33` : "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
+                  <div
+                    className="text-[1.25vw] uppercase tracking-wider text-white/45 mb-[0.15vw]"
+                    style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    Net yield
+                  </div>
+                  <div className="flex items-baseline gap-[0.6vw]">
+                    <span
+                      className="text-[3.7vw] tabular-nums leading-none"
+                      style={{
+                        fontFamily: "var(--font-display, serif)",
+                        color: isPositive ? POSITIVE : "white",
+                      }}
+                    >
+                      {yieldOut.value}
+                    </span>
+                    {yieldOut.delta && (
                       <span
-                        className="text-[1.4vw] tabular-nums leading-none"
+                        className="inline-flex items-center gap-[0.2vw] text-[1.45vw] tabular-nums"
                         style={{
-                          fontFamily: "var(--font-display, serif)",
-                          color: isPositive ? POSITIVE : "white",
+                          fontFamily: "var(--font-sans, sans-serif)",
+                          color: POSITIVE,
                         }}
                       >
-                        {o.value}
+                        <svg width="1.3vw" height="1.3vw" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                          <path d="M12 4 L20 14 L14 14 L14 20 L10 20 L10 14 L4 14 Z" />
+                        </svg>
+                        {yieldOut.delta}
                       </span>
-                      {o.delta && (
+                    )}
+                  </div>
+                </div>
+
+                {/* ── Comparison bars ──────────────────────────────────── */}
+                <div className="mb-[1vw] space-y-[0.5vw]">
+                  {s.outputs.map((o, oi) => {
+                    const pct = Math.max(6, Math.min(100, (o.numeric / maxes[oi]) * 100));
+                    return (
+                      <div key={o.label}>
+                        <div className="flex items-baseline justify-between mb-[0.15vw]">
+                          <span
+                            className="text-[1.25vw] uppercase tracking-wider text-white/50"
+                            style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                          >
+                            {oi === 0 ? "Yield" : oi === 1 ? "Cashflow" : "5yr IRR"}
+                          </span>
+                          <span
+                            className="text-[1.45vw] tabular-nums"
+                            style={{
+                              fontFamily: "var(--font-sans, sans-serif)",
+                              color: "white",
+                            }}
+                          >
+                            {o.value}
+                          </span>
+                        </div>
+                        <div
+                          className="h-[0.5vw] rounded-full overflow-hidden"
+                          style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
+                        >
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${pct}%` }}
+                            transition={{ duration: 0.9, delay: s.delay + 0.5 + oi * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                            className="h-full rounded-full"
+                            style={{ backgroundColor: accentTone }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* ── Inputs strip ─────────────────────────────────────── */}
+                <div
+                  className="rounded-lg p-[0.7vw] mb-[0.7vw]"
+                  style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+                >
+                  <div
+                    className="text-[1.2vw] uppercase tracking-wider text-white/40 mb-[0.3vw]"
+                    style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    Inputs
+                  </div>
+                  <div className="space-y-[0.15vw]">
+                    {s.inputs.map((r) => (
+                      <div key={r.label} className="flex items-center justify-between">
                         <span
-                          className="text-[0.8vw] tabular-nums"
+                          className="inline-flex items-center gap-[0.35vw] text-[1.35vw] text-white/55"
+                          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                        >
+                          <span
+                            className="inline-block w-[0.35vw] h-[0.35vw] rounded-full"
+                            style={{ backgroundColor: r.highlight ? ACCENT : "rgba(255,255,255,0.25)" }}
+                          />
+                          {r.label}
+                        </span>
+                        <span
+                          className="text-[1.45vw] tabular-nums"
                           style={{
                             fontFamily: "var(--font-sans, sans-serif)",
-                            color: POSITIVE,
+                            color: r.highlight ? ACCENT : "rgba(255,255,255,0.92)",
+                            fontWeight: r.highlight ? 600 : 400,
                           }}
                         >
-                          {o.delta}
+                          {r.value}
                         </span>
-                      )}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                {/* ── Cashflow sparkline (12-month projection) ─────────── */}
+                <div className="mt-auto">
+                  <div className="flex items-baseline justify-between mb-[0.3vw]">
+                    <span
+                      className="text-[1.2vw] uppercase tracking-wider text-white/40"
+                      style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                    >
+                      Cashflow · 12 months
+                    </span>
+                    <span
+                      className="text-[1.25vw] tabular-nums"
+                      style={{
+                        fontFamily: "var(--font-mono, monospace)",
+                        color: accentTone,
+                      }}
+                    >
+                      avg {Math.round(s.cashflowSeries.reduce((a, b) => a + b, 0) / 12).toLocaleString()}
+                    </span>
+                  </div>
+                  <CashflowSparkline
+                    series={s.cashflowSeries}
+                    colour={accentTone}
+                    delay={s.delay + 0.9}
+                  />
+                </div>
               </div>
             </motion.div>
           );
         })}
       </div>
+    </div>
+  );
+}
+
+// Animated 12-bar cashflow sparkline. Bars draw upward from the baseline
+// with a staggered delay so the eye reads the trend left-to-right.
+function CashflowSparkline({
+  series,
+  colour,
+  delay,
+}: {
+  series: number[];
+  colour: string;
+  delay: number;
+}) {
+  const max = Math.max(...series);
+  return (
+    <div className="flex items-end justify-between gap-[0.15vw]" style={{ height: "2.6vw" }}>
+      {series.map((v, i) => {
+        const h = Math.max(8, (v / max) * 100);
+        return (
+          <motion.div
+            key={i}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: `${h}%`, opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: delay + i * 0.05,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="flex-1 rounded-t-sm"
+            style={{ backgroundColor: colour, minHeight: "2px" }}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -3878,7 +5188,7 @@ function SceneStep7AIInsights() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        className="text-[3vw] text-white leading-tight mb-[2vw]"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Real recommendations, not just data.
@@ -3897,7 +5207,7 @@ function SceneStep7AIInsights() {
               style={{ backgroundColor: `${ACCENT}25` }}
             >
               <span
-                className="text-[1.2vw] font-semibold"
+                className="text-[1.85vw] font-semibold"
                 style={{ color: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
               >
                 AI
@@ -3905,13 +5215,13 @@ function SceneStep7AIInsights() {
             </div>
             <div>
               <div
-                className="text-[1.4vw] text-white mb-[0.3vw]"
+                className="text-[2.05vw] text-white mb-[0.3vw]"
                 style={{ fontFamily: "var(--font-display, serif)" }}
               >
                 {r.heading}
               </div>
               <div
-                className="text-[1.05vw] text-white/60 leading-snug"
+                className="text-[1.65vw] text-white/60 leading-snug"
                 style={{ fontFamily: "var(--font-sans, sans-serif)" }}
               >
                 {r.detail}
@@ -3926,6 +5236,8 @@ function SceneStep7AIInsights() {
 
 // ── Scene 38: Step 8 — Export / share ───────────────────────────────────────
 function SceneStep8Export() {
+  // Cashflow mini-chart bars for the in-report visualisation.
+  const REPORT_BARS = [2.3, 2.4, 2.5, 2.4, 2.5, 2.6, 2.5, 2.6, 2.5, 2.7, 2.6, 2.8];
   return (
     <div className="absolute inset-0 pt-[5%] pb-[5%] px-[8%] flex flex-col">
       <StepBadge n={8} label="Export a clear report" />
@@ -3933,79 +5245,316 @@ function SceneStep8Export() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="text-[2.6vw] text-white leading-tight mb-[2vw]"
+        className="text-[3vw] text-white leading-tight mb-[1.2vw]"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Share with your advisor, lender, or partners.
       </motion.div>
-      <div className="flex-1 grid grid-cols-[1.3fr_1fr] gap-[2vw] items-center">
-        {/* Report preview */}
+      <div className="flex-1 grid grid-cols-[1.5fr_1fr] gap-[1.5vw] items-stretch min-h-0">
+        {/* ── LEFT — Rich, multi-section report preview ─────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="rounded-lg bg-white shadow-2xl p-[1.8vw] relative"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="rounded-xl bg-white shadow-2xl flex flex-col overflow-hidden relative"
         >
-          <div className="flex items-center justify-between mb-[1vw]">
-            <div>
-              <div className="text-[0.85vw] uppercase tracking-wider text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-                AssetCentral · Property report
+          {/* Top brand strip — co-branded with agency */}
+          <div
+            className="px-[1.5vw] py-[0.9vw] flex items-center justify-between"
+            style={{ background: `linear-gradient(90deg, ${NAVY} 0%, #14182f 100%)` }}
+          >
+            <div className="flex items-center gap-[0.8vw]">
+              <div
+                className="w-[2vw] h-[2vw] rounded-md flex items-center justify-center text-white text-[1.05vw] font-semibold"
+                style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                AC
               </div>
-              <div className="text-[1.4vw] text-gray-900 mt-[0.2vw]" style={{ fontFamily: "var(--font-display, serif)" }}>
-                12 Marina Mansions, Dubai
+              <div>
+                <div className="text-[1.6vw] text-white leading-none" style={{ fontFamily: "var(--font-display, serif)" }}>
+                  Property Report
+                </div>
+                <div className="text-[1vw] text-white/55 mt-[0.2vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                  AssetCentral · Q2 2026
+                </div>
               </div>
             </div>
-            <div className="text-[0.85vw] text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-              May 2026
+            <div className="text-right">
+              <div
+                className="text-[0.95vw] uppercase tracking-wider"
+                style={{ color: "rgba(255,255,255,0.45)", fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                Prepared for
+              </div>
+              <div className="text-[1.2vw] text-white mt-[0.1vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                S. Reynolds · Owner
+              </div>
             </div>
           </div>
-          {[
-            { l: "Net yield",    v: "5.8%" },
-            { l: "Cashflow",     v: "AED 28,400 / yr" },
-            { l: "5yr IRR",      v: "12.4%" },
-            { l: "Risk flags",   v: "Rate reset 90d" },
-          ].map((r, i) => (
+
+          <div className="p-[1.2vw] flex-1 flex flex-col gap-[0.9vw]">
+            {/* Property header */}
             <motion.div
-              key={r.l}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 1.0 + i * 0.15 }}
-              className="flex items-center justify-between py-[0.5vw] border-b border-gray-100"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="flex items-end justify-between"
             >
-              <span className="text-[1vw] text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.l}</span>
-              <span className="text-[1.1vw] text-gray-900 tabular-nums" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.v}</span>
+              <div>
+                <div
+                  className="text-[0.95vw] uppercase tracking-wider text-gray-400"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  Subject property
+                </div>
+                <div
+                  className="text-[2vw] text-gray-900 mt-[0.1vw] leading-tight"
+                  style={{ fontFamily: "var(--font-display, serif)" }}
+                >
+                  12 Marina Mansions, Dubai
+                </div>
+                <div
+                  className="text-[1.1vw] text-gray-500 mt-[0.2vw]"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  2-bed · 1,100 sqft · Acquired Mar 2024
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[0.95vw] uppercase tracking-wider text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                  Verdict
+                </div>
+                <div
+                  className="inline-flex items-center gap-[0.35vw] text-[1.1vw] uppercase tracking-wider px-[0.5vw] py-[0.2vw] rounded-md mt-[0.2vw]"
+                  style={{ backgroundColor: `${POSITIVE}1a`, color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  <span className="inline-block w-[0.4vw] h-[0.4vw] rounded-full" style={{ backgroundColor: POSITIVE }} />
+                  Hold &amp; uplift rent
+                </div>
+              </div>
             </motion.div>
-          ))}
+
+            {/* KPI row */}
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="grid grid-cols-4 gap-[0.6vw]"
+            >
+              {[
+                { l: "Net yield",    v: "5.8%",          tone: POSITIVE },
+                { l: "Cashflow",     v: "AED 28.4k",     sub: "/yr",     tone: POSITIVE },
+                { l: "5yr IRR",      v: "12.4%",         tone: POSITIVE },
+                { l: "Risk",         v: "1",             sub: "flag",    tone: WARNING },
+              ].map((k) => (
+                <div
+                  key={k.l}
+                  className="rounded-md px-[0.7vw] py-[0.55vw]"
+                  style={{ backgroundColor: "rgba(0,0,0,0.03)" }}
+                >
+                  <div className="text-[0.9vw] uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                    {k.l}
+                  </div>
+                  <div className="flex items-baseline gap-[0.25vw] mt-[0.1vw]">
+                    <span className="text-[1.6vw] tabular-nums leading-none" style={{ fontFamily: "var(--font-display, serif)", color: k.tone }}>
+                      {k.v}
+                    </span>
+                    {k.sub && <span className="text-[0.85vw] text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{k.sub}</span>}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Cashflow chart section */}
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.1 }}
+              className="rounded-md px-[0.9vw] py-[0.7vw]"
+              style={{ backgroundColor: "rgba(0,0,0,0.025)" }}
+            >
+              <div className="flex items-baseline justify-between mb-[0.4vw]">
+                <span className="text-[1vw] uppercase tracking-wider text-gray-500" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                  Monthly cashflow · 12 months
+                </span>
+                <span className="text-[0.95vw] tabular-nums" style={{ color: POSITIVE, fontFamily: "var(--font-mono, monospace)" }}>
+                  + AED 31.2k YoY
+                </span>
+              </div>
+              <div className="flex items-end gap-[0.18vw]" style={{ height: "3vw" }}>
+                {REPORT_BARS.map((v, i) => {
+                  const h = (v / Math.max(...REPORT_BARS)) * 100;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      animate={{ height: `${h}%` }}
+                      transition={{ duration: 0.5, delay: 1.3 + i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                      className="flex-1 rounded-t-sm"
+                      style={{ backgroundColor: ACCENT, minHeight: "2px" }}
+                    />
+                  );
+                })}
+              </div>
+              <div className="flex justify-between text-[0.85vw] text-gray-400 mt-[0.25vw]" style={{ fontFamily: "var(--font-mono, monospace)" }}>
+                <span>Jun &rsquo;25</span>
+                <span>May &rsquo;26</span>
+              </div>
+            </motion.div>
+
+            {/* Recommended actions strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.4 }}
+              className="grid grid-cols-3 gap-[0.5vw] mt-auto"
+            >
+              {[
+                { n: 1, t: "Uplift rent at renewal", v: "+ AED 11.8k/yr", tone: POSITIVE },
+                { n: 2, t: "Review mortgage rate",   v: "Reset in 90d",    tone: WARNING  },
+                { n: 3, t: "Consider STR scenario",  v: "+ AED 24.4k/yr",  tone: POSITIVE },
+              ].map((a) => (
+                <div key={a.n} className="flex items-start gap-[0.4vw]">
+                  <span
+                    className="inline-flex items-center justify-center shrink-0 w-[1.3vw] h-[1.3vw] rounded-full text-white text-[0.85vw] font-semibold"
+                    style={{ backgroundColor: a.tone, fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {a.n}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-[0.95vw] text-gray-900 leading-tight" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                      {a.t}
+                    </div>
+                    <div className="text-[0.85vw] tabular-nums mt-[0.1vw]" style={{ color: a.tone, fontFamily: "var(--font-sans, sans-serif)" }}>
+                      {a.v}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between mt-[0.3vw] pt-[0.5vw] border-t" style={{ borderTopColor: "rgba(0,0,0,0.06)" }}>
+              <span className="text-[0.85vw] text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                Generated 27 May 2026 · 14 pages
+              </span>
+              <span className="text-[0.85vw] text-gray-400" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                AssetCentral.ai
+              </span>
+            </div>
+          </div>
         </motion.div>
-        {/* Action buttons */}
-        <div className="flex flex-col gap-[1vw]">
+
+        {/* ── RIGHT — Share + export panel ──────────────────────────── */}
+        <div className="flex flex-col gap-[0.9vw] min-h-0">
+          {/* Format options */}
           <motion.div
             initial={{ opacity: 0, x: 8 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 1.0 }}
+            className="rounded-xl border border-white/10 bg-white/[0.03] p-[0.9vw]"
+          >
+            <div className="text-[1vw] uppercase tracking-wider text-white/45 mb-[0.5vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              Export format
+            </div>
+            <div className="grid grid-cols-3 gap-[0.4vw]">
+              {[
+                { l: "PDF",   active: true },
+                { l: "Excel", active: false },
+                { l: "Link",  active: false },
+              ].map((f) => (
+                <div
+                  key={f.l}
+                  className="text-center py-[0.6vw] rounded-md text-[1.05vw]"
+                  style={{
+                    backgroundColor: f.active ? ACCENT : "rgba(255,255,255,0.05)",
+                    color: f.active ? "white" : "rgba(255,255,255,0.65)",
+                    fontFamily: "var(--font-sans, sans-serif)",
+                    fontWeight: f.active ? 600 : 400,
+                    border: f.active ? "none" : "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
+                  {f.l}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Recipients */}
+          <motion.div
+            initial={{ opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
+            className="rounded-xl border border-white/10 bg-white/[0.03] p-[0.9vw] flex-1 min-h-0 overflow-hidden"
+          >
+            <div className="flex items-center justify-between mb-[0.5vw]">
+              <div className="text-[1vw] uppercase tracking-wider text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                Share with
+              </div>
+              <div
+                className="text-[0.85vw] px-[0.4vw] py-[0.1vw] rounded-full"
+                style={{ backgroundColor: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-sans, sans-serif)" }}
+              >
+                3 recipients
+              </div>
+            </div>
+            <div className="space-y-[0.4vw]">
+              {[
+                { name: "S. Reynolds",   role: "Owner / client",       avatar: "SR", colour: "#4f6ef7" },
+                { name: "M. Anand",      role: "Investment advisor",   avatar: "MA", colour: "#16a34a" },
+                { name: "Emirates NBD",  role: "Lender (refi review)", avatar: "EN", colour: "#9ca3af" },
+              ].map((p, i) => (
+                <motion.div
+                  key={p.name}
+                  initial={{ opacity: 0, x: 6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 1.4 + i * 0.12 }}
+                  className="flex items-center gap-[0.6vw] rounded-md px-[0.5vw] py-[0.45vw]"
+                  style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+                >
+                  <div
+                    className="shrink-0 w-[1.7vw] h-[1.7vw] rounded-full inline-flex items-center justify-center text-white text-[0.85vw] font-semibold"
+                    style={{ backgroundColor: p.colour, fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {p.avatar}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[1.1vw] text-white truncate" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                      {p.name}
+                    </div>
+                    <div className="text-[0.9vw] text-white/45 truncate" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+                      {p.role}
+                    </div>
+                  </div>
+                  <svg width="1vw" height="1vw" viewBox="0 0 24 24" fill="none" stroke={POSITIVE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M5 12 L10 17 L19 8" />
+                  </svg>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Primary CTA + secondary action */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 1.8 }}
-            className="rounded-lg px-[1.5vw] py-[1.2vw] text-[1.3vw] font-semibold inline-flex items-center justify-center gap-[0.6vw]"
+            className="rounded-lg px-[1.2vw] py-[0.9vw] inline-flex items-center justify-center gap-[0.6vw] shadow-lg"
             style={{ backgroundColor: ACCENT, color: "white", fontFamily: "var(--font-sans, sans-serif)" }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <svg width="1.3vw" height="1.3vw" viewBox="0 0 24 24" fill="none">
               <path d="M12 4 L12 16 M6 10 L12 16 L18 10 M4 20 L20 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            Export PDF report
+            <span className="text-[1.35vw] font-semibold">Export &amp; send report</span>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 2.1 }}
-            className="rounded-lg px-[1.5vw] py-[1.2vw] text-[1.3vw] inline-flex items-center justify-center gap-[0.6vw]"
-            style={{
-              border: "1px solid rgba(255,255,255,0.2)",
-              color: "white",
-              fontFamily: "var(--font-sans, sans-serif)",
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 2.0 }}
+            className="text-[0.95vw] text-white/50 text-center"
+            style={{ fontFamily: "var(--font-sans, sans-serif)" }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M4 12 L20 12 M14 6 L20 12 L14 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Share with advisor
+            Co-branded with your agency · Encrypted link
           </motion.div>
         </div>
       </div>
@@ -4021,7 +5570,7 @@ function SceneTutorialClose() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="text-[2.6vw] text-white/85 leading-tight"
+        className="text-[3vw] text-white/85 leading-tight"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Real data.
@@ -4030,7 +5579,7 @@ function SceneTutorialClose() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.4 }}
-        className="text-[2.6vw] text-white/85 leading-tight"
+        className="text-[3vw] text-white/85 leading-tight"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Better decisions.
@@ -4039,7 +5588,7 @@ function SceneTutorialClose() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.8 }}
-        className="text-[3vw] leading-tight"
+        className="text-[3.4vw] leading-tight"
         style={{ color: ACCENT, fontFamily: "var(--font-display, serif)" }}
       >
         Better returns.
@@ -4055,7 +5604,7 @@ function SceneTutorialClose() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 2.0 }}
-        className="mt-[1.5vw] text-[1.8vw] text-white"
+        className="mt-[1.5vw] text-[2.15vw] text-white"
         style={{ fontFamily: "var(--font-display, serif)" }}
       >
         Start with one property today.
@@ -4064,7 +5613,7 @@ function SceneTutorialClose() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 2.5 }}
-        className="mt-[0.6vw] text-[1.1vw] text-white/50"
+        className="mt-[0.6vw] text-[1.75vw] text-white/50"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
         AssetCentral.ai · Free to try · No card required
