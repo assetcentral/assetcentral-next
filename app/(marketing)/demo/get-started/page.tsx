@@ -1,7 +1,9 @@
-// "Get started" walkthrough video. Sister page to /demo/60 — same component,
-// different timeline. Where /demo/60 pitches WHAT AssetCentral is, this video
-// shows HOW to actually get going: the four ways to add property data, then
-// the three core outputs (dashboard, alerts, AI insights).
+// "How to Use AssetCentral in 60 Seconds" tutorial walkthrough.
+//
+// Step-labeled beginner tutorial: welcomes the user, then steps through
+// add a property, upload/manual, AI structures, dashboard, choose a tool,
+// compare scenarios, AI insights, and export a report. Plays silent in
+// the browser so the user can layer their own VO + music externally.
 
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -10,9 +12,9 @@ import {
   SHOTS_GET_STARTED,
 } from "@/components/marketing/ExplainerVideoV2";
 
-const TITLE = "How to get started with AssetCentral";
+const TITLE = "How to Use AssetCentral in 60 Seconds";
 const DESCRIPTION =
-  "Setting up your first property takes minutes. Type an address, upload a document, forward an email, or snap a WhatsApp photo — then see real net yield, alerts and AI insights.";
+  "A short, beginner-friendly walkthrough: add a property, see the numbers, compare scenarios, and export a clear report. No financial-modelling experience required.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -29,40 +31,17 @@ export const metadata: Metadata = {
 const NAVY = "#0a0e27";
 const ACCENT = "#4f6ef7";
 
-// Four ways in — restated below the video so visitors who skim or finish the
-// video have a written summary to scan and act on.
-const WAYS = [
-  {
-    title: "Type the address",
-    note: "Auto-populates market rents, comps and DLD/HMRC/MLS ownership data.",
-  },
-  {
-    title: "Upload a document",
-    note: "Drag in a lease, mortgage statement, invoice — AI reads dates, amounts and terms.",
-  },
-  {
-    title: "Forward an email",
-    note: "Each property gets a unique inbox address. Rent statements file themselves.",
-  },
-  {
-    title: "Snap on WhatsApp",
-    note: "Take a photo of an invoice on your phone — it lands in the right property in seconds.",
-  },
-];
-
-const OUTPUTS = [
-  {
-    title: "Live dashboard",
-    note: "Real net yield, monthly cashflow, debt status — per property and portfolio-wide.",
-  },
-  {
-    title: "Smart alerts",
-    note: "Rate resets, voids, covenant breaches, renewal decisions — surfaced before they cost you.",
-  },
-  {
-    title: "AI insights",
-    note: "Ask any question. Sell vs hold, refinance timing, operator performance — modelled in real IRR.",
-  },
+// Eight numbered steps shown below the video — gives skimmers and finished
+// viewers a written summary they can scan and act on.
+const STEPS = [
+  { title: "Add your property",        note: "Enter the address, purchase price, rent, financing, and ownership basics." },
+  { title: "Add your data",            note: "Upload a file, enter manually, forward an email, or send a photo via WhatsApp — AI handles the rest." },
+  { title: "AI structures it",         note: "Scattered files become a clean investment view: price, rent, tenant, financing." },
+  { title: "See the key numbers",      note: "Rental income, net yield, cashflow, IRR, and risk flags — at a glance." },
+  { title: "Choose the right tool",    note: "IRR, rent review, hold/sell, refinance, STR vs long-let, portfolio roll-up." },
+  { title: "Compare scenarios",        note: "See how rent uplifts, refinance, or an exit change the return." },
+  { title: "AI explains the numbers",  note: "Specific actions to consider — not just data, real recommendations." },
+  { title: "Export a clear report",    note: "Share with your advisor, lender, or partners as a PDF or a link." },
 ];
 
 export default function GetStartedPage() {
@@ -81,21 +60,21 @@ export default function GetStartedPage() {
             className="text-[42px] sm:text-[52px] lg:text-[64px] leading-[1.05] tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Setting up your first property takes minutes.
+            How to use AssetCentral in 60 seconds.
           </h1>
           <p
             className="mt-6 text-[17px] sm:text-[19px] lg:text-[21px] leading-[1.55] text-white/80 max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Four ways to get going. Type an address, upload a document, forward an
-            email, or snap a photo on WhatsApp. AI does the rest — and you get
-            real net yield, alerts and decisions on day one.
+            A short, beginner-friendly walkthrough. Add a property, see the
+            numbers, compare scenarios, and export a clear report — no
+            financial-modelling experience required.
           </p>
           <p
             className="mt-7 text-[20px] sm:text-[24px] lg:text-[28px] leading-tight"
             style={{ fontFamily: "var(--font-display)", color: ACCENT }}
           >
-            Get going in 90 seconds.
+            Real data. Better decisions. Better returns.
           </p>
         </div>
       </section>
@@ -108,97 +87,121 @@ export default function GetStartedPage() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <h2 className="text-[18px] lg:text-[22px]" style={{ fontFamily: "var(--font-display)" }}>
-              How to get going
+              The 60-second tutorial
             </h2>
             <span className="text-[12.5px] lg:text-[13.5px] text-white/55">
-              90-second walkthrough · audio recommended
+              8 steps · silent walkthrough
             </span>
           </div>
         </div>
-        <div className="mx-auto max-w-5xl sm:px-6 lg:px-10">
+        {/* Video — md+ only. Same reason as /demo/60: the 1920×1080
+            canvas inside ExplainerVideoV2 scales unreadably small on
+            phones. We render a step-by-step text equivalent below at
+            <md so phone visitors actually learn how to get started
+            rather than squinting at a 2px-tall scene. */}
+        <div className="hidden md:block mx-auto max-w-5xl sm:px-6 lg:px-10">
           <div className="overflow-hidden sm:rounded-xl sm:border sm:border-white/10 sm:shadow-2xl">
             <ExplainerVideoV2
               embedded
               shots={SHOTS_GET_STARTED}
               subtitles={[]}
               silent
-              totalMs={93000}
+              totalMs={70000}
               variantLabel=""
             />
           </div>
         </div>
+
+        {/* Mobile alternative — the same getting-started flow as text.
+            The 8 detailed steps section that follows below is for both
+            desktop and mobile (it's already text). This card is just
+            the punchy 5-beat summary the video covers. */}
+        <div className="md:hidden mx-auto max-w-2xl px-6">
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6">
+            <p
+              className="text-[11px] uppercase tracking-[0.2em] text-white/45 mb-5"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Get started in 60 seconds
+            </p>
+            <ol
+              className="space-y-4 text-[15px] text-white/80 leading-relaxed"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              <li>
+                <strong className="text-white">Add your first property.</strong>{" "}
+                Type the address, or forward a contract by email. AssetCentral
+                fills in the rest automatically.
+              </li>
+              <li>
+                <strong className="text-white">See your numbers.</strong>{" "}
+                Net yield, monthly cashflow, equity, debt — calculated from
+                the data you (or the AI) entered. In your base currency.
+              </li>
+              <li>
+                <strong className="text-white">Compare scenarios.</strong>{" "}
+                What if you raised the rent? Refinanced? Switched to
+                short-let? Use the calculators to model each before you
+                commit.
+              </li>
+              <li>
+                <strong className="text-white">Export a clear report.</strong>{" "}
+                Investor-grade PDF you can send to a lender, accountant or
+                advisor — built from the numbers you modelled.
+              </li>
+              <li>
+                <strong className="text-white">Repeat for every property.</strong>{" "}
+                Same flow scales from one property to fifty. The portfolio
+                dashboard rolls them up into a single view.
+              </li>
+            </ol>
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <p
+                className="text-[13px] text-white/55 leading-relaxed"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                The animated walkthrough is best on a tablet or desktop. Open
+                this page on a bigger screen to watch the dashboard in
+                motion.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* ── Four ways ────────────────────────────────────────────────────── */}
+      {/* ── Eight steps ──────────────────────────────────────────────────── */}
       <section className="px-6 lg:px-10 py-14 lg:py-20 border-t border-white/[0.06]">
         <div className="mx-auto max-w-5xl">
           <p
             className="text-[12px] uppercase tracking-[0.25em] text-white/45 mb-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Inputs
+            What you just saw
           </p>
           <h2
             className="text-[28px] sm:text-[34px] lg:text-[42px] leading-[1.1] tracking-tight mb-8"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Four ways to get your data into AssetCentral.
+            Eight steps. One workflow.
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {WAYS.map((w, i) => (
+            {STEPS.map((s, i) => (
               <div
-                key={w.title}
+                key={s.title}
                 className="rounded-lg border border-white/10 bg-white/[0.03] p-4"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
                 <div className="text-[11px] uppercase tracking-wider text-white/45">
-                  Way {i + 1}
+                  Step {i + 1}
                 </div>
                 <div
                   className="text-[15px] text-white mt-1"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  {w.title}
+                  {s.title}
                 </div>
                 <div className="text-[12.5px] text-white/55 mt-1.5 leading-snug">
-                  {w.note}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Three outputs ────────────────────────────────────────────────── */}
-      <section className="px-6 lg:px-10 py-14 lg:py-20 border-t border-white/[0.06]">
-        <div className="mx-auto max-w-5xl">
-          <p
-            className="text-[12px] uppercase tracking-[0.25em] text-white/45 mb-3"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            Outputs
-          </p>
-          <h2
-            className="text-[28px] sm:text-[34px] lg:text-[42px] leading-[1.1] tracking-tight mb-8"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            What you see on day one.
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {OUTPUTS.map((o) => (
-              <div
-                key={o.title}
-                className="rounded-lg border border-white/10 bg-white/[0.03] p-5"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                <div
-                  className="text-[16px] text-white"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {o.title}
-                </div>
-                <div className="text-[13px] text-white/60 mt-2 leading-snug">
-                  {o.note}
+                  {s.note}
                 </div>
               </div>
             ))}
@@ -213,13 +216,13 @@ export default function GetStartedPage() {
             className="text-[32px] sm:text-[40px] lg:text-[52px] leading-[1.05] tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Start with one property. Add the rest as you go.
+            Start with one property today.
           </h2>
           <p
             className="mt-5 text-[16px] sm:text-[18px] lg:text-[20px] text-white/75 max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            14-day free trial · no card required.
+            Real data. Better decisions. Better returns.
           </p>
           <div
             className="mt-9 flex flex-wrap items-center justify-center gap-3"
@@ -238,6 +241,12 @@ export default function GetStartedPage() {
               Watch the full pitch
             </Link>
           </div>
+          <p
+            className="mt-6 text-[12.5px] text-white/45"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            14-day free trial · No credit card required · Cancel anytime
+          </p>
         </div>
       </section>
     </div>

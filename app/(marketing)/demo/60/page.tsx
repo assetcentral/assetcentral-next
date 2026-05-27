@@ -100,10 +100,16 @@ export default function Demo60Page() {
             </span>
           </div>
         </div>
-        {/* The video frame — edge-to-edge on mobile (no padding, no border
-            radius), boxed-with-shadow on desktop. Gives mobile viewers
-            ~30% more visual area without changing the desktop layout. */}
-        <div className="mx-auto max-w-5xl sm:px-6 lg:px-10">
+        {/* The video frame — md+ only. The 1920×1080 logical canvas
+            inside ExplainerVideoV2 scales to fit its container, which
+            on a 390px phone viewport works out to ~0.2× — every piece
+            of body text inside the scenes (some as small as 8.5px in
+            the logical canvas) renders at ~1.7px on the device. Even
+            at fullscreen-portrait the math doesn't recover (Safari
+            ignores orientation.lock so it stays portrait). Rather
+            than pretend it's watchable on a phone, we hide it at
+            <md and render the same beats as text below. */}
+        <div className="hidden md:block mx-auto max-w-5xl sm:px-6 lg:px-10">
           <div className="overflow-hidden sm:rounded-xl sm:border sm:border-white/10 sm:shadow-2xl">
             <ExplainerVideoV2
               embedded
@@ -113,6 +119,61 @@ export default function Demo60Page() {
               totalMs={91000}
               variantLabel=""
             />
+          </div>
+        </div>
+
+        {/* Mobile alternative — covers the same five beats as the video
+            in legible body text. Visible only at <md. Last paragraph
+            offers the video for anyone on a bigger screen. */}
+        <div className="md:hidden mx-auto max-w-2xl px-6">
+          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6">
+            <p
+              className="text-[11px] uppercase tracking-[0.2em] text-white/45 mb-5"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              The 60-second version
+            </p>
+            <ol
+              className="space-y-4 text-[15px] text-white/80 leading-relaxed"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              <li>
+                <strong className="text-white">Your data, anywhere.</strong>{" "}
+                Forward an email, drop a PDF, or take a photo of a contract.
+                AssetCentral parses it into your portfolio automatically.
+              </li>
+              <li>
+                <strong className="text-white">See your real return.</strong>{" "}
+                Net yield after every cost — service charge, agency fee, void,
+                tax — across every property, in your base currency.
+              </li>
+              <li>
+                <strong className="text-white">Answer real questions.</strong>{" "}
+                Should I sell or hold? Refinance? Switch to short-let? Pick
+                the right tool and model the actual numbers.
+              </li>
+              <li>
+                <strong className="text-white">Spot the signals.</strong>{" "}
+                The radar scans HMLR, DLD, DVF and other government registers
+                for price compression, volume spikes, and market drift in
+                areas you own.
+              </li>
+              <li>
+                <strong className="text-white">Act with confidence.</strong>{" "}
+                Plain-English AI insights, exportable PDF reports, and the
+                data behind every decision.
+              </li>
+            </ol>
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <p
+                className="text-[13px] text-white/55 leading-relaxed"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                The animated version of this is best on a tablet or desktop —
+                the screens we built for it pack a lot of detail into 90
+                seconds. Open this page on a bigger screen to watch it.
+              </p>
+            </div>
           </div>
         </div>
       </section>
