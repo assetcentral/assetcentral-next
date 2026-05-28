@@ -11,6 +11,7 @@ import {
   ExplainerVideoV2,
   SHOTS_GET_STARTED,
 } from "@/components/marketing/ExplainerVideoV2";
+import { DemoVideoSwitcher } from "@/components/marketing/DemoVideoSwitcher";
 
 const TITLE = "How to Use AssetCentral in 60 Seconds";
 const DESCRIPTION =
@@ -47,125 +48,82 @@ const STEPS = [
 export default function GetStartedPage() {
   return (
     <div style={{ backgroundColor: NAVY }} className="text-white">
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="px-6 lg:px-10 pt-14 lg:pt-20 pb-10">
-        <div className="mx-auto max-w-5xl">
-          <p
-            className="text-[12px] uppercase tracking-[0.25em] text-white/45 mb-5"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            AssetCentral · Get started
-          </p>
-          <h1
-            className="text-[42px] sm:text-[52px] lg:text-[64px] leading-[1.05] tracking-tight"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            How to use AssetCentral in 60 seconds.
-          </h1>
-          <p
-            className="mt-6 text-[17px] sm:text-[19px] lg:text-[21px] leading-[1.55] text-white/80 max-w-3xl"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            A short, beginner-friendly walkthrough. Add a property, see the
-            numbers, compare scenarios, and export a clear report — no
-            financial-modelling experience required.
-          </p>
-          <p
-            className="mt-7 text-[20px] sm:text-[24px] lg:text-[28px] leading-tight"
-            style={{ fontFamily: "var(--font-display)", color: ACCENT }}
-          >
-            Real data. Better decisions. Better returns.
-          </p>
-        </div>
-      </section>
+      {/* Video switcher — surfaces both explainer videos at the top so
+          a mobile visitor can hop between "What is AssetCentral" and
+          "How to get started" without scrolling to the closing CTA. */}
+      <DemoVideoSwitcher current="get-started" />
 
-      {/* ── Video ────────────────────────────────────────────────────────── */}
-      <section className="pb-14 lg:pb-20" id="video">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10">
-          <div
-            className="flex items-baseline justify-between gap-4 mb-3 flex-wrap"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <h2 className="text-[18px] lg:text-[22px]" style={{ fontFamily: "var(--font-display)" }}>
-              The 60-second tutorial
-            </h2>
-            <span className="text-[12.5px] lg:text-[13.5px] text-white/55">
-              8 steps · silent walkthrough
+      {/* ── Video-first hero ─────────────────────────────────────────── */}
+      <section className="px-6 lg:px-10 pt-6 lg:pt-8 pb-8" id="video">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-baseline justify-between gap-4 mb-3 flex-wrap" style={{ fontFamily: "var(--font-sans)" }}>
+            <div>
+              <p
+                className="text-[11px] uppercase tracking-[0.25em] text-white/45 mb-1"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                AssetCentral · Get started
+              </p>
+              <h1
+                className="text-[24px] sm:text-[28px] lg:text-[32px] leading-tight"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                How to use AssetCentral in 60 seconds.
+              </h1>
+            </div>
+            <span className="text-[12.5px] lg:text-[13.5px] text-white/55 max-w-xs text-right">
+              8 steps · 80-second voice-over walkthrough
             </span>
           </div>
         </div>
-        {/* Video — md+ only. Same reason as /demo/60: the 1920×1080
-            canvas inside ExplainerVideoV2 scales unreadably small on
-            phones. We render a step-by-step text equivalent below at
-            <md so phone visitors actually learn how to get started
-            rather than squinting at a 2px-tall scene. */}
-        <div className="hidden md:block mx-auto max-w-5xl sm:px-6 lg:px-10">
+        {/* Video frame — shown at all viewport sizes. Silent + autoplay
+            means it starts on its own without a user gesture, which
+            modern mobile browsers allow for muted videos. The fullscreen
+            toggle in the controls lets users expand for a clearer view. */}
+        <div className="mx-auto max-w-5xl sm:px-6 lg:px-10">
           <div className="overflow-hidden sm:rounded-xl sm:border sm:border-white/10 sm:shadow-2xl">
             <ExplainerVideoV2
               embedded
               shots={SHOTS_GET_STARTED}
               subtitles={[]}
-              silent
-              totalMs={70000}
+              audioSrc="/demo-vo-get-started.mp3"
+              totalMs={81000}
               variantLabel=""
             />
           </div>
+          {/* Mobile-only fullscreen hint */}
+          <p
+            className="md:hidden mt-3 px-4 text-center text-[12.5px] text-white/55"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Tap to play · rotate to landscape and tap fullscreen for the
+            clearest view
+          </p>
         </div>
+      </section>
 
-        {/* Mobile alternative — the same getting-started flow as text.
-            The 8 detailed steps section that follows below is for both
-            desktop and mobile (it's already text). This card is just
-            the punchy 5-beat summary the video covers. */}
-        <div className="md:hidden mx-auto max-w-2xl px-6">
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6">
-            <p
-              className="text-[11px] uppercase tracking-[0.2em] text-white/45 mb-5"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              Get started in 60 seconds
-            </p>
-            <ol
-              className="space-y-4 text-[15px] text-white/80 leading-relaxed"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              <li>
-                <strong className="text-white">Add your first property.</strong>{" "}
-                Type the address, or forward a contract by email. AssetCentral
-                fills in the rest automatically.
-              </li>
-              <li>
-                <strong className="text-white">See your numbers.</strong>{" "}
-                Net yield, monthly cashflow, equity, debt — calculated from
-                the data you (or the AI) entered. In your base currency.
-              </li>
-              <li>
-                <strong className="text-white">Compare scenarios.</strong>{" "}
-                What if you raised the rent? Refinanced? Switched to
-                short-let? Use the calculators to model each before you
-                commit.
-              </li>
-              <li>
-                <strong className="text-white">Export a clear report.</strong>{" "}
-                Investor-grade PDF you can send to a lender, accountant or
-                advisor — built from the numbers you modelled.
-              </li>
-              <li>
-                <strong className="text-white">Repeat for every property.</strong>{" "}
-                Same flow scales from one property to fifty. The portfolio
-                dashboard rolls them up into a single view.
-              </li>
-            </ol>
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <p
-                className="text-[13px] text-white/55 leading-relaxed"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                The animated walkthrough is best on a tablet or desktop. Open
-                this page on a bigger screen to watch the dashboard in
-                motion.
-              </p>
-            </div>
-          </div>
+      {/* ── Pitch / context (moved beneath the video) ──────────────────── */}
+      <section className="px-6 lg:px-10 py-14 lg:py-20 border-t border-white/[0.06]">
+        <div className="mx-auto max-w-5xl">
+          <h2
+            className="text-[36px] sm:text-[44px] lg:text-[52px] leading-[1.05] tracking-tight"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            A beginner-friendly walkthrough.
+          </h2>
+          <p
+            className="mt-6 text-[17px] sm:text-[19px] leading-[1.55] text-white/80 max-w-3xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Add a property, see the numbers, compare scenarios, and export a
+            clear report — no financial-modelling experience required.
+          </p>
+          <p
+            className="mt-6 text-[20px] sm:text-[24px] leading-tight"
+            style={{ fontFamily: "var(--font-display)", color: ACCENT }}
+          >
+            Real data. Better decisions. Better returns.
+          </p>
         </div>
       </section>
 

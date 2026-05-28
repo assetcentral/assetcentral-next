@@ -9,6 +9,7 @@ import {
   ExplainerVideoV2,
   SHOTS_60,
 } from "@/components/marketing/ExplainerVideoV2";
+import { DemoVideoSwitcher } from "@/components/marketing/DemoVideoSwitcher";
 
 const TITLE = "What is AssetCentral? — Your AI Real Estate PA";
 const DESCRIPTION =
@@ -52,64 +53,41 @@ const WHAT_YOU_SEE = [
 export default function Demo60Page() {
   return (
     <div style={{ backgroundColor: NAVY }} className="text-white">
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="px-6 lg:px-10 pt-14 lg:pt-20 pb-10">
-        <div className="mx-auto max-w-5xl">
-          <p
-            className="text-[12px] uppercase tracking-[0.25em] text-white/45 mb-5"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            AssetCentral · Explainer
-          </p>
-          <h1
-            className="text-[42px] sm:text-[52px] lg:text-[64px] leading-[1.05] tracking-tight"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Your AI-powered return platform for real estate.
-          </h1>
-          <p
-            className="mt-6 text-[17px] sm:text-[19px] lg:text-[21px] leading-[1.55] text-white/80 max-w-3xl"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            AssetCentral uses AI to find, structure and interpret real property
-            data — helping owners and investors with 2 to 50 properties make
-            faster decisions and improve portfolio returns.
-          </p>
-          <p
-            className="mt-7 text-[20px] sm:text-[24px] lg:text-[28px] leading-tight"
-            style={{ fontFamily: "var(--font-display)", color: ACCENT }}
-          >
-            Real data. Better decisions. Better returns.
-          </p>
-        </div>
-      </section>
+      {/* Video switcher — both demo videos surfaced at the top of every
+          demo page so a mobile visitor can hop between "What is" and
+          "How to get started" without scrolling to the closing CTA.
+          Critical on small screens where the closing-CTA cross-link
+          previously was the only way to discover the other video. */}
+      <DemoVideoSwitcher current="explainer" />
 
-      {/* ── Video ────────────────────────────────────────────────────────── */}
-      <section className="pb-14 lg:pb-20" id="video">
-        {/* Heading stays inside the standard page padding */}
-        <div className="mx-auto max-w-5xl px-6 lg:px-10">
-          <div
-            className="flex items-baseline justify-between gap-4 mb-3 flex-wrap"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <h2 className="text-[18px] lg:text-[22px]" style={{ fontFamily: "var(--font-display)" }}>
-              What is AssetCentral?
-            </h2>
-            <span className="text-[12.5px] lg:text-[13.5px] text-white/55">
-              A short explainer for owners and investors with 2 to 50 properties
+      {/* ── Video-first hero: compact title + frame above the fold ───── */}
+      <section className="px-6 lg:px-10 pt-6 lg:pt-8 pb-8" id="video">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-baseline justify-between gap-4 mb-3 flex-wrap" style={{ fontFamily: "var(--font-sans)" }}>
+            <div>
+              <p
+                className="text-[11px] uppercase tracking-[0.25em] text-white/45 mb-1"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                AssetCentral · Explainer
+              </p>
+              <h1
+                className="text-[24px] sm:text-[28px] lg:text-[32px] leading-tight"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                What is AssetCentral?
+              </h1>
+            </div>
+            <span className="text-[12.5px] lg:text-[13.5px] text-white/55 max-w-xs text-right">
+              91-second explainer · for owners + investors with 2-50 properties
             </span>
           </div>
         </div>
-        {/* The video frame — md+ only. The 1920×1080 logical canvas
-            inside ExplainerVideoV2 scales to fit its container, which
-            on a 390px phone viewport works out to ~0.2× — every piece
-            of body text inside the scenes (some as small as 8.5px in
-            the logical canvas) renders at ~1.7px on the device. Even
-            at fullscreen-portrait the math doesn't recover (Safari
-            ignores orientation.lock so it stays portrait). Rather
-            than pretend it's watchable on a phone, we hide it at
-            <md and render the same beats as text below. */}
-        <div className="hidden md:block mx-auto max-w-5xl sm:px-6 lg:px-10">
+        {/* Video frame — shown at all viewport sizes. On mobile the
+            ExplainerVideoV2 component's tap-to-play already requests
+            fullscreen + landscape orientation, which is the path
+            for legible viewing on phones. */}
+        <div className="mx-auto max-w-5xl sm:px-6 lg:px-10">
           <div className="overflow-hidden sm:rounded-xl sm:border sm:border-white/10 sm:shadow-2xl">
             <ExplainerVideoV2
               embedded
@@ -120,61 +98,41 @@ export default function Demo60Page() {
               variantLabel=""
             />
           </div>
+          {/* Mobile-only tap-to-fullscreen hint. Hidden at md+ because
+              desktop has its own controls including the fullscreen toggle. */}
+          <p
+            className="md:hidden mt-3 px-4 text-center text-[12.5px] text-white/55"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Tap the video to play in fullscreen · rotate to landscape for the
+            clearest view
+          </p>
         </div>
+      </section>
 
-        {/* Mobile alternative — covers the same five beats as the video
-            in legible body text. Visible only at <md. Last paragraph
-            offers the video for anyone on a bigger screen. */}
-        <div className="md:hidden mx-auto max-w-2xl px-6">
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-6">
-            <p
-              className="text-[11px] uppercase tracking-[0.2em] text-white/45 mb-5"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              The 60-second version
-            </p>
-            <ol
-              className="space-y-4 text-[15px] text-white/80 leading-relaxed"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              <li>
-                <strong className="text-white">Your data, anywhere.</strong>{" "}
-                Forward an email, drop a PDF, or take a photo of a contract.
-                AssetCentral parses it into your portfolio automatically.
-              </li>
-              <li>
-                <strong className="text-white">See your real return.</strong>{" "}
-                Net yield after every cost — service charge, agency fee, void,
-                tax — across every property, in your base currency.
-              </li>
-              <li>
-                <strong className="text-white">Answer real questions.</strong>{" "}
-                Should I sell or hold? Refinance? Switch to short-let? Pick
-                the right tool and model the actual numbers.
-              </li>
-              <li>
-                <strong className="text-white">Spot the signals.</strong>{" "}
-                The radar scans HMLR, DLD, DVF and other government registers
-                for price compression, volume spikes, and market drift in
-                areas you own.
-              </li>
-              <li>
-                <strong className="text-white">Act with confidence.</strong>{" "}
-                Plain-English AI insights, exportable PDF reports, and the
-                data behind every decision.
-              </li>
-            </ol>
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <p
-                className="text-[13px] text-white/55 leading-relaxed"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                The animated version of this is best on a tablet or desktop —
-                the screens we built for it pack a lot of detail into 90
-                seconds. Open this page on a bigger screen to watch it.
-              </p>
-            </div>
-          </div>
+      {/* ── Pitch / context (moved beneath the video) ──────────────────── */}
+      <section className="px-6 lg:px-10 py-14 lg:py-20 border-t border-white/[0.06]">
+        <div className="mx-auto max-w-5xl">
+          <h2
+            className="text-[36px] sm:text-[44px] lg:text-[52px] leading-[1.05] tracking-tight"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Your AI-powered return platform for real estate.
+          </h2>
+          <p
+            className="mt-6 text-[17px] sm:text-[19px] leading-[1.55] text-white/80 max-w-3xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            AssetCentral uses AI to find, structure and interpret real property
+            data — helping owners and investors with 2 to 50 properties make
+            faster decisions and improve portfolio returns.
+          </p>
+          <p
+            className="mt-6 text-[20px] sm:text-[24px] leading-tight"
+            style={{ fontFamily: "var(--font-display)", color: ACCENT }}
+          >
+            Real data. Better decisions. Better returns.
+          </p>
         </div>
       </section>
 
