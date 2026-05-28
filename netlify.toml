@@ -36,6 +36,17 @@
 # file exists at that path. Query strings are preserved automatically by
 # Netlify for off-site redirects.
 
+# ─── Edge functions ───────────────────────────────────────────────────────────
+# Geofencing — `netlify/edge-functions/geoblock.ts` reads context.geo
+# and redirects blocked-country visitors to /unavailable. Block list
+# documented in that file; mirror of `assetcentral-app/lib/geofence.ts`.
+# Netlify auto-discovers functions in `netlify/edge-functions/` but we
+# also declare the path here for visibility — easier to find at a glance.
+
+[[edge_functions]]
+  function = "geoblock"
+  path = "/*"
+
 [[redirects]]
   from = "/signup"
   to = "https://app.assetcentral.ai/signup"

@@ -122,6 +122,18 @@ export default function PartnersPage() {
           >
             Real partners. Real returns.
           </p>
+          {/* Vertical landing — Dubai brokers get their own page with
+              broker-specific positioning, use cases and partner tiers. */}
+          <div className="mt-8">
+            <Link
+              href="/partners/dubai-brokers"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white px-4 py-2 text-[13px] text-[var(--color-navy)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
+              Dubai broker? See the broker partner program →
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -85,16 +85,30 @@ export const SHOTS_60: Shot[] = [
 // time viewer has time to read the step label + see the action without
 // feeling rushed.
 export const SHOTS_GET_STARTED: Shot[] = [
-  { id: 30, duration: 6000 }, // Welcome
-  { id: 31, duration: 8000 }, // Step 1 — Add your property (rich product chrome)
-  { id: 32, duration: 8500 }, // Step 2 — Four ways to add data (upload / manual / email / WhatsApp)
-  { id: 33, duration: 7500 }, // Step 3 — AI structures the data
-  { id: 34, duration: 7500 }, // Step 4 — See the key numbers
-  { id: 35, duration: 7000 }, // Step 5 — Choose the right tool
-  { id: 36, duration: 7500 }, // Step 6 — Compare scenarios
-  { id: 37, duration: 7000 }, // Step 7 — AI explains the numbers
-  { id: 38, duration: 6500 }, // Step 8 — Export a clear report
-  { id: 39, duration: 4500 }, // Closing
+  // Timings aligned to the Kristen VO at /public/demo-vo-get-started.mp3.
+  // Each scene starts ~500ms BEFORE Kristen says its matching sentence —
+  // so the visual is on-screen before the voice talks about it, rather
+  // than the voice rushing ahead of the visual.
+  //
+  // Sentence start estimates (audio internal time):
+  //   Welcome     0:00.5   Step 5     0:39.0
+  //   Step 1      0:06.0   Step 6     0:47.5
+  //   Step 2      0:13.0   Step 7     0:56.0
+  //   Step 3      0:23.0   Step 8     1:04.0
+  //   Step 4      0:31.0   Closing    1:11.0   (→ end at 1:21.0)
+  //
+  // Scene boundaries = (next sentence start) − 0.5s. Closing scene
+  // absorbs the ~4s tail of silence at the end of the audio file.
+  { id: 30, duration:  5500 }, // Welcome      (0.0 → 5.5)
+  { id: 31, duration:  7000 }, // Step 1       (5.5 → 12.5)
+  { id: 32, duration: 10000 }, // Step 2       (12.5 → 22.5)
+  { id: 33, duration:  8000 }, // Step 3       (22.5 → 30.5)
+  { id: 34, duration:  8000 }, // Step 4       (30.5 → 38.5)
+  { id: 35, duration:  8500 }, // Step 5       (38.5 → 47.0)
+  { id: 36, duration:  8500 }, // Step 6       (47.0 → 55.5)
+  { id: 37, duration:  8000 }, // Step 7       (55.5 → 63.5)
+  { id: 38, duration:  7000 }, // Step 8       (63.5 → 70.5)
+  { id: 39, duration: 10500 }, // Closing      (70.5 → 81.0)
 ];
 
 // Subtitle cues — pacing tuned to feel comfortable to read while the
@@ -181,6 +195,7 @@ export function ExplainerVideoV2({
   variantLabel,
   embedded = false,
   silent = false,
+  autoplay = false,
 }: {
   shots?: Shot[];
   subtitles?: Subtitle[];
@@ -196,6 +211,11 @@ export function ExplainerVideoV2({
    *  users don't think the audio is broken. Used by the get-started
    *  walkthrough which is fully self-explanatory visually. */
   silent?: boolean;
+  /** When true, the video starts playing on mount instead of showing the
+   *  click-to-play overlay. Only honoured for `silent` variants — browsers
+   *  block autoplay-with-sound without a user gesture, so the audio
+   *  variants always require a click. */
+  autoplay?: boolean;
 } = {}) {
   const [playing, setPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -210,6 +230,10 @@ export function ExplainerVideoV2({
   // state (not just ref) so the toggle button icon re-renders when the
   // user presses Escape / browser-exits fullscreen.
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // iOS Safari rejects requestFullscreen() on non-video elements. When
+  // we detect that path, we fall back to a CSS-only "pseudo-fullscreen"
+  // that fixes the frame to the viewport via the `pseudo-fs` class.
+  const [pseudoFs, setPseudoFs] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startRef = useRef<number>(Date.now());
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -315,6 +339,20 @@ export function ExplainerVideoV2({
     }
   };
 
+  // Auto-start on mount when `autoplay` is set. Only fires for silent
+  // variants — browsers reject autoplay-with-sound without a user gesture
+  // and we want the silent walkthrough to be the only path that auto-
+  // starts (the /demo/get-started use case).
+  useEffect(() => {
+    if (autoplay && silent && !playing) {
+      // Small delay so the rest of the page paints first, then the
+      // video kicks in — feels more natural than instantly starting.
+      const t = setTimeout(() => startPlayback(), 350);
+      return () => clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoplay, silent]);
+
   // Pause or resume — toggles audio + freezes/resumes the elapsed ticker.
   const togglePause = () => {
     if (!playing) return;
@@ -348,16 +386,72 @@ export function ExplainerVideoV2({
       webkitRequestFullscreen?: () => Promise<void>;
     };
     const inFs = !!(document.fullscreenElement || docAny.webkitFullscreenElement);
-    try {
-      if (inFs) {
+
+    // Exit path: handle real fullscreen OR our CSS pseudo-fullscreen.
+    if (inFs) {
+      try {
         if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
         else if (docAny.webkitExitFullscreen) docAny.webkitExitFullscreen();
-      } else {
-        if (elAny.requestFullscreen) elAny.requestFullscreen().catch(() => {});
-        else if (elAny.webkitRequestFullscreen) elAny.webkitRequestFullscreen();
+      } catch { /* ignore */ }
+      return;
+    }
+    if (pseudoFs) {
+      setPseudoFs(false);
+      setIsFullscreen(false);
+      return;
+    }
+
+    // Enter path: try the real API first; if neither standard nor webkit
+    // exists on the div (iOS Safari), fall back to CSS pseudo-fullscreen.
+    const hasNative = typeof elAny.requestFullscreen === "function" || typeof elAny.webkitRequestFullscreen === "function";
+    if (hasNative) {
+      try {
+        if (elAny.requestFullscreen) {
+          elAny.requestFullscreen().catch(() => {
+            // Promise rejected — likely Safari with permission issue.
+            // Fall through to pseudo-fullscreen as a fallback.
+            setPseudoFs(true);
+            setIsFullscreen(true);
+          });
+        } else if (elAny.webkitRequestFullscreen) {
+          elAny.webkitRequestFullscreen();
+        }
+      } catch {
+        setPseudoFs(true);
+        setIsFullscreen(true);
       }
-    } catch { /* ignore — gracefully no-op */ }
+    } else {
+      // No fullscreen API available — pseudo-fullscreen path
+      setPseudoFs(true);
+      setIsFullscreen(true);
+    }
   };
+
+  // Lock body scroll while in pseudo-fullscreen so the page behind the
+  // overlay can't be scrolled by accident on touch devices.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (pseudoFs) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [pseudoFs]);
+
+  // Pseudo-fullscreen exit on Escape key (mirrors real fullscreen behaviour).
+  useEffect(() => {
+    if (typeof window === "undefined" || !pseudoFs) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setPseudoFs(false);
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [pseudoFs]);
 
   // Stop — end the session entirely. Returns to the click-to-play overlay.
   const stopPlayback = () => {
@@ -435,18 +529,36 @@ export function ExplainerVideoV2({
   const [scale, setScale] = useState(1);
   useEffect(() => {
     if (!frameRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      if (width > 0 && height > 0) {
-        const widthScale = width / 1920;
-        const heightScale = height / 1080;
+    const recompute = () => {
+      const el = frameRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        const widthScale = r.width / 1920;
+        const heightScale = r.height / 1080;
         // Take the smaller scale so the entire 16:9 canvas fits within
         // the available area without cropping. Excess becomes letterbox.
         setScale(Math.min(widthScale, heightScale));
       }
-    });
+    };
+    // Primary: ResizeObserver catches every size change (including
+    // entering/exiting fullscreen + URL-bar show/hide on iOS).
+    const observer = new ResizeObserver(recompute);
     observer.observe(frameRef.current);
-    return () => observer.disconnect();
+    // Secondary: orientationchange fires before viewport units fully
+    // settle on iOS Safari, so we re-measure at 50/200/500ms after the
+    // event. Belt-and-braces with the observer; cheap and resolves the
+    // "video still portrait-sized after rotating to landscape" bug.
+    const onRotate = () => {
+      [50, 200, 500].forEach((ms) => setTimeout(recompute, ms));
+    };
+    window.addEventListener("orientationchange", onRotate);
+    window.addEventListener("resize", onRotate);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("orientationchange", onRotate);
+      window.removeEventListener("resize", onRotate);
+    };
   }, []);
 
   // The frame is the actual 16:9 content area — identical in both embedded
@@ -458,28 +570,45 @@ export function ExplainerVideoV2({
       style={{ backgroundColor: NAVY }}
       className={
         // explainer-frame class lets :fullscreen CSS rules below kick in
-        // when the browser puts this element into native fullscreen
-        embedded
+        // when the browser puts this element into native fullscreen.
+        // The pseudo-fs class is a JS-toggled fallback for iOS Safari
+        // (which rejects requestFullscreen on non-video elements).
+        (embedded
           ? "explainer-frame relative w-full aspect-video overflow-hidden rounded-xl sm:rounded-xl"
-          : "explainer-frame relative w-full aspect-video overflow-hidden"
+          : "explainer-frame relative w-full aspect-video overflow-hidden") +
+        (pseudoFs ? " pseudo-fs" : "")
       }
     >
-      {/* In fullscreen, drop the aspect-video constraint so the frame
-          fills 100vw × 100vh. The inner scaled canvas centres + letterboxes
-          within. Inline <style> co-located with the component for clarity. */}
+      {/* Fullscreen sizing. dvw/dvh (dynamic viewport) tracks the
+          visible area as iOS Safari shows/hides the URL bar — without
+          this, content jumps when the chrome animates. vh/vw fallback
+          fires first for older browsers, then dvh/dvw overrides if
+          supported. */}
       <style>{`
-        .explainer-frame:fullscreen {
+        .explainer-frame:fullscreen,
+        .explainer-frame:-webkit-full-screen {
           width: 100vw;
           height: 100vh;
+          width: 100dvw;
+          height: 100dvh;
           aspect-ratio: auto;
           border-radius: 0 !important;
           background: ${NAVY};
         }
-        .explainer-frame:-webkit-full-screen {
-          width: 100vw;
-          height: 100vh;
-          aspect-ratio: auto;
+        /* CSS pseudo-fullscreen — used on iOS Safari and any other
+           browser that rejects requestFullscreen on a div. position:fixed
+           inset:0 pins the frame to the visible viewport edges, so it
+           automatically resizes on orientation change. */
+        .explainer-frame.pseudo-fs {
+          position: fixed !important;
+          inset: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          width: 100dvw !important;
+          height: 100dvh !important;
+          aspect-ratio: auto !important;
           border-radius: 0 !important;
+          z-index: 9999;
           background: ${NAVY};
         }
       `}</style>
@@ -640,7 +769,14 @@ export function ExplainerVideoV2({
           outside the scaled canvas so they stay full-size at all viewport
           widths (including mobile fullscreen). */}
       {!isRecordMode && playing && (
-        <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-50 w-[min(92%,560px)]">
+        <div
+          className="absolute left-1/2 -translate-x-1/2 z-50 w-[min(92%,560px)]"
+          // Sits clear of the iPhone home-indicator gesture area in landscape
+          // fullscreen — env(safe-area-inset-bottom) is ~21px in iOS landscape
+          // with notch, 0 elsewhere. max() ensures we still have ≥12px padding
+          // on devices without the inset (desktop, Android, older iPhones).
+          style={{ bottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+        >
           <div
             className="flex items-center gap-2 sm:gap-3 rounded-full bg-black/55 backdrop-blur-md px-3 py-2 border border-white/10"
             style={{ fontFamily: "var(--font-sans, sans-serif)" }}
@@ -4114,8 +4250,8 @@ function SceneStep4Dashboard() {
               ))}
             </div>
 
-            {/* Trend / ring / pill visual */}
-            <div className="mt-[0.8vw] pl-[0.5vw]">
+            {/* Trend / ring / pill visual — grows to fill remaining card height */}
+            <div className="mt-[0.8vw] pl-[0.5vw] flex-1 flex flex-col justify-center">
               {k.trend && (
                 <KpiSparkline
                   series={k.trend}
@@ -4128,25 +4264,68 @@ function SceneStep4Dashboard() {
                 <KpiRing pct={k.ring} colour={k.accent} delay={k.delay + 0.3} />
               )}
               {!k.trend && k.ring === undefined && (
-                <div className="flex items-center gap-[0.5vw]">
-                  <div
-                    className="flex-1 h-[0.7vw] rounded-full overflow-hidden"
-                    style={{ backgroundColor: "rgba(0,0,0,0.06)" }}
-                  >
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: "33%" }}
-                      transition={{ duration: 1.0, delay: k.delay + 0.5 }}
-                      className="h-full rounded-full"
-                      style={{ backgroundColor: k.accent }}
-                    />
+                <div className="space-y-[0.6vw]">
+                  {/* Risk severity bar */}
+                  <div>
+                    <div className="flex items-baseline justify-between mb-[0.2vw]">
+                      <span
+                        className="text-[0.78vw] uppercase tracking-wider text-gray-500"
+                        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        Severity (3-tier)
+                      </span>
+                      <span
+                        className="text-[0.85vw] tabular-nums"
+                        style={{ color: k.accent, fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        Medium
+                      </span>
+                    </div>
+                    <div className="flex gap-[0.3vw]">
+                      {["Low", "Medium", "High"].map((t, i) => (
+                        <motion.div
+                          key={t}
+                          initial={{ opacity: 0, scaleX: 0.8 }}
+                          animate={{ opacity: 1, scaleX: 1 }}
+                          transition={{ duration: 0.4, delay: k.delay + 0.5 + i * 0.1 }}
+                          className="flex-1 h-[0.6vw] rounded-full"
+                          style={{
+                            backgroundColor: i === 1 ? k.accent : "rgba(0,0,0,0.08)",
+                            transformOrigin: "left",
+                          }}
+                        />
+                      ))}
+                    </div>
                   </div>
-                  <span
-                    className="text-[0.85vw] tabular-nums"
-                    style={{ color: k.accent, fontFamily: "var(--font-sans, sans-serif)" }}
-                  >
-                    1 of 3
-                  </span>
+                  {/* Countdown bar */}
+                  <div>
+                    <div className="flex items-baseline justify-between mb-[0.2vw]">
+                      <span
+                        className="text-[0.78vw] uppercase tracking-wider text-gray-500"
+                        style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        Time to act
+                      </span>
+                      <span
+                        className="text-[0.85vw] tabular-nums"
+                        style={{ color: k.accent, fontFamily: "var(--font-sans, sans-serif)" }}
+                      >
+                        90 days
+                      </span>
+                    </div>
+                    <div
+                      className="h-[0.6vw] rounded-full overflow-hidden"
+                      style={{ backgroundColor: "rgba(0,0,0,0.06)" }}
+                    >
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: "60%" }}
+                        transition={{ duration: 1.0, delay: k.delay + 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: k.accent }}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -4213,130 +4392,217 @@ function KpiSparkline({
   const min = Math.min(...series, target ?? series[0]);
   const max = Math.max(...series, target ?? series[0]);
   const range = max - min || 1;
-  // ViewBox: 100 wide × 30 tall. Y inverted (SVG top-down).
+  // ViewBox: 100 wide × 40 tall (taller than before so the line has more
+  // vertical room to breathe inside the bigger chart frame).
   const pts = series.map((v, i) => ({
     x: (i / (series.length - 1)) * 100,
-    y: 30 - ((v - min) / range) * 26 - 2,
+    y: 40 - ((v - min) / range) * 32 - 4,
   }));
   const linePath = `M ${pts.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" L ")}`;
-  const fillPath = `${linePath} L 100,30 L 0,30 Z`;
-  const targetY = target !== undefined ? 30 - ((target - min) / range) * 26 - 2 : null;
+  const fillPath = `${linePath} L 100,40 L 0,40 Z`;
+  const targetY = target !== undefined ? 40 - ((target - min) / range) * 32 - 4 : null;
   const endPt = pts[pts.length - 1];
+  // Format a value for the min/max labels — % values keep one decimal,
+  // anything else uses no decimals so axis labels stay compact.
+  const fmt = (v: number) => (v < 100 ? v.toFixed(1) : Math.round(v).toLocaleString());
 
   return (
-    <svg
-      viewBox="0 0 100 30"
-      preserveAspectRatio="none"
-      className="w-full"
-      style={{ height: "3vw", overflow: "visible" }}
-      aria-hidden
-    >
-      <defs>
-        <clipPath id={`spark-${clipId}`}>
-          <motion.rect
-            x="0"
-            y="-2"
-            height="34"
-            initial={{ width: 0 }}
-            animate={{ width: 100 }}
-            transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
-          />
-        </clipPath>
-      </defs>
+    <div className="w-full flex flex-col">
+      {/* Axis label row — Y-axis max (top right) */}
+      <div className="flex items-baseline justify-between mb-[0.2vw]">
+        <span
+          className="text-[0.75vw] uppercase tracking-wider text-gray-400"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          12-month trend
+        </span>
+        <span
+          className="text-[0.78vw] tabular-nums"
+          style={{ color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono, monospace)" }}
+        >
+          {fmt(max)}
+        </span>
+      </div>
 
-      {/* Clipped group — fill + line both revealed left-to-right */}
-      <g clipPath={`url(#spark-${clipId})`}>
-        <path
-          d={fillPath}
+      <svg
+        viewBox="0 0 100 40"
+        preserveAspectRatio="none"
+        className="w-full"
+        style={{ height: "5.5vw", minHeight: "60px", overflow: "visible" }}
+        aria-hidden
+      >
+        <defs>
+          <clipPath id={`spark-${clipId}`}>
+            <motion.rect
+              x="0"
+              y="-4"
+              height="48"
+              initial={{ width: 0 }}
+              animate={{ width: 100 }}
+              transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+            />
+          </clipPath>
+          {/* Subtle vertical fade so the fill area transitions nicely to bg */}
+          <linearGradient id={`sparkfill-${clipId}`} x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor={colour} stopOpacity="0.22" />
+            <stop offset="100%" stopColor={colour} stopOpacity="0.04" />
+          </linearGradient>
+        </defs>
+
+        {/* Horizontal grid lines for visual context */}
+        <line x1="0" y1="10" x2="100" y2="10" stroke="rgba(0,0,0,0.04)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
+        <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(0,0,0,0.04)" strokeWidth="0.3" vectorEffect="non-scaling-stroke" />
+        <line x1="0" y1="38" x2="100" y2="38" stroke="rgba(0,0,0,0.06)" strokeWidth="0.4" vectorEffect="non-scaling-stroke" />
+
+        {/* Clipped group — fill + line both revealed left-to-right */}
+        <g clipPath={`url(#spark-${clipId})`}>
+          <path d={fillPath} fill={`url(#sparkfill-${clipId})`} stroke="none" />
+          <path
+            d={linePath}
+            fill="none"
+            stroke={colour}
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            vectorEffect="non-scaling-stroke"
+          />
+          {/* Data-point dots along the line — fills out the chart visually */}
+          {pts.map((p, i) => (
+            <motion.circle
+              key={i}
+              cx={p.x}
+              cy={p.y}
+              r="1.4"
+              fill={colour}
+              fillOpacity="0.4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: delay + 0.4 + i * 0.04 }}
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+        </g>
+
+        {/* Target line — dashed horizontal at the target value (not clipped) */}
+        {targetY !== null && (
+          <motion.line
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: delay + 0.7 }}
+            x1="0"
+            y1={targetY}
+            x2="100"
+            y2={targetY}
+            stroke="rgba(0,0,0,0.32)"
+            strokeWidth="0.8"
+            strokeDasharray="2 2"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
+
+        {/* End-point dot — pops in after the reveal completes */}
+        <motion.circle
+          cx={endPt.x}
+          cy={endPt.y}
+          r="3"
           fill={colour}
-          fillOpacity="0.18"
-          stroke="none"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: delay + 1.15, ease: [0.16, 1, 0.3, 1] }}
+          vectorEffect="non-scaling-stroke"
         />
-        <path
-          d={linePath}
+        <motion.circle
+          cx={endPt.x}
+          cy={endPt.y}
+          r="5"
           fill="none"
           stroke={colour}
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          strokeWidth="1.4"
+          strokeOpacity="0.4"
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: delay + 1.25 }}
           vectorEffect="non-scaling-stroke"
         />
-      </g>
+      </svg>
 
-      {/* Target line — dashed horizontal at the target value (not clipped) */}
-      {targetY !== null && (
-        <motion.line
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: delay + 0.7 }}
-          x1="0"
-          y1={targetY}
-          x2="100"
-          y2={targetY}
-          stroke="rgba(0,0,0,0.32)"
-          strokeWidth="0.7"
-          strokeDasharray="1.5 1.5"
-          vectorEffect="non-scaling-stroke"
-        />
-      )}
-
-      {/* End-point dot — pops in after the reveal completes */}
-      <motion.circle
-        cx={endPt.x}
-        cy={endPt.y}
-        r="2.5"
-        fill={colour}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: delay + 1.15, ease: [0.16, 1, 0.3, 1] }}
-        vectorEffect="non-scaling-stroke"
-      />
-      {/* Outer halo ring around the end-point dot */}
-      <motion.circle
-        cx={endPt.x}
-        cy={endPt.y}
-        r="4.2"
-        fill="none"
-        stroke={colour}
-        strokeWidth="1.2"
-        strokeOpacity="0.35"
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: delay + 1.25 }}
-        vectorEffect="non-scaling-stroke"
-      />
-    </svg>
+      {/* X-axis label row — month markers */}
+      <div className="flex items-baseline justify-between mt-[0.2vw]">
+        <span
+          className="text-[0.78vw] tabular-nums"
+          style={{ color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono, monospace)" }}
+        >
+          Jun
+        </span>
+        <span
+          className="text-[0.78vw] tabular-nums"
+          style={{ color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono, monospace)" }}
+        >
+          {fmt(min)}
+        </span>
+        <span
+          className="text-[0.78vw] tabular-nums"
+          style={{ color: "rgba(0,0,0,0.4)", fontFamily: "var(--font-mono, monospace)" }}
+        >
+          May
+        </span>
+      </div>
+    </div>
   );
 }
 
 // Circular progress ring — used for occupancy, target progress etc.
 function KpiRing({ pct, colour, delay }: { pct: number; colour: string; delay: number }) {
-  const radius = 14;
+  const radius = 28;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - pct / 100);
   return (
-    <div className="flex items-center gap-[0.5vw]">
-      <svg width="2.6vw" height="2.6vw" viewBox="0 0 36 36" aria-hidden>
-        <circle cx="18" cy="18" r={radius} stroke="rgba(0,0,0,0.08)" strokeWidth="3.5" fill="none" />
-        <motion.circle
-          cx="18" cy="18" r={radius}
-          stroke={colour}
-          strokeWidth="3.5"
-          fill="none"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
-          transform="rotate(-90 18 18)"
-        />
-      </svg>
-      <span
-        className="text-[1.4vw] uppercase tracking-wider"
-        style={{ color: colour, fontFamily: "var(--font-sans, sans-serif)" }}
-      >
-        On time
-      </span>
+    <div className="flex items-center gap-[1vw]">
+      {/* Big ring with the % in the centre */}
+      <div className="relative shrink-0" style={{ width: "5vw", height: "5vw", minWidth: "56px", minHeight: "56px" }}>
+        <svg width="100%" height="100%" viewBox="0 0 72 72" aria-hidden className="absolute inset-0">
+          <circle cx="36" cy="36" r={radius} stroke="rgba(0,0,0,0.07)" strokeWidth="6" fill="none" />
+          <motion.circle
+            cx="36" cy="36" r={radius}
+            stroke={colour}
+            strokeWidth="6"
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset: offset }}
+            transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
+            transform="rotate(-90 36 36)"
+          />
+        </svg>
+        <div
+          className="absolute inset-0 flex items-center justify-center text-[1.45vw] tabular-nums"
+          style={{ color: colour, fontFamily: "var(--font-display, serif)" }}
+        >
+          {pct}%
+        </div>
+      </div>
+      {/* Detail column to the right of the ring */}
+      <div className="flex-1">
+        <div
+          className="text-[0.78vw] uppercase tracking-wider text-gray-500"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          Lease tracking
+        </div>
+        <div
+          className="text-[1.2vw] mt-[0.15vw]"
+          style={{ color: colour, fontFamily: "var(--font-sans, sans-serif)", fontWeight: 600 }}
+        >
+          On time
+        </div>
+        <div
+          className="text-[0.85vw] text-gray-500 mt-[0.2vw]"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          No voids in last 24 mo
+        </div>
+      </div>
     </div>
   );
 }
@@ -4490,8 +4756,10 @@ function SceneStep5Tools() {
                 &ldquo;{t.question}&rdquo;
               </span>
             </div>
-            {/* Mini preview of the tool's output */}
-            <div className="mt-auto">
+            {/* Mini preview of the tool's output — flex-1 so it grows to fill
+                the remaining card height (rather than sitting flush to the
+                bottom with empty space above it) */}
+            <div className="flex-1 flex flex-col justify-end pt-[0.4vw]">
               <ToolPreview kind={t.preview} colour={t.colour} delay={t.delay + 0.3} />
             </div>
           </motion.div>
@@ -4506,19 +4774,18 @@ function SceneStep5Tools() {
 function ToolPreview({ kind, colour, delay }: { kind: string; colour: string; delay: number }) {
   switch (kind) {
     case "irr":
-      // Big IRR number + larger sparkline beneath showing the projected
-      // return curve. The previous layout shoved a tiny 5×2vw sparkline
-      // into the bottom-right corner — barely readable. Now the chart
-      // gets its own row and renders ~3x larger so the trend is
-      // actually visible.
+      // Filled-area bar chart showing IRR build-up year by year.
+      // 5 vertical bars (Y1-Y5) with the hero number on the right.
+      // Bars give substantial vertical presence and the value at the
+      // top of each bar lets the viewer read the curve at a glance.
       return (
-        <div className="space-y-[0.4vw]">
+        <div className="space-y-[0.5vw]">
           <div className="flex items-baseline justify-between">
             <div
               className="text-[1.25vw] uppercase tracking-wider text-white/40"
               style={{ fontFamily: "var(--font-sans, sans-serif)" }}
             >
-              5yr IRR
+              5-year IRR build-up
             </div>
             <div
               className="text-[2.4vw] tabular-nums leading-none"
@@ -4527,159 +4794,253 @@ function ToolPreview({ kind, colour, delay }: { kind: string; colour: string; de
               12.4%
             </div>
           </div>
-          <div className="w-full h-[2.6vw]">
-            <KpiSparkline series={[8, 9, 10, 11, 11.5, 12, 12.4]} colour={colour} delay={delay} />
-          </div>
-          <div className="flex items-baseline justify-between text-[1.1vw] text-white/35" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-            <span>Y1 8.0%</span>
-            <span>Y5 12.4%</span>
+          {/* Bar chart with value labels on top */}
+          <div className="flex items-end justify-between gap-[0.5vw]" style={{ height: "4.5vw" }}>
+            {[
+              { v: 8.0,  label: "Y1" },
+              { v: 9.5,  label: "Y2" },
+              { v: 10.7, label: "Y3" },
+              { v: 11.6, label: "Y4" },
+              { v: 12.4, label: "Y5", peak: true },
+            ].map((b, i) => {
+              const h = (b.v / 14) * 100;
+              return (
+                <div key={b.label} className="flex-1 flex flex-col items-center gap-[0.2vw]">
+                  <span
+                    className="text-[1vw] tabular-nums"
+                    style={{ color: b.peak ? colour : "rgba(255,255,255,0.55)", fontFamily: "var(--font-mono, monospace)" }}
+                  >
+                    {b.v.toFixed(1)}%
+                  </span>
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{ height: `${h}%` }}
+                    transition={{ duration: 0.7, delay: delay + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full rounded-t-md"
+                    style={{ backgroundColor: b.peak ? colour : `${colour}77`, minHeight: "8px" }}
+                  />
+                  <span
+                    className="text-[1vw] uppercase tracking-wider text-white/40"
+                    style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                  >
+                    {b.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       );
     case "rent":
-      // Two-bar comparison (current vs proposed) + uplift delta callout.
-      // Bars bumped from 0.4vw → 0.7vw thickness — the previous version
-      // was an almost-invisible hairline. The +14k delta is now a
-      // standalone pill so the user reads "14k more rent" without
-      // mental arithmetic.
+      // Vertical column-pair: Current vs Uplifted. Thicker bars,
+      // bigger value labels above each column, supporting delta + new
+      // rent per month detail row. Fills the card much better than
+      // the previous horizontal bars.
       return (
-        <div className="space-y-[0.45vw]">
-          {[
-            { label: "Current", v: 60, value: "142k" },
-            { label: "Uplifted", v: 95, value: "156k", accent: true },
-          ].map((r) => (
-            <div key={r.label}>
-              <div className="flex items-baseline justify-between mb-[0.15vw]">
-                <span className="text-[1.25vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.label}</span>
-                <span className="text-[1.4vw] tabular-nums" style={{ color: r.accent ? colour : "rgba(255,255,255,0.8)", fontFamily: "var(--font-sans, sans-serif)" }}>{r.value}</span>
-              </div>
-              <div className="h-[0.7vw] rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.07)" }}>
+        <div className="space-y-[0.5vw]">
+          <div className="flex items-end justify-around gap-[0.8vw]" style={{ height: "4.5vw" }}>
+            {[
+              { label: "Current", v: 65, value: "142k", accent: false },
+              { label: "Uplifted", v: 100, value: "156k", accent: true },
+            ].map((c, i) => (
+              <div key={c.label} className="flex-1 flex flex-col items-center gap-[0.2vw]">
+                <span
+                  className="text-[1.2vw] tabular-nums"
+                  style={{ color: c.accent ? colour : "rgba(255,255,255,0.65)", fontFamily: "var(--font-display, serif)" }}
+                >
+                  AED {c.value}
+                </span>
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${r.v}%` }}
-                  transition={{ duration: 0.8, delay: delay + (r.accent ? 0.15 : 0), ease: [0.16, 1, 0.3, 1] }}
-                  className="h-full rounded-full"
-                  style={{ backgroundColor: r.accent ? colour : "rgba(255,255,255,0.3)" }}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${c.v}%` }}
+                  transition={{ duration: 0.8, delay: delay + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full rounded-t-md"
+                  style={{ backgroundColor: c.accent ? colour : "rgba(255,255,255,0.25)", minHeight: "8px" }}
                 />
+                <span
+                  className="text-[1vw] uppercase tracking-wider text-white/45"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {c.label}
+                </span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: delay + 0.5 }}
-            className="inline-flex items-center gap-[0.3vw] px-[0.5vw] py-[0.2vw] rounded-md text-[1.2vw] tabular-nums"
-            style={{ backgroundColor: `${POSITIVE}1a`, color: POSITIVE, border: `1px solid ${POSITIVE}40`, fontFamily: "var(--font-sans, sans-serif)" }}
+            className="flex items-center justify-between rounded-md px-[0.6vw] py-[0.3vw]"
+            style={{ backgroundColor: `${POSITIVE}1a`, border: `1px solid ${POSITIVE}40` }}
           >
-            <span>↑</span><span>+AED 14k/yr</span>
+            <span
+              className="text-[1.1vw] uppercase tracking-wider"
+              style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              Uplift impact
+            </span>
+            <span
+              className="text-[1.25vw] tabular-nums"
+              style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              + AED 14k / yr
+            </span>
           </motion.div>
         </div>
       );
     case "holdsell":
-      // Hold vs sell — verdict pill + a real comparison chart showing
-      // the projected value gap. The old version just listed two
-      // numbers (2.1M vs 2.42M) with no visual showing the upward
-      // trajectory of "hold". Now there's a small value-projection
-      // sparkline that climbs from 2.1M → 2.42M with the delta
-      // marked at the peak.
+      // Hold vs sell — vertical bar pair showing projected value, with
+      // verdict pill + delta gap. Same visual language as the other
+      // tools so the card layouts feel consistent.
       return (
-        <div className="space-y-[0.45vw]">
-          <div
-            className="rounded-md px-[0.6vw] py-[0.35vw] flex items-center gap-[0.5vw]"
-            style={{ backgroundColor: `${POSITIVE}1a`, border: `1px solid ${POSITIVE}55` }}
+        <div className="space-y-[0.5vw]">
+          <div className="flex items-end justify-around gap-[0.8vw]" style={{ height: "4.5vw" }}>
+            {[
+              { label: "Sell now", v: 60, value: "2.10M", accent: false },
+              { label: "Hold · Y5", v: 100, value: "2.42M", accent: true },
+            ].map((c, i) => (
+              <div key={c.label} className="flex-1 flex flex-col items-center gap-[0.2vw]">
+                <span
+                  className="text-[1.2vw] tabular-nums"
+                  style={{ color: c.accent ? colour : "rgba(255,255,255,0.65)", fontFamily: "var(--font-display, serif)" }}
+                >
+                  AED {c.value}
+                </span>
+                <motion.div
+                  initial={{ height: 0 }}
+                  animate={{ height: `${c.v}%` }}
+                  transition={{ duration: 0.8, delay: delay + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full rounded-t-md"
+                  style={{ backgroundColor: c.accent ? colour : "rgba(255,255,255,0.25)", minHeight: "8px" }}
+                />
+                <span
+                  className="text-[1vw] uppercase tracking-wider text-white/45"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {c.label}
+                </span>
+              </div>
+            ))}
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: delay + 0.5 }}
+            className="flex items-center justify-between rounded-md px-[0.6vw] py-[0.3vw]"
+            style={{ backgroundColor: `${POSITIVE}1a`, border: `1px solid ${POSITIVE}40` }}
           >
-            <span className="inline-block w-[0.4vw] h-[0.4vw] rounded-full" style={{ backgroundColor: POSITIVE }} />
-            <span className="text-[1.35vw]" style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}>
-              Hold · +AED 320k over 5y
+            <span
+              className="text-[1.1vw] uppercase tracking-wider"
+              style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              Verdict
             </span>
-          </div>
-          {/* Value-projection sparkline. Climbing curve from sell-now
-              floor (2.1M, dashed) to year-5 hold value (2.42M). */}
-          <div className="w-full h-[2vw]">
-            <KpiSparkline
-              series={[2.10, 2.16, 2.22, 2.29, 2.36, 2.42]}
-              colour={colour}
-              delay={delay + 0.1}
-              target={2.10}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-[0.4vw]">
-            <div>
-              <div className="text-[1.2vw] text-white/40 mb-[0.1vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>Sell now</div>
-              <div className="text-[1.55vw] tabular-nums" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "var(--font-display, serif)" }}>2.1M</div>
-            </div>
-            <div className="text-right">
-              <div className="text-[1.2vw] text-white/40 mb-[0.1vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>Hold &amp; exit y5</div>
-              <div className="text-[1.55vw] tabular-nums" style={{ color: colour, fontFamily: "var(--font-display, serif)" }}>2.42M</div>
-            </div>
-          </div>
+            <span
+              className="text-[1.25vw] tabular-nums"
+              style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              Hold · + AED 320k
+            </span>
+          </motion.div>
         </div>
       );
     case "refi":
-      // Rate comparison — label per bar (clearer than the side-by-side
-      // header), thicker bars (0.5vw → 0.75vw), labelled value on the
-      // right of each bar so the user reads "Current 4.2%" / "New 3.6%"
-      // without scanning a separate header row. Savings line promoted
-      // to a prominent positive-tone chip.
+      // Rate comparison as vertical bars (same visual language as the
+      // other tools) + savings chip below. The shorter "New" bar makes
+      // the lower rate obvious at a glance.
       return (
-        <div className="space-y-[0.35vw]">
-          {[
-            { label: "Current", rate: "4.2%", v: 100, accent: false },
-            { label: "New",     rate: "3.6%", v: 86,  accent: true  },
-          ].map((r) => (
-            <div key={r.label}>
-              <div className="flex items-baseline justify-between mb-[0.1vw]">
-                <span className="text-[1.2vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>{r.label}</span>
-                <span className="text-[1.3vw] tabular-nums" style={{ color: r.accent ? colour : "rgba(255,255,255,0.75)", fontFamily: "var(--font-sans, sans-serif)" }}>{r.rate}</span>
-              </div>
-              <div className="h-[0.75vw] rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.07)" }}>
+        <div className="space-y-[0.5vw]">
+          <div className="flex items-end justify-around gap-[0.8vw]" style={{ height: "4.5vw" }}>
+            {[
+              { label: "Current", rate: "4.2%", v: 100, accent: false },
+              { label: "New",     rate: "3.6%", v: 78,  accent: true },
+            ].map((r, i) => (
+              <div key={r.label} className="flex-1 flex flex-col items-center gap-[0.2vw]">
+                <span
+                  className="text-[1.2vw] tabular-nums"
+                  style={{ color: r.accent ? colour : "rgba(255,255,255,0.65)", fontFamily: "var(--font-display, serif)" }}
+                >
+                  {r.rate}
+                </span>
                 <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${r.v}%` }}
-                  transition={{ duration: 0.9, delay: delay + (r.accent ? 0.2 : 0), ease: [0.16, 1, 0.3, 1] }}
-                  className="h-full rounded-full"
-                  style={{ backgroundColor: r.accent ? colour : "rgba(255,255,255,0.3)" }}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${r.v}%` }}
+                  transition={{ duration: 0.9, delay: delay + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full rounded-t-md"
+                  style={{ backgroundColor: r.accent ? colour : "rgba(255,255,255,0.25)", minHeight: "8px" }}
                 />
+                <span
+                  className="text-[1vw] uppercase tracking-wider text-white/45"
+                  style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+                >
+                  {r.label}
+                </span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: delay + 0.55 }}
-            className="inline-flex items-center gap-[0.3vw] px-[0.5vw] py-[0.2vw] rounded-md text-[1.2vw] tabular-nums"
-            style={{ backgroundColor: `${POSITIVE}1a`, color: POSITIVE, border: `1px solid ${POSITIVE}40`, fontFamily: "var(--font-sans, sans-serif)" }}
+            className="flex items-center justify-between rounded-md px-[0.6vw] py-[0.3vw]"
+            style={{ backgroundColor: `${POSITIVE}1a`, border: `1px solid ${POSITIVE}40` }}
           >
-            <span>↓</span><span>Saves AED 8.2k/yr</span>
+            <span
+              className="text-[1.1vw] uppercase tracking-wider"
+              style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              Savings
+            </span>
+            <span
+              className="text-[1.25vw] tabular-nums"
+              style={{ color: POSITIVE, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              − AED 8.2k / yr
+            </span>
           </motion.div>
         </div>
       );
     case "str":
       // Seasonal STR bars with a dashed long-let baseline overlaid.
-      // The previous version just showed STR bars — you couldn't tell
-      // visually whether STR was beating long-let on any given month.
-      // The dashed reference line at ~55% makes "above-the-line months
-      // = STR wins" instantly readable. Peak/trough months tinted
-      // amber/dim so the seasonal variance reads at a glance.
+      // Bars now taller (5vw) with peak/trough month labels at top so
+      // the seasonal story reads from a glance.
       return (
-        <div>
-          <div className="flex items-baseline justify-between mb-[0.25vw]">
-            <span className="text-[1.25vw] text-white/45" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>STR monthly</span>
-            <span className="text-[1.3vw] tabular-nums" style={{ color: colour, fontFamily: "var(--font-sans, sans-serif)" }}>+ AED 24.4k/yr</span>
+        <div className="space-y-[0.45vw]">
+          <div className="flex items-baseline justify-between">
+            <span
+              className="text-[1.2vw] uppercase tracking-wider text-white/45"
+              style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              STR monthly · vs long-let
+            </span>
+            <span
+              className="text-[1.3vw] tabular-nums"
+              style={{ color: colour, fontFamily: "var(--font-sans, sans-serif)" }}
+            >
+              + AED 24.4k / yr
+            </span>
           </div>
-          <div className="relative flex items-end gap-[0.15vw]" style={{ height: "2.4vw" }}>
-            {/* Long-let baseline — dashed horizontal at ~55% height. */}
+          <div className="relative flex items-end gap-[0.18vw]" style={{ height: "4.8vw" }}>
+            {/* Long-let baseline — dashed horizontal at ~55% height */}
             <div
               className="absolute left-0 right-0 z-10 pointer-events-none"
               style={{
                 bottom: "55%",
-                borderTop: `1px dashed rgba(255,255,255,0.3)`,
+                borderTop: "1.5px dashed rgba(255,255,255,0.35)",
               }}
             />
+            <div
+              className="absolute right-0 z-20 text-[0.95vw]"
+              style={{
+                bottom: "calc(55% + 0.2vw)",
+                color: "rgba(255,255,255,0.5)",
+                fontFamily: "var(--font-mono, monospace)",
+              }}
+            >
+              long-let
+            </div>
             {[80, 72, 60, 45, 35, 30, 40, 50, 60, 70, 85, 95].map((h, i) => {
-              // Above baseline = STR wins (use accent colour at full
-              // opacity); below baseline = STR loses (dimmer).
-              const aboveBaseline = h >= 55
+              const aboveBaseline = h >= 55;
               return (
                 <motion.div
                   key={i}
@@ -4689,15 +5050,18 @@ function ToolPreview({ kind, colour, delay }: { kind: string; colour: string; de
                   className="flex-1 rounded-t-sm"
                   style={{
                     backgroundColor: aboveBaseline ? colour : `${colour}55`,
-                    minHeight: "2px",
+                    minHeight: "3px",
                   }}
                 />
-              )
+              );
             })}
           </div>
-          <div className="flex items-baseline justify-between mt-[0.2vw] text-[1.1vw] text-white/35" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+          <div
+            className="flex items-baseline justify-between text-[1vw] text-white/35"
+            style={{ fontFamily: "var(--font-mono, monospace)" }}
+          >
             <span>Jan</span>
-            <span style={{ color: "rgba(255,255,255,0.55)" }}>--- long-let</span>
+            <span>Jun</span>
             <span>Dec</span>
           </div>
         </div>
@@ -4722,38 +5086,50 @@ function ToolPreview({ kind, colour, delay }: { kind: string; colour: string; de
               <div className="text-[1.55vw] tabular-nums mt-[0.1vw]" style={{ color: "rgba(255,255,255,0.85)", fontFamily: "var(--font-sans, sans-serif)" }}>AED 4.2m</div>
             </div>
           </div>
-          {/* Per-property yield bars. Height = relative yield (0–9%
-              range). Amber = flagged underperformer. Dashed line =
-              portfolio average. */}
-          <div className="relative flex items-end gap-[0.2vw]" style={{ height: "1.8vw" }}>
-            <div
-              className="absolute left-0 right-0 z-10 pointer-events-none"
-              style={{ bottom: "65%", borderTop: "1px dashed rgba(255,255,255,0.35)" }}
-            />
-            {[
-              { h: 85, flagged: false },
-              { h: 78, flagged: false },
-              { h: 72, flagged: false },
-              { h: 30, flagged: true },
-              { h: 80, flagged: false },
-              { h: 76, flagged: false },
-              { h: 35, flagged: true },
-              { h: 82, flagged: false },
-            ].map((p, i) => (
-              <motion.div
-                key={i}
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: `${p.h}%`, opacity: 1 }}
-                transition={{ duration: 0.5, delay: delay + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 rounded-t-sm"
-                style={{ backgroundColor: p.flagged ? WARNING : POSITIVE, minHeight: "2px" }}
+          {/* Per-property yield bars — taller now with the yield % above
+              each bar. Dashed line marks the portfolio average so the
+              flagged underperformers (amber) are obvious. */}
+          <div className="space-y-[0.3vw]">
+            <div className="relative flex items-end gap-[0.25vw]" style={{ height: "4vw" }}>
+              {/* Portfolio avg dashed line at ~65% */}
+              <div
+                className="absolute left-0 right-0 z-10 pointer-events-none"
+                style={{ bottom: "65%", borderTop: "1.5px dashed rgba(255,255,255,0.35)" }}
               />
-            ))}
-          </div>
-          <div className="flex items-baseline justify-between text-[1.15vw] text-white/40" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
-            <span>8 properties</span>
-            <span>--- avg 5.8%</span>
-            <span style={{ color: WARNING }}>2 flagged</span>
+              <div
+                className="absolute right-0 z-20 text-[0.9vw]"
+                style={{
+                  bottom: "calc(65% + 0.2vw)",
+                  color: "rgba(255,255,255,0.5)",
+                  fontFamily: "var(--font-mono, monospace)",
+                }}
+              >
+                avg 5.8%
+              </div>
+              {[
+                { h: 85, yield: "7.2%", flagged: false },
+                { h: 78, yield: "6.6%", flagged: false },
+                { h: 72, yield: "6.1%", flagged: false },
+                { h: 30, yield: "2.4%", flagged: true },
+                { h: 80, yield: "6.8%", flagged: false },
+                { h: 76, yield: "6.4%", flagged: false },
+                { h: 35, yield: "2.8%", flagged: true },
+                { h: 82, yield: "7.0%", flagged: false },
+              ].map((p, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: `${p.h}%`, opacity: 1 }}
+                  transition={{ duration: 0.5, delay: delay + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex-1 rounded-t-sm"
+                  style={{ backgroundColor: p.flagged ? WARNING : POSITIVE, minHeight: "3px" }}
+                />
+              ))}
+            </div>
+            <div className="flex items-baseline justify-between text-[1vw]" style={{ fontFamily: "var(--font-sans, sans-serif)" }}>
+              <span style={{ color: "rgba(255,255,255,0.5)" }}>P1 → P8 by yield</span>
+              <span style={{ color: WARNING }}>2 flagged</span>
+            </div>
           </div>
         </div>
       );
@@ -5139,25 +5515,66 @@ function CashflowSparkline({
   delay: number;
 }) {
   const max = Math.max(...series);
+  const min = Math.min(...series);
+  // Format AED-style amounts: ≥1000 → "1.2k", otherwise → raw
+  const fmt = (v: number) => v >= 1000 ? `${(v / 1000).toFixed(1)}k` : Math.round(v).toString();
   return (
-    <div className="flex items-end justify-between gap-[0.15vw]" style={{ height: "2.6vw" }}>
-      {series.map((v, i) => {
-        const h = Math.max(8, (v / max) * 100);
-        return (
-          <motion.div
-            key={i}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: `${h}%`, opacity: 1 }}
-            transition={{
-              duration: 0.5,
-              delay: delay + i * 0.05,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="flex-1 rounded-t-sm"
-            style={{ backgroundColor: colour, minHeight: "2px" }}
-          />
-        );
-      })}
+    <div className="w-full">
+      {/* Top row — max value annotation right-aligned */}
+      <div className="flex items-baseline justify-between mb-[0.25vw]">
+        <span
+          className="text-[0.7vw] uppercase tracking-wider text-white/45"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          Monthly · AED
+        </span>
+        <span
+          className="text-[0.8vw] tabular-nums"
+          style={{ color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-mono, monospace)" }}
+        >
+          {fmt(max)}
+        </span>
+      </div>
+      {/* Bars + dashed mid-line baseline indicator */}
+      <div className="relative flex items-end justify-between gap-[0.18vw]" style={{ height: "4vw", minHeight: "44px" }}>
+        {/* Mid baseline — visually anchors the bars */}
+        <div
+          className="absolute left-0 right-0"
+          style={{ top: "50%", height: "1px", background: "rgba(255,255,255,0.08)" }}
+        />
+        {series.map((v, i) => {
+          const h = Math.max(10, (v / max) * 100);
+          return (
+            <motion.div
+              key={i}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: `${h}%`, opacity: 1 }}
+              transition={{
+                duration: 0.55,
+                delay: delay + i * 0.045,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="flex-1 rounded-t-sm relative z-10"
+              style={{ backgroundColor: colour, minHeight: "3px" }}
+            />
+          );
+        })}
+      </div>
+      {/* Bottom row — min value + period label */}
+      <div className="flex items-baseline justify-between mt-[0.25vw]">
+        <span
+          className="text-[0.7vw] tabular-nums"
+          style={{ color: "rgba(255,255,255,0.4)", fontFamily: "var(--font-mono, monospace)" }}
+        >
+          {fmt(min)}
+        </span>
+        <span
+          className="text-[0.7vw] uppercase tracking-wider text-white/35"
+          style={{ fontFamily: "var(--font-sans, sans-serif)" }}
+        >
+          Jun &rsquo;25 → May &rsquo;26
+        </span>
+      </div>
     </div>
   );
 }

@@ -24,5 +24,55 @@
   <input type="text" name="lead_magnet" />
   <textarea name="result_summary"></textarea>
 </form>
+
+<!--
+  Dubai broker partner program — submitted from /partners/dubai-brokers.
+  Schema registered here so Netlify accepts the full payload even though
+  the React form is in a statically-exported page route.
+-->
+<form name="dubai-brokers-partner" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="dubai-brokers-partner" />
+  <input type="text"  name="bot-field" />
+  <input type="text"  name="first_name" />
+  <input type="text"  name="last_name" />
+  <input type="text"  name="agency" />
+  <input type="email" name="email" />
+  <input type="tel"   name="phone" />
+  <input type="text"  name="client_count" />
+  <input type="text"  name="client_profile" />
+  <select name="partner_type">
+    <option value="referral">Referral Partner</option>
+    <option value="agency">Agency Partner</option>
+    <option value="portfolio_review">Portfolio Review Partner</option>
+    <option value="strategic">Strategic Partner</option>
+    <option value="not_sure">Not sure yet — open to a conversation</option>
+  </select>
+  <textarea name="message"></textarea>
+</form>
+
+<!--
+  Free first-client portfolio review — submitted from
+  /free-client-portfolio-review. Secondary landing page for Google Ads
+  groups 3, 4, 5. Documents is a multi-value checkbox group; Netlify
+  collects each selected value separately under the same name.
+-->
+<form name="free-portfolio-review" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="free-portfolio-review" />
+  <input type="text"  name="bot-field" />
+  <input type="text"  name="broker_name" />
+  <input type="text"  name="agency" />
+  <input type="email" name="email" />
+  <input type="tel"   name="phone" />
+  <input type="text"  name="client_name" />
+  <input type="text"  name="client_property_count" />
+  <input type="text"  name="client_area" />
+  <input type="checkbox" name="documents" value="Tenancy contract(s)" />
+  <input type="checkbox" name="documents" value="Mortgage statement" />
+  <input type="checkbox" name="documents" value="Service charge invoices" />
+  <input type="checkbox" name="documents" value="Rent receipts" />
+  <input type="checkbox" name="documents" value="Operator reports" />
+  <input type="checkbox" name="documents" value="None — manual entry" />
+  <textarea name="message"></textarea>
+</form>
 </body>
 </html>
