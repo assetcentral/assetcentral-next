@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, DM_Sans, JetBrains_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
+import { CookieBanner } from "@/components/marketing/CookieBanner";
+import { ConsentedGoogleAds } from "@/components/marketing/ConsentedGoogleAds";
 
 const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
@@ -75,35 +76,32 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${dmSans.variable} ${jetbrainsMono.variable} h-full`}
     >
       <head>
+        {/* Plausible — genuinely cookieless analytics, loads unconditionally
+            (no PECR/GDPR consent required for cookieless first-party traffic
+            measurement). */}
         <script
           defer
           data-domain="assetcentral.ai"
           src="https://plausible.io/js/script.outbound-links.tagged-events.js"
         />
-        {/* Google Ads global site tag — captures all marketing-site traffic for
-            remarketing audiences + conversion attribution. The conversion event
-            itself fires on /dashboard/welcome (app subdomain) once a paid signup
-            completes, using the same AW- ID. Uses next/script so the gtag
-            function binds to window reliably; plain inline <script> in App
-            Router head loses the global. */}
-        <Script
-          id="gads-loader"
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=AW-18179673413"
-        />
-        <Script id="gads-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-window.gtag = gtag;
-gtag('js', new Date());
-gtag('config', 'AW-18179673413');`}
-        </Script>
+        {/* Google Ads gtag — moved into ConsentedGoogleAds (mounted at the
+            bottom of <body>) which gates loading on cookie-consent state.
+            Used to load unconditionally here; that was non-compliant under
+            PECR + GDPR because gtag sets advertising / remarketing cookies
+            without consent. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationSchema) }}
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* Cookie consent UI — banner shows on first visit, gates the
+            Google Ads loader. Both client components; render no
+            user-visible chrome unless required. */}
+        <CookieBanner />
+        <ConsentedGoogleAds />
+      </body>
     </html>
   );
 }

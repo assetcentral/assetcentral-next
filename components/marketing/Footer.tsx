@@ -27,6 +27,7 @@ const columns = [
       { href: "/about", label: "About" },
       { href: "/partners", label: "Partners" },
       { href: "/privacy", label: "Privacy" },
+      { href: "/cookies", label: "Cookies" },
       { href: "/terms", label: "Terms" },
       { href: "mailto:hello@assetcentral.ai", label: "Contact" },
     ],
