@@ -1,17 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   amortiseSchedule,
-  COUNTRIES,
   type CountryCode,
   formatLocalMoney,
   getRule,
   type LoanType,
   type Residency,
 } from "@/lib/mortgage-rules";
+import { displayNameForCode } from "@/lib/countries-catalogue";
 import { fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CountryPickerWithCoverage } from "./CountryPickerWithCoverage";
 import { SaveResultForm } from "./SaveResultForm";
 
 type RateStructure = "fixed" | "fix-revert" | "variable";
@@ -31,8 +32,19 @@ const DEFAULT_PRICE: Record<CountryCode, number> = {
 /** Convert a decimal fraction (0.044) to a clean percentage (4.4) without IEEE-754 dust. */
 const asPct = (decimal: number) => Math.round(decimal * 10000) / 100;
 
+// Static fallback for basic-coverage countries. The picker's amber
+// notice says "United Kingdom rules as the stand-in" so the fallback
+// has to match. UK chosen because (a) progressive SDLT bands are the
+// most universally recognisable transfer-tax model, (b) English-property-
+// market norms are widely understood, (c) GBP is one of our supported
+// billing currencies.
+const BASIC_COVERAGE_FALLBACK: CountryCode = "GB";
+
 export function MortgageCalculator() {
   const [country, setCountry] = useState<CountryCode>("GB");
+  const [displayCountry, setDisplayCountry] = useState<string>(
+    displayNameForCode("GB"),
+  );
   const [residency, setResidency] = useState<Residency>("non-resident");
   const [isAdditionalProperty, setIsAdditionalProperty] = useState(true);
 
@@ -64,6 +76,24 @@ export function MortgageCalculator() {
     setRevertRate(asPct(r.typicalRate) + 2);
     setYears(Math.min(years, r.maxTerm));
   }
+
+  // Fires from CountryPickerWithCoverage on every resolution change.
+  // useCallback so the picker's useEffect doesn't refire on every parent
+  // re-render (the picker depends on this callback's identity in its
+  // dep list). When the resolved code differs from the current one we
+  // run changeCountry to reset price/rate/term defaults for the new
+  // rule. For basic-coverage picks the resolved code is the static
+  // fallback (GB) — we still call changeCountry so the inputs reset to
+  // GB defaults, which is what the user expects given the notice. */
+  const handleCountryResolve = useCallback(
+    (resolved: { code: CountryCode; isBasicCoverage: boolean }) => {
+      if (resolved.code !== country) {
+        changeCountry(resolved.code);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [country],
+  );
 
   const result = useMemo(() => {
     if (![price, depositPct, years, initialRate].every((v) => isFinite(v))) return null;
@@ -252,22 +282,19 @@ export function MortgageCalculator() {
         {/* Inputs */}
         <CalcCard title="Inputs">
           <div className="space-y-4">
-            <label className="block" style={{ fontFamily: "var(--font-sans)" }}>
-              <span className="block text-[13px] font-medium text-[var(--color-ink)] mb-1.5">
-                Country
-              </span>
-              <select
-                value={country}
-                onChange={(e) => changeCountry(e.target.value as CountryCode)}
-                className="w-full rounded-md border border-[var(--color-border)] bg-white px-3 min-h-[48px] text-[14.5px] text-[var(--color-ink)] focus:border-[var(--color-navy)] focus:outline-none focus:ring-2 focus:ring-[var(--color-navy)]/10"
-              >
-                {COUNTRIES.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.flag} {c.name} ({c.currency})
-                  </option>
-                ))}
-              </select>
-            </label>
+            {/* Country picker — two-optgroup pattern (Detailed coverage +
+                Other countries) matching the in-app calculator pickers.
+                Detailed-coverage countries get the calculator's full
+                mortgage rule set; other countries render results against
+                a generic UK model with an amber illustrative-results
+                notice from the picker itself. */}
+            <CountryPickerWithCoverage
+              value={displayCountry}
+              onChange={setDisplayCountry}
+              onResolve={handleCountryResolve}
+              fallbackCode={BASIC_COVERAGE_FALLBACK}
+              label="Country"
+            />
 
             <div className="grid sm:grid-cols-2 gap-3">
               <SegmentedControl<Residency>
