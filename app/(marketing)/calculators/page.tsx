@@ -114,7 +114,7 @@ export default function CalculatorsHubPage() {
                     className="inline-flex items-center gap-1 mb-3 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800"
                     style={{ fontFamily: "var(--font-sans)" }}
                   >
-                    <LockIcon /> Free 14-day trial
+                    <LockIcon /> Free 7-day trial
                   </div>
                 )}
                 <h2

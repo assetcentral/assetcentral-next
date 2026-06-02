@@ -7,43 +7,77 @@ import { CashflowChart } from "./CashflowChart";
 import { Money } from "./CurrencyProvider";
 import { YieldBadge } from "./YieldBadge";
 
-type TabKey = "portfolio" | "cashflow" | "intelligence" | "pa";
+// The "How it works" demo. Restructured 2026-06 from a generic
+// 4-feature tab strip to a 4-step team workflow: each tab is a step in
+// the AssetCentral flow, and each step is owned by a named specialist
+// from the AC Agent Team. Order matches how a real owner uses the
+// product:
+//
+//   Step 1  Get the data in        — Personal Assistant (concierge)
+//   Step 2  See your real position — Finance Manager   (CFO)
+//   Step 3  Catch what's coming    — Operations Manager (COO)
+//   Step 4  Decide what to do      — Your CEO          (synthesis)
+//
+// Tabs read top-to-bottom as a story rather than a feature menu. No
+// "PA" acronyms anywhere — the brief was explicit: always "Personal
+// Assistant" in full so the role registers as a person, not a label.
+
+type TabKey = "ingest" | "position" | "watch" | "decide";
 
 type Tab = {
   key: TabKey;
+  /** Step number shown as a small badge before the label. */
+  step: string;
+  /** Tab label — kept short so the tab strip doesn't overflow on
+   *  mobile. The agent name is shown beneath, in the caption. */
   label: string;
+  /** Agent who owns this step. Shown in the side caption with the
+   *  same labelling lib/agent-team.ts uses. */
+  agent: string;
+  /** Long-form caption shown to the right of the active panel. Names
+   *  the agent up front so the reader connects the step to the role. */
   caption: string;
 };
 
 const tabs: Tab[] = [
   {
-    key: "portfolio",
-    label: "Portfolio",
+    key: "ingest",
+    step: "01",
+    label: "Get the data in",
+    agent: "Personal Assistant",
     caption:
-      "Your entire portfolio — yield, debt, cashflow, documents — in one view. Every asset, every country, one base currency.",
+      "Your Personal Assistant takes care of the boring part. Forward a WhatsApp, email a statement, drag in a PDF — AssetCentral reads it, extracts the numbers, and files it to the right property. No manual entry, no typing.",
   },
   {
-    key: "cashflow",
-    label: "Cashflow",
+    key: "position",
+    step: "02",
+    label: "See your real position",
+    agent: "Finance Manager (CFO)",
     caption:
-      "Every payment due across every asset, 12 months ahead. No surprises. No missed stage payments.",
+      "Your Finance Manager builds the picture. Every property, every currency, your real net yield after costs, mortgage and vacancy. The number you've never quite had time to calculate — now updated automatically.",
   },
   {
-    key: "intelligence",
-    label: "Intelligence",
+    key: "watch",
+    step: "03",
+    label: "Catch what's coming",
+    agent: "Operations Manager (COO)",
     caption:
-      "AssetCentral tells you what to do — not just what's happening. Every recommendation is backed by your actual numbers.",
+      "Your Operations Manager watches the calendar so you don't have to. Rate reversions, stage payments, lease renewals, statement audits — flagged before they become decisions you make in a rush.",
   },
   {
-    key: "pa",
-    label: "Your PA",
+    key: "decide",
+    step: "04",
+    label: "Decide what to do",
+    agent: "Your CEO",
     caption:
-      "Forward a WhatsApp. Email a statement. Photo an invoice. AssetCentral reads it, extracts the data, and updates your portfolio. No manual entry.",
+      "Your CEO turns the team's work into ranked actions. Improve / Refinance / Hold / Review / Acquire — every recommendation backed by your actual numbers and your Market Analyst's evidence.",
   },
 ];
 
 export function ProductDemoTabs() {
-  const [active, setActive] = useState<TabKey>("portfolio");
+  // Default to step 1 — first-time visitors should land on "Get the
+  // data in" so the demo reads as a sequence, not an a-la-carte menu.
+  const [active, setActive] = useState<TabKey>("ingest");
   const current = tabs.find((t) => t.key === active)!;
 
   return (
@@ -60,11 +94,19 @@ export function ProductDemoTabs() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            What your Real Estate PA does
+            Four steps. Your team handles every one.
           </h2>
+          <p
+            className="mt-5 text-[16.5px] leading-[1.6] text-[var(--color-muted)] max-w-2xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Each step has a named owner. You see what they did, why, and what to do next — no spreadsheets, no manual reconciliation, no missed dates.
+          </p>
         </div>
 
-        {/* Tab bar — horizontal scroll at narrow widths, no wrap */}
+        {/* Tab bar — horizontal scroll at narrow widths, no wrap. Each
+            tab carries a step number ahead of the label so the
+            sequence reads even at a glance. */}
         <div className="mt-10 border-b border-[var(--color-border)] overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex gap-1 w-max">
             {tabs.map((t) => {
@@ -73,7 +115,7 @@ export function ProductDemoTabs() {
                 <button
                   key={t.key}
                   onClick={() => setActive(t.key)}
-                  className={`relative px-4 lg:px-5 min-h-[48px] text-[14px] whitespace-nowrap transition-colors ${
+                  className={`relative px-4 lg:px-5 min-h-[48px] text-[14px] whitespace-nowrap transition-colors flex items-center gap-2 ${
                     isActive
                       ? "text-[var(--color-navy)]"
                       : "text-[var(--color-muted)] hover:text-[var(--color-ink)]"
@@ -83,6 +125,13 @@ export function ProductDemoTabs() {
                     fontWeight: isActive ? 600 : 500,
                   }}
                 >
+                  <span
+                    className={`num text-[12px] ${
+                      isActive ? "text-[var(--color-accent)]" : "text-[var(--color-muted)]"
+                    }`}
+                  >
+                    {t.step}
+                  </span>
                   {t.label}
                   {isActive && (
                     <motion.span
@@ -111,15 +160,30 @@ export function ProductDemoTabs() {
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               >
-                {active === "portfolio" && <PortfolioPanel />}
-                {active === "cashflow" && <CashflowPanel />}
-                {active === "intelligence" && <IntelligencePanel />}
-                {active === "pa" && <PaPanel />}
+                {active === "ingest" && <PaPanel />}
+                {active === "position" && <PortfolioPanel />}
+                {active === "watch" && <CashflowPanel />}
+                {active === "decide" && <IntelligencePanel />}
               </motion.div>
             </AnimatePresence>
           </div>
 
           <aside className="lg:sticky lg:top-24">
+            {/* Owned-by chip — the bridge between step and specialist.
+                Sits above the long caption so the visitor's eye lands on
+                "Personal Assistant" / "Finance Manager" before the
+                description, reinforcing the team framing on every step. */}
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] mb-4"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              <span className="text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)]">
+                Owned by
+              </span>
+              <span className="text-[12.5px] font-semibold text-[var(--color-navy)]">
+                {current.agent}
+              </span>
+            </div>
             <p
               className="text-[15px] leading-[1.6] text-[var(--color-ink)]"
               style={{ fontFamily: "var(--font-sans)" }}
@@ -133,7 +197,7 @@ export function ProductDemoTabs() {
   );
 }
 
-/* ----------------------- Tab 1: Portfolio ----------------------- */
+/* ------------------ Step 2: Finance Manager (portfolio position) ------------------ */
 
 type Row = {
   flag: string;
@@ -367,7 +431,7 @@ function PortfolioPanel() {
   );
 }
 
-/* ----------------------- Tab 2: Cashflow ----------------------- */
+/* ------------------ Step 3: Operations Manager (calendar + cashflow) ------------------ */
 
 const months = [
   { label: "Jan", rent: 9_500, mortgage: 3_300 },
@@ -442,7 +506,7 @@ function CashflowPanel() {
   );
 }
 
-/* ----------------------- Tab 3: Intelligence ----------------------- */
+/* ------------------ Step 4: Your CEO (ranked recommendations) ------------------ */
 
 type Reco = {
   flag: string;
@@ -546,11 +610,11 @@ function IntelligencePanel() {
   );
 }
 
-/* ----------------------- Tab 4: Your PA ----------------------- */
+/* ------------------ Step 1: Personal Assistant (ingestion) ------------------ */
 
 function PaPanel() {
   return (
-    <DeviceFrame title="Your PA · data ingestion">
+    <DeviceFrame title="Personal Assistant · data ingestion">
       <div className="p-5 grid gap-4 lg:grid-cols-2">
         {/* Left: forwarding inputs */}
         <div className="space-y-3">

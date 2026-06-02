@@ -47,7 +47,7 @@ const SUBTITLES: { from: number; to: number; text: string }[] = [
   { from:  3500, to:  6000, text: "Statements arrive from every direction." },
   { from:  6000, to:  9500, text: "Rent. Mortgage. Service charges. STR reports." },
   { from:  9500, to: 14000, text: "Your spreadsheet can't keep up." },
-  { from: 14000, to: 18500, text: "AssetCentral is your AI Real Estate PA." },
+  { from: 14000, to: 18500, text: "AssetCentral is your AI Real Estate Personal Assistant." },
   { from: 18500, to: 22000, text: "Forward us your documents. We do the rest." },
   { from: 22000, to: 26000, text: "One dashboard. Every property. Every currency." },
   { from: 26000, to: 31000, text: "Real net yield. Cashflow. Debt. Loan maturity." },
@@ -622,7 +622,7 @@ function Scene5() {
         className="mt-5 text-[1.8vw] text-white/70 tracking-wide"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
-        Your AI Real Estate PA.
+        Your AI Real Estate Personal Assistant.
       </motion.div>
     </div>
   );

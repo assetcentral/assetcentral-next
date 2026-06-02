@@ -60,7 +60,7 @@ export function CalculatorShell({
       <CalcOpenTracker calc={slug} />
       <ScrollDepth page={`/calculators/${slug}`} />
       <StickyCta
-        message="Track this in your full portfolio. Free for 14 days."
+        message="Track this in your full portfolio. Free for up to 3 properties."
         threshold={0.35}
       />
       <section className="bg-white">

@@ -6,7 +6,7 @@ import { PricingClient } from "./PricingClient";
 export const metadata: Metadata = {
   title: "Pricing | AssetCentral",
   description:
-    "Free calculators. Pro €49/month. Team €199/month. 14-day free trial, no credit card. Per-currency billing in EUR, USD, GBP, or AED. Enterprise plans for 50+ properties.",
+    "Free for up to 3 properties. Pro €49/month for the full AC Agent Team. Team €199/month with up to 5 seats. 7-day free trial on paid plans, no credit card. Per-currency billing in EUR, USD, GBP, or AED.",
   alternates: { canonical: "/pricing" },
 };
 

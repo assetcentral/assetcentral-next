@@ -18,18 +18,44 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
           {/* copy */}
           <div>
+            {/* Strapline. Earlier draft used "One number. Your yield going
+                up." — too narrow, sounded like a single-metric product
+                and pushed away owners who think about capital growth,
+                decisions and timing alongside yield. Reverted to the
+                pre-2026-06 production strapline ("Real data. Better
+                decisions. Better returns.") which has been pulling
+                conversions on the live site. The team framing now lives
+                in the H1 where it belongs; the strapline does the broad
+                emotional work. Yield as north star is retained inside
+                the app and in agent copy — it doesn't need to be the
+                first three words on the homepage. */}
+            <p
+              className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Real data. Better decisions. Better returns.
+            </p>
             <h1
               className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              The AI-powered return platform for property owners
+              Your AI asset-management team for property owners
             </h1>
 
+            {/* Subhead: names all five specialists by their org-chart
+                role (CEO / CFO / market analyst / operations manager /
+                personal assistant) so the team idea lands as roles, not
+                vague "agents". Restored the inclusive scope tail from
+                the pre-redesign production hero ("from a second home to
+                a multi-country portfolio") — important for the
+                single-property owner who's growing into the portfolio
+                segment; without it, the H1 + subhead can read as
+                "this is for larger portfolios than mine". */}
             <p
               className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Real data. Better decisions. Better returns. Built for private owners with 2 to 50 properties — from a second home to a multi-country portfolio.
+              A CEO, a CFO, a market analyst, an operations manager and a personal assistant — working on your portfolio together. Built for owners with 2 to 50 properties, from a second home to a multi-country portfolio.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -38,7 +64,7 @@ export function HeroSection() {
                 className="plausible-event-name=signup_cta_click plausible-event-location=hero inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Start free — 14 days
+                Start free — up to 3 properties
               </Link>
               <Link
                 href="/demo/60"
@@ -65,7 +91,7 @@ export function HeroSection() {
               className="mt-4 text-[13px] text-[var(--color-muted)]"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              No credit card required · Cancel anytime · Free calculators always free
+              Free for up to 3 properties · 7-day Pro trial, no card required · Free calculators always free
             </p>
           </div>
 

@@ -5,7 +5,7 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "No card for the trial?",
-    a: "Correct — start for free, add payment details before day 14 if you want to continue.",
+    a: "Correct — start the 7-day Pro trial without a card. Add payment details before day 7 if you want to continue. Free (up to 3 properties) doesn't need a trial at all.",
   },
   {
     q: "What happens to my data if I cancel?",
@@ -29,11 +29,15 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is there a refund policy?",
-    a: "We offer a 14-day trial. After that, subscriptions are non-refundable but cancel anytime.",
+    a: "We offer a 7-day trial on paid plans. After that, subscriptions are non-refundable but cancel anytime. Free is forever for up to 3 properties.",
+  },
+  {
+    q: "What do I get on the Free plan?",
+    a: "Free covers up to 3 properties with the Portfolio Personal Assistant — your concierge for uploading data, setting alerts, generating reports — plus the basic yield + cashflow dashboard and all free calculators. The Pro tier adds the rest of the AC Agent Team (Your CEO, Finance Manager, Market Analyst, Operations Manager) and lifts the cap to 20 properties.",
   },
   {
     q: "What's the difference between Pro and Team?",
-    a: "Pro is one user, up to 20 assets. Team adds up to 4 additional seats (accountant, property manager, family member) and up to 50 assets.",
+    a: "Pro is one user, up to 20 properties, with the full AC Agent Team. Team adds up to 4 additional seats (accountant, property manager, family member) and lifts the cap to 50 properties.",
   },
   {
     q: "I have more than 50 properties. What do I do?",

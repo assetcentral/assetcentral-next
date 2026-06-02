@@ -3,9 +3,18 @@
 import { useCurrency } from "./CurrencyProvider";
 import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 
+// Plan-comparison rows. Top group is "AC Agent Team" — the cleanest way
+// to show buyers exactly which specialists each tier unlocks. Reflects
+// AGENT_FREE_ACCESS in lib/agent-team.ts on the app side (only Portfolio
+// PA is on Free; all four other agents are Pro+).
 const rows = [
+  { group: "AC Agent Team", label: "Portfolio Personal Assistant", values: [true, true, true, true] },
+  { group: "AC Agent Team", label: "Finance Manager (CFO)", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Market Analyst", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Operations Manager (COO)", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [false, true, true, true] },
+  { group: "Portfolio", label: "Properties tracked", values: ["Up to 3", "Up to 20", "Up to 50", "Unlimited"] },
   { group: "Portfolio", label: "Calculators (IRR, STR, Retrofit, Ownership)", values: [true, true, true, true] },
-  { group: "Portfolio", label: "Portfolio workspace", values: [false, "Up to 20", "Up to 50", "Unlimited"] },
   { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [false, true, true, true] },
   { group: "Intelligence", label: "Real net yield + benchmarks", values: [false, true, true, true] },
   { group: "Intelligence", label: "Sell vs hold analyser", values: [false, true, true, true] },
@@ -14,10 +23,10 @@ const rows = [
   { group: "Documents", label: "Document vault + AI extraction", values: [false, true, true, true] },
   { group: "Documents", label: "Data ingestion (WhatsApp / email / file)", values: [false, true, true, true] },
   { group: "Reports", label: "Refinancing pack, investor pack, tax report", values: [false, true, true, true] },
-  { group: "Team", label: "Additional seats (accountant / advisor)", values: [false, false, "Up to 4", "Unlimited"] },
-  { group: "Team", label: "Multiple portfolio workspaces", values: [false, false, true, true] },
-  { group: "Team", label: "SSO + audit logging", values: [false, false, false, true] },
-  { group: "Team", label: "Custom DPA + data residency", values: [false, false, false, true] },
+  { group: "Team seats", label: "Additional seats (accountant / advisor)", values: [false, false, "Up to 4", "Unlimited"] },
+  { group: "Team seats", label: "Multiple portfolio workspaces", values: [false, false, true, true] },
+  { group: "Team seats", label: "SSO + audit logging", values: [false, false, false, true] },
+  { group: "Team seats", label: "Custom DPA + data residency", values: [false, false, false, true] },
   { group: "Support", label: "Email support", values: [true, true, true, true] },
   { group: "Support", label: "Priority support", values: [false, false, true, true] },
   { group: "Support", label: "Dedicated account manager", values: [false, false, false, true] },

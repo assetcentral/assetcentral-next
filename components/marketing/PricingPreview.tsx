@@ -29,7 +29,7 @@ export function PricingPreview() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Simple pricing. No per-asset fees.
+            The full team for €49 a month.
           </h2>
           <p
             className="mt-3 text-[14px] text-[var(--color-muted)]"
@@ -47,15 +47,15 @@ export function PricingPreview() {
             name="Free"
             price={formatPrice(0, bill)}
             cadence="forever"
-            blurb="Calculators only. Free forever."
-            cta={{ label: "Use free calculators", href: "/calculators" }}
+            blurb="Up to 3 properties. Portfolio Personal Assistant + dashboard + free calculators."
+            cta={{ label: "Start free", href: "/signup" }}
           />
           <PlanCard
             name="Pro"
             price={formatPrice(pro.monthly, bill)}
             cadence="per month"
-            blurb="Full portfolio. One user. Up to 20 assets."
-            cta={{ label: "Start 14-day free trial", href: "/signup?plan=pro_monthly" }}
+            blurb="Full AC Agent Team. Up to 20 properties. €49/month."
+            cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
             altCta={{ label: "or subscribe now — skip trial", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
@@ -63,8 +63,8 @@ export function PricingPreview() {
             name="Team"
             price={formatPrice(team.monthly, bill)}
             cadence="per month"
-            blurb="Everything in Pro, plus up to 5 seats and 50 assets."
-            cta={{ label: "Start 14-day free trial", href: "/signup?plan=team_monthly" }}
+            blurb="Everything in Pro, plus up to 5 seats and 50 properties."
+            cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
             altCta={{ label: "or subscribe now — skip trial", href: "/signup?plan=team_monthly&intent=direct" }}
           />
         </div>
@@ -73,7 +73,7 @@ export function PricingPreview() {
           className="mt-8 text-[14px] text-[var(--color-muted)] text-center"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          14-day free trial on Pro and Team. No credit card required.{" "}
+          7-day free trial on Pro and Team. No credit card required. Free covers up to 3 properties.{" "}
           <Link
             href="/pricing"
             className="text-[var(--color-accent)] font-medium hover:underline"

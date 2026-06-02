@@ -152,7 +152,7 @@ export const SUBTITLES_60: Subtitle[] = [
   // Scene 0 — positioning hero
   { from:     0, to:  6000,  text: "AI just changed what's possible for private property owners." },
   { from:  6500, to: 10000,  text: "Real data. Better decisions. Better returns." },
-  { from: 10500, to: 14000,  text: "Your own Real Estate PA." },
+  { from: 10500, to: 14000,  text: "Your own Real Estate Personal Assistant." },
 
   // Scene 1 — funds vs owner
   { from: 15000, to: 19500,  text: "A professional fund has an asset manager." },
@@ -1150,7 +1150,7 @@ function Scene0() {
         className="mt-5 text-[1.5vw] text-white/75"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
-        Your own Real Estate PA.
+        Your own Real Estate Personal Assistant.
       </motion.div>
     </div>
   );
