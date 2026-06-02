@@ -65,7 +65,7 @@ const hires: Hire[] = [
       "Files documents, sets alerts, generates reports, answers how-to questions.",
   },
   {
-    role: "Asset-management lead / CEO",
+    role: "Portfolio lead / CEO",
     agent: "Your CEO",
     cost: "from €3,000/month",
     blurb:

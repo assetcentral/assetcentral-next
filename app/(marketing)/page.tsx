@@ -12,9 +12,9 @@ import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
 import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection";
 
 export const metadata: Metadata = {
-  title: "AssetCentral — Your AI Asset-Management Team for Property Returns",
+  title: "AssetCentral — Your AI Team for Property Owners",
   description:
-    "AssetCentral is your AI asset-management team for property returns. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on your portfolio together. Built for private owners with 2 to 50 properties.",
+    "AssetCentral is your AI team for property owners. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on your portfolio together. Built for private owners with 2 to 50 properties.",
   alternates: { canonical: "/" },
 };
 
@@ -25,7 +25,7 @@ const jsonLd = {
   applicationCategory: "FinanceApplication",
   offers: { "@type": "Offer", price: "49", priceCurrency: "EUR" },
   description:
-    "AI asset-management team for private property owners — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant.",
+    "AI team for private property owners — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant.",
 };
 
 export default function HomePage() {

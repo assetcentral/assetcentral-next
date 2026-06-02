@@ -112,9 +112,9 @@ export function MeetTheTeamSection() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             AssetCentral isn&rsquo;t a dashboard you have to drive. It&rsquo;s an AI
-            asset-management team — a CEO, a CFO, a market analyst, an operations
-            manager and a personal assistant — that works across every property you
-            own, in every currency, all the time.
+            team — a CEO, a CFO, a market analyst, an operations manager and a
+            personal assistant — that works across every property you own, in every
+            currency, all the time.
           </p>
         </div>
 

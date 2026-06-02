@@ -26,11 +26,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://assetcentral.ai"),
   title: {
-    default: "AssetCentral — Your AI Asset-Management Team for Property Returns",
+    default: "AssetCentral — Your AI Team for Property Owners",
     template: "%s | AssetCentral",
   },
   description:
-    "AssetCentral is your AI asset-management team for property returns. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on your portfolio together. Built for private owners with 2 to 50 properties.",
+    "AssetCentral is your AI team for property owners. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on your portfolio together. Built for private owners with 2 to 50 properties.",
   openGraph: {
     type: "website",
     siteName: "AssetCentral",
@@ -55,7 +55,7 @@ const organisationSchema = {
   logo: "https://assetcentral.ai/og-image.png",
   email: "hello@assetcentral.ai",
   description:
-    "AI asset-management team for private property owners. Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant working on your portfolio across multi-country holdings.",
+    "AI team for private property owners. Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant working on your portfolio across multi-country holdings.",
   legalName: "LOMOND CONSULTING FZE",
   address: {
     "@type": "PostalAddress",

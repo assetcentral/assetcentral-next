@@ -39,7 +39,7 @@ export function HeroSection() {
               className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Your AI asset-management team for property owners
+              Your AI team for property owners
             </h1>
 
             {/* Subhead: names all five specialists by their org-chart

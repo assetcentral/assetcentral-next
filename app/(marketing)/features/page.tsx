@@ -58,7 +58,7 @@ export default function FeaturesPage() {
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — do the things a professional asset-management team does for a property fund, but for private owners with 2 to 50 properties across one or more countries.
+              Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — do the things a professional team does inside a property fund, but for private owners with 2 to 50 properties across one or more countries.
             </p>
           </div>
         </div>
