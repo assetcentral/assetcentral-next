@@ -4,14 +4,17 @@ export function FinalCta() {
   return (
     <section className="bg-[var(--color-navy)]">
       <div className="mx-auto max-w-5xl px-6 lg:px-10 py-24 lg:py-32 text-center">
-        {/* Yield north-star strapline — same line that opens the hero,
-            closing the loop so the visitor leaves with the same idea
-            they arrived with. */}
+        {/* Same strapline as the hero — closes the loop so the visitor
+            leaves with the same idea they arrived with. Yield is still
+            the app's internal north star (see lib/ai/system-prompt.ts)
+            but the homepage hero now leads with the broader, conversion-
+            tested promise to avoid pushing away owners who think about
+            capital growth and timing alongside yield. */}
         <p
           className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          One number. Your yield going up.
+          Real data. Better decisions. Better returns.
         </p>
         <h2
           className="text-[40px] lg:text-[56px] leading-[1.05] text-white"
