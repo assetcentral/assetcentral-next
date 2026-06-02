@@ -18,6 +18,17 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
           {/* copy */}
           <div>
+            {/* Yield north-star strapline. Anchors the entire site to the
+                same north star the app uses internally — see
+                lib/ai/system-prompt.ts: "YOUR PURPOSE: help the user
+                increase YIELD on their real estate assets. Yield is the
+                north star." Repeated on FinalCta for consistency. */}
+            <p
+              className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              One number. Your yield going up.
+            </p>
             <h1
               className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}

@@ -9,6 +9,7 @@ import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
+import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection";
 
 export const metadata: Metadata = {
   title: "AssetCentral — Your AI Asset-Management Team for Property Returns",
@@ -40,8 +41,18 @@ export default function HomePage() {
           targeting (e.g. UK-investor-with-Dubai-property) lives on its
           own dedicated landing page at /uk-dubai, which the Google Ads
           campaign points at directly. */}
+      {/* Homepage flow post-2026-06 deeper alignment:
+            HeroSection      — yield north-star strapline + team H1
+            ProblemSection   — 4 problems, each mapped to the agent who handles it
+            MeetTheTeamSection — formal intro to the five specialists
+            TeamForPriceSection — "Five specialists. €49 a month." — the value-prop maths
+            ProductDemoTabs  — guided product walkthrough
+            FeaturesGrid     — what each agent does (grouped by agent owner)
+          The previous flow ran problem → demo → features as a generic SaaS
+          walk; the new flow keeps the team theme front-of-mind end-to-end. */}
       <ProblemSection />
       <MeetTheTeamSection />
+      <TeamForPriceSection />
       <div id="how-it-works" />
       <ProductDemoTabs />
       <FeaturesGrid />

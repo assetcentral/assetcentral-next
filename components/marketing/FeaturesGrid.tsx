@@ -1,150 +1,91 @@
+// Homepage "what's inside" section. Previously a flat 8-feature grid;
+// now grouped by which agent on the AC Agent Team owns each feature.
+// Aligns with the 2026-06 reframe — the visitor walks away with "Your
+// CEO does X / Y / Z, Finance Manager does A / B / C" rather than a
+// generic feature menu.
+//
+// Mapping reflects lib/agent-team.ts ownedSurfaces on the app side, with
+// concrete artefacts named (lender pack, refinance maths, market radar,
+// etc.) so the team feels tangible.
+//
+// Layout: 5 stacked agent blocks. On lg+ the header sits left and the
+// feature list right, so the screen reads like a contents page of a
+// team's quarterly report rather than a SaaS feature wall.
+
 import Link from "next/link";
 
-type Feature = {
+type AgentBlock = {
+  /** Role / org-chart equivalent shown above the agent name. */
+  role: string;
+  /** Agent name — matches lib/agent-team.ts AGENTS[key].name. */
   name: string;
-  body: string;
-  icon: React.ReactNode;
+  /** Short framing line for what this agent owns. */
+  framing: string;
+  /** Concrete capabilities. Each one short enough to skim, specific
+   *  enough to make the agent feel like a real role. */
+  capabilities: string[];
 };
 
-function Icon({ paths }: { paths: React.ReactNode }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      {paths}
-    </svg>
-  );
-}
-
-const features: Feature[] = [
+const blocks: AgentBlock[] = [
   {
-    name: "Real net yield",
-    body: "Gross rent minus vacancy, costs, mortgage, tax. The number that actually matters, per asset and across the portfolio.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <path d="M3 17l4-4 4 4 6-6 4 4" />
-            <path d="M3 21h18" />
-          </>
-        }
-      />
-    ),
+    role: "CEO",
+    name: "Your CEO",
+    framing:
+      "Reads the rest of the team's work and tells you what to do next.",
+    capabilities: [
+      "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
+      "Portfolio health score and concentration risk",
+      "5-year projection of yield, equity and cashflow",
+      "Decision Room view — the brief, the maths and the comp set in one place",
+    ],
   },
   {
-    name: "Loan tracker",
-    body: "Every mortgage, rate reversion date, maturity, and monthly payment. Alerts 90 days before action is needed.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <rect x="3" y="6" width="18" height="14" rx="2" />
-            <path d="M3 10h18" />
-            <path d="M8 3v4" />
-            <path d="M16 3v4" />
-          </>
-        }
-      />
-    ),
+    role: "CFO",
+    name: "Finance Manager",
+    framing:
+      "Owns the numbers. Real yield, cashflow, debt, refinance.",
+    capabilities: [
+      "Real net yield per property and across the portfolio",
+      "12-month cashflow forecast vs actual",
+      "Loan tracker — rate reversion dates, maturity, monthly payment",
+      "Refinancing maths and the lender pack, generated from your data",
+    ],
   },
   {
-    name: "Cashflow calendar",
-    body: "Every payment due, 12 months ahead, across all assets and currencies. Stage payments, mortgages, capex, rent — one view.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <path d="M3 21h18" />
-            <rect x="5" y="11" width="3" height="8" />
-            <rect x="10.5" y="7" width="3" height="12" />
-            <rect x="16" y="13" width="3" height="6" />
-          </>
-        }
-      />
-    ),
+    role: "CMO",
+    name: "Market Analyst",
+    framing:
+      "Watches the markets you're in. Rent, comps, transactions, upside.",
+    capabilities: [
+      "Rent benchmarking against the local median",
+      "Comparable sales and live transaction radar (DLD / HMLR / DVF)",
+      "STR vs long-let modelling per asset",
+      "Acquisition simulator: portfolio impact of a candidate purchase",
+    ],
   },
   {
-    name: "Document vault",
-    body: "Upload contracts, leases, invoices. AI extracts key dates and amounts automatically. Nothing to type.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-            <path d="M14 3v6h6" />
-          </>
-        }
-      />
-    ),
+    role: "COO",
+    name: "Operations Manager",
+    framing:
+      "Catches the things that go wrong while you're not looking.",
+    capabilities: [
+      "Lease renewals, mortgage reversion and stage-payment alerts",
+      "STR and property-manager statement audits",
+      "Cost anomaly flags — service charges, capex, utility spikes",
+      "Rent collection monitoring across every property",
+    ],
   },
   {
-    name: "Data ingestion",
-    body: "Forward a WhatsApp, email a statement, photograph an invoice. AssetCentral reads it and updates your portfolio automatically.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <path d="M21 12a9 9 0 1 1-3.5-7.1" />
-            <polyline points="21 4 21 10 15 10" />
-          </>
-        }
-      />
-    ),
-  },
-  {
-    name: "Operator checker",
-    body: "Verify STR and property management statements. Know if your 25% commission is producing 25% worth of bookings.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <circle cx="11" cy="11" r="7" />
-            <path d="m21 21-4.3-4.3" />
-            <path d="M8.5 11.5l2 2 4-4" />
-          </>
-        }
-      />
-    ),
-  },
-  {
-    name: "Portfolio reports",
-    body: "Lender-ready refinancing packs, investor presentations, tax reports. Generated in minutes from your portfolio data.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <path d="M4 4h12l4 4v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
-            <path d="M16 4v4h4" />
-            <path d="M8 13h8" />
-            <path d="M8 17h6" />
-          </>
-        }
-      />
-    ),
-  },
-  {
-    name: "Multi-currency",
-    body: "AED, EUR, GBP, USD across your portfolio. Everything converts to your base currency automatically. Exchange rates updated daily.",
-    icon: (
-      <Icon
-        paths={
-          <>
-            <circle cx="12" cy="12" r="9" />
-            <path d="M3 12h18" />
-            <path d="M12 3a13 13 0 0 1 0 18" />
-            <path d="M12 3a13 13 0 0 0 0 18" />
-          </>
-        }
-      />
-    ),
+    role: "Concierge",
+    name: "Portfolio Personal Assistant",
+    framing:
+      "The team member you talk to. Available on every plan.",
+    capabilities: [
+      "Document vault with AI extraction — upload, snap or email",
+      "Data ingestion via WhatsApp, email forwarding or file upload",
+      "Setup wizards for new properties, calculators and reports",
+      "Glossary and how-to guidance any time you're unsure",
+    ],
   },
 ];
 
@@ -163,40 +104,22 @@ export function FeaturesGrid() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Eight things that come with your portfolio workspace.
+            What each specialist does for your portfolio.
           </h2>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {features.map((f) => (
-            <article
-              key={f.name}
-              className="rounded-xl border border-[var(--color-border)] bg-white p-5"
-            >
-              <div className="w-9 h-9 rounded-md bg-[var(--color-navy)] text-white flex items-center justify-center mb-4">
-                {f.icon}
-              </div>
-              <h3
-                className="text-[17px] font-semibold leading-tight text-[var(--color-navy)] mb-2"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                {f.name}
-              </h3>
-              <p
-                className="text-[13.5px] leading-[1.55] text-[var(--color-muted)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                {f.body}
-              </p>
-            </article>
+        <div className="mt-12 space-y-5">
+          {blocks.map((b) => (
+            <AgentBlockCard key={b.name} block={b} />
           ))}
         </div>
 
         <p
-          className="mt-8 text-[14.5px] text-[var(--color-ink)]"
+          className="mt-10 text-[14.5px] text-[var(--color-ink)]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          And more — acquisition simulation, sell vs hold analysis, market radar, team access.{" "}
+          And more — multi-currency, full report suite, team seats on Team
+          and Enterprise, partner programmes for brokers and advisers.{" "}
           <Link
             href="/features"
             className="text-[var(--color-accent)] font-medium hover:underline"
@@ -206,5 +129,51 @@ export function FeaturesGrid() {
         </p>
       </div>
     </section>
+  );
+}
+
+function AgentBlockCard({ block }: { block: AgentBlock }) {
+  return (
+    <article className="rounded-2xl border border-[var(--color-border)] bg-white p-7 lg:p-9 lg:grid lg:grid-cols-[280px_1fr] lg:gap-12">
+      {/* Header column — role + name + framing. Sticky-ish vertical
+          anchor at lg+; stacked on mobile. */}
+      <div>
+        <p
+          className="text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-2"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {block.role}
+        </p>
+        <h3
+          className="text-[26px] lg:text-[30px] leading-[1.1] text-[var(--color-navy)]"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          {block.name}
+        </h3>
+        <p
+          className="mt-3 text-[14.5px] leading-[1.55] text-[var(--color-muted)]"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {block.framing}
+        </p>
+      </div>
+
+      {/* Capabilities grid — 2-up on md+, stacked on mobile. */}
+      <ul className="mt-6 lg:mt-0 grid sm:grid-cols-2 gap-x-8 gap-y-3">
+        {block.capabilities.map((c) => (
+          <li
+            key={c}
+            className="flex gap-3 text-[14px] leading-[1.55] text-[var(--color-ink)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            <span
+              aria-hidden
+              className="mt-2 inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] flex-shrink-0"
+            />
+            <span>{c}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
   );
 }
