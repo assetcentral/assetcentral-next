@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = {
   title: "Features | AssetCentral",
   description:
-    "Four jobs. One platform. Real net yield, loan tracker, cashflow calendar, data ingestion, operator checker, sell vs hold, acquisition simulator, reports.",
+    "What your AC Agent Team does. Real net yield, loan tracker, cashflow calendar, data ingestion, operator checker, sell vs hold, acquisition simulator, decision-room reports.",
   alternates: { canonical: "/features" },
 };
 
@@ -52,13 +52,13 @@ export default function FeaturesPage() {
               className="text-[44px] lg:text-[56px] leading-[1.05] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Your Real Estate PA. Four jobs. One platform.
+              Your AC Agent Team. Every property. Every month.
             </h1>
             <p
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              AssetCentral does the four things a professional asset manager does for a property fund — but for a private owner with anywhere from a single investment property to 50, across one or more countries.
+              Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — do the things a professional asset-management team does for a property fund, but for private owners with 2 to 50 properties across one or more countries.
             </p>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function FeaturesPage() {
             className="mt-4 text-[16.5px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            See your real yield. Find out what you&rsquo;ve been missing. Free for 14 days.
+            See your real yield. Let Your CEO rank the actions that lift returns. Free for up to 3 properties — 7-day trial on Pro.
           </p>
           <div className="mt-7">
             <Link

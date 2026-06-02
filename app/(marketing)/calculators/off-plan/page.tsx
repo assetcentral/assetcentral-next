@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // search results match the campaign keywords directly.
   title: "Dubai Off-Plan Calculator — assign now or hold? | AssetCentral",
   description:
-    "Should you assign your Dubai off-plan unit now or hold to handover? A rolling month-by-month model with cost of money, payment plan, three scenarios and live DLD market comps. Used by UK and GCC investors weighing the exit decision. Free with a 14-day trial.",
+    "Should you assign your Dubai off-plan unit now or hold to handover? A rolling month-by-month model with cost of money, payment plan, three scenarios and live DLD market comps. Used by UK and GCC investors weighing the exit decision. Free with a 7-day trial.",
   alternates: { canonical: "/calculators/off-plan" },
 };
 
@@ -32,7 +32,7 @@ export default function OffPlanLandingPage() {
               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              <LockIcon /> Free 14-day trial
+              <LockIcon /> Free 7-day trial
             </span>
           </div>
           <h1
@@ -83,7 +83,7 @@ export default function OffPlanLandingPage() {
               className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-semibold hover:bg-[var(--color-navy-light)] transition-colors"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Start free 14-day trial →
+              Start free 7-day trial →
             </Link>
             <span
               className="text-[13px] text-[var(--color-muted)]"
@@ -277,7 +277,7 @@ export default function OffPlanLandingPage() {
               className="text-[15.5px] leading-[1.55] text-white/85 mb-7 max-w-2xl mx-auto"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Start a free 14-day trial — full access to the off-plan
+              Start a free 7-day trial — full access to the off-plan
               calculator, the rest of the calculator suite, and the
               portfolio workspace. No credit card.
             </p>
@@ -287,7 +287,7 @@ export default function OffPlanLandingPage() {
                 className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-white text-[var(--color-navy)] text-[15px] font-semibold hover:bg-white/90 transition-colors"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Start free 14-day trial →
+                Start free 7-day trial →
               </Link>
               <Link
                 href="/calculators"

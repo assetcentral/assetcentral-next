@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About | AssetCentral",
   description:
-    "AssetCentral was built by an experienced entrepreneur who hit every problem of owning property without a family office handling it for him. A Real Estate PA for hands-on private owners.",
+    "AssetCentral was built by an experienced entrepreneur who hit every problem of owning property without a family office handling it for him. An AI asset-management team for hands-on private owners.",
   alternates: { canonical: "/about" },
 };
 
@@ -30,7 +30,7 @@ export default function AboutPage() {
             Being hands-on has its virtues. It also has its limits. You eventually realise no spreadsheet, however carefully maintained, keeps up with what&rsquo;s actually happening across a multi-country portfolio. Some part of the picture is always wrong — and you only find out which part when something breaks.
           </p>
           <p>
-            AI changed what was possible. Documents could be read at scale. Numbers could be extracted reliably. Patterns across properties could be surfaced before they became problems. AssetCentral is what the team built once that became real — a Real Estate PA for owners who want healthy, durable returns without outsourcing their judgement to someone else.
+            AI changed what was possible. Documents could be read at scale. Numbers could be extracted reliably. Patterns across properties could be surfaced before they became problems. AssetCentral is what the team built once that became real — an AI asset-management team for owners who want healthy, durable returns without outsourcing their judgement to someone else.
           </p>
           <p>
             We&rsquo;re still on day 1 of what AI lets us do here. If something feels clunky, or you spot a bug, bear with us — and tell us. Every rough edge we hear about gets sharper faster than you&rsquo;d expect.
@@ -49,7 +49,7 @@ export default function AboutPage() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           <p>
-            Four jobs: sets up visibility so you actually see what&rsquo;s going on, actively improves yield (including checking whether your operators are earning their commission), grinds through the operational checks, and helps with better decisions on timing, buying, and selling. In plain English: a Real Estate PA.
+            Five specialists working on your portfolio. <strong>Your CEO</strong> ranks the highest-impact actions to improve returns. <strong>Finance Manager</strong> handles the numbers — yield, cashflow, debt, refinance. <strong>Market Analyst</strong> benchmarks rent and tracks comparable transactions. <strong>Operations Manager</strong> watches renewals, statements and cost anomalies. <strong>Portfolio Personal Assistant</strong> is the concierge — answers questions, completes data, sets alerts. In plain English: an AI asset-management team.
           </p>
           <p>
             It&rsquo;s for private owners with anywhere from a second property to 50, often across multiple countries — managing their portfolio alongside a career or other business. Not first-time buyers. Not REITs. Not developers. Above 50 assets, we offer custom enterprise plans.
@@ -84,7 +84,7 @@ export default function AboutPage() {
             className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[14.5px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Start free — 14 days
+            Start free — up to 3 properties
           </Link>
           <Link
             href="/features"

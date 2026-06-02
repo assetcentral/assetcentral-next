@@ -8,13 +8,13 @@ export function FinalCta() {
           className="text-[40px] lg:text-[56px] leading-[1.05] text-white"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          You have a portfolio. You need a PA.
+          You have a portfolio. Meet the team that works on it.
         </h2>
         <p
           className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-white/75 max-w-2xl mx-auto"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Add your first property in 5 minutes. See your real yield. Find out what you&rsquo;ve been missing. Free for 14 days.
+          Add your first property in 5 minutes. See your real yield. Let Your CEO rank the actions that lift returns. Free for up to 3 properties — 7-day trial on Pro.
         </p>
 
         <div className="mt-8 flex justify-center">

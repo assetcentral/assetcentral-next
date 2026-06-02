@@ -53,7 +53,7 @@ export function PricingClient() {
               className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Simple pricing. No per-asset fees. 14-day free trial on Pro and Team — no credit card required to start.
+              Free covers up to 3 properties with the Portfolio Personal Assistant. Pro unlocks the full AC Agent Team — Your CEO, Finance Manager, Market Analyst, Operations Manager — for €49 a month. 7-day free trial on Pro and Team, no credit card required to start.
             </p>
           </div>
 
@@ -131,20 +131,21 @@ export function PricingClient() {
             <PlanCardLayout name="Free">
               <PriceBlock
                 price={formatPrice(0, bill)}
-                sub="Forever"
+                sub="Forever — up to 3 properties"
               />
-              <Blurb>Calculators only. No account required.</Blurb>
+              <Blurb>Portfolio Personal Assistant + basic dashboard. Try the model before committing.</Blurb>
               <FeatureList
                 items={[
+                  { label: "Up to 3 properties", on: true },
+                  { label: "Portfolio Personal Assistant", on: true },
+                  { label: "Yield + cashflow dashboard", on: true },
                   { label: "All calculators, free", on: true },
-                  { label: "Save calculator results (with account)", on: true },
-                  { label: "Portfolio workspace", on: false },
-                  { label: "Alerts", on: false },
-                  { label: "Reports", on: false },
+                  { label: "Your CEO + Finance / Market / Ops", on: false },
+                  { label: "Decision Room + ranked actions", on: false },
                 ]}
               />
-              <CTA href="/calculators" variant="ghost">
-                Use free calculators
+              <CTA href="/signup" variant="ghost">
+                Start free
               </CTA>
             </PlanCardLayout>
 
@@ -158,16 +159,17 @@ export function PricingClient() {
                     : `per month, billed ${formatPrice(proPrice.annual, bill)}/year — save ${annualSavings(proPrice, bill)}`
                 }
               />
-              <Blurb>Full portfolio. One user. Up to 20 assets.</Blurb>
+              <Blurb>Full AC Agent Team. One user. Up to 20 properties.</Blurb>
               <FeatureList
                 items={[
                   { label: "Everything in Free, plus:", on: true },
-                  { label: "Portfolio workspace (up to 20 assets)", on: true },
-                  { label: "Yield, cashflow & debt views", on: true },
-                  { label: "Intelligence & alerts", on: true },
-                  { label: "All report types", on: true },
-                  { label: "Document vault with AI extraction", on: true },
-                  { label: "Multi-currency", on: true },
+                  { label: "Your CEO — ranked actions + decision support", on: true },
+                  { label: "Finance Manager — yield, cashflow, debt", on: true },
+                  { label: "Market Analyst — rent + market evidence", on: true },
+                  { label: "Operations Manager — alerts + checks", on: true },
+                  { label: "Up to 20 properties", on: true },
+                  { label: "Document vault + AI extraction", on: true },
+                  { label: "Multi-currency + all report types", on: true },
                   { label: "Team members", on: false },
                 ]}
               />
@@ -195,11 +197,11 @@ export function PricingClient() {
                     : `per month, billed ${formatPrice(teamPrice.annual, bill)}/year — save ${annualSavings(teamPrice, bill)}`
                 }
               />
-              <Blurb>Everything in Pro, plus up to 5 seats and 50 assets.</Blurb>
+              <Blurb>Everything in Pro, plus up to 5 seats and 50 properties.</Blurb>
               <FeatureList
                 items={[
                   { label: "Everything in Pro, plus:", on: true },
-                  { label: "Up to 50 assets", on: true },
+                  { label: "Up to 50 properties", on: true },
                   { label: "Up to 5 team members", on: true },
                   { label: "Role-based access (admin, analyst, viewer)", on: true },
                   { label: "Multiple portfolio workspaces", on: true },
@@ -217,11 +219,11 @@ export function PricingClient() {
             {/* Enterprise */}
             <PlanCardLayout name="Enterprise">
               <PriceBlock price="Custom" sub="Talk to us" />
-              <Blurb>More than 50 assets, multiple teams, or specific compliance needs.</Blurb>
+              <Blurb>More than 50 properties, multiple teams, or specific compliance needs.</Blurb>
               <FeatureList
                 items={[
                   { label: "Everything in Team, plus:", on: true },
-                  { label: "Unlimited assets", on: true },
+                  { label: "Unlimited properties", on: true },
                   { label: "Unlimited team members", on: true },
                   { label: "SSO and audit logging", on: true },
                   { label: "Custom DPA and data residency", on: true },
@@ -242,7 +244,7 @@ export function PricingClient() {
             className="mt-8 text-center text-[14px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            All plans include a 14-day free trial. No credit card required to start. VAT applied per local regulations.
+            Free is forever (up to 3 properties). Pro and Team include a 7-day free trial — no credit card required to start. VAT applied per local regulations.
           </p>
         </div>
       </section>
@@ -435,7 +437,7 @@ function DualCTA({
   return (
     <div className="mt-6 space-y-2.5">
       <CTA href={trialHref} variant={trialVariant}>
-        Start 14-day free trial
+        Start 7-day free trial
       </CTA>
 
       <div className="relative">

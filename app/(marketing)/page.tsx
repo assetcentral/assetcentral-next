@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
 import { FeaturesGrid } from "@/components/marketing/FeaturesGrid";
 import { FinalCta } from "@/components/marketing/FinalCta";
-import { FourJobsSection } from "@/components/marketing/FourJobsSection";
 import { HeroSection } from "@/components/marketing/HeroSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { LeadMagnetsSection } from "@/components/marketing/LeadMagnetsSection";
+import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
 
 export const metadata: Metadata = {
-  title: "AssetCentral — Your Real Estate PA | Property Portfolio Intelligence",
+  title: "AssetCentral — Your AI Asset-Management Team for Property Returns",
   description:
-    "AssetCentral is your AI-powered Real Estate PA. Track real yield, verify operator statements, manage cashflow, and make smarter decisions across your multi-country property portfolio.",
+    "AssetCentral is your AI asset-management team for property returns. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio PA — working on your portfolio together. Built for private owners with 2 to 50 properties.",
   alternates: { canonical: "/" },
 };
 
@@ -23,7 +23,8 @@ const jsonLd = {
   name: "AssetCentral",
   applicationCategory: "FinanceApplication",
   offers: { "@type": "Offer", price: "49", priceCurrency: "EUR" },
-  description: "Property portfolio intelligence platform for private owners.",
+  description:
+    "AI asset-management team for private property owners — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant.",
 };
 
 export default function HomePage() {
@@ -40,9 +41,9 @@ export default function HomePage() {
           own dedicated landing page at /uk-dubai, which the Google Ads
           campaign points at directly. */}
       <ProblemSection />
+      <MeetTheTeamSection />
       <div id="how-it-works" />
       <ProductDemoTabs />
-      <FourJobsSection />
       <FeaturesGrid />
       <CalculatorsCta />
       <LeadMagnetsSection />
