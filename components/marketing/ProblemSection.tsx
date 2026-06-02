@@ -1,30 +1,39 @@
 // The problem section sits between the hero and the team intro. Its job
 // is to bridge the gap between "you have problems" and "you need a team".
-// Each problem here is named after a real pain a private owner hits, and
-// tagged with the specialist on the AC Agent Team who handles it. The
-// mapping reads:
 //
-//   visibility gap          → Finance Manager (CFO)
-//   operator black box      → Operations Manager (COO)
-//   timing trap             → Operations Manager (COO) + Finance Manager
-//                              depending on event — we attribute it to
-//                              Operations because it's about *missed
-//                              calendar events*, which is the ops feed
-//   comparison problem      → Your CEO + Finance Manager (synthesis)
+// Reframed 2026-06: each problem is now (a) universal — applies to every
+// private owner with 2+ properties regardless of let type or geography —
+// and (b) cleanly attributed to a single specialist on the AC Agent Team.
 //
-// The pattern: each card ends with "→ Handled by [Agent]" so the visitor
-// arrives at the team section already primed that "team" means specific
-// roles solving specific problems, not vague AI hand-waving.
+// Earlier version had an "STR operator black box" problem which assumed
+// the owner was already running short-lets through a commissioned
+// operator. That's not universal — plenty of owners are pure long-let.
+// The truly universal version of that problem is the let-type decision
+// itself: every owner has to choose long-let or short-let, and most
+// commit to one without ever modelling the alternative.
 //
-// Compliance language: "may" / "appears" / "decision support" maintained.
-// No "we recommend" or "guaranteed".
+// Mapping post-reframe (one specialist per problem):
+//
+//   visibility gap        → Finance Manager (CFO)
+//   let-type decision     → Market Analyst (models the option)
+//   timing trap           → Operations Manager (COO)
+//   comparison problem    → Your CEO (synthesis)
+//
+// The Portfolio Personal Assistant doesn't own a problem here because
+// the PA is the concierge — they help with all four indirectly but the
+// "Handled by" attribution should name the specialist who decides the
+// outcome, not the one who files the paperwork.
+//
+// Compliance language: "may" / "appears" / "after costs" / "should know"
+// maintained. No "we recommend" / "guaranteed".
 
 type Problem = {
   title: string;
   body: string;
   /** Which agent on the AC Agent Team handles this. Drives the
    *  "Handled by" footer line — keeps copy tight to the post-2026-06
-   *  positioning (lib/agent-team.ts). */
+   *  positioning (lib/agent-team.ts). One specialist per problem so
+   *  the attribution reads cleanly. */
   handledBy: string;
 };
 
@@ -32,26 +41,26 @@ const problems: Problem[] = [
   {
     title: "The visibility gap",
     body:
-      "You find out how much your portfolio earned when your accountant does the tax return. Once a year. In the meantime, you see what hits your bank account — which isn't the same thing as yield, return, or whether you're making good decisions.",
+      "You find out what your portfolio actually earned when your accountant files the return — twelve months after the fact. In the meantime, the bank balance moves and you assume the picture is roughly right. It often isn't. Net yield, after-cost return, asset-by-asset performance — most owners haven't seen these numbers in real time.",
     handledBy: "Finance Manager (CFO)",
   },
   {
-    title: "The operator black box",
+    title: "The let-type decision",
     body:
-      "Your STR operator charges 25% commission. Your long-term property manager charges 5%. Do you actually check their statements? Most owners don't. They see the net figure in their bank and assume it's roughly right. It often isn't.",
-    handledBy: "Operations Manager (COO)",
+      "Long-let or short-let? Every property forces this choice — and most owners pick one and never look back. Short-let advertises higher gross yield. After operator commission (typically 20–30%), seasonality, voids and the constant decisions, the net often disappoints. Long-let trades upside for predictability. You should know which model wins on each property before you commit — and check it's still winning after you have.",
+    handledBy: "Market Analyst",
   },
   {
     title: "The timing trap",
     body:
-      "Your fixed mortgage rate reverts in 4 months. Your off-plan stage payment is due in 6. Your lease expires in 8. None of these are on a calendar you check. Each one is a decision that requires preparation — and the window to prepare is already closing.",
+      "Your fixed mortgage rate reverts in four months. A stage payment is due in six. A lease expires in eight. None of these are on a calendar you check. By the time you remember, the window to prepare — refinance quotes, lender pack, rent review — is already closing.",
     handledBy: "Operations Manager (COO)",
   },
   {
     title: "The comparison problem",
     body:
-      "You have apartments in Dubai, Athens, and Lisbon. They're in three currencies, three tax regimes, and three separate spreadsheets. You can't compare them — so you don't. You have no idea which asset is working hardest, which one to sell, or where to put the next euro of capital.",
-    handledBy: "Your CEO + Market Analyst",
+      "You have properties in different cities, different currencies, different tax regimes — sitting in different spreadsheets. You can't compare them, so you don't. You don't know which asset is working hardest, which one to sell, or where the next euro of capital should go.",
+    handledBy: "Your CEO",
   },
 ];
 
