@@ -138,7 +138,7 @@ export default function UkDubaiLanding() {
                 "Cashflow calendar in GBP and AED",
                 "FX-aware totals so you see real position",
                 "Forward an AED invoice or a UK gas bill — same inbox",
-                "AI PA that knows the whole picture",
+                "AI Personal Assistant that knows the whole picture",
               ]}
             />
           </div>

@@ -11,7 +11,7 @@ import {
 } from "@/components/marketing/ExplainerVideoV2";
 import { DemoVideoSwitcher } from "@/components/marketing/DemoVideoSwitcher";
 
-const TITLE = "What is AssetCentral? — Your AI Real Estate PA";
+const TITLE = "What is AssetCentral? — Your AI Asset-Management Team for Property Returns";
 const DESCRIPTION =
   "AssetCentral uses AI to find, structure and interpret real property data, helping owners and investors with 2 to 50 properties make faster decisions and improve portfolio returns.";
 

@@ -14,7 +14,7 @@ import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection"
 export const metadata: Metadata = {
   title: "AssetCentral — Your AI Asset-Management Team for Property Returns",
   description:
-    "AssetCentral is your AI asset-management team for property returns. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio PA — working on your portfolio together. Built for private owners with 2 to 50 properties.",
+    "AssetCentral is your AI asset-management team for property returns. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on your portfolio together. Built for private owners with 2 to 50 properties.",
   alternates: { canonical: "/" },
 };
 

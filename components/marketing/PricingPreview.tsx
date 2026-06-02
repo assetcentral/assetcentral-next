@@ -47,7 +47,7 @@ export function PricingPreview() {
             name="Free"
             price={formatPrice(0, bill)}
             cadence="forever"
-            blurb="Up to 3 properties. Portfolio PA + dashboard + free calculators."
+            blurb="Up to 3 properties. Portfolio Personal Assistant + dashboard + free calculators."
             cta={{ label: "Start free", href: "/signup" }}
           />
           <PlanCard
