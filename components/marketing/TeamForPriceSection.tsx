@@ -129,11 +129,19 @@ export function TeamForPriceSection() {
                     {h.blurb}
                   </p>
                 </div>
+                {/* Per-role price column. Strike-through on the manual
+                    cost + green "Included in €49/month" reinforces the
+                    value prop on every line, not just the total. */}
                 <div
-                  className="num text-[15px] font-semibold text-[var(--color-muted)] sm:text-right whitespace-nowrap"
+                  className="sm:text-right whitespace-nowrap shrink-0"
                   style={{ fontFamily: "var(--font-sans)" }}
                 >
-                  {h.cost}
+                  <div className="num text-[15px] font-semibold text-[var(--color-muted)] line-through">
+                    {h.cost}
+                  </div>
+                  <div className="mt-1 text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--color-positive)]">
+                    Included in €49/mo
+                  </div>
                 </div>
               </li>
             ))}
