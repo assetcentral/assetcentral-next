@@ -49,7 +49,7 @@ export default function Article() {
         { slug: "mortgage-types-explained", title: "Mortgage types explained: fixed, variable, fix-then-revert, repayment, interest-only" },
         { slug: "mortgage-rules-by-country", title: "Mortgage rules by country: how the UAE, UK, France, Spain, Portugal, Greece, Germany, and Switzerland differ" },
         { slug: "net-yield-vs-gross-yield", title: "Gross yield vs net yield — and why it matters more than you think" },
-        { slug: "str-operator-performance-check", title: "Is your STR operator earning their 25%?" },
+        { slug: "str-operator-performance-check", title: "Is your short-term rental operator earning their 25%?" },
       ]}
     >
       <p>

@@ -1800,7 +1800,7 @@ function Scene7() {
   const cards = [
     { label: "Real net yield",       value: "5.8%",     delta: "+12 bps",   asset: "Portfolio · TTM",    sub: "vs vendor-quoted 7.1%", tone: POSITIVE, delay: 0.3 },
     { label: "Cashflow this month",  value: "+€3,240",  delta: "+€420 mom", asset: "All assets · July",  sub: "after debt service",     tone: POSITIVE, delay: 0.9 },
-    { label: "Operator fee check",   value: "+2pp",     delta: "vs contract", asset: "JVC Studio · STR",  sub: "AED 4k/yr exposure",     tone: WARNING,  delay: 1.5 },
+    { label: "Operator fee check",   value: "+2pp",     delta: "vs contract", asset: "JVC Studio · Short-term",  sub: "AED 4k/yr exposure",     tone: WARNING,  delay: 1.5 },
     { label: "Loan maturity",        value: "47 days",  delta: "fixed reverts", asset: "Marina Apt 2",     sub: "EIBOR +2.1% if no refi", tone: NEGATIVE, delay: 2.1 },
     { label: "Sell vs hold",         value: "Trade up", delta: "+10.5% IRR", asset: "London Flat",        sub: "vs hold-to-2030",        tone: POSITIVE, delay: 2.7 },
   ];
@@ -2894,7 +2894,7 @@ function SceneAlertsOutput() {
     { sev: "negative", days: 14, title: "Void risk — lease ending",      detail: "8 Tower Heights · Tenant gave 60-day notice",      delay: 1.0 },
     { sev: "warning", days: 21, title: "Service-charge invoice due",    detail: "Marina Mansions · AED 12,400 · auto-pay set",      delay: 1.4 },
     { sev: "negative", days: 7,  title: "Covenant breach risk",          detail: "Portfolio loan · DSCR 1.18 vs 1.20 covenant",     delay: 1.8 },
-    { sev: "positive", days: 30, title: "Operator under target",         detail: "STR · Q2 net yield 4.1% vs 5.5% modelled",       delay: 2.2 },
+    { sev: "positive", days: 30, title: "Operator under target",         detail: "Short-term rental · Q2 net yield 4.1% vs 5.5% modelled",       delay: 2.2 },
     { sev: "warning", days: 45, title: "Lease renewal — decision needed",detail: "Park View Tower · Tenant requesting -8% on rent", delay: 2.6 },
   ] as const;
 
@@ -4681,7 +4681,7 @@ function SceneStep5Tools() {
       delay: 1.15,
     },
     {
-      name: "STR vs Long-let",
+      name: "Short-term vs Long-let",
       desc: "Short-term vs annual let",
       question: "Will Airbnb beat my long-term tenant?",
       icon: "str",
@@ -5011,7 +5011,7 @@ function ToolPreview({ kind, colour, delay }: { kind: string; colour: string; de
               className="text-[1.2vw] uppercase tracking-wider text-white/45"
               style={{ fontFamily: "var(--font-sans, sans-serif)" }}
             >
-              STR monthly · vs long-let
+              Short-term monthly · vs long-let
             </span>
             <span
               className="text-[1.3vw] tabular-nums"
@@ -5232,7 +5232,7 @@ function SceneStep6Scenarios() {
       cashflowSeries: [2300, 2350, 2400, 3350, 3400, 3380, 3420, 3450, 3400, 3470, 3500, 3580],
     },
     {
-      name: "Switch to STR",
+      name: "Switch to short-term rental",
       sub: "Short-term let · operator-managed",
       tone: "positive",
       delay: 1.5,
@@ -5588,7 +5588,7 @@ function SceneStep7AIInsights() {
       delay: 0.6,
     },
     {
-      heading: "STR may improve income",
+      heading: "Short-term rental may improve income",
       detail: "Switching to short-term let could lift annual cashflow by ~AED 24,400. Operator due-diligence advised.",
       delay: 1.4,
     },
@@ -5829,7 +5829,7 @@ function SceneStep8Export() {
               {[
                 { n: 1, t: "Uplift rent at renewal", v: "+ AED 11.8k/yr", tone: POSITIVE },
                 { n: 2, t: "Review mortgage rate",   v: "Reset in 90d",    tone: WARNING  },
-                { n: 3, t: "Consider STR scenario",  v: "+ AED 24.4k/yr",  tone: POSITIVE },
+                { n: 3, t: "Consider short-term rental",  v: "+ AED 24.4k/yr",  tone: POSITIVE },
               ].map((a) => (
                 <div key={a.n} className="flex items-start gap-[0.4vw]">
                   <span

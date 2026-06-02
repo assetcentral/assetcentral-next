@@ -16,7 +16,7 @@ const columns = [
       { href: "/demo/get-started", label: "Get started (90s)" },
       { href: "/resources", label: "All guides" },
       { href: "/resources/net-yield-vs-gross-yield", label: "Net yield guide" },
-      { href: "/resources/str-operator-performance-check", label: "STR operator check" },
+      { href: "/resources/str-operator-performance-check", label: "Short-term rental operator check" },
       { href: "/downloads/portfolio-health-checklist", label: "Free: Health Checklist" },
       { href: "/downloads/off-plan-handover-decision-tree", label: "Free: Handover Tree" },
     ],

@@ -19,7 +19,7 @@ const calcs: Calc[] = [
   },
   {
     slug: "str-yield",
-    name: "STR Yield Calculator",
+    name: "Short-term Rental Yield Calculator",
     blurb: "Compare short-term vs long-term rental income.",
   },
   {

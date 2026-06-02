@@ -14,7 +14,7 @@ const rows = [
   { group: "AC Agent Team", label: "Operations Manager (COO)", values: [false, true, true, true] },
   { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [false, true, true, true] },
   { group: "Portfolio", label: "Properties tracked", values: ["Up to 3", "Up to 20", "Up to 50", "Unlimited"] },
-  { group: "Portfolio", label: "Calculators (IRR, STR, Retrofit, Ownership)", values: [true, true, true, true] },
+  { group: "Portfolio", label: "Calculators (IRR, Short-term Rental, Retrofit, Ownership)", values: [true, true, true, true] },
   { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [false, true, true, true] },
   { group: "Intelligence", label: "Real net yield + benchmarks", values: [false, true, true, true] },
   { group: "Intelligence", label: "Sell vs hold analyser", values: [false, true, true, true] },

@@ -47,7 +47,7 @@ export default function Article() {
         readMins={8}
         related={[
           { slug: "net-yield-vs-gross-yield", title: "Gross yield vs net yield — and why it matters more than you think" },
-          { slug: "str-operator-performance-check", title: "Is your STR operator earning their 25%?" },
+          { slug: "str-operator-performance-check", title: "Is your short-term rental operator earning their 25%?" },
           { slug: "mortgage-types-explained", title: "Mortgage types explained: fixed, variable, fix-then-revert, repayment, interest-only" },
           { slug: "off-plan-handover-options", title: "Off-plan handover and you can't complete: four options" },
         ]}

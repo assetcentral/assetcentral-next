@@ -99,7 +99,7 @@ export default function Article() {
           <strong>5. Annual running costs.</strong> Service charge, insurance, agent fees, property tax / council tax, maintenance reserve. Pull the last 12 months from your bank statements rather than estimating. Most owners under-estimate this number by 20–30% from memory.
         </p>
         <p>
-          <strong>6. Vacancy in the last 12 months.</strong> Days vacant between tenancies. For Dubai this is often 2–4 weeks between Marina tenants, 4–8 weeks for JVC, longer for off-plan first-tenancies. For STR properties, this is 100% minus occupancy.
+          <strong>6. Vacancy in the last 12 months.</strong> Days vacant between tenancies. For Dubai this is often 2–4 weeks between Marina tenants, 4–8 weeks for JVC, longer for off-plan first-tenancies. For short-term-rental properties, this is 100% minus occupancy.
         </p>
         <Callout>
           That&rsquo;s six numbers per property. For a five-property portfolio, that&rsquo;s 30 data points — half a Saturday morning&rsquo;s work to assemble. Once it&rsquo;s done, every yield calculation falls out of it.

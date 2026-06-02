@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Free Property Investment Calculators | AssetCentral",
   description:
-    "IRR calculator, STR yield calculator, retrofit cost estimator, and ownership comparator. Free tools for residential property investors. No account required.",
+    "IRR calculator, short-term rental yield calculator, retrofit cost estimator, and ownership comparator. Free tools for residential property investors. No account required.",
   alternates: { canonical: "/calculators" },
 };
 
@@ -36,7 +36,7 @@ const calcs: Calc[] = [
   },
   {
     slug: "str-yield",
-    name: "STR Yield Calculator",
+    name: "Short-term Rental Yield Calculator",
     blurb:
       "Short-term rental vs long-let. See whether the agency commission and seasonality leave you better or worse off.",
     inputs: ["ADR", "Occupancy %", "Operator commission", "Annual costs"],

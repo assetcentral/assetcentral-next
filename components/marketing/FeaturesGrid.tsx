@@ -59,7 +59,7 @@ const blocks: AgentBlock[] = [
     capabilities: [
       "Rent benchmarking against the local median",
       "Comparable sales and live transaction radar (DLD / HMLR / DVF)",
-      "STR vs long-let modelling per asset",
+      "Short-term rental vs long-let modelling per asset",
       "Acquisition simulator: portfolio impact of a candidate purchase",
     ],
   },
@@ -70,7 +70,7 @@ const blocks: AgentBlock[] = [
       "Catches the things that go wrong while you're not looking.",
     capabilities: [
       "Lease renewals, mortgage reversion and stage-payment alerts",
-      "STR and property-manager statement audits",
+      "Short-term rental and property-manager statement audits",
       "Cost anomaly flags — service charges, capex, utility spikes",
       "Rent collection monitoring across every property",
     ],

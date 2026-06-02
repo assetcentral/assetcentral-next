@@ -229,7 +229,7 @@ const features: FeatureBlock[] = [
         mockup: <YieldOptMini />,
       },
       {
-        title: "Is your STR operator earning their 25%?",
+        title: "Is your short-term rental operator earning their 25%?",
         bullets: [
           "Verifies statements against expected bookings and rates",
           "Flags under-performance vs market occupancy",

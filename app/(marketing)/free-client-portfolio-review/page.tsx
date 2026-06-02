@@ -13,7 +13,7 @@ import Link from "next/link";
 
 const TITLE = "Free Client Portfolio Review — AssetCentral";
 const DESCRIPTION =
-  "Dubai brokers: bring one investor client and we'll run an AI-powered portfolio review free. See real net yield, cashflow, STR vs long-let, hold vs sell — and how the broker partner program works.";
+  "Dubai brokers: bring one investor client and we'll run an AI-powered portfolio review free. See real net yield, cashflow, short-term rental vs long-let, hold vs sell — and how the broker partner program works.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -33,7 +33,7 @@ const ACCENT = "#4f6ef7";
 const WHATS_INCLUDED = [
   { title: "Real net yield",          note: "After every cost — service charge, agent fees, financing, voids." },
   { title: "Cashflow forecast",       note: "12-month projection with live + scheduled events per property." },
-  { title: "STR vs long-let",         note: "Modelled annual income under each rental strategy." },
+  { title: "Short-term rental vs long-let",         note: "Modelled annual income under each rental strategy." },
   { title: "Hold vs sell",            note: "Modelled IRR for continued hold vs exit at today's market price." },
   { title: "Refinance scenarios",     note: "Test rate-reset, lender switch, capital release impact." },
   { title: "AI recommendations",      note: "Plain-English actions ranked by impact on portfolio return." },

@@ -43,7 +43,7 @@ const CLIENT_QUESTIONS = [
 const FEATURES = [
   { title: "Rent and yield analysis",          note: "Real net yield per property, after every cost." },
   { title: "Cashflow and return view",          note: "12-month forecast and live actual cashflow." },
-  { title: "STR vs long-term comparison",       note: "Model annual let against short-term operator scenarios." },
+  { title: "Short-term rental vs long-let",     note: "Model annual let against short-term operator scenarios." },
   { title: "Hold / sell analysis",              note: "Modelled IRR for continued hold vs exit at today's price." },
   { title: "Refinance scenarios",               note: "Test new rates, lenders, and loan structures." },
   { title: "Portfolio dashboard",               note: "Cross-property roll-up: yield, exposure, risk flags." },
@@ -55,7 +55,7 @@ const PARTNER_BENEFITS = [
   { title: "Earn partner income",            note: "Eligible introductions earn referral or partner income, subject to partner terms." },
   { title: "Re-engage dormant clients",      note: "A free portfolio review is a credible reason to re-open every old conversation." },
   { title: "Identify likely sellers",        note: "Clients whose data shows underperformance often become listing opportunities." },
-  { title: "Support rental + STR decisions", note: "Help owners pick the right strategy with modelled scenarios, not gut feel." },
+  { title: "Support let-strategy decisions", note: "Help owners pick the right strategy with modelled scenarios, not gut feel." },
   { title: "Co-branded portfolio reports",   note: "Agency-branded reports available on eligible partner tiers." },
   { title: "Stronger owner relationships",   note: "Data-led advice keeps you closer to high-value owners year-round." },
 ];
@@ -70,7 +70,7 @@ const HOW_IT_WORKS = [
 const USE_CASES = [
   { title: "Off-plan investors",                  note: "Facing handover decisions, payment schedules, or resale timing." },
   { title: "Sell-or-hold owners",                 note: "Owners weighing exit at today's price vs continued hold." },
-  { title: "Long-let vs STR landlords",           note: "Landlords considering short-term rental as an alternative income strategy." },
+  { title: "Long-let vs short-term landlords",    note: "Landlords considering short-term rental as an alternative income strategy." },
   { title: "Multi-property owners",               note: "Scattered data across PDFs, portals and spreadsheets that needs one view." },
   { title: "Refinance candidates",                note: "Owners exploring rate-reset, lender switch, or capital release." },
   { title: "Underperforming properties",          note: "Assets quietly losing money — but no clear data showing why." },
@@ -163,9 +163,9 @@ export default function DubaiBrokersPage() {
             className="mt-5 text-[15px] sm:text-[17px] leading-[1.6] text-white/65 max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Help your clients understand rent, yield, cashflow, STR potential,
-            refinance options and hold/sell scenarios — while you stay close to
-            the relationship and create new commercial opportunities.
+            Help your clients understand rent, yield, cashflow, short-term rental
+            potential, refinance options and hold/sell scenarios — while you stay
+            close to the relationship and create new commercial opportunities.
           </p>
           <div
             className="mt-9 flex flex-wrap items-center gap-3"
@@ -831,7 +831,7 @@ function DashboardMock() {
         </div>
         {[
           { addr: "Marina Mansions, Dubai Marina", action: "Rent uplift modelled +AED 11.8k/yr", tone: "#4f6ef7" },
-          { addr: "Tower Heights, Business Bay",    action: "STR scenario +1.6 pp net yield",     tone: "#16a34a" },
+          { addr: "Tower Heights, Business Bay",    action: "Short-term rental +1.6 pp net yield", tone: "#16a34a" },
           { addr: "Park View, JVC",                 action: "Rate reset in 90 days · refinance",  tone: "#d97706" },
         ].map((r) => (
           <div key={r.addr} className="flex items-center justify-between py-1.5 text-[12.5px]" style={{ fontFamily: "var(--font-sans)" }}>

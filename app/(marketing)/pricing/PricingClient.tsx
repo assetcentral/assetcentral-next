@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCurrency } from "@/components/marketing/CurrencyProvider";
 import {
+  annualDiscountPct,
   annualMonthlyEquiv,
   annualSavings,
   BILLING_CURRENCIES,
@@ -85,14 +86,19 @@ export function PricingClient() {
                 Annual
               </button>
             </div>
-            {billing === "annual" && (
-              <span
-                className="text-[12px] font-medium px-2 py-1 rounded bg-emerald-100 text-emerald-700"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Save 2 months
-              </span>
-            )}
+            {/* Discount badge — visible regardless of which toggle is
+                active so monthly-toggle viewers see what they're missing.
+                Uses Pro's discount % as the headline figure (all plans
+                use the same 2-months-free convention so the % is the
+                same across Pro/Team). */}
+            <span
+              className="text-[12px] font-semibold px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              {billing === "annual"
+                ? `Save ${annualDiscountPct(proPrice)}% — 2 months free`
+                : `Save ${annualDiscountPct(proPrice)}% with annual billing`}
+            </span>
 
             {/* ml-auto on sm+ pushes the currency selector to the right
                 edge of the row. On mobile we drop it so the selector
@@ -149,15 +155,20 @@ export function PricingClient() {
               </CTA>
             </PlanCardLayout>
 
-            {/* Pro */}
+            {/* Pro — headline always shows the monthly amount so the
+                visitor reads "€49/month" as the price first, regardless
+                of toggle. Sub line clarifies the billing cadence: when
+                annual is picked we show the effective monthly cost
+                (annual ÷ 12) and the explicit annual total + savings. */}
             <PlanCardLayout name="Pro" popular>
               <PriceBlock
-                price={formatPrice(billing === "monthly" ? proPrice.monthly : annualMonthlyEquiv(proPrice.annual), bill)}
+                price={formatPrice(proPrice.monthly, bill)}
                 sub={
                   billing === "monthly"
                     ? "per month"
-                    : `per month, billed ${formatPrice(proPrice.annual, bill)}/year — save ${annualSavings(proPrice, bill)}`
+                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(proPrice.annual), bill)}/mo (${formatPrice(proPrice.annual, bill)}/year, save ${annualSavings(proPrice, bill)})`
                 }
+                annualDiscount={annualDiscountPct(proPrice)}
               />
               <Blurb>Full AC Agent Team. One user. Up to 20 properties.</Blurb>
               <FeatureList
@@ -190,12 +201,13 @@ export function PricingClient() {
             {/* Team */}
             <PlanCardLayout name="Team">
               <PriceBlock
-                price={formatPrice(billing === "monthly" ? teamPrice.monthly : annualMonthlyEquiv(teamPrice.annual), bill)}
+                price={formatPrice(teamPrice.monthly, bill)}
                 sub={
                   billing === "monthly"
                     ? "per month"
-                    : `per month, billed ${formatPrice(teamPrice.annual, bill)}/year — save ${annualSavings(teamPrice, bill)}`
+                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(teamPrice.annual), bill)}/mo (${formatPrice(teamPrice.annual, bill)}/year, save ${annualSavings(teamPrice, bill)})`
                 }
+                annualDiscount={annualDiscountPct(teamPrice)}
               />
               <Blurb>Everything in Pro, plus up to 5 seats and 50 properties.</Blurb>
               <FeatureList
@@ -324,7 +336,19 @@ function PlanCardLayout({
   );
 }
 
-function PriceBlock({ price, sub }: { price: string; sub: string }) {
+function PriceBlock({
+  price,
+  sub,
+  annualDiscount,
+}: {
+  price: string;
+  sub: string;
+  /** Optional annual-billing discount percentage. When provided we
+   *  render a small green chip directly under the headline price so
+   *  the visitor sees the saving without needing to flip the toggle.
+   *  Only paid plans pass this — Free and Enterprise omit. */
+  annualDiscount?: number;
+}) {
   return (
     <>
       <div className="mt-3 flex items-baseline gap-1.5">
@@ -332,8 +356,18 @@ function PriceBlock({ price, sub }: { price: string; sub: string }) {
           {price}
         </span>
       </div>
+      {annualDiscount !== undefined && annualDiscount > 0 && (
+        <div className="mt-2">
+          <span
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Save {annualDiscount}% with annual
+          </span>
+        </div>
+      )}
       <p
-        className="mt-1 text-[12.5px] text-[var(--color-muted)] min-h-[36px]"
+        className="mt-2 text-[12.5px] text-[var(--color-muted)] min-h-[36px]"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         {sub}

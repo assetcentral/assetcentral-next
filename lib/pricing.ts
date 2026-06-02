@@ -66,3 +66,15 @@ export function annualSavings(price: Price, code: BillingCurrency): string {
   const save = monthlyYear - price.annual;
   return formatPrice(save, code);
 }
+
+/** Percentage discount when subscribing annually vs paying monthly for a year.
+ *  Used in the "Save X% with annual" badge that appears next to the monthly
+ *  headline price. The number is consistent across currencies (we use the
+ *  "save 2 months" convention so the ratio is the same everywhere) but we
+ *  derive it from the actual prices so any currency-specific override would
+ *  still produce the right percentage. */
+export function annualDiscountPct(price: Price): number {
+  const monthlyYear = price.monthly * 12;
+  if (monthlyYear === 0) return 0;
+  return Math.round(((monthlyYear - price.annual) / monthlyYear) * 100);
+}

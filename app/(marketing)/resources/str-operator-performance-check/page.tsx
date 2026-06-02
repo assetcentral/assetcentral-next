@@ -5,7 +5,7 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "str-operator-performance-check";
-const TITLE = "Is your STR operator earning their 25%?";
+const TITLE = "Is your short-term rental operator earning their 25%?";
 const DESCRIPTION =
   "How short-term rental operators charge, what you should expect for the commission, how to read their statement, and three questions to ask before renewing.";
 
@@ -40,7 +40,7 @@ export default function Article() {
       <StickyCta message="Verify operator statements automatically. Free for 14 days." />
     <ArticleLayout
       slug={SLUG}
-      title="Is your STR operator earning their 25%?"
+      title="Is your short-term rental operator earning their 25%?"
       description="How short-term rental operators charge, what you should actually get for the commission, and three questions to ask before the next renewal."
       date="19 May 2026"
       readMins={6}
@@ -52,7 +52,7 @@ export default function Article() {
       ]}
     >
       <p>
-        25% is the headline number. It is what STR operators across Dubai, Lisbon, Athens, and parts of southern Spain charge to manage your short-term rental: listing, guest comms, cleaning coordination, dynamic pricing, channel management. Some charge less (18–22% in competitive markets); some charge more (30%+ in luxury segments). In all cases the question is the same: are you getting your money&rsquo;s worth?
+        25% is the headline number. It is what short-term rental operators across Dubai, Lisbon, Athens, and parts of southern Spain charge to manage your short-term rental: listing, guest comms, cleaning coordination, dynamic pricing, channel management. Some charge less (18–22% in competitive markets); some charge more (30%+ in luxury segments). In all cases the question is the same: are you getting your money&rsquo;s worth?
       </p>
       <p>
         Most owners cannot answer this. They see what hits their bank account, divide by what they thought the apartment could earn, and conclude things are roughly fine. They are not always wrong. They are not always right either. Here is how to actually check.
@@ -60,7 +60,7 @@ export default function Article() {
 
       <H2>What you are paying for, in plain English</H2>
       <p>
-        A serious STR operator does five things:
+        A serious short-term rental operator does five things:
       </p>
       <ul className="list-disc pl-6 space-y-1.5">
         <li><strong>Listing and channel management.</strong> Your apartment appears on Airbnb, Booking.com, VRBO, and sometimes direct-booking sites. They manage the calendar across all of them so you don&rsquo;t double-book.</li>
@@ -75,7 +75,7 @@ export default function Article() {
 
       <H2>How to read the monthly statement</H2>
       <p>
-        Most STR operator statements look like this:
+        Most short-term rental operator statements look like this:
       </p>
       <Callout>
         Property: Dubai Marina Apt 2 — March 2026<br />
@@ -121,18 +121,18 @@ export default function Article() {
         <strong>You are paying 25%+ effective commission for a 1-bedroom apartment doing AED 100k+ gross annually.</strong> That is AED 25k a year going to the operator. For that money you can hire a virtual assistant for guest comms, set up Airbnb&rsquo;s own pricing tool, and pay cleaners directly. Self-management of a single high-revenue unit is a 5–8 hours per month commitment that can save AED 15k+ annually.
       </p>
       <p>
-        Self-managing a portfolio of three or more STR units is a part-time job. Most owners either accept the agency cost or eventually stop doing STR. The middle path — self-manage the highest-revenue unit, agency the rest — is rarely considered but often optimal.
+        Self-managing a portfolio of three or more short-term rental units is a part-time job. Most owners either accept the agency cost or eventually stop doing short-term rental. The middle path — self-manage the highest-revenue unit, agency the rest — is rarely considered but often optimal.
       </p>
 
       <H2>The honest version</H2>
       <p>
-        Good STR operators are worth 25%. They run the listing professionally, price dynamically, handle the messy operational work, and deliver more net revenue to you than you would get self-managing. Bad ones charge 25% to forward emails and outsource cleaning. The only way to tell which one you have is to check.
+        Good short-term rental operators are worth 25%. They run the listing professionally, price dynamically, handle the messy operational work, and deliver more net revenue to you than you would get self-managing. Bad ones charge 25% to forward emails and outsource cleaning. The only way to tell which one you have is to check.
       </p>
 
       <CtaBox
         href="/calculators/str-yield"
-        label="Use the STR yield calculator"
-        blurb="Want to model whether self-managing a specific unit beats the agency? Run the STR Yield calculator with your real numbers."
+        label="Use the short-term rental yield calculator"
+        blurb="Want to model whether self-managing a specific unit beats the agency? Run the Short-term Rental Yield calculator with your real numbers."
       />
 
       <InlineNewsletter />

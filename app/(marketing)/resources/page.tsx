@@ -5,7 +5,7 @@ import { LeadMagnetsSection } from "@/components/marketing/LeadMagnetsSection";
 export const metadata: Metadata = {
   title: "Guides for serious property investors | AssetCentral",
   description:
-    "Practical, specific guides for financially literate owners. Net yield, off-plan handover, STR operator performance.",
+    "Practical, specific guides for financially literate owners. Net yield, off-plan handover, short-term rental operator performance.",
   alternates: { canonical: "/resources" },
 };
 
@@ -71,7 +71,7 @@ const articles = [
   },
   {
     slug: "str-operator-performance-check",
-    title: "Is your STR operator earning their 25%?",
+    title: "Is your short-term rental operator earning their 25%?",
     blurb:
       "How to read a short-term rental operator statement, what to expect for the commission, and three questions to ask before renewing.",
     readMins: 6,

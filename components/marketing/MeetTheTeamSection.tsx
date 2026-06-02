@@ -60,7 +60,7 @@ const agents: Agent[] = [
     owns: [
       "Rent benchmarking",
       "Comparable sales + transaction radar",
-      "STR vs long-let analysis",
+      "Short-term rental vs long-let analysis",
     ],
     tint: "white",
   },

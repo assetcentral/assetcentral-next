@@ -41,7 +41,7 @@ const jobs: Job[] = [
     headline: "Checks the things you don't",
     tagline: "The unglamorous work that protects your returns.",
     bullets: [
-      "Verifies STR operator statements against expected bookings and rates",
+      "Verifies short-term rental operator statements against expected bookings and rates",
       "Checks service charge invoices and flags anomalies",
       "Confirms rent payments are arriving on time",
       "Tracks surplus cash and flags when it should be working harder",

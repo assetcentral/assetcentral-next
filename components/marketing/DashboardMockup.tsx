@@ -10,7 +10,7 @@ type Asset = {
   flag: string;
   name: string;
   city: string;
-  type: "Long-let" | "STR" | "Off-plan";
+  type: "Long-let" | "Short-term" | "Off-plan";
   netYield: string;
   netYieldTone: "positive" | "warning" | "negative";
   /** EUR-equivalent monthly cashflow. Use `monthlyOverride` for non-money cells. */
@@ -45,7 +45,7 @@ const assets: Asset[] = [
     flag: "🇦🇪",
     name: "Dubai Marina Apt 2",
     city: "Dubai",
-    type: "STR",
+    type: "Short-term",
     netYield: "5.4%",
     netYieldTone: "positive",
     monthlyEur: 2140,
@@ -89,7 +89,7 @@ const assets: Asset[] = [
 
 const typeStyles: Record<Asset["type"], string> = {
   "Long-let": "bg-slate-100 text-[var(--color-ink)]",
-  STR: "bg-indigo-50 text-[var(--color-accent)]",
+  "Short-term": "bg-indigo-50 text-[var(--color-accent)]",
   "Off-plan": "bg-amber-50 text-[var(--color-warning)]",
 };
 

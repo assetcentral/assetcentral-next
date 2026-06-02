@@ -45,7 +45,7 @@ const WHAT_YOU_SEE = [
   { title: "Debt tracking",        note: "Balance, rate, payment schedule" },
   { title: "Loan maturity",        note: "Rate-reset alerts 90 days out" },
   { title: "Documents",            note: "AI-classified, one searchable vault" },
-  { title: "Operator checks",      note: "Verify STR operator fees and yields" },
+  { title: "Operator checks",      note: "Verify short-term rental operator fees and yields" },
   { title: "Market benchmarks",    note: "Live comps from DLD, HMRC, MLS" },
   { title: "Sell-versus-hold",     note: "Modelled IRR for every property" },
 ];

@@ -29,7 +29,7 @@ export function MiniFrame({ title, children }: { title: string; children: React.
 export function PortfolioMini() {
   const rows: { flag: string; name: string; yield_: string; tone: "positive" | "warning" | "negative" }[] = [
     { flag: "🇦🇪", name: "Dubai Marina 1", yield_: "6.1%", tone: "positive" },
-    { flag: "🇦🇪", name: "Dubai Marina 2 (STR)", yield_: "5.4%", tone: "positive" },
+    { flag: "🇦🇪", name: "Dubai Marina 2 (Short-term)", yield_: "5.4%", tone: "positive" },
     { flag: "🇬🇷", name: "Athens Kolonaki", yield_: "3.9%", tone: "warning" },
     { flag: "🇫🇷", name: "Paris 8e", yield_: "4.2%", tone: "positive" },
     { flag: "🇵🇹", name: "Lisbon (off-plan)", yield_: "—", tone: "warning" },
@@ -169,7 +169,7 @@ export function OperatorMini() {
   return (
     <MiniFrame title="Operator check · March 2026">
       <div style={{ fontFamily: "var(--font-sans)" }} className="text-[12.5px]">
-        <div className="text-[var(--color-ink)] mb-2 font-medium">STR Agency — 3 properties</div>
+        <div className="text-[var(--color-ink)] mb-2 font-medium">Short-term rental agency — 3 properties</div>
         <ul className="space-y-1">
           <li className="flex justify-between">
             <span className="text-[var(--color-muted)]">Gross revenue</span>
@@ -258,7 +258,7 @@ export function IngestionMini() {
           <span className="num text-[12px] text-[var(--color-ink)]">inbox@assetcentral.ai</span>
         </div>
         <div className="rounded-md bg-[var(--color-surface)] p-2.5 text-[11.5px] text-[var(--color-ink)]">
-          <span className="font-semibold">Just processed</span> · STR statement · 3 properties · imported
+          <span className="font-semibold">Just processed</span> · Short-term rental statement · 3 properties · imported
         </div>
       </div>
     </MiniFrame>

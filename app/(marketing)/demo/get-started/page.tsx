@@ -39,7 +39,7 @@ const STEPS = [
   { title: "Add your data",            note: "Upload a file, enter manually, forward an email, or send a photo via WhatsApp — AI handles the rest." },
   { title: "AI structures it",         note: "Scattered files become a clean investment view: price, rent, tenant, financing." },
   { title: "See the key numbers",      note: "Rental income, net yield, cashflow, IRR, and risk flags — at a glance." },
-  { title: "Choose the right tool",    note: "IRR, rent review, hold/sell, refinance, STR vs long-let, portfolio roll-up." },
+  { title: "Choose the right tool",    note: "IRR, rent review, hold/sell, refinance, short-term rental vs long-let, portfolio roll-up." },
   { title: "Compare scenarios",        note: "See how rent uplifts, refinance, or an exit change the return." },
   { title: "AI explains the numbers",  note: "Specific actions to consider — not just data, real recommendations." },
   { title: "Export a clear report",    note: "Share with your advisor, lender, or partners as a PDF or a link." },

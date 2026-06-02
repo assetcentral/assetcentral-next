@@ -64,19 +64,19 @@ export function STRYieldCalculator() {
   ]);
 
   const summary = [
-    "STR Yield Calculator result",
-    `STR inputs: property €${propertyValue.toLocaleString()}, ADR €${adr}, occupancy ${occ}%, commission ${commission}%, cleaning €${cleaningPerStay}/stay, avg stay ${avgStayNights} nights, fixed costs €${fixedCostsYr.toLocaleString()}/yr`,
+    "Short-term rental yield calculator result",
+    `Short-term rental inputs: property €${propertyValue.toLocaleString()}, ADR €${adr}, occupancy ${occ}%, commission ${commission}%, cleaning €${cleaningPerStay}/stay, avg stay ${avgStayNights} nights, fixed costs €${fixedCostsYr.toLocaleString()}/yr`,
     `Long-let inputs: monthly rent €${longLetMonthly}, mgmt fee ${longLetMgmt}%, other costs €${longLetCostsYr}/yr`,
-    `STR outputs: net yield ${fmtPct(r.strYield)}, gross revenue ${fmtMoneyFull(r.gross)}, net to owner ${fmtMoneyFull(r.netStr)}, ${Math.round(r.nightsBooked)} nights booked over ${Math.round(r.stays)} stays`,
+    `Short-term rental outputs: net yield ${fmtPct(r.strYield)}, gross revenue ${fmtMoneyFull(r.gross)}, net to owner ${fmtMoneyFull(r.netStr)}, ${Math.round(r.nightsBooked)} nights booked over ${Math.round(r.stays)} stays`,
     `Long-let outputs: net yield ${fmtPct(r.longYield)}, gross ${fmtMoneyFull(r.longGross)}, net ${fmtMoneyFull(r.netLong)}`,
-    `STR vs long-let (annual): ${fmtMoneyFull(r.delta)}`,
+    `Short-term vs long-let (annual): ${fmtMoneyFull(r.delta)}`,
   ].join("\n");
 
   return (
     <>
     <div className="space-y-6">
       <div className="grid lg:grid-cols-2 gap-5 lg:gap-7">
-        <CalcCard title="Short-term rental (STR)">
+        <CalcCard title="Short-term rental">
           <div className="grid sm:grid-cols-2 gap-4">
             <NumberField label="Property value" prefix="€" value={propertyValue} onChange={setPropertyValue} step={5000} min={0} />
             <NumberField label="ADR (avg daily rate)" prefix="€" value={adr} onChange={setAdr} step={5} min={0} />
@@ -106,7 +106,7 @@ export function STRYieldCalculator() {
       <CalcCard title="Results">
         <div className="grid lg:grid-cols-3 gap-6">
           <div>
-            <Stat label="STR net yield" value={fmtPct(r.strYield)} tone="positive" big />
+            <Stat label="Short-term net yield" value={fmtPct(r.strYield)} tone="positive" big />
             <div className="mt-4 grid grid-cols-2 gap-4">
               <Stat label="Nights booked" value={Math.round(r.nightsBooked).toString()} />
               <Stat label="Stays / year" value={Math.round(r.stays).toString()} />
@@ -123,7 +123,7 @@ export function STRYieldCalculator() {
           </div>
           <div>
             <Stat
-              label="STR vs long-let (yr)"
+              label="Short-term vs long-let (yr)"
               value={fmtMoneyFull(r.delta)}
               tone={r.delta >= 0 ? "positive" : "negative"}
               big
@@ -133,14 +133,14 @@ export function STRYieldCalculator() {
               style={{ fontFamily: "var(--font-sans)" }}
             >
               {r.delta >= 0
-                ? "STR produces more net income — but at higher operational complexity."
-                : "Long-let beats STR after fees and cleaning. Worth questioning whether the agency commission is justified."}
+                ? "Short-term rental produces more net income — but at higher operational complexity."
+                : "Long-let beats short-term rental after fees and cleaning. Worth questioning whether the agency commission is justified."}
             </p>
           </div>
         </div>
       </CalcCard>
     </div>
-    <SaveResultForm calc="str-yield" calcName="STR Yield" summary={summary} />
+    <SaveResultForm calc="str-yield" calcName="Short-term rental yield" summary={summary} />
     </>
   );
 }

@@ -202,7 +202,7 @@ export function ProductDemoTabs() {
 type Row = {
   flag: string;
   name: string;
-  type: "Long-let" | "STR" | "Off-plan";
+  type: "Long-let" | "Short-term" | "Off-plan";
   netYield: string;
   netYieldTone: "positive" | "warning" | "negative";
   monthlyEur?: number;
@@ -233,7 +233,7 @@ const portfolioRows: Row[] = [
   {
     flag: "🇦🇪",
     name: "Dubai Marina Apt 2",
-    type: "STR",
+    type: "Short-term",
     netYield: "5.4%",
     netYieldTone: "positive",
     monthlyEur: 2140,
@@ -288,7 +288,7 @@ const portfolioRows: Row[] = [
 
 const typeStyles: Record<Row["type"], string> = {
   "Long-let": "bg-slate-100 text-[var(--color-ink)]",
-  STR: "bg-indigo-50 text-[var(--color-accent)]",
+  "Short-term": "bg-indigo-50 text-[var(--color-accent)]",
   "Off-plan": "bg-amber-50 text-[var(--color-warning)]",
 };
 
@@ -696,7 +696,7 @@ function PaPanel() {
             Statement from Maison Privée — March 2026
           </div>
           <div className="text-[12px] text-[var(--color-muted)] mb-3">
-            STR operator statement · 3 properties · 1 attachment
+            Short-term rental operator statement · 3 properties · 1 attachment
           </div>
 
           <ul className="space-y-1.5 text-[12.5px] text-[var(--color-ink)]">

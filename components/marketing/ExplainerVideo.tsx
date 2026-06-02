@@ -45,13 +45,13 @@ const SHOTS = [
 const SUBTITLES: { from: number; to: number; text: string }[] = [
   { from:     0, to:  3500, text: "You own properties." },
   { from:  3500, to:  6000, text: "Statements arrive from every direction." },
-  { from:  6000, to:  9500, text: "Rent. Mortgage. Service charges. STR reports." },
+  { from:  6000, to:  9500, text: "Rent. Mortgage. Service charges. Short-term rental reports." },
   { from:  9500, to: 14000, text: "Your spreadsheet can't keep up." },
   { from: 14000, to: 18500, text: "AssetCentral is your AI Real Estate Personal Assistant." },
   { from: 18500, to: 22000, text: "Forward us your documents. We do the rest." },
   { from: 22000, to: 26000, text: "One dashboard. Every property. Every currency." },
   { from: 26000, to: 31000, text: "Real net yield. Cashflow. Debt. Loan maturity." },
-  { from: 31000, to: 34500, text: "Is your STR operator earning their fee?" },
+  { from: 31000, to: 34500, text: "Is your short-term rental operator earning their fee?" },
   { from: 34500, to: 37000, text: "Is your mortgage about to reset?" },
   { from: 37000, to: 39000, text: "Should you sell, or hold?" },
   { from: 39000, to: 43000, text: "Built for owners of 2 to 50 properties." },
@@ -344,7 +344,7 @@ const DOCUMENTS = [
   { title: "Lease Agreement", subtitle: "Dubai Marina Apt 2", color: "#fde68a" },
   { title: "Mortgage Statement", subtitle: "HSBC · UK BTL", color: "#bfdbfe" },
   { title: "Service Charge Invoice", subtitle: "Marina Promenade OA", color: "#fecaca" },
-  { title: "STR Operator Report", subtitle: "JVC Studio · April", color: "#bbf7d0" },
+  { title: "Short-term Rental Operator Report", subtitle: "JVC Studio · April", color: "#bbf7d0" },
   { title: "Rent Receipt", subtitle: "Athens Flat · €1,200", color: "#fed7aa" },
   { title: "Insurance Schedule", subtitle: "London Flat · annual", color: "#e9d5ff" },
   { title: "EPC Certificate", subtitle: "Bristol HMO · Rating D", color: "#fde68a" },
@@ -634,7 +634,7 @@ function Scene6() {
     { title: "Lease Agreement", tag: "Marina Apt 2 / Lease", color: ACCENT },
     { title: "Mortgage Statement", tag: "JVC Studio / Mortgage", color: POSITIVE },
     { title: "Service Charge Inv.", tag: "Marina / Service Charge", color: WARNING },
-    { title: "STR Operator Report", tag: "JVC / Operator", color: ACCENT },
+    { title: "Short-term Rental Operator Report", tag: "JVC / Operator", color: ACCENT },
     { title: "Insurance Schedule", tag: "London / Insurance", color: POSITIVE },
   ];
   return (

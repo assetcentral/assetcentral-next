@@ -48,7 +48,7 @@ export default function Article() {
         related={[
           { slug: "yield-protection", title: "Keep yield from sliding back — the 11 things quietly eroding your portfolio" },
           { slug: "net-yield-vs-gross-yield", title: "Gross yield vs net yield — and why it matters more than you think" },
-          { slug: "str-operator-performance-check", title: "Is your STR operator earning their 25%?" },
+          { slug: "str-operator-performance-check", title: "Is your short-term rental operator earning their 25%?" },
           { slug: "mortgage-types-explained", title: "Mortgage types explained: fixed, variable, fix-then-revert, repayment, interest-only" },
         ]}
       >
@@ -122,16 +122,16 @@ export default function Article() {
           <strong>1. Realistic occupancy.</strong> Operators quote 85–90%. Properties in their first year average 60–70%. Mature listings in prime locations sustain 75–80%. The difference between 65% and 85% is the difference between this lever lifting yield and torching it.
         </p>
         <p>
-          <strong>2. Operator quality.</strong> A bad STR operator destroys properties — physically and financially. The right operator question isn&rsquo;t &ldquo;what occupancy will you achieve?&rdquo; but &ldquo;what was your portfolio-average occupancy over the last 12 months, audited?&rdquo; <a href="/resources/str-operator-performance-check" className="underline hover:text-[var(--color-accent)]">See our STR operator performance checklist</a> for the six questions to ask.
+          <strong>2. Operator quality.</strong> A bad short-term rental operator destroys properties — physically and financially. The right operator question isn&rsquo;t &ldquo;what occupancy will you achieve?&rdquo; but &ldquo;what was your portfolio-average occupancy over the last 12 months, audited?&rdquo; <a href="/resources/str-operator-performance-check" className="underline hover:text-[var(--color-accent)]">See our short-term rental operator performance checklist</a> for the six questions to ask.
         </p>
         <p>
-          <strong>3. Regulation.</strong> DTCM licensing tightened in 2024 and continues evolving. UK local-authority short-stay caps are spreading. Spanish municipalities can ban STRs entirely. Pulling this lever requires assessing whether the regulation is stable for the duration of your hold.
+          <strong>3. Regulation.</strong> DTCM licensing tightened in 2024 and continues evolving. UK local-authority short-stay caps are spreading. Spanish municipalities can ban short-term rentals entirely. Pulling this lever requires assessing whether the regulation is stable for the duration of your hold.
         </p>
         <p>
-          Run the numbers properly before switching, using both your long-term baseline and a stress-tested STR scenario. <a href="/calculators/str-yield" className="underline hover:text-[var(--color-accent)]">The STR yield calculator</a> models both side-by-side with the right cost assumptions baked in.
+          Run the numbers properly before switching, using both your long-term baseline and a stress-tested short-term rental scenario. <a href="/calculators/str-yield" className="underline hover:text-[var(--color-accent)]">The short-term rental yield calculator</a> models both side-by-side with the right cost assumptions baked in.
         </p>
         <Callout>
-          Rule of thumb: switching to STR pays off only when the realistic-net-of-everything STR number beats the long-term net by 25% or more. Anything less doesn&rsquo;t compensate for the additional operational risk.
+          Rule of thumb: switching to short-term rental pays off only when the realistic-net-of-everything short-term rental number beats the long-term net by 25% or more. Anything less doesn&rsquo;t compensate for the additional operational risk.
         </Callout>
 
         <H2>Lever 4 — Improvements (capital risk, longest payback)</H2>
@@ -154,7 +154,7 @@ export default function Article() {
           <strong>3. Layout reconfigurations.</strong> Adding a small second bedroom to a 1-bed (creative use of unused dining space) can raise rent by 25–35% in family-letting markets. Highest-IRR move when the layout permits it.
         </p>
         <p>
-          <strong>4. Furnishings upgrade for STR.</strong> Where you&rsquo;ve already decided to pull Lever 3, professional staging and high-end furnishings can lift ADR by 30–50%. Payback is typically 18 months on a well-located short-stay unit.
+          <strong>4. Furnishings upgrade for short-term rental.</strong> Where you&rsquo;ve already decided to pull Lever 3, professional staging and high-end furnishings can lift ADR by 30–50%. Payback is typically 18 months on a well-located short-stay unit.
         </p>
         <p>
           <a href="/calculators/retrofit" className="underline hover:text-[var(--color-accent)]">Use the retrofit calculator</a> to model each project against payback period and IRR before committing capital.
@@ -167,7 +167,7 @@ export default function Article() {
         <Callout>
           <strong>Days 1–30: Lever 1 (Cost)</strong> — refinance mortgages, challenge service charges, re-quote insurance, renegotiate agent fees.<br />
           <strong>Days 30–60: Lever 2 (Rent)</strong> — pull comparable market data, schedule renewal conversations, prepare data-led rent reviews.<br />
-          <strong>Days 60–90: Lever 3 (Use)</strong> — for any property where Levers 1+2 didn&rsquo;t reach target, model the STR or mid-stay alternative and decide.<br />
+          <strong>Days 60–90: Lever 3 (Use)</strong> — for any property where Levers 1+2 didn&rsquo;t reach target, model the short-term rental or mid-stay alternative and decide.<br />
           <strong>Months 3–12: Lever 4 (Improvements)</strong> — for the underperformers that survived the first three levers, scope and commission the capex.
         </Callout>
         <p>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCurrency } from "./CurrencyProvider";
 import {
+  annualDiscountPct,
   billingFor,
   BILLING_CURRENCY_LABEL,
   formatPrice,
@@ -54,6 +55,7 @@ export function PricingPreview() {
             name="Pro"
             price={formatPrice(pro.monthly, bill)}
             cadence="per month"
+            annualDiscount={annualDiscountPct(pro)}
             blurb="Full AC Agent Team. Up to 20 properties. €49/month."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
             altCta={{ label: "or subscribe now — skip trial", href: "/signup?plan=pro_monthly&intent=direct" }}
@@ -63,6 +65,7 @@ export function PricingPreview() {
             name="Team"
             price={formatPrice(team.monthly, bill)}
             cadence="per month"
+            annualDiscount={annualDiscountPct(team)}
             blurb="Everything in Pro, plus up to 5 seats and 50 properties."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
             altCta={{ label: "or subscribe now — skip trial", href: "/signup?plan=team_monthly&intent=direct" }}
@@ -110,9 +113,13 @@ type Plan = {
    *  buttons. */
   altCta?: { label: string; href: string };
   popular?: boolean;
+  /** Percentage discount when subscribing annually instead of monthly.
+   *  Rendered as a small green "Save XX% with annual" chip directly
+   *  under the price. Only paid plans pass this — Free has no annual. */
+  annualDiscount?: number;
 };
 
-function PlanCard({ name, price, cadence, blurb, cta, altCta, popular }: Plan) {
+function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDiscount }: Plan) {
   return (
     <article
       className={`relative rounded-2xl bg-white p-7 lg:p-8 flex flex-col ${
@@ -146,6 +153,20 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular }: Plan) {
           {cadence}
         </span>
       </div>
+      {annualDiscount !== undefined && annualDiscount > 0 && (
+        // Small inline chip immediately under the monthly headline price.
+        // Keeps the monthly amount as the dominant reading — the chip is
+        // information, not a competing price. Buyers who want to lock in
+        // the discount click into /pricing and pick the annual toggle.
+        <div className="mt-2">
+          <span
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11.5px] font-semibold text-emerald-800"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Save {annualDiscount}% with annual billing
+          </span>
+        </div>
+      )}
       <p
         className="mt-4 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
         style={{ fontFamily: "var(--font-sans)" }}
