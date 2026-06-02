@@ -194,7 +194,7 @@ export function PricingClient() {
               <DualCTA
                 trialHref={`/signup?plan=pro_${billing}`}
                 directHref={`/signup?plan=pro_${billing}&intent=direct`}
-                directLabel={`Subscribe now — skip trial`}
+                directLabel={`Subscribe now — no trial`}
               />
             </PlanCardLayout>
 
@@ -223,7 +223,7 @@ export function PricingClient() {
               <DualCTA
                 trialHref={`/signup?plan=team_${billing}`}
                 directHref={`/signup?plan=team_${billing}&intent=direct`}
-                directLabel={`Subscribe now — skip trial`}
+                directLabel={`Subscribe now — no trial`}
                 trialVariant="ghost"
               />
             </PlanCardLayout>
@@ -469,7 +469,7 @@ function DualCTA({
   trialVariant?: "primary" | "ghost";
 }) {
   return (
-    <div className="mt-6 space-y-2.5">
+    <div className="mt-6 space-y-3">
       <CTA href={trialHref} variant={trialVariant}>
         Start 7-day free trial
       </CTA>
@@ -480,21 +480,35 @@ function DualCTA({
         </div>
         <div className="relative flex justify-center">
           <span
-            className="px-2 bg-white text-[11px] text-[var(--color-muted)]"
+            className="px-2 bg-white text-[11px] text-[var(--color-muted)] font-semibold tracking-wide uppercase"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            or
+            or pay now
           </span>
         </div>
       </div>
 
+      {/* Direct-subscribe button — lifted from the previous quiet text
+          link to a proper outlined button at full button height (48px)
+          and weight (text-[14px] font-semibold). Sits as a true
+          alternative path, not a hidden option. The flow itself is
+          unchanged: this href carries `intent=direct` to the signup
+          page, which flips its own CTA hierarchy to lead with the
+          direct path and routes through Stripe Checkout with no
+          trial_end set — user is charged immediately on completion. */}
       <Link
         href={directHref}
-        className="flex w-full items-center justify-center min-h-[40px] px-3 rounded-md text-[13.5px] font-medium text-[var(--color-ink)] border border-[var(--color-border)] hover:border-[var(--color-navy)] hover:bg-[var(--color-surface)] transition-colors"
+        className="flex w-full items-center justify-center min-h-[48px] px-4 rounded-md text-[14px] font-semibold text-[var(--color-navy)] border border-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-white transition-colors"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         {directLabel} →
       </Link>
+      <p
+        className="text-center text-[11.5px] text-[var(--color-muted)] leading-[1.45]"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        Charged today via Stripe · cancel anytime
+      </p>
     </div>
   );
 }

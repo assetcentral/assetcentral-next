@@ -58,7 +58,7 @@ export function PricingPreview() {
             annualDiscount={annualDiscountPct(pro)}
             blurb="Full AC Agent Team. Up to 20 properties. €49/month."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
-            altCta={{ label: "or subscribe now — skip trial", href: "/signup?plan=pro_monthly&intent=direct" }}
+            altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
           <PlanCard
@@ -68,7 +68,7 @@ export function PricingPreview() {
             annualDiscount={annualDiscountPct(team)}
             blurb="Everything in Pro, plus up to 5 seats and 50 properties."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
-            altCta={{ label: "or subscribe now — skip trial", href: "/signup?plan=team_monthly&intent=direct" }}
+            altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=team_monthly&intent=direct" }}
           />
         </div>
 
@@ -186,13 +186,27 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
         {cta.label} →
       </Link>
       {altCta && (
-        <Link
-          href={altCta.href}
-          className="mt-2.5 text-center text-[12.5px] text-[var(--color-muted)] hover:text-[var(--color-navy)] underline decoration-[var(--color-border)] hover:decoration-[var(--color-navy)]"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {altCta.label} →
-        </Link>
+        <>
+          {/* Direct-subscribe alternative — lifted from a quiet text
+              link to a real button so buyers who know what they want
+              see the no-trial path immediately, not as a hidden
+              option. Charged immediately at Checkout (the app's
+              tryDirectSubscribe path omits trial_end in the Stripe
+              session). */}
+          <Link
+            href={altCta.href}
+            className="mt-2.5 flex w-full items-center justify-center min-h-[44px] px-4 rounded-md text-[13.5px] font-semibold text-[var(--color-navy)] border border-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-white transition-colors"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {altCta.label} →
+          </Link>
+          <p
+            className="mt-1.5 text-center text-[11px] text-[var(--color-muted)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Charged today via Stripe · cancel anytime
+          </p>
+        </>
       )}
     </article>
   );
