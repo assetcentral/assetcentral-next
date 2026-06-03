@@ -14,6 +14,8 @@
 // "appears", "based on available data". Never "we recommend",
 // "guaranteed".
 
+import { roleFullName } from "@/lib/role-glossary";
+
 type Agent = {
   /** Role label shown above the name (CFO, CEO, Concierge, etc). */
   role: string;
@@ -134,41 +136,16 @@ export function MeetTheTeamSection() {
           ))}
         </div>
 
-        {/* Role acronym glossary — sits between the cards and the
-            disclaimer so a visitor scanning "CEO / CFO / CIO / COO"
-            on the cards above sees the expansion in one place rather
-            than having to recall them. Compact one-row format on
-            desktop, wraps to two on mobile. */}
-        <dl
-          className="mt-10 flex flex-wrap items-baseline gap-x-6 gap-y-2 text-[12.5px] leading-[1.5] text-[var(--color-muted)]"
-          style={{ fontFamily: "var(--font-sans)" }}
-          aria-label="Role acronyms used above"
-        >
-          <div className="flex items-baseline gap-1.5">
-            <dt className="font-semibold text-[var(--color-ink)]">CEO</dt>
-            <dd>Chief Executive Officer</dd>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <dt className="font-semibold text-[var(--color-ink)]">CFO</dt>
-            <dd>Chief Financial Officer</dd>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <dt className="font-semibold text-[var(--color-ink)]">CIO</dt>
-            <dd>Chief Information Officer</dd>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <dt className="font-semibold text-[var(--color-ink)]">COO</dt>
-            <dd>Chief Operating Officer</dd>
-          </div>
-        </dl>
-
         {/* Cautious-language disclaimer — same posture as the app's
             DECISION_SUPPORT_DISCLAIMER. The marketing site doesn't need
             it verbatim, but it should be visible enough that a visitor
             understands the "decision support, not advice" framing
-            before they sign up. */}
+            before they sign up. The role acronyms (CEO / CFO / CIO /
+            COO) are now expanded inline under each chip — see
+            AgentCard below — so the previous bottom-of-section
+            glossary block has been removed. */}
         <p
-          className="mt-6 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
+          className="mt-10 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           AssetCentral provides software, analysis and decision support. It does
@@ -199,15 +176,33 @@ function AgentCard({
           : "bg-white border-[var(--color-border)] text-[var(--color-ink)]"
       } ${featured ? "lg:p-10" : ""}`}
     >
+      {/* Role chip + inline definition. Acronym on top in uppercase,
+          full chief-officer name immediately below in italic muted —
+          self-explanatory in place rather than needing a separate
+          glossary block. The Portfolio Personal Assistant card has
+          a non-acronym role label ("Concierge") so the second line
+          is skipped. */}
       <div className="flex items-baseline justify-between gap-4">
-        <span
-          className={`text-[12px] uppercase tracking-[0.12em] ${
-            isNavy ? "text-white/70" : "text-[var(--color-muted)]"
-          }`}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {agent.role}
-        </span>
+        <div>
+          <span
+            className={`block text-[12px] uppercase tracking-[0.12em] font-semibold ${
+              isNavy ? "text-white/80" : "text-[var(--color-muted)]"
+            }`}
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {agent.role}
+          </span>
+          {roleFullName(agent.role) && (
+            <span
+              className={`block mt-0.5 text-[10.5px] italic leading-tight ${
+                isNavy ? "text-white/55" : "text-[var(--color-muted)]"
+              }`}
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              {roleFullName(agent.role)}
+            </span>
+          )}
+        </div>
       </div>
 
       <div>

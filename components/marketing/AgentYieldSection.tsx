@@ -22,6 +22,8 @@
 // guaranteed. Matches the cautious-language posture on the app side
 // (lib/agent-team.ts DECISION_SUPPORT_DISCLAIMER).
 
+import { roleFullName } from "@/lib/role-glossary";
+
 type AgentYieldCard = {
   /** Agent name — exact match to the post-2026-06 sweep
    *  (Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager,
@@ -137,12 +139,28 @@ function YieldCard({
         featured ? "lg:p-10" : ""
       }`}
     >
-      <span
-        className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)]"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        {card.role}
-      </span>
+      {/* Role chip + inline expansion. Acronym on top in uppercase
+          accent colour, the chief-officer full name immediately below
+          in muted italic so the chip reads as self-explanatory
+          (replaces the previous bottom-of-section glossary block).
+          Concierge-style labels with no recognised acronym render
+          just the chip without a second line. */}
+      <div>
+        <span
+          className="block text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {card.role}
+        </span>
+        {roleFullName(card.role) && (
+          <span
+            className="block mt-0.5 text-[10.5px] italic text-[var(--color-muted)] leading-tight"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {roleFullName(card.role)}
+          </span>
+        )}
+      </div>
       <div>
         <h3
           className={`${

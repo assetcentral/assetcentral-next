@@ -13,6 +13,7 @@
 // team's quarterly report rather than a SaaS feature wall.
 
 import Link from "next/link";
+import { roleFullName } from "@/lib/role-glossary";
 
 type AgentBlock = {
   /** Role / org-chart equivalent shown above the agent name. */
@@ -138,14 +139,25 @@ function AgentBlockCard({ block }: { block: AgentBlock }) {
   return (
     <article className="rounded-2xl border border-[var(--color-border)] bg-white p-7 lg:p-9 lg:grid lg:grid-cols-[280px_1fr] lg:gap-12">
       {/* Header column — role + name + framing. Sticky-ish vertical
-          anchor at lg+; stacked on mobile. */}
+          anchor at lg+; stacked on mobile. Role chip carries an
+          inline expansion of the chief-officer acronym on the line
+          below so the chip is self-explanatory. */}
       <div>
         <p
-          className="text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-2"
+          className="text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-muted)] font-semibold"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           {block.role}
         </p>
+        {roleFullName(block.role) && (
+          <p
+            className="mt-0.5 mb-2 text-[10.5px] italic text-[var(--color-muted)] leading-tight"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {roleFullName(block.role)}
+          </p>
+        )}
+        {!roleFullName(block.role) && <div className="mb-2" />}
         <h3
           className="text-[26px] lg:text-[30px] leading-[1.1] text-[var(--color-navy)]"
           style={{ fontFamily: "var(--font-display)" }}

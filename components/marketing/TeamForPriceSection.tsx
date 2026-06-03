@@ -21,6 +21,7 @@
 // it's that cheap. We want the second reaction.
 
 import Link from "next/link";
+import { roleFullName } from "@/lib/role-glossary";
 
 type Hire = {
   /** Role on a real asset-management team. */
@@ -110,14 +111,27 @@ export function TeamForPriceSection() {
                 className="rounded-xl border border-[var(--color-border)] bg-white p-5 lg:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
               >
                 <div className="min-w-0">
+                  {/* Role label + inline acronym expansion. Compound
+                      labels like "Portfolio analyst / CFO" expand
+                      against the trailing acronym; labels with no
+                      recognised acronym (e.g. "Personal assistant")
+                      render just the role line. */}
                   <div
-                    className="text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)] mb-1"
+                    className="text-[11px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-semibold"
                     style={{ fontFamily: "var(--font-sans)" }}
                   >
                     {h.role}
                   </div>
+                  {roleFullName(h.role) && (
+                    <div
+                      className="text-[10.5px] italic text-[var(--color-muted)] mt-0.5 leading-tight"
+                      style={{ fontFamily: "var(--font-sans)" }}
+                    >
+                      {roleFullName(h.role)}
+                    </div>
+                  )}
                   <div
-                    className="text-[18px] font-semibold text-[var(--color-navy)] leading-tight"
+                    className="mt-1 text-[18px] font-semibold text-[var(--color-navy)] leading-tight"
                     style={{ fontFamily: "var(--font-sans)" }}
                   >
                     {h.agent}
