@@ -81,23 +81,30 @@ const hires: Hire[] = [
 
 export function TeamForPriceSection() {
   return (
-    <section className="bg-white" id="team-for-price">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28">
+    // Visually demoted relative to the other homepage sections — sits
+    // as a value-prop lead-in to PricingPreview rather than as a
+    // hero-style stop. Lighter padding (py-12 lg:py-16 vs py-20
+    // lg:py-28 elsewhere), surface-tinted background to nest it
+    // visually with the PricingPreview that follows, and a smaller H2
+    // so the "Five specialists. €49 a month." reads as a subhead next
+    // to the actual pricing tiles below — not as a competing headline.
+    <section className="bg-[var(--color-surface)]" id="team-for-price">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12 lg:py-16">
         <div className="max-w-3xl">
           <p
-            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
+            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             The maths
           </p>
           <h2
-            className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
+            className="text-[26px] lg:text-[32px] leading-[1.15] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Five specialists. €49 a month.
           </h2>
           <p
-            className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
+            className="mt-3 text-[15px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Family offices put a team of specialists onto their property

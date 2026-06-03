@@ -23,7 +23,10 @@
 //                                liquidity; Operations actively manages
 //                                the events — capex, repairs, leases,
 //                                short-term agreements, payments)
-//   4. comparison problem     → Your CEO (synthesis across the portfolio)
+//   4. comparison problem     → Finance Manager (cross-portfolio
+//                                analysis — which asset is performing,
+//                                where the next euro of capital goes;
+//                                CFO territory, not CEO synthesis)
 //   5. continual change       → Your CEO (continual navigation —
 //                                market moves, rate cycles, life
 //                                events; the portfolio that worked
@@ -64,7 +67,7 @@ const problems: Problem[] = [
     title: "The comparison problem",
     body:
       "You have properties in different cities, different currencies, different tax regimes — sitting in different spreadsheets. You can't compare them, so you don't. You don't know which asset is working hardest, which one to sell, or where the next euro of capital should go.",
-    handledBy: "Your CEO",
+    handledBy: "Finance Manager",
   },
   {
     title: "The constant-change problem",
