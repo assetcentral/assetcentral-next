@@ -615,8 +615,55 @@ function PaPanel() {
   return (
     <DeviceFrame title="Portfolio Personal Assistant · data ingestion">
       <div className="p-5 grid gap-4 lg:grid-cols-2">
-        {/* Left: forwarding inputs */}
+        {/* Left: ingestion inputs.
+            Order: drag-and-drop FIRST (the most universally familiar
+            pattern for desktop visitors, now visually prominent with an
+            upload icon, larger copy and accent-tinted styling), then
+            WhatsApp and email as alternative paths. */}
         <div className="space-y-3">
+          {/* Drag-and-drop — the lead ingestion affordance. Tall card,
+              accent dashed border, soft accent background, big upload
+              icon, semibold headline + supporting copy. Reads as the
+              primary action, with WhatsApp and email as secondary
+              channels below. */}
+          <div
+            className="rounded-lg border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-accent)]/[0.04] p-6 lg:p-7 text-center"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            <div
+              className="mx-auto w-12 h-12 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-3"
+              aria-hidden
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 3v12" />
+                <path d="m7 8 5-5 5 5" />
+                <path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3" />
+              </svg>
+            </div>
+            <div className="text-[15px] font-semibold text-[var(--color-ink)]">
+              Drop a file here
+            </div>
+            <div className="mt-1 text-[12.5px] text-[var(--color-muted)]">
+              Or click to browse
+            </div>
+            <div
+              className="mt-3 inline-block text-[11.5px] text-[var(--color-muted)] bg-white/60 border border-[var(--color-border)] rounded-full px-2.5 py-0.5"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              PDF · image · DOCX · XLSX · EML — all parsed
+            </div>
+          </div>
+
           <div
             className="rounded-lg border border-[var(--color-border)] p-4"
             style={{ fontFamily: "var(--font-sans)" }}
@@ -629,7 +676,7 @@ function PaPanel() {
                 WA
               </span>
               <span className="text-[13px] font-semibold text-[var(--color-ink)]">
-                Forward to WhatsApp
+                Or forward to WhatsApp
               </span>
             </div>
             <div className="text-[12.5px] text-[var(--color-muted)] mb-3">
@@ -657,18 +704,6 @@ function PaPanel() {
             </div>
             <div className="num text-[13px] px-3 py-2 rounded-md bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-ink)]">
               inbox@assetcentral.ai
-            </div>
-            <div className="mt-3 text-[12px] text-[var(--color-muted)]">
-              PDF, image, DOCX, XLSX, EML — all parsed.
-            </div>
-          </div>
-
-          <div
-            className="rounded-lg border border-dashed border-[var(--color-border)] p-4 text-center"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <div className="text-[12.5px] text-[var(--color-muted)]">
-              Or drag-and-drop a file
             </div>
           </div>
         </div>
