@@ -33,11 +33,12 @@ const agents: Agent[] = [
     role: "CEO",
     name: "Your CEO",
     description:
-      "Turns portfolio data into ranked decision support — what to hold, sell, refinance or improve to focus on the actions with the biggest yield impact.",
+      "Sets portfolio strategy and drives it through the team. Reports what's driven yield this period, charts where the portfolio is heading next, and seeks out opportunities to grow and strengthen returns.",
     owns: [
-      "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
-      "Portfolio health + concentration risk",
-      "5-year projection and capital deployment view",
+      "Strategy: hold / refinance / improve / sell / acquire across every property",
+      "Progress report — what's moved yield this period and why",
+      "Forward view — where yield, equity and cashflow are heading",
+      "Opportunity radar — growth and strengthening moves to pursue",
     ],
     tint: "navy",
   },

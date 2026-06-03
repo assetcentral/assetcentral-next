@@ -66,10 +66,10 @@ const tabs: Tab[] = [
   {
     key: "decide",
     step: "04",
-    label: "Decide what to do",
+    label: "Run the portfolio for yield",
     agent: "Your CEO",
     caption:
-      "Your CEO turns the team's work into ranked actions. Improve / Refinance / Hold / Review / Acquire — every recommendation backed by your actual numbers and your Market Analyst's evidence.",
+      "Your CEO sets the strategy and drives it through the team. Reports what's moved yield this period, charts where the portfolio is heading and seeks out opportunities to grow and strengthen returns — every action backed by your numbers and your Market Analyst's evidence.",
   },
 ];
 

@@ -73,9 +73,9 @@ const cards: AgentYieldCard[] = [
   {
     name: "Your CEO",
     role: "CEO",
-    headline: "Ranks what to do next",
-    copy: "Turns portfolio data into decision support so owners can review what to hold, sell, refinance or improve.",
-    yieldLink: "Focus on the actions with the biggest yield impact.",
+    headline: "Runs the portfolio for yield",
+    copy: "Sets strategy and drives it through the team. Reports what's driven yield this period, charts where the portfolio is heading and seeks out opportunities to grow and strengthen returns.",
+    yieldLink: "Strategy → execution → progress → opportunity.",
   },
 ];
 

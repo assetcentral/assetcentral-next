@@ -31,12 +31,14 @@ const blocks: AgentBlock[] = [
     role: "CEO",
     name: "Your CEO",
     framing:
-      "Reads the rest of the team's work and ranks the actions with the biggest yield impact.",
+      "Sets the strategy, drives the team, reports the progress and spots the next opportunity.",
     capabilities: [
-      "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
-      "Portfolio health score and concentration risk",
-      "5-year projection of yield, equity and cashflow",
-      "Decision Room view — the brief, the maths and the comp set in one place",
+      "Strategy: hold / refinance / improve / sell / acquire across every property",
+      "Progress report — what's driven yield up or down this period",
+      "Forward view — where yield, equity and cashflow are heading next",
+      "Opportunity radar — refinancing windows, value-add moves, growth bets",
+      "Ranked actions across the portfolio: the brief, the maths, the comp set",
+      "Portfolio health score and concentration risk in one Decision Room view",
     ],
   },
   {

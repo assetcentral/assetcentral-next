@@ -69,7 +69,7 @@ const hires: Hire[] = [
     agent: "Your CEO",
     cost: "from €3,000/month",
     blurb:
-      "Synthesises the team's work into ranked actions: Improve / Refinance / Hold / Review / Acquire.",
+      "Sets portfolio strategy, drives it through the team, reports what's driving yield and seeks out opportunities to grow and strengthen returns.",
   },
 ];
 
