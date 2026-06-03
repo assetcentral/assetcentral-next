@@ -29,7 +29,7 @@ export function FinalCta() {
 
         {/* CTA hierarchy on the final-cta:
               Primary   "Add your first property"  — free activation path
-              Primary   "Subscribe now — no trial" — direct paid conversion
+              Primary   "Subscribe now"            — direct paid conversion
               Tertiary  "Or start a 7-day trial"   — quiet text link below
 
             Both primary buttons are filled / equally weighted so the
@@ -50,7 +50,7 @@ export function FinalCta() {
             className="plausible-event-name=signup_cta_click plausible-event-location=final_direct inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-[var(--color-accent)] text-white text-[15.5px] font-semibold hover:opacity-90 transition-opacity"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Subscribe now — no trial
+            Subscribe now
           </Link>
         </div>
         <p
