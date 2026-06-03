@@ -470,35 +470,15 @@ function DualCTA({
 }) {
   return (
     <div className="mt-6 space-y-3">
-      <CTA href={trialHref} variant={trialVariant}>
-        Start 7-day free trial
-      </CTA>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center" aria-hidden>
-          <div className="w-full border-t border-[var(--color-border)]" />
-        </div>
-        <div className="relative flex justify-center">
-          <span
-            className="px-2 bg-white text-[11px] text-[var(--color-muted)] font-semibold tracking-wide uppercase"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            or pay now
-          </span>
-        </div>
-      </div>
-
-      {/* Direct-subscribe button — lifted from the previous quiet text
-          link to a proper outlined button at full button height (48px)
-          and weight (text-[14px] font-semibold). Sits as a true
-          alternative path, not a hidden option. The flow itself is
-          unchanged: this href carries `intent=direct` to the signup
-          page, which flips its own CTA hierarchy to lead with the
-          direct path and routes through Stripe Checkout with no
-          trial_end set — user is charged immediately on completion. */}
+      {/* Direct-subscribe is the visual PRIMARY now — filled navy
+          button at full prominence. The business prefers to convert
+          buyers straight to paid where they're ready, and previously
+          the trial was muting the direct path. Charged immediately at
+          Checkout (the signup page sees `intent=direct` and routes
+          through Stripe with no trial_end set). */}
       <Link
         href={directHref}
-        className="flex w-full items-center justify-center min-h-[48px] px-4 rounded-md text-[14px] font-semibold text-[var(--color-navy)] border border-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-white transition-colors"
+        className="flex w-full items-center justify-center min-h-[48px] px-4 rounded-md text-[14.5px] font-semibold bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         {directLabel} →
@@ -509,6 +489,33 @@ function DualCTA({
       >
         Charged today via Stripe · cancel anytime
       </p>
+
+      <div className="relative pt-2">
+        <div className="absolute inset-0 flex items-center pt-2" aria-hidden>
+          <div className="w-full border-t border-[var(--color-border)]" />
+        </div>
+        <div className="relative flex justify-center pt-2">
+          <span
+            className="px-2 bg-white text-[11px] text-[var(--color-muted)] font-semibold tracking-wide uppercase"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            or try first
+          </span>
+        </div>
+      </div>
+
+      {/* Trial path — drops to the outlined secondary so buyers still
+          see it but it doesn't lead. `trialVariant` is now ignored —
+          the trial is always ghost-styled here. Kept the prop for
+          backwards-compatible call sites; consider removing in a
+          follow-up. */}
+      <Link
+        href={trialHref}
+        className="flex w-full items-center justify-center min-h-[44px] px-4 rounded-md text-[13.5px] font-medium text-[var(--color-ink)] border border-[var(--color-border)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] transition-colors"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        Start 7-day free trial →
+      </Link>
     </div>
   );
 }

@@ -27,6 +27,16 @@ export function FinalCta() {
           Add your first property in 5 minutes. See your real yield. Let your CEO rank the actions that could improve returns. Free for up to 3 properties.
         </p>
 
+        {/* CTA hierarchy on the final-cta:
+              Primary   "Add your first property"  — free activation path
+              Primary   "Subscribe now — no trial" — direct paid conversion
+              Tertiary  "Or start a 7-day trial"   — quiet text link below
+
+            Both primary buttons are filled / equally weighted so the
+            visitor reads them as paired options. The trial drops to a
+            small underline-on-hover text link beneath — still
+            available for prospects who need the safety net but no
+            longer competing for attention. */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/signup"
@@ -36,13 +46,26 @@ export function FinalCta() {
             Add your first property
           </Link>
           <Link
-            href="/signup?plan=pro_monthly"
-            className="plausible-event-name=signup_cta_click plausible-event-location=final_pro inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-6 rounded-md border border-white/30 text-white text-[15.5px] font-semibold hover:bg-white/10 transition-colors"
+            href="/signup?plan=pro_monthly&intent=direct"
+            className="plausible-event-name=signup_cta_click plausible-event-location=final_direct inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-[var(--color-accent)] text-white text-[15.5px] font-semibold hover:opacity-90 transition-opacity"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Hire the team — 7-day trial
+            Subscribe now — no trial
           </Link>
         </div>
+        <p
+          className="mt-4 text-center text-[12.5px] text-white/55"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          Or{" "}
+          <Link
+            href="/signup?plan=pro_monthly"
+            className="text-white/80 underline decoration-white/30 hover:decoration-white hover:text-white"
+          >
+            start a 7-day free trial
+          </Link>{" "}
+          — no card required.
+        </p>
 
         <ul
           className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[13px] text-white/65"
