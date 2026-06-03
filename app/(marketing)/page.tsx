@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
-import { FeaturesGrid } from "@/components/marketing/FeaturesGrid";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { HeroSection } from "@/components/marketing/HeroSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
@@ -45,19 +44,20 @@ export default function HomePage() {
       {/* Homepage flow:
             HeroSection         — yield north-star strapline + agent-team H1
             ProblemSection      — 4 problems, each mapped to the agent who handles it
-            MeetTheTeamSection  — meet the team AND see each agent's yield job
-                                  (merged with the previous AgentYieldSection so
-                                   visitors don't read the same five agents twice
-                                   in two adjacent sections)
+            MeetTheTeamSection  — meet the team + each agent's yield-job +
+                                  the concrete capabilities they own
+                                  (consolidated — was previously three near-
+                                   duplicate sections: AgentYieldSection,
+                                   MeetTheTeamSection and FeaturesGrid, each
+                                   listing the same five agents with slightly
+                                   different bullet treatments)
             TeamForPriceSection — "Five specialists. €49 a month." — value-prop maths
-            ProductDemoTabs     — guided product walkthrough
-            FeaturesGrid        — what each agent does (grouped by agent owner) */}
+            ProductDemoTabs     — guided product walkthrough */}
       <ProblemSection />
       <MeetTheTeamSection />
       <TeamForPriceSection />
       <div id="how-it-works" />
       <ProductDemoTabs />
-      <FeaturesGrid />
       <CalculatorsCta />
       <LeadMagnetsSection />
       <PricingPreview />

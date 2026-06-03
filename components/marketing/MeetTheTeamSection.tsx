@@ -14,6 +14,7 @@
 // "appears", "based on available data". Never "we recommend",
 // "guaranteed".
 
+import Link from "next/link";
 import { roleFullName } from "@/lib/role-glossary";
 
 type Agent = {
@@ -29,8 +30,14 @@ type Agent = {
   headline: string;
   /** Longer one-line description of what the agent does. */
   description: string;
-  /** What the agent owns — short list of surfaces / outputs. */
-  owns: string[];
+  /** Specific capabilities each agent owns. Used to be a short conceptual
+   *  list ("Rent benchmarking", "Cashflow forecast") — now the richer
+   *  concrete list inherited from the (now-merged) FeaturesGrid section
+   *  ("Real net yield per property and across the portfolio",
+   *   "12-month cashflow forecast vs actual" etc) so the merged section
+   *  carries both the team intro AND the feature breakdown without the
+   *  visitor having to scroll between two near-duplicate sections. */
+  capabilities: string[];
   /** Yield-link strapline at the bottom of the card — italic, accent
    *  colour. Ties the agent's job back to the yield north star so
    *  every card ends with a yield connection. */
@@ -47,11 +54,13 @@ const agents: Agent[] = [
     headline: "Runs the portfolio for yield",
     description:
       "Sets portfolio strategy and drives it through the team. Reports what's driven yield this period, charts where the portfolio is heading next, and seeks out opportunities to grow and strengthen returns.",
-    owns: [
+    capabilities: [
       "Strategy: hold / refinance / improve / sell / acquire across every property",
-      "Progress report — what's moved yield this period and why",
-      "Forward view — where yield, equity and cashflow are heading",
-      "Opportunity radar — growth and strengthening moves to pursue",
+      "Progress report — what's driven yield up or down this period",
+      "Forward view — where yield, equity and cashflow are heading next",
+      "Opportunity radar — refinancing windows, value-add moves, growth bets",
+      "Ranked actions across the portfolio: the brief, the maths, the comp set",
+      "Portfolio health score and concentration risk in one Decision Room view",
     ],
     yieldLink: "Strategy → execution → progress → opportunity.",
     tint: "navy",
@@ -62,10 +71,11 @@ const agents: Agent[] = [
     headline: "Finds your real net yield",
     description:
       "Provides the numbers and the financial analysis — real net yield, cashflow, debt position, refinancing decisions and per-property performance.",
-    owns: [
-      "Real net yield vs target",
-      "12-month cashflow forecast",
-      "Debt tracker + refinance prep",
+    capabilities: [
+      "Real net yield per property and across the portfolio",
+      "12-month cashflow forecast vs actual",
+      "Loan tracker — rate reversion dates, maturity, monthly payment",
+      "Refinancing maths and the lender pack, generated from your data",
     ],
     yieldLink: "See which assets are really performing.",
     tint: "white",
@@ -76,10 +86,11 @@ const agents: Agent[] = [
     headline: "Finds market upside",
     description:
       "Benchmarks rent against the local market, reviews comparable transactions and highlights where income may be below potential.",
-    owns: [
-      "Rent benchmarking",
-      "Comparable sales + transaction radar",
-      "Short-term rental vs long-let analysis",
+    capabilities: [
+      "Rent benchmarking against the local median",
+      "Comparable sales and live transaction radar (DLD / HMLR / DVF)",
+      "Short-term rental vs long-let modelling per asset",
+      "Acquisition simulator: portfolio impact of a candidate purchase",
     ],
     yieldLink: "Identify possible rent and value upside.",
     tint: "white",
@@ -90,10 +101,11 @@ const agents: Agent[] = [
     headline: "Stops yield leakage",
     description:
       "Stops yield leakage — checks renewals, operator statements, service charges, payments and cost anomalies before they reduce returns.",
-    owns: [
-      "Lease and renewal alerts",
-      "Statement and rent-collection checks",
-      "Cost anomaly flags",
+    capabilities: [
+      "Lease renewals, mortgage reversion and stage-payment alerts",
+      "Short-term rental and property-manager statement audits",
+      "Cost anomaly flags — service charges, capex, utility spikes",
+      "Rent collection monitoring across every property",
     ],
     yieldLink: "Catch issues before they reduce returns.",
     tint: "white",
@@ -104,10 +116,11 @@ const agents: Agent[] = [
     headline: "Organises your property data",
     description:
       "Your concierge. Organises property data, helps you upload documents, sets alerts and keeps leases, loans and statements structured so the rest of the team can do its job.",
-    owns: [
-      "How-to guidance + setup wizards",
-      "Document organising + data completeness",
-      "Alert and report setup",
+    capabilities: [
+      "Document vault with AI extraction — upload, snap or email",
+      "Data ingestion via WhatsApp, email forwarding or file upload",
+      "Setup wizards for new properties, calculators and reports",
+      "Glossary and how-to guidance any time you're unsure",
     ],
     yieldLink: "Better data means better yield decisions.",
     tint: "white",
@@ -137,8 +150,9 @@ export function MeetTheTeamSection() {
           >
             AssetCentral isn&rsquo;t a dashboard you have to drive. It&rsquo;s an AI
             team — Your CEO, Finance Manager, Market Analyst, Operations Manager and
-            Portfolio Personal Assistant — working across every property you own, in every currency,
-            all the time, to identify practical actions that can improve yield.
+            Portfolio Personal Assistant — working across every property you own,
+            in every currency, all the time. Below: what each one does and how their
+            work ties to higher yield.
           </p>
         </div>
 
@@ -156,16 +170,33 @@ export function MeetTheTeamSection() {
           ))}
         </div>
 
+        {/* "And more" link — brought across from the previous
+            FeaturesGrid section (now merged into this one) so the
+            visitor still gets a clear "there's more than this on
+            the features page" signal without a separate near-
+            duplicate section listing the same five agents. */}
+        <p
+          className="mt-10 text-[14.5px] text-[var(--color-ink)]"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          And more — multi-currency, full report suite, team seats on Team
+          and Enterprise, partner programmes for brokers and advisers.{" "}
+          <Link
+            href="/features"
+            className="text-[var(--color-accent)] font-medium hover:underline"
+          >
+            See all features →
+          </Link>
+        </p>
+
         {/* Cautious-language disclaimer — same posture as the app's
             DECISION_SUPPORT_DISCLAIMER. The marketing site doesn't need
             it verbatim, but it should be visible enough that a visitor
             understands the "decision support, not advice" framing
             before they sign up. The role acronyms (CEO / CFO / CIO /
-            COO) are now expanded inline under each chip — see
-            AgentCard below — so the previous bottom-of-section
-            glossary block has been removed. */}
+            COO) are expanded inline under each chip in AgentCard. */}
         <p
-          className="mt-10 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
+          className="mt-6 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           AssetCentral provides software, analysis and decision support. It does
@@ -259,7 +290,7 @@ function AgentCard({
       </div>
 
       <ul className={`space-y-2.5 ${featured ? "lg:grid lg:grid-cols-3 lg:gap-4 lg:space-y-0" : ""}`}>
-        {agent.owns.map((item) => (
+        {agent.capabilities.map((item) => (
           <li
             key={item}
             className={`flex gap-3 text-[13.5px] leading-[1.5] ${
