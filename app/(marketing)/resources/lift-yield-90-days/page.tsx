@@ -183,8 +183,8 @@ export default function Article() {
         </p>
 
         <CtaBox
-          href="https://app.assetcentral.ai/signup"
-          label="Start free trial"
+          href="https://app.assetcentral.ai/signup?plan=pro_monthly&intent=direct"
+          label="Subscribe now"
           blurb="AssetCentral records your baseline yield property-by-property, runs each lever through the calculators above, and tracks the day-91 outcome. Free for 14 days, no credit card needed."
         />
 

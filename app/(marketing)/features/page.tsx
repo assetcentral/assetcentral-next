@@ -88,11 +88,11 @@ export default function FeaturesPage() {
           </p>
           <div className="mt-7">
             <Link
-              href="/signup"
+              href="/signup?plan=pro_monthly&intent=direct"
               className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[14.5px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Start free trial
+              Subscribe now
             </Link>
           </div>
         </div>

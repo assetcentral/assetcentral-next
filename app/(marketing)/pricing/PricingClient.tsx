@@ -159,7 +159,11 @@ export function PricingClient() {
                 visitor reads "€49/month" as the price first, regardless
                 of toggle. Sub line clarifies the billing cadence: when
                 annual is picked we show the effective monthly cost
-                (annual ÷ 12) and the explicit annual total + savings. */}
+                (annual ÷ 12) and the explicit annual total + savings.
+                Card order (2026-06): price → CTAs → blurb → features.
+                Subscribe now sits directly under the price so high-intent
+                visitors hit the button without scrolling past the
+                feature list. */}
             <PlanCardLayout name="Pro" popular>
               <PriceBlock
                 price={formatPrice(proPrice.monthly, bill)}
@@ -169,6 +173,19 @@ export function PricingClient() {
                     : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(proPrice.annual), bill)}/mo (${formatPrice(proPrice.annual, bill)}/year, save ${annualSavings(proPrice, bill)})`
                 }
                 annualDiscount={annualDiscountPct(proPrice)}
+              />
+              {/* CTAs FIRST — Subscribe now (primary, filled navy) sits
+                  immediately under the price so the principal action is
+                  the next thing the visitor sees. Trial drops below as
+                  the outlined secondary. The plan key carries the cadence
+                  (pro_monthly / pro_annual) so the in-app signup page can
+                  validate it against STRIPE_PRICE_*; the intent flag
+                  tells signup to skip the trial and go straight to
+                  Checkout. */}
+              <DualCTA
+                trialHref={`/signup?plan=pro_${billing}`}
+                directHref={`/signup?plan=pro_${billing}&intent=direct`}
+                directLabel={`Subscribe now`}
               />
               <Blurb>Full AC Agent Team. Up to 50 properties. €49/month.</Blurb>
               <FeatureList
@@ -184,18 +201,6 @@ export function PricingClient() {
                   { label: "Team members", on: false },
                 ]}
               />
-              {/* Two equal-weight CTAs — trial as visual primary (filled),
-                  direct-subscribe as outlined secondary so it's visible
-                  without competing for attention. The plan key carries
-                  the cadence (pro_monthly / pro_annual) so the in-app
-                  signup page can validate it against STRIPE_PRICE_*; the
-                  intent flag tells signup to promote the direct-subscribe
-                  button to primary. */}
-              <DualCTA
-                trialHref={`/signup?plan=pro_${billing}`}
-                directHref={`/signup?plan=pro_${billing}&intent=direct`}
-                directLabel={`Subscribe now`}
-              />
             </PlanCardLayout>
 
             {/* Team */}
@@ -209,6 +214,12 @@ export function PricingClient() {
                 }
                 annualDiscount={annualDiscountPct(teamPrice)}
               />
+              <DualCTA
+                trialHref={`/signup?plan=team_${billing}`}
+                directHref={`/signup?plan=team_${billing}&intent=direct`}
+                directLabel={`Subscribe now`}
+                trialVariant="ghost"
+              />
               <Blurb>Everything in Pro, plus up to 5 seats and 50 properties.</Blurb>
               <FeatureList
                 items={[
@@ -219,12 +230,6 @@ export function PricingClient() {
                   { label: "Multiple portfolio workspaces", on: true },
                   { label: "Priority support", on: true },
                 ]}
-              />
-              <DualCTA
-                trialHref={`/signup?plan=team_${billing}`}
-                directHref={`/signup?plan=team_${billing}&intent=direct`}
-                directLabel={`Subscribe now`}
-                trialVariant="ghost"
               />
             </PlanCardLayout>
 

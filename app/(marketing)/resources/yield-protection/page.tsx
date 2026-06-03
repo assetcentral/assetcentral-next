@@ -172,8 +172,8 @@ export default function Article() {
         </p>
 
         <CtaBox
-          href="https://app.assetcentral.ai/signup"
-          label="Start free trial"
+          href="https://app.assetcentral.ai/signup?plan=pro_monthly&intent=direct"
+          label="Subscribe now"
           blurb="Get the eight yield-protection alerts running on your portfolio. AssetCentral watches the rate resets, voids, service-charge invoices, and EPC deadlines so you don't have to remember to. Free for 14 days, no credit card needed."
         />
 

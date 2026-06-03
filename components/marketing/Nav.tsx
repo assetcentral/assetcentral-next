@@ -99,12 +99,19 @@ export function Nav() {
           >
             Log in
           </Link>
+          {/* Nav CTA is the direct-subscribe path (Subscribe now) as of
+              2026-06. Previously offered "Start free trial" — but the
+              principal call-to-action site-wide is now Subscribe, with
+              the trial demoted to a secondary fallback inside the
+              pricing cards / final CTA / signup page. Keep the trial
+              reachable from those pages; in the nav it would compete
+              with the primary intent and dilute conversion. */}
           <Link
-            href="/signup"
-            className="plausible-event-name=signup_cta_click plausible-event-location=nav hidden sm:inline-flex items-center text-sm font-medium px-4 py-2 rounded-md bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
+            href="/signup?plan=pro_monthly&intent=direct"
+            className="plausible-event-name=signup_cta_click plausible-event-location=nav_direct hidden sm:inline-flex items-center text-sm font-medium px-4 py-2 rounded-md bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Start free trial
+            Subscribe now
           </Link>
 
           {/* Hamburger — mobile only */}
@@ -180,12 +187,14 @@ export function Nav() {
                 >
                   Log in
                 </Link>
+                {/* Mobile nav matches desktop — direct subscribe is the
+                    principal CTA. See note on the desktop button above. */}
                 <Link
-                  href="/signup"
+                  href="/signup?plan=pro_monthly&intent=direct"
                   onClick={() => setOpen(false)}
                   className="inline-flex items-center justify-center min-h-[48px] px-4 rounded-md text-[15px] font-medium bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
                 >
-                  Start free trial
+                  Subscribe now
                 </Link>
               </div>
             </nav>

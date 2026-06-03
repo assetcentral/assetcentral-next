@@ -69,12 +69,16 @@ export function Footer() {
             >
               Start
             </div>
+            {/* Footer CTA promotes the direct-subscribe path as of
+                2026-06 — site-wide pattern is Subscribe now = primary,
+                trial = secondary. The trial is still reachable from the
+                pricing card on the homepage / /pricing. */}
             <Link
-              href="/signup"
+              href="/signup?plan=pro_monthly&intent=direct"
               className="inline-flex items-center justify-center min-h-[44px] text-sm font-medium px-4 rounded-md bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Start free trial
+              Subscribe now
             </Link>
             <div className="mt-3">
               <Link

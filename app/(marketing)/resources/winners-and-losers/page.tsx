@@ -175,8 +175,8 @@ export default function Article() {
         </p>
 
         <CtaBox
-          href="https://app.assetcentral.ai/signup"
-          label="Start free trial"
+          href="https://app.assetcentral.ai/signup?plan=pro_monthly&intent=direct"
+          label="Subscribe now"
           blurb="AssetCentral ranks every property in your portfolio on the three-factor scorecard, models acquisition scenarios against your existing baseline, and tracks each property's IRR against your personal hurdle. Free for 14 days, no credit card needed."
         />
 

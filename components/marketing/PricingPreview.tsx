@@ -167,19 +167,14 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
           </span>
         </div>
       )}
-      <p
-        className="mt-4 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        {blurb}
-      </p>
 
       {/* CTA hierarchy:
           - When altCta exists (paid plans) the direct-subscribe is the
             visual PRIMARY: filled navy button. Trial is the secondary
-            outlined button below it. Surfaces what the business wants
-            to convert toward (paid customers) while keeping the trial
-            available for prospects who need the safety net.
+            outlined button below it. CTAs sit DIRECTLY UNDER THE PRICE
+            so the buyer's eye goes price → action without scrolling past
+            the description block first — the previous layout buried both
+            buttons at the bottom of the card and was suppressing intent.
           - When altCta is absent (Free / Enterprise) the cta stays as
             the primary using the same filled-vs-outlined logic as
             before. */}
@@ -219,6 +214,18 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
           {cta.label} →
         </Link>
       )}
+
+      {/* Blurb moved BELOW the CTAs as part of the 2026-06 reorder so
+          the principal subscribe action sits directly under the price.
+          Readers who want detail still see it; readers who already know
+          what they want hit the button without scrolling past the
+          marketing copy. */}
+      <p
+        className="mt-6 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {blurb}
+      </p>
     </article>
   );
 }

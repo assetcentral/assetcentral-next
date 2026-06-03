@@ -40,8 +40,8 @@ export default function Article() {
       />
       <StickyCta
         message="Track your UK and Dubai portfolio in one place. Free for 14 days."
-        href="/signup?utm_source=resource&utm_campaign=uk_tax_dubai"
-        label="Start free trial"
+        href="/signup?plan=pro_monthly&intent=direct&utm_source=resource&utm_campaign=uk_tax_dubai"
+        label="Subscribe now"
       />
 
       <ArticleLayout

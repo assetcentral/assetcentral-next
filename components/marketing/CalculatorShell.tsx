@@ -157,10 +157,10 @@ export function CalculatorShell({
                 Create a free account to save this result and import it into your portfolio later.
               </p>
               <Link
-                href="/signup"
+                href="/signup?plan=pro_monthly&intent=direct"
                 className="inline-flex items-center text-[13.5px] font-medium px-4 py-2 rounded-md bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
               >
-                Start free trial
+                Subscribe now
               </Link>
             </div>
           </div>

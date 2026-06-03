@@ -166,8 +166,8 @@ export default function Article() {
         </p>
 
         <CtaBox
-          href="https://app.assetcentral.ai/signup"
-          label="Start free trial"
+          href="https://app.assetcentral.ai/signup?plan=pro_monthly&intent=direct"
+          label="Subscribe now"
           blurb="AssetCentral builds your portfolio audit by ingesting the documents you already have. Forward them — leases, statements, invoices — and the baseline appears. Free for 14 days, no credit card needed."
         />
 
