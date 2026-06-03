@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AgentYieldSection } from "@/components/marketing/AgentYieldSection";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
 import { FeaturesGrid } from "@/components/marketing/FeaturesGrid";
 import { FinalCta } from "@/components/marketing/FinalCta";
@@ -9,12 +10,13 @@ import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
+import { StickyCta } from "@/components/marketing/StickyCta";
 import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection";
 
 export const metadata: Metadata = {
-  title: "AssetCentral — Your AI Team for Property Owners",
+  title: "AssetCentral — Increase Property Yield with Your AI Agent Team",
   description:
-    "AssetCentral is your AI team for property owners. Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on your portfolio together. Built for private owners with 2 to 50 properties.",
+    "AssetCentral gives private property investors a team of AI agents that organise, monitor and analyse their portfolio to identify practical actions that can improve yield. Built for portfolios of 2 to 50 properties.",
   alternates: { canonical: "/" },
 };
 
@@ -25,7 +27,7 @@ const jsonLd = {
   applicationCategory: "FinanceApplication",
   offers: { "@type": "Offer", price: "49", priceCurrency: "EUR" },
   description:
-    "AI team for private property owners — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant.",
+    "AI agent team for private property investors — Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager and Your CEO working to identify practical actions to improve yield.",
 };
 
 export default function HomePage() {
@@ -41,15 +43,20 @@ export default function HomePage() {
           targeting (e.g. UK-investor-with-Dubai-property) lives on its
           own dedicated landing page at /uk-dubai, which the Google Ads
           campaign points at directly. */}
-      {/* Homepage flow post-2026-06 deeper alignment:
-            HeroSection      — yield north-star strapline + team H1
-            ProblemSection   — 4 problems, each mapped to the agent who handles it
-            MeetTheTeamSection — formal intro to the five specialists
+      {/* Homepage flow post-2026-06 yield-led reposition:
+            HeroSection         — yield north-star strapline + agent-team H1
+            AgentYieldSection   — how each agent works to increase yield (new)
+            ProblemSection      — 4 problems, each mapped to the agent who handles it
+            MeetTheTeamSection  — formal intro to the five agents
             TeamForPriceSection — "Five specialists. €49 a month." — the value-prop maths
-            ProductDemoTabs  — guided product walkthrough
-            FeaturesGrid     — what each agent does (grouped by agent owner)
-          The previous flow ran problem → demo → features as a generic SaaS
-          walk; the new flow keeps the team theme front-of-mind end-to-end. */}
+            ProductDemoTabs     — guided product walkthrough
+            FeaturesGrid        — what each agent does (grouped by agent owner)
+          AgentYieldSection slots in right after the hero so the
+          "increase yield" promise is unpacked into named agents and
+          their yield contribution before the visitor reads the
+          problem statement. Previously the flow jumped from hero
+          directly into problems; now the bridge is explicit. */}
+      <AgentYieldSection />
       <ProblemSection />
       <MeetTheTeamSection />
       <TeamForPriceSection />
@@ -61,6 +68,10 @@ export default function HomePage() {
       <PricingPreview />
       <LeadCapture />
       <FinalCta />
+      {/* Mobile sticky CTA — appears after scrolling 40% of the page.
+          Default props now push "Add first property" / yield framing
+          rather than the older "Meet your AC Agent Team" pitch. */}
+      <StickyCta />
     </>
   );
 }

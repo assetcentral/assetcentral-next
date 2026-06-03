@@ -1,17 +1,20 @@
 // Marketing section that introduces the AC Agent Team — the five-agent
-// framing that the app uses post the 2026-06 redesign. Copy here mirrors
-// lib/agent-team.ts on the app side so a visitor sees the same names,
-// roles and descriptions on the marketing surface as on the dashboard.
+// framing that the app uses post the 2026-06 yield-led reposition.
+// Names now mirror the agent-team brand: Portfolio Personal Assistant, Finance Manager,
+// Market Analyst, Operations Manager, Your CEO.
 //
 // Ordering matches the app sidebar (organisational + frequency-of-use):
 // Your CEO → Finance Manager → Market Analyst → Operations Manager →
-// Portfolio Personal Assistant. Your CEO leads because it's the
-// synthesis layer — the headline promise. Portfolio PA sits last because
-// it's the support role / concierge.
+// Portfolio Personal Assistant. Your CEO leads because it's the synthesis layer — the
+// headline promise. Portfolio Personal Assistant sits last because it's the concierge.
+// Descriptions reorient around yield (the north-star metric) without
+// crowding out the other roles each agent plays.
 //
 // Compliance language matches the app: "may", "decision support",
 // "appears", "based on available data". Never "we recommend",
 // "guaranteed".
+
+import { roleFullName } from "@/lib/role-glossary";
 
 type Agent = {
   /** Role label shown above the name (CFO, CEO, Concierge, etc). */
@@ -32,11 +35,12 @@ const agents: Agent[] = [
     role: "CEO",
     name: "Your CEO",
     description:
-      "Turns portfolio data into decision support and ranks the highest-impact actions to improve returns.",
+      "Sets portfolio strategy and drives it through the team. Reports what's driven yield this period, charts where the portfolio is heading next, and seeks out opportunities to grow and strengthen returns.",
     owns: [
-      "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
-      "Portfolio health + concentration risk",
-      "5-year projection and capital deployment view",
+      "Strategy: hold / refinance / improve / sell / acquire across every property",
+      "Progress report — what's moved yield this period and why",
+      "Forward view — where yield, equity and cashflow are heading",
+      "Opportunity radar — growth and strengthening moves to pursue",
     ],
     tint: "navy",
   },
@@ -44,19 +48,19 @@ const agents: Agent[] = [
     role: "CFO",
     name: "Finance Manager",
     description:
-      "Provides the numbers and the financial analysis — real yield, cashflow, debt position, refinancing decisions and portfolio performance.",
+      "Provides the numbers and the financial analysis — real net yield, cashflow, debt position, refinancing decisions and per-property performance.",
     owns: [
-      "Yield analysis vs target",
+      "Real net yield vs target",
       "12-month cashflow forecast",
       "Debt tracker + refinance prep",
     ],
     tint: "white",
   },
   {
-    role: "CMO",
+    role: "CIO",
     name: "Market Analyst",
     description:
-      "Benchmarks rent, market value, comparable transactions and yield opportunities across your markets.",
+      "Benchmarks rent against the local market, reviews comparable transactions and highlights where income may be below potential.",
     owns: [
       "Rent benchmarking",
       "Comparable sales + transaction radar",
@@ -68,7 +72,7 @@ const agents: Agent[] = [
     role: "COO",
     name: "Operations Manager",
     description:
-      "Tracks renewals, statements, reminders, costs, rent checks and operational actions across every property.",
+      "Stops yield leakage — checks renewals, operator statements, service charges, payments and cost anomalies before they reduce returns.",
     owns: [
       "Lease and renewal alerts",
       "Statement and rent-collection checks",
@@ -80,7 +84,7 @@ const agents: Agent[] = [
     role: "Concierge",
     name: "Portfolio Personal Assistant",
     description:
-      "Your concierge. Answers how-to questions, helps you upload data, set alerts, generate reports, and flags anything missing across your properties.",
+      "Your concierge. Organises property data, helps you upload documents, sets alerts and keeps leases, loans and statements structured so the rest of the team can do its job.",
     owns: [
       "How-to guidance + setup wizards",
       "Document organising + data completeness",
@@ -112,9 +116,9 @@ export function MeetTheTeamSection() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             AssetCentral isn&rsquo;t a dashboard you have to drive. It&rsquo;s an AI
-            team — a CEO, a CFO, a market analyst, an operations manager and a
-            personal assistant — that works across every property you own, in every
-            currency, all the time.
+            team — Your CEO, Finance Manager, Market Analyst, Operations Manager and
+            Portfolio Personal Assistant — working across every property you own, in every currency,
+            all the time, to identify practical actions that can improve yield.
           </p>
         </div>
 
@@ -136,14 +140,17 @@ export function MeetTheTeamSection() {
             DECISION_SUPPORT_DISCLAIMER. The marketing site doesn't need
             it verbatim, but it should be visible enough that a visitor
             understands the "decision support, not advice" framing
-            before they sign up. */}
+            before they sign up. The role acronyms (CEO / CFO / CIO /
+            COO) are now expanded inline under each chip — see
+            AgentCard below — so the previous bottom-of-section
+            glossary block has been removed. */}
         <p
           className="mt-10 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           AssetCentral provides software, analysis and decision support. It does
-          not provide regulated financial, tax, legal or investment advice. You
-          remain responsible for your own decisions.
+          not provide financial, tax, legal or investment advice. Owners and
+          investors remain responsible for their own decisions.
         </p>
       </div>
     </section>
@@ -169,15 +176,33 @@ function AgentCard({
           : "bg-white border-[var(--color-border)] text-[var(--color-ink)]"
       } ${featured ? "lg:p-10" : ""}`}
     >
+      {/* Role chip + inline definition. Acronym on top in uppercase,
+          full chief-officer name immediately below in italic muted —
+          self-explanatory in place rather than needing a separate
+          glossary block. The Portfolio Personal Assistant card has
+          a non-acronym role label ("Concierge") so the second line
+          is skipped. */}
       <div className="flex items-baseline justify-between gap-4">
-        <span
-          className={`text-[12px] uppercase tracking-[0.12em] ${
-            isNavy ? "text-white/70" : "text-[var(--color-muted)]"
-          }`}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {agent.role}
-        </span>
+        <div>
+          <span
+            className={`block text-[12px] uppercase tracking-[0.12em] font-semibold ${
+              isNavy ? "text-white/80" : "text-[var(--color-muted)]"
+            }`}
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {agent.role}
+          </span>
+          {roleFullName(agent.role) && (
+            <span
+              className={`block mt-0.5 text-[10.5px] italic leading-tight ${
+                isNavy ? "text-white/55" : "text-[var(--color-muted)]"
+              }`}
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              {roleFullName(agent.role)}
+            </span>
+          )}
+        </div>
       </div>
 
       <div>

@@ -18,44 +18,43 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
           {/* copy */}
           <div>
-            {/* Strapline. Earlier draft used "One number. Your yield going
-                up." — too narrow, sounded like a single-metric product
-                and pushed away owners who think about capital growth,
-                decisions and timing alongside yield. Reverted to the
-                pre-2026-06 production strapline ("Real data. Better
-                decisions. Better returns.") which has been pulling
-                conversions on the live site. The team framing now lives
-                in the H1 where it belongs; the strapline does the broad
-                emotional work. Yield as north star is retained inside
-                the app and in agent copy — it doesn't need to be the
-                first three words on the homepage. */}
+            {/* Strapline. 2026-06 yield-led reposition: the homepage now
+                leads with yield as the north-star promise. The previous
+                "Better returns" strapline tested broader but obscured
+                the specific job the product does (improve yield on a
+                portfolio that already exists). Yield is the metric the
+                AC Agent Team optimises for inside the app — it should
+                be the first three words on the homepage too. */}
             <p
               className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Real data. Better decisions. Better returns.
+              Real data. Better decisions. Higher yield.
             </p>
             <h1
               className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Your AI team for property owners
+              Increase property yield with your AI agent team
             </h1>
 
-            {/* Subhead: names all five specialists by their org-chart
-                role (CEO / CFO / market analyst / operations manager /
-                personal assistant) so the team idea lands as roles, not
-                vague "agents". Restored the inclusive scope tail from
-                the pre-redesign production hero ("from a second home to
-                a multi-country portfolio") — important for the
-                single-property owner who's growing into the portfolio
-                segment; without it, the H1 + subhead can read as
-                "this is for larger portfolios than mine". */}
+            {/* Subhead: two paragraphs. First sets the job (yield + the
+                portfolio segment). Second names the five agents by name
+                — Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations
+                Agent, Yield CEO — dropping the org-chart job titles in
+                favour of the agent-team brand. The team idea lands as
+                a named team, not as job-titles in the abstract. */}
             <p
               className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              A CEO, a CFO, a market analyst, an operations manager and a personal assistant — working on your portfolio together. Built for owners with 2 to 50 properties, from a second home to a multi-country portfolio.
+              AssetCentral gives private owners and investors a team of AI agents that organise, monitor and analyse their portfolio to identify practical actions that can improve yield. Built for portfolios of 2 to 50 properties.
+            </p>
+            <p
+              className="mt-4 text-[16px] lg:text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Your Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager and Your CEO work together to find yield improvement opportunities.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -64,7 +63,7 @@ export function HeroSection() {
                 className="plausible-event-name=signup_cta_click plausible-event-location=hero inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Start free — up to 3 properties
+                Add your first property
               </Link>
               <Link
                 href="/demo/60"
@@ -91,7 +90,7 @@ export function HeroSection() {
               className="mt-4 text-[13px] text-[var(--color-muted)]"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Free for up to 3 properties · 7-day Pro trial, no card required · Free calculators always free
+              Free for up to 3 properties. No card required.
             </p>
           </div>
 

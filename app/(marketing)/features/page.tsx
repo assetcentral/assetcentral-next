@@ -58,7 +58,7 @@ export default function FeaturesPage() {
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Five specialists — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — do the things a professional team does inside a property fund, but for private owners with 2 to 50 properties across one or more countries.
+              Five agents — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — do the things a professional team does inside a property fund, but for private owners and investors with 2 to 50 properties across one or more countries.
             </p>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function FeaturesPage() {
             className="mt-4 text-[16.5px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            See your real yield. Let Your CEO rank the actions that lift returns. Free for up to 3 properties — 7-day trial on Pro.
+            See your real yield. Let your CEO rank the actions that could improve returns. Free for up to 3 properties — 7-day trial on Pro.
           </p>
           <div className="mt-7">
             <Link

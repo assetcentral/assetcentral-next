@@ -48,16 +48,16 @@ export function PricingPreview() {
             name="Free"
             price={formatPrice(0, bill)}
             cadence="forever"
-            blurb="Up to 3 properties. Portfolio Personal Assistant + dashboard + free calculators."
-            cta={{ label: "Start free", href: "/signup" }}
+            blurb="Add up to 3 properties, see basic yield and understand what your AI Agent Team can unlock."
+            cta={{ label: "Add your first property", href: "/signup" }}
           />
           <PlanCard
             name="Pro"
             price={formatPrice(pro.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(pro)}
-            blurb="Full AC Agent Team. Up to 20 properties. €49/month."
-            cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
+            blurb="Full AC Agent Team. Up to 50 properties. €49/month."
+            cta={{ label: "Start with your first property", href: "/signup" }}
             altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
@@ -66,7 +66,7 @@ export function PricingPreview() {
             price={formatPrice(team.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(team)}
-            blurb="Everything in Pro, plus up to 5 seats and 50 properties."
+            blurb="Everything in Pro, plus up to 5 seats and up to 50 properties."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
             altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=team_monthly&intent=direct" }}
           />
@@ -174,28 +174,20 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
         {blurb}
       </p>
 
-      <Link
-        href={cta.href}
-        className={`mt-6 flex w-full items-center justify-center min-h-[48px] px-4 rounded-md text-[14.5px] font-medium transition-colors ${
-          popular
-            ? "bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)]"
-            : "border border-[var(--color-border)] text-[var(--color-ink)] hover:border-[var(--color-navy)]"
-        }`}
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        {cta.label} →
-      </Link>
-      {altCta && (
+      {/* CTA hierarchy:
+          - When altCta exists (paid plans) the direct-subscribe is the
+            visual PRIMARY: filled navy button. Trial is the secondary
+            outlined button below it. Surfaces what the business wants
+            to convert toward (paid customers) while keeping the trial
+            available for prospects who need the safety net.
+          - When altCta is absent (Free / Enterprise) the cta stays as
+            the primary using the same filled-vs-outlined logic as
+            before. */}
+      {altCta ? (
         <>
-          {/* Direct-subscribe alternative — lifted from a quiet text
-              link to a real button so buyers who know what they want
-              see the no-trial path immediately, not as a hidden
-              option. Charged immediately at Checkout (the app's
-              tryDirectSubscribe path omits trial_end in the Stripe
-              session). */}
           <Link
             href={altCta.href}
-            className="mt-2.5 flex w-full items-center justify-center min-h-[44px] px-4 rounded-md text-[13.5px] font-semibold text-[var(--color-navy)] border border-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-white transition-colors"
+            className="mt-6 flex w-full items-center justify-center min-h-[48px] px-4 rounded-md text-[14.5px] font-semibold bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             {altCta.label} →
@@ -206,7 +198,26 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
           >
             Charged today via Stripe · cancel anytime
           </p>
+          <Link
+            href={cta.href}
+            className="mt-2.5 flex w-full items-center justify-center min-h-[44px] px-4 rounded-md text-[13.5px] font-medium text-[var(--color-ink)] border border-[var(--color-border)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] transition-colors"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {cta.label} →
+          </Link>
         </>
+      ) : (
+        <Link
+          href={cta.href}
+          className={`mt-6 flex w-full items-center justify-center min-h-[48px] px-4 rounded-md text-[14.5px] font-medium transition-colors ${
+            popular
+              ? "bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)]"
+              : "border border-[var(--color-border)] text-[var(--color-ink)] hover:border-[var(--color-navy)]"
+          }`}
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {cta.label} →
+        </Link>
       )}
     </article>
   );

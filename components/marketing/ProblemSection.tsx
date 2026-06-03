@@ -19,10 +19,10 @@
 //   timing trap           → Operations Manager (COO)
 //   comparison problem    → Your CEO (synthesis)
 //
-// The Portfolio Personal Assistant doesn't own a problem here because
-// the PA is the concierge — they help with all four indirectly but the
-// "Handled by" attribution should name the specialist who decides the
-// outcome, not the one who files the paperwork.
+// The Portfolio Personal Assistant doesn't own a problem here because the PA is the
+// concierge — they help with all four indirectly but the "Handled by"
+// attribution should name the agent who decides the outcome, not the
+// one who files the paperwork.
 //
 // Compliance language: "may" / "appears" / "after costs" / "should know"
 // maintained. No "we recommend" / "guaranteed".
@@ -42,7 +42,7 @@ const problems: Problem[] = [
     title: "The visibility gap",
     body:
       "You find out what your portfolio actually earned when your accountant files the return — twelve months after the fact. In the meantime, the bank balance moves and you assume the picture is roughly right. It often isn't. Net yield, after-cost return, asset-by-asset performance — most owners haven't seen these numbers in real time.",
-    handledBy: "Finance Manager (CFO)",
+    handledBy: "Finance Manager",
   },
   {
     title: "The let-type decision",
@@ -54,7 +54,7 @@ const problems: Problem[] = [
     title: "The timing trap",
     body:
       "Your fixed mortgage rate reverts in four months. A stage payment is due in six. A lease expires in eight. None of these are on a calendar you check. By the time you remember, the window to prepare — refinance quotes, lender pack, rent review — is already closing.",
-    handledBy: "Operations Manager (COO)",
+    handledBy: "Operations Manager",
   },
   {
     title: "The comparison problem",

@@ -96,8 +96,27 @@ const typeStyles: Record<Asset["type"], string> = {
 export function DashboardMockup() {
   return (
     <div className="relative">
+      {/* Sample-data banner — sits ABOVE the device frame so a
+          first-time visitor reads "this is a sample" before they
+          read the numbers and can't mistake it for their own data
+          or a hand-picked customer screenshot. Amber band keeps the
+          notice visible without breaking the navy/white palette of
+          the device frame below. */}
+      <div
+        className="relative rounded-t-2xl bg-amber-50 border border-amber-200 border-b-0 px-5 py-2 flex items-center gap-2"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500" />
+        <span className="text-[11px] uppercase tracking-[0.1em] font-semibold text-amber-800">
+          Live portfolio sample data
+        </span>
+        <span className="text-[11px] text-amber-700">
+          — illustrative dashboard. Sign up to see your own numbers.
+        </span>
+      </div>
+
       {/* device frame */}
-      <div className="relative rounded-2xl border border-[var(--color-border)] bg-white shadow-[0_30px_60px_-20px_rgba(15,23,42,0.25)] overflow-hidden">
+      <div className="relative rounded-2xl rounded-t-none border border-[var(--color-border)] border-t-0 bg-white shadow-[0_30px_60px_-20px_rgba(15,23,42,0.25)] overflow-hidden">
         {/* header strip */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
           <div className="flex items-center gap-2">

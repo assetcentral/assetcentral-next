@@ -4,16 +4,18 @@ import { useCurrency } from "./CurrencyProvider";
 import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 
 // Plan-comparison rows. Top group is "AC Agent Team" — the cleanest way
-// to show buyers exactly which specialists each tier unlocks. Reflects
+// to show buyers exactly which agents each tier unlocks. Reflects
 // AGENT_FREE_ACCESS in lib/agent-team.ts on the app side (only Portfolio
-// PA is on Free; all four other agents are Pro+).
+// PA is on Free; all four other agents are Pro+). Pro now ships up to
+// 50 properties (2026-06 reposition unified the Pro/Team property cap
+// at 50, with Team's differentiator being seats not assets).
 const rows = [
   { group: "AC Agent Team", label: "Portfolio Personal Assistant", values: [true, true, true, true] },
-  { group: "AC Agent Team", label: "Finance Manager (CFO)", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Finance Manager", values: [false, true, true, true] },
   { group: "AC Agent Team", label: "Market Analyst", values: [false, true, true, true] },
-  { group: "AC Agent Team", label: "Operations Manager (COO)", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Operations Manager", values: [false, true, true, true] },
   { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [false, true, true, true] },
-  { group: "Portfolio", label: "Properties tracked", values: ["Up to 3", "Up to 20", "Up to 50", "Unlimited"] },
+  { group: "Portfolio", label: "Properties tracked", values: ["Up to 3", "Up to 50", "Up to 50", "Unlimited"] },
   { group: "Portfolio", label: "Calculators (IRR, Short-term Rental, Retrofit, Ownership)", values: [true, true, true, true] },
   { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [false, true, true, true] },
   { group: "Intelligence", label: "Real net yield + benchmarks", values: [false, true, true, true] },

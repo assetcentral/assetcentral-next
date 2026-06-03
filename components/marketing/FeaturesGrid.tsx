@@ -13,6 +13,7 @@
 // team's quarterly report rather than a SaaS feature wall.
 
 import Link from "next/link";
+import { roleFullName } from "@/lib/role-glossary";
 
 type AgentBlock = {
   /** Role / org-chart equivalent shown above the agent name. */
@@ -31,19 +32,21 @@ const blocks: AgentBlock[] = [
     role: "CEO",
     name: "Your CEO",
     framing:
-      "Reads the rest of the team's work and tells you what to do next.",
+      "Sets the strategy, drives the team, reports the progress and spots the next opportunity.",
     capabilities: [
-      "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
-      "Portfolio health score and concentration risk",
-      "5-year projection of yield, equity and cashflow",
-      "Decision Room view — the brief, the maths and the comp set in one place",
+      "Strategy: hold / refinance / improve / sell / acquire across every property",
+      "Progress report — what's driven yield up or down this period",
+      "Forward view — where yield, equity and cashflow are heading next",
+      "Opportunity radar — refinancing windows, value-add moves, growth bets",
+      "Ranked actions across the portfolio: the brief, the maths, the comp set",
+      "Portfolio health score and concentration risk in one Decision Room view",
     ],
   },
   {
     role: "CFO",
     name: "Finance Manager",
     framing:
-      "Owns the numbers. Real yield, cashflow, debt, refinance.",
+      "Owns the numbers. Real net yield, cashflow, debt, refinance.",
     capabilities: [
       "Real net yield per property and across the portfolio",
       "12-month cashflow forecast vs actual",
@@ -52,10 +55,10 @@ const blocks: AgentBlock[] = [
     ],
   },
   {
-    role: "CMO",
+    role: "CIO",
     name: "Market Analyst",
     framing:
-      "Watches the markets you're in. Rent, comps, transactions, upside.",
+      "Watches the markets you're in. Rent, comps, transactions, possible upside.",
     capabilities: [
       "Rent benchmarking against the local median",
       "Comparable sales and live transaction radar (DLD / HMLR / DVF)",
@@ -67,7 +70,7 @@ const blocks: AgentBlock[] = [
     role: "COO",
     name: "Operations Manager",
     framing:
-      "Catches the things that go wrong while you're not looking.",
+      "Stops yield leakage — catches the things that go wrong while you're not looking.",
     capabilities: [
       "Lease renewals, mortgage reversion and stage-payment alerts",
       "Short-term rental and property-manager statement audits",
@@ -79,7 +82,7 @@ const blocks: AgentBlock[] = [
     role: "Concierge",
     name: "Portfolio Personal Assistant",
     framing:
-      "The team member you talk to. Available on every plan.",
+      "The agent that organises your property data — and the team member you talk to. Available on every plan.",
     capabilities: [
       "Document vault with AI extraction — upload, snap or email",
       "Data ingestion via WhatsApp, email forwarding or file upload",
@@ -136,14 +139,25 @@ function AgentBlockCard({ block }: { block: AgentBlock }) {
   return (
     <article className="rounded-2xl border border-[var(--color-border)] bg-white p-7 lg:p-9 lg:grid lg:grid-cols-[280px_1fr] lg:gap-12">
       {/* Header column — role + name + framing. Sticky-ish vertical
-          anchor at lg+; stacked on mobile. */}
+          anchor at lg+; stacked on mobile. Role chip carries an
+          inline expansion of the chief-officer acronym on the line
+          below so the chip is self-explanatory. */}
       <div>
         <p
-          className="text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-2"
+          className="text-[11.5px] uppercase tracking-[0.14em] text-[var(--color-muted)] font-semibold"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           {block.role}
         </p>
+        {roleFullName(block.role) && (
+          <p
+            className="mt-0.5 mb-2 text-[10.5px] italic text-[var(--color-muted)] leading-tight"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {roleFullName(block.role)}
+          </p>
+        )}
+        {!roleFullName(block.role) && <div className="mb-2" />}
         <h3
           className="text-[26px] lg:text-[30px] leading-[1.1] text-[var(--color-navy)]"
           style={{ fontFamily: "var(--font-display)" }}
