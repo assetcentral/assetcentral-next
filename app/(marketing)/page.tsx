@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AgentYieldSection } from "@/components/marketing/AgentYieldSection";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
 import { FeaturesGrid } from "@/components/marketing/FeaturesGrid";
 import { FinalCta } from "@/components/marketing/FinalCta";
@@ -43,20 +42,16 @@ export default function HomePage() {
           targeting (e.g. UK-investor-with-Dubai-property) lives on its
           own dedicated landing page at /uk-dubai, which the Google Ads
           campaign points at directly. */}
-      {/* Homepage flow post-2026-06 yield-led reposition:
+      {/* Homepage flow:
             HeroSection         — yield north-star strapline + agent-team H1
-            AgentYieldSection   — how each agent works to increase yield (new)
             ProblemSection      — 4 problems, each mapped to the agent who handles it
-            MeetTheTeamSection  — formal intro to the five agents
-            TeamForPriceSection — "Five specialists. €49 a month." — the value-prop maths
+            MeetTheTeamSection  — meet the team AND see each agent's yield job
+                                  (merged with the previous AgentYieldSection so
+                                   visitors don't read the same five agents twice
+                                   in two adjacent sections)
+            TeamForPriceSection — "Five specialists. €49 a month." — value-prop maths
             ProductDemoTabs     — guided product walkthrough
-            FeaturesGrid        — what each agent does (grouped by agent owner)
-          AgentYieldSection slots in right after the hero so the
-          "increase yield" promise is unpacked into named agents and
-          their yield contribution before the visitor reads the
-          problem statement. Previously the flow jumped from hero
-          directly into problems; now the bridge is explicit. */}
-      <AgentYieldSection />
+            FeaturesGrid        — what each agent does (grouped by agent owner) */}
       <ProblemSection />
       <MeetTheTeamSection />
       <TeamForPriceSection />

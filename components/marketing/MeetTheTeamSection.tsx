@@ -21,10 +21,20 @@ type Agent = {
   role: string;
   /** Full name as it appears in the app sidebar. */
   name: string;
-  /** One-line description. Matches lib/agent-team.ts AGENTS[key].description. */
+  /** Punchy one-line headline — what the agent does for yield in one
+   *  breath. Sits between the agent name and the longer description.
+   *  Inherited from the (now-merged) AgentYieldSection so this card
+   *  is both the team introduction AND the yield-job introduction
+   *  in one place. */
+  headline: string;
+  /** Longer one-line description of what the agent does. */
   description: string;
   /** What the agent owns — short list of surfaces / outputs. */
   owns: string[];
+  /** Yield-link strapline at the bottom of the card — italic, accent
+   *  colour. Ties the agent's job back to the yield north star so
+   *  every card ends with a yield connection. */
+  yieldLink: string;
   /** Card tint — alternates navy / white for visual rhythm.
    *  Your CEO is navy (lead) so it visually anchors the grid. */
   tint: "navy" | "white";
@@ -34,6 +44,7 @@ const agents: Agent[] = [
   {
     role: "CEO",
     name: "Your CEO",
+    headline: "Runs the portfolio for yield",
     description:
       "Sets portfolio strategy and drives it through the team. Reports what's driven yield this period, charts where the portfolio is heading next, and seeks out opportunities to grow and strengthen returns.",
     owns: [
@@ -42,11 +53,13 @@ const agents: Agent[] = [
       "Forward view — where yield, equity and cashflow are heading",
       "Opportunity radar — growth and strengthening moves to pursue",
     ],
+    yieldLink: "Strategy → execution → progress → opportunity.",
     tint: "navy",
   },
   {
     role: "CFO",
     name: "Finance Manager",
+    headline: "Finds your real net yield",
     description:
       "Provides the numbers and the financial analysis — real net yield, cashflow, debt position, refinancing decisions and per-property performance.",
     owns: [
@@ -54,11 +67,13 @@ const agents: Agent[] = [
       "12-month cashflow forecast",
       "Debt tracker + refinance prep",
     ],
+    yieldLink: "See which assets are really performing.",
     tint: "white",
   },
   {
     role: "CIO",
     name: "Market Analyst",
+    headline: "Finds market upside",
     description:
       "Benchmarks rent against the local market, reviews comparable transactions and highlights where income may be below potential.",
     owns: [
@@ -66,11 +81,13 @@ const agents: Agent[] = [
       "Comparable sales + transaction radar",
       "Short-term rental vs long-let analysis",
     ],
+    yieldLink: "Identify possible rent and value upside.",
     tint: "white",
   },
   {
     role: "COO",
     name: "Operations Manager",
+    headline: "Stops yield leakage",
     description:
       "Stops yield leakage — checks renewals, operator statements, service charges, payments and cost anomalies before they reduce returns.",
     owns: [
@@ -78,11 +95,13 @@ const agents: Agent[] = [
       "Statement and rent-collection checks",
       "Cost anomaly flags",
     ],
+    yieldLink: "Catch issues before they reduce returns.",
     tint: "white",
   },
   {
     role: "Concierge",
     name: "Portfolio Personal Assistant",
+    headline: "Organises your property data",
     description:
       "Your concierge. Organises property data, helps you upload documents, sets alerts and keeps leases, loans and statements structured so the rest of the team can do its job.",
     owns: [
@@ -90,6 +109,7 @@ const agents: Agent[] = [
       "Document organising + data completeness",
       "Alert and report setup",
     ],
+    yieldLink: "Better data means better yield decisions.",
     tint: "white",
   },
 ];
@@ -109,7 +129,7 @@ export function MeetTheTeamSection() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five specialists working on your portfolio. One team.
+            Five specialists. One mission: higher yield.
           </h2>
           <p
             className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
@@ -214,10 +234,24 @@ function AgentCard({
         >
           {agent.name}
         </h3>
+        {/* Yield-led headline — what the agent does for yield in one
+            breath. Brought across from the (now-merged) AgentYieldSection
+            so the card reads as both team intro AND yield-job intro
+            without the visitor having to scroll between sections. */}
+        <p
+          className={`mt-2 ${
+            featured ? "text-[16px] lg:text-[17px]" : "text-[14px] lg:text-[15px]"
+          } font-semibold leading-[1.35] ${
+            isNavy ? "text-white/95" : "text-[var(--color-ink)]"
+          }`}
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {agent.headline}
+        </p>
         <p
           className={`mt-3 ${
-            featured ? "text-[16px] lg:text-[17px]" : "text-[14px] lg:text-[14.5px]"
-          } leading-[1.55] ${isNavy ? "text-white/85" : "text-[var(--color-ink)]"}`}
+            featured ? "text-[15px] lg:text-[16px]" : "text-[13.5px] lg:text-[14px]"
+          } leading-[1.55] ${isNavy ? "text-white/75" : "text-[var(--color-muted)]"}`}
           style={{ fontFamily: "var(--font-sans)" }}
         >
           {agent.description}
@@ -243,6 +277,25 @@ function AgentCard({
           </li>
         ))}
       </ul>
+
+      {/* Yield-link strapline — closes every card with a one-line
+          connection to the yield north star. Italic accent on the
+          white cards, accent-on-navy on the featured card. Bordered
+          off so it reads as a punchline, not part of the bullets. */}
+      <div
+        className={`mt-auto pt-4 border-t ${
+          isNavy ? "border-white/15" : "border-[var(--color-border)]"
+        }`}
+      >
+        <p
+          className={`text-[12.5px] italic leading-[1.45] ${
+            isNavy ? "text-[var(--color-accent)]/90" : "text-[var(--color-accent)]"
+          }`}
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {agent.yieldLink}
+        </p>
+      </div>
     </article>
   );
 }
