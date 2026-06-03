@@ -10,11 +10,11 @@ import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 // 50 properties (2026-06 reposition unified the Pro/Team property cap
 // at 50, with Team's differentiator being seats not assets).
 const rows = [
-  { group: "AC Agent Team", label: "Portfolio PA", values: [true, true, true, true] },
-  { group: "AC Agent Team", label: "Finance Agent", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Portfolio Personal Assistant", values: [true, true, true, true] },
+  { group: "AC Agent Team", label: "Finance Manager", values: [false, true, true, true] },
   { group: "AC Agent Team", label: "Market Analyst", values: [false, true, true, true] },
-  { group: "AC Agent Team", label: "Operations Agent", values: [false, true, true, true] },
-  { group: "AC Agent Team", label: "Yield CEO — ranked actions, Decision Room", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Operations Manager", values: [false, true, true, true] },
+  { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [false, true, true, true] },
   { group: "Portfolio", label: "Properties tracked", values: ["Up to 3", "Up to 50", "Up to 50", "Unlimited"] },
   { group: "Portfolio", label: "Calculators (IRR, Short-term Rental, Retrofit, Ownership)", values: [true, true, true, true] },
   { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [false, true, true, true] },

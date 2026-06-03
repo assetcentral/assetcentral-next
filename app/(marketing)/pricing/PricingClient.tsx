@@ -54,7 +54,7 @@ export function PricingClient() {
               className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Free covers up to 3 properties with your Portfolio PA. Pro unlocks the full AC Agent Team — Yield CEO, Finance Agent, Market Analyst, Operations Agent — for €49 a month. 7-day free trial on Pro and Team, no credit card required to start.
+              Free covers up to 3 properties with your Portfolio Personal Assistant. Pro unlocks the full AC Agent Team — Your CEO, Finance Manager, Market Analyst, Operations Manager — for €49 a month. 7-day free trial on Pro and Team, no credit card required to start.
             </p>
           </div>
 
@@ -143,10 +143,10 @@ export function PricingClient() {
               <FeatureList
                 items={[
                   { label: "Up to 3 properties", on: true },
-                  { label: "Portfolio PA", on: true },
+                  { label: "Portfolio Personal Assistant", on: true },
                   { label: "Yield + cashflow dashboard", on: true },
                   { label: "All calculators, free", on: true },
-                  { label: "Yield CEO + Finance / Market / Ops", on: false },
+                  { label: "Your CEO + Finance / Market / Ops", on: false },
                   { label: "Decision Room + ranked actions", on: false },
                 ]}
               />
@@ -174,10 +174,10 @@ export function PricingClient() {
               <FeatureList
                 items={[
                   { label: "Everything in Free, plus:", on: true },
-                  { label: "Yield CEO — ranked actions + decision support", on: true },
-                  { label: "Finance Agent — yield, cashflow, debt", on: true },
+                  { label: "Your CEO — ranked actions + decision support", on: true },
+                  { label: "Finance Manager — yield, cashflow, debt", on: true },
                   { label: "Market Analyst — rent + market evidence", on: true },
-                  { label: "Operations Agent — alerts + checks", on: true },
+                  { label: "Operations Manager — alerts + checks", on: true },
                   { label: "Up to 50 properties", on: true },
                   { label: "Document vault + AI extraction", on: true },
                   { label: "Multi-currency + all report types", on: true },

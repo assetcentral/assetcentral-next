@@ -29,7 +29,7 @@ type AgentBlock = {
 const blocks: AgentBlock[] = [
   {
     role: "CEO",
-    name: "Yield CEO",
+    name: "Your CEO",
     framing:
       "Reads the rest of the team's work and ranks the actions with the biggest yield impact.",
     capabilities: [
@@ -41,7 +41,7 @@ const blocks: AgentBlock[] = [
   },
   {
     role: "CFO",
-    name: "Finance Agent",
+    name: "Finance Manager",
     framing:
       "Owns the numbers. Real net yield, cashflow, debt, refinance.",
     capabilities: [
@@ -65,7 +65,7 @@ const blocks: AgentBlock[] = [
   },
   {
     role: "COO",
-    name: "Operations Agent",
+    name: "Operations Manager",
     framing:
       "Stops yield leakage — catches the things that go wrong while you're not looking.",
     capabilities: [
@@ -77,7 +77,7 @@ const blocks: AgentBlock[] = [
   },
   {
     role: "Concierge",
-    name: "Portfolio PA",
+    name: "Portfolio Personal Assistant",
     framing:
       "The agent that organises your property data — and the team member you talk to. Available on every plan.",
     capabilities: [

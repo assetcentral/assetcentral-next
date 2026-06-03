@@ -12,11 +12,11 @@
 // agents.
 //
 // Order matches the workflow shape of the product:
-//   1. Portfolio PA      — gets the data right
-//   2. Finance Agent     — calculates real yield
+//   1. Portfolio Personal Assistant      — gets the data right
+//   2. Finance Manager     — calculates real yield
 //   3. Market Analyst    — finds upside
-//   4. Operations Agent  — stops leakage
-//   5. Yield CEO         — ranks the actions
+//   4. Operations Manager  — stops leakage
+//   5. Your CEO         — ranks the actions
 //
 // Compliance language: "may", "can", "identify possible" — never
 // guaranteed. Matches the cautious-language posture on the app side
@@ -24,8 +24,8 @@
 
 type AgentYieldCard = {
   /** Agent name — exact match to the post-2026-06 sweep
-   *  (Portfolio PA, Finance Agent, Market Analyst, Operations Agent,
-   *  Yield CEO). */
+   *  (Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager,
+   *  Your CEO). */
   name: string;
   /** Role chip shown uppercase / accent above the agent name. Mirrors
    *  the CEO / CFO / CMO / COO / Concierge labelling on
@@ -43,14 +43,14 @@ type AgentYieldCard = {
 
 const cards: AgentYieldCard[] = [
   {
-    name: "Portfolio PA",
+    name: "Portfolio Personal Assistant",
     role: "Concierge",
     headline: "Organises your property data",
     copy: "Sets up properties, checks missing information and keeps leases, loans, statements and costs structured.",
     yieldLink: "Better data means better yield decisions.",
   },
   {
-    name: "Finance Agent",
+    name: "Finance Manager",
     role: "CFO",
     headline: "Finds your real net yield",
     copy: "Calculates rent, costs, debt, cashflow and refinance exposure across each property.",
@@ -64,14 +64,14 @@ const cards: AgentYieldCard[] = [
     yieldLink: "Identify possible rent and value upside.",
   },
   {
-    name: "Operations Agent",
+    name: "Operations Manager",
     role: "COO",
     headline: "Stops yield leakage",
     copy: "Checks renewals, short-term rental statements, operator data, service charges, payments and cost anomalies.",
     yieldLink: "Catch issues before they reduce returns.",
   },
   {
-    name: "Yield CEO",
+    name: "Your CEO",
     role: "CEO",
     headline: "Ranks what to do next",
     copy: "Turns portfolio data into decision support so owners can review what to hold, sell, refinance or improve.",
@@ -104,7 +104,7 @@ export function AgentYieldSection() {
           </p>
         </div>
 
-        {/* Cards: stacked on mobile / 2-up on lg with the Yield CEO
+        {/* Cards: stacked on mobile / 2-up on lg with the Your CEO
             card spanning full width as the punchline at the bottom.
             That mirrors how Your CEO sits visually in MeetTheTeam — the
             synthesis layer gets the lead position, not because it
@@ -127,7 +127,7 @@ function YieldCard({
   featured,
 }: {
   card: AgentYieldCard;
-  /** Featured = Yield CEO span-full at the bottom. Larger agent name,
+  /** Featured = Your CEO span-full at the bottom. Larger agent name,
    *  bigger headline, more breathing room. */
   featured?: boolean;
 }) {

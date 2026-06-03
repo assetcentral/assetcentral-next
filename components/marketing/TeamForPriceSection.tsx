@@ -38,7 +38,7 @@ type Hire = {
 const hires: Hire[] = [
   {
     role: "Portfolio analyst / CFO",
-    agent: "Finance Agent",
+    agent: "Finance Manager",
     cost: "from €2,500/month",
     blurb:
       "Tracks real yield, builds cashflow forecasts, runs refinance maths and prepares the lender pack.",
@@ -52,21 +52,21 @@ const hires: Hire[] = [
   },
   {
     role: "Operations manager / COO",
-    agent: "Operations Agent",
+    agent: "Operations Manager",
     cost: "from €1,200/month",
     blurb:
       "Watches renewals, audits operator statements, catches anomalies before they become losses.",
   },
   {
     role: "Personal assistant",
-    agent: "Portfolio PA",
+    agent: "Portfolio Personal Assistant",
     cost: "from €800/month",
     blurb:
       "Files documents, sets alerts, generates reports, answers how-to questions.",
   },
   {
     role: "Portfolio lead / CEO",
-    agent: "Yield CEO",
+    agent: "Your CEO",
     cost: "from €3,000/month",
     blurb:
       "Synthesises the team's work into ranked actions: Improve / Refinance / Hold / Review / Acquire.",

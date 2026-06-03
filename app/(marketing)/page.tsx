@@ -27,7 +27,7 @@ const jsonLd = {
   applicationCategory: "FinanceApplication",
   offers: { "@type": "Offer", price: "49", priceCurrency: "EUR" },
   description:
-    "AI agent team for private property investors — Portfolio PA, Finance Agent, Market Analyst, Operations Agent and Yield CEO working to identify practical actions to improve yield.",
+    "AI agent team for private property investors — Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager and Your CEO working to identify practical actions to improve yield.",
 };
 
 export default function HomePage() {

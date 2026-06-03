@@ -24,7 +24,7 @@ export function FinalCta() {
           className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-white/75 max-w-2xl mx-auto"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Add your first property in 5 minutes. See your real yield. Let your Yield CEO rank the actions that could improve returns. Free for up to 3 properties.
+          Add your first property in 5 minutes. See your real yield. Let your CEO rank the actions that could improve returns. Free for up to 3 properties.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">

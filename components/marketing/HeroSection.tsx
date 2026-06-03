@@ -40,7 +40,7 @@ export function HeroSection() {
 
             {/* Subhead: two paragraphs. First sets the job (yield + the
                 portfolio segment). Second names the five agents by name
-                — Portfolio PA, Finance Agent, Market Analyst, Operations
+                — Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations
                 Agent, Yield CEO — dropping the org-chart job titles in
                 favour of the agent-team brand. The team idea lands as
                 a named team, not as job-titles in the abstract. */}
@@ -54,7 +54,7 @@ export function HeroSection() {
               className="mt-4 text-[16px] lg:text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Your Portfolio PA, Finance Agent, Market Analyst, Operations Agent and Yield CEO work together to find yield improvement opportunities.
+              Your Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager and Your CEO work together to find yield improvement opportunities.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">

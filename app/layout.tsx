@@ -55,7 +55,7 @@ const organisationSchema = {
   logo: "https://assetcentral.ai/og-image.png",
   email: "hello@assetcentral.ai",
   description:
-    "AI agent team for private property investors. Yield CEO, Finance Agent, Market Analyst, Operations Agent and Portfolio PA work together to identify practical actions to improve yield across multi-country portfolios of 2 to 50 properties.",
+    "AI agent team for private property investors. Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant work together to identify practical actions to improve yield across multi-country portfolios of 2 to 50 properties.",
   legalName: "LOMOND CONSULTING FZE",
   address: {
     "@type": "PostalAddress",

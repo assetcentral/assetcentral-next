@@ -1,12 +1,12 @@
 // Marketing section that introduces the AC Agent Team — the five-agent
 // framing that the app uses post the 2026-06 yield-led reposition.
-// Names now mirror the agent-team brand: Portfolio PA, Finance Agent,
-// Market Analyst, Operations Agent, Yield CEO.
+// Names now mirror the agent-team brand: Portfolio Personal Assistant, Finance Manager,
+// Market Analyst, Operations Manager, Your CEO.
 //
 // Ordering matches the app sidebar (organisational + frequency-of-use):
-// Yield CEO → Finance Agent → Market Analyst → Operations Agent →
-// Portfolio PA. Yield CEO leads because it's the synthesis layer — the
-// headline promise. Portfolio PA sits last because it's the concierge.
+// Your CEO → Finance Manager → Market Analyst → Operations Manager →
+// Portfolio Personal Assistant. Your CEO leads because it's the synthesis layer — the
+// headline promise. Portfolio Personal Assistant sits last because it's the concierge.
 // Descriptions reorient around yield (the north-star metric) without
 // crowding out the other roles each agent plays.
 //
@@ -31,7 +31,7 @@ type Agent = {
 const agents: Agent[] = [
   {
     role: "CEO",
-    name: "Yield CEO",
+    name: "Your CEO",
     description:
       "Turns portfolio data into ranked decision support — what to hold, sell, refinance or improve to focus on the actions with the biggest yield impact.",
     owns: [
@@ -43,7 +43,7 @@ const agents: Agent[] = [
   },
   {
     role: "CFO",
-    name: "Finance Agent",
+    name: "Finance Manager",
     description:
       "Provides the numbers and the financial analysis — real net yield, cashflow, debt position, refinancing decisions and per-property performance.",
     owns: [
@@ -67,7 +67,7 @@ const agents: Agent[] = [
   },
   {
     role: "COO",
-    name: "Operations Agent",
+    name: "Operations Manager",
     description:
       "Stops yield leakage — checks renewals, operator statements, service charges, payments and cost anomalies before they reduce returns.",
     owns: [
@@ -79,7 +79,7 @@ const agents: Agent[] = [
   },
   {
     role: "Concierge",
-    name: "Portfolio PA",
+    name: "Portfolio Personal Assistant",
     description:
       "Your concierge. Organises property data, helps you upload documents, sets alerts and keeps leases, loans and statements structured so the rest of the team can do its job.",
     owns: [
@@ -113,8 +113,8 @@ export function MeetTheTeamSection() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             AssetCentral isn&rsquo;t a dashboard you have to drive. It&rsquo;s an AI
-            team — Yield CEO, Finance Agent, Market Analyst, Operations Agent and
-            Portfolio PA — working across every property you own, in every currency,
+            team — Your CEO, Finance Manager, Market Analyst, Operations Manager and
+            Portfolio Personal Assistant — working across every property you own, in every currency,
             all the time, to identify practical actions that can improve yield.
           </p>
         </div>

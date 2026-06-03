@@ -33,11 +33,11 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What do I get on the Free plan?",
-    a: "Free covers up to 3 properties with your Portfolio PA — your concierge for organising data, uploading documents, setting alerts and generating reports — plus a basic yield dashboard and all free calculators. The Pro tier adds the rest of the AC Agent Team (Yield CEO, Finance Agent, Market Analyst, Operations Agent) and lifts the cap to 50 properties.",
+    a: "Free covers up to 3 properties with your Portfolio Personal Assistant — your concierge for organising data, uploading documents, setting alerts and generating reports — plus a basic yield dashboard and all free calculators. The Pro tier adds the rest of the AC Agent Team (Your CEO, Finance Manager, Market Analyst, Operations Manager) and lifts the cap to 50 properties.",
   },
   {
     q: "What's the difference between Pro and Team?",
-    a: "Pro is one user, up to 50 properties, with the full AC Agent Team — your Yield CEO, Finance Agent, Market Analyst, Operations Agent and Portfolio PA. Team adds up to 4 additional seats (accountant, property manager, family member) and keeps the 50-property cap.",
+    a: "Pro is one user, up to 50 properties, with the full AC Agent Team — your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant. Team adds up to 4 additional seats (accountant, property manager, family member) and keeps the 50-property cap.",
   },
   {
     q: "I have more than 50 properties. What do I do?",
