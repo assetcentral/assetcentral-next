@@ -36,37 +36,42 @@ type Hire = {
   blurb: string;
 };
 
+// Role labels now use the chief-officer acronym only — the inline
+// expansion below (via roleFullName from @/lib/role-glossary) carries
+// the full name, so a compound prefix would be redundant. The PA tile
+// uses "Concierge" to match the role label used on MeetTheTeamSection,
+// keeping the team's role vocabulary consistent across sections.
 const hires: Hire[] = [
   {
-    role: "Portfolio analyst / CFO",
+    role: "CFO",
     agent: "Finance Manager",
     cost: "from €2,500/month",
     blurb:
       "Tracks real yield, builds cashflow forecasts, runs refinance maths and prepares the lender pack.",
   },
   {
-    role: "Market research / CIO",
+    role: "CIO",
     agent: "Market Analyst",
     cost: "from €1,500/month",
     blurb:
       "Benchmarks rent against the local median, tracks comparable sales, flags possible upside.",
   },
   {
-    role: "Operations manager / COO",
+    role: "COO",
     agent: "Operations Manager",
     cost: "from €1,200/month",
     blurb:
       "Watches renewals, audits operator statements, catches anomalies before they become losses.",
   },
   {
-    role: "Personal assistant",
+    role: "Concierge",
     agent: "Portfolio Personal Assistant",
     cost: "from €800/month",
     blurb:
       "Files documents, sets alerts, generates reports, answers how-to questions.",
   },
   {
-    role: "Portfolio lead / CEO",
+    role: "CEO",
     agent: "Your CEO",
     cost: "from €3,000/month",
     blurb:
