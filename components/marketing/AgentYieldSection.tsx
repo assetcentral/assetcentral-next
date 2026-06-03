@@ -58,7 +58,7 @@ const cards: AgentYieldCard[] = [
   },
   {
     name: "Market Analyst",
-    role: "CMO",
+    role: "CIO",
     headline: "Finds market upside",
     copy: "Benchmarks rent, reviews local market evidence and highlights where income may be below potential.",
     yieldLink: "Identify possible rent and value upside.",

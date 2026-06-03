@@ -55,7 +55,7 @@ const agents: Agent[] = [
     tint: "white",
   },
   {
-    role: "CMO",
+    role: "CIO",
     name: "Market Analyst",
     description:
       "Benchmarks rent against the local market, reviews comparable transactions and highlights where income may be below potential.",
@@ -134,13 +134,41 @@ export function MeetTheTeamSection() {
           ))}
         </div>
 
+        {/* Role acronym glossary — sits between the cards and the
+            disclaimer so a visitor scanning "CEO / CFO / CIO / COO"
+            on the cards above sees the expansion in one place rather
+            than having to recall them. Compact one-row format on
+            desktop, wraps to two on mobile. */}
+        <dl
+          className="mt-10 flex flex-wrap items-baseline gap-x-6 gap-y-2 text-[12.5px] leading-[1.5] text-[var(--color-muted)]"
+          style={{ fontFamily: "var(--font-sans)" }}
+          aria-label="Role acronyms used above"
+        >
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-semibold text-[var(--color-ink)]">CEO</dt>
+            <dd>Chief Executive Officer</dd>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-semibold text-[var(--color-ink)]">CFO</dt>
+            <dd>Chief Financial Officer</dd>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-semibold text-[var(--color-ink)]">CIO</dt>
+            <dd>Chief Information Officer</dd>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <dt className="font-semibold text-[var(--color-ink)]">COO</dt>
+            <dd>Chief Operating Officer</dd>
+          </div>
+        </dl>
+
         {/* Cautious-language disclaimer — same posture as the app's
             DECISION_SUPPORT_DISCLAIMER. The marketing site doesn't need
             it verbatim, but it should be visible enough that a visitor
             understands the "decision support, not advice" framing
             before they sign up. */}
         <p
-          className="mt-10 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
+          className="mt-6 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           AssetCentral provides software, analysis and decision support. It does

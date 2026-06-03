@@ -54,7 +54,7 @@ const blocks: AgentBlock[] = [
     ],
   },
   {
-    role: "CMO",
+    role: "CIO",
     name: "Market Analyst",
     framing:
       "Watches the markets you're in. Rent, comps, transactions, possible upside.",

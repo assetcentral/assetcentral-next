@@ -44,7 +44,7 @@ const hires: Hire[] = [
       "Tracks real yield, builds cashflow forecasts, runs refinance maths and prepares the lender pack.",
   },
   {
-    role: "Market research / CMO",
+    role: "Market research / CIO",
     agent: "Market Analyst",
     cost: "from €1,500/month",
     blurb:
