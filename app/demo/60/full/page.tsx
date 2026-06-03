@@ -10,7 +10,7 @@ import {
 
 export const metadata: Metadata = {
   title: "AssetCentral — Explainer (full-bleed) | AssetCentral",
-  description: "Full-bleed view of the AssetCentral 86-second explainer for screen recording.",
+  description: "Full-bleed view of the AssetCentral 88-second explainer for screen recording.",
   robots: { index: false, follow: false },
 };
 
@@ -20,8 +20,8 @@ export default function Demo60FullPage() {
       shots={SHOTS_60}
       subtitles={[]}
       audioSrc="/demo-vo-60.mp3"
-      totalMs={91000}
-      variantLabel="91 seconds · Kristen · ElevenLabs"
+      totalMs={88000}
+      variantLabel="88 seconds · Kristen · ElevenLabs"
     />
   );
 }

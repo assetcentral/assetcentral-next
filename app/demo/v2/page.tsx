@@ -1,6 +1,6 @@
 // "What is AssetCentral?" — the longer 120-second explainer that opens
 // with the funds-vs-private-owner contrast and lands on "Real data.
-// Better decisions. Better returns."
+// Better decisions. Higher yield."
 //
 // /demo still serves the original 45-second Charlotte version. This v2
 // route lives in parallel so the original isn't lost while the new one

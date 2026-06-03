@@ -47,7 +47,7 @@ const SUBTITLES: { from: number; to: number; text: string }[] = [
   { from:  3500, to:  6000, text: "Statements arrive from every direction." },
   { from:  6000, to:  9500, text: "Rent. Mortgage. Service charges. Short-term rental reports." },
   { from:  9500, to: 14000, text: "Your spreadsheet can't keep up." },
-  { from: 14000, to: 18500, text: "AssetCentral is your AI Real Estate Personal Assistant." },
+  { from: 14000, to: 18500, text: "AssetCentral is your AI agent team for property yield." },
   { from: 18500, to: 22000, text: "Forward us your documents. We do the rest." },
   { from: 22000, to: 26000, text: "One dashboard. Every property. Every currency." },
   { from: 26000, to: 31000, text: "Real net yield. Cashflow. Debt. Loan maturity." },
@@ -622,7 +622,7 @@ function Scene5() {
         className="mt-5 text-[1.8vw] text-white/70 tracking-wide"
         style={{ fontFamily: "var(--font-sans, sans-serif)" }}
       >
-        Your AI Real Estate Personal Assistant.
+        Your AI agent team for property yield.
       </motion.div>
     </div>
   );
@@ -1124,7 +1124,7 @@ function Scene12() {
         Start your free trial.
       </div>
       <div className="text-[13px] text-gray-500 mb-6">
-        Full access for 14 days. No credit card needed.
+        Full access for 7 days. No credit card needed.
       </div>
       <div className="space-y-3">
         <div className="border border-gray-200 rounded-md px-3 py-2.5 text-[12px] text-gray-400">
@@ -1140,7 +1140,7 @@ function Scene12() {
           className="rounded-md py-3 text-center text-[14px] font-medium text-white"
           style={{ backgroundColor: NAVY }}
         >
-          Start free 14-day trial
+          Start free 7-day trial
         </motion.div>
       </div>
       <div className="mt-5 text-center text-[11px] text-gray-500">

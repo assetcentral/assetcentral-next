@@ -36,12 +36,12 @@ const ACCENT = "#4f6ef7";
 // viewers a written summary they can scan and act on.
 const STEPS = [
   { title: "Add your property",        note: "Enter the address, purchase price, rent, financing, and ownership basics." },
-  { title: "Add your data",            note: "Upload a file, enter manually, forward an email, or send a photo via WhatsApp — AI handles the rest." },
-  { title: "AI structures it",         note: "Scattered files become a clean investment view: price, rent, tenant, financing." },
-  { title: "See the key numbers",      note: "Rental income, net yield, cashflow, IRR, and risk flags — at a glance." },
+  { title: "Add your data",            note: "Upload a file, enter manually, forward an email, or send a photo via WhatsApp — your Portfolio Personal Assistant handles the rest." },
+  { title: "Your PA structures it",    note: "Scattered files become a clean investment view: price, rent, tenant, financing." },
+  { title: "See the key numbers",      note: "Rental income, net yield, cashflow, IRR, and risk flags — at a glance from your Finance Manager." },
   { title: "Choose the right tool",    note: "IRR, rent review, hold/sell, refinance, short-term rental vs long-let, portfolio roll-up." },
-  { title: "Compare scenarios",        note: "See how rent uplifts, refinance, or an exit change the return." },
-  { title: "AI explains the numbers",  note: "Specific actions to consider — not just data, real recommendations." },
+  { title: "Compare scenarios",        note: "See how rent uplifts, refinance, or an exit may change the return." },
+  { title: "Your CEO ranks actions",   note: "Practical actions that may improve yield — ranked by impact, with the agent who owns each." },
   { title: "Export a clear report",    note: "Share with your advisor, lender, or partners as a PDF or a link." },
 ];
 
@@ -72,7 +72,7 @@ export default function GetStartedPage() {
               </h1>
             </div>
             <span className="text-[12.5px] lg:text-[13.5px] text-white/55 max-w-xs text-right">
-              8 steps · 80-second voice-over walkthrough
+              8 steps · 90-second voice-over walkthrough
             </span>
           </div>
         </div>
@@ -87,7 +87,7 @@ export default function GetStartedPage() {
               shots={SHOTS_GET_STARTED}
               subtitles={[]}
               audioSrc="/demo-vo-get-started.mp3"
-              totalMs={81000}
+              totalMs={90000}
               variantLabel=""
             />
           </div>
@@ -122,7 +122,7 @@ export default function GetStartedPage() {
             className="mt-6 text-[20px] sm:text-[24px] leading-tight"
             style={{ fontFamily: "var(--font-display)", color: ACCENT }}
           >
-            Real data. Better decisions. Better returns.
+            Real data. Better decisions. Higher yield.
           </p>
         </div>
       </section>
@@ -174,13 +174,13 @@ export default function GetStartedPage() {
             className="text-[32px] sm:text-[40px] lg:text-[52px] leading-[1.05] tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Start with one property today.
+            Add your first property today.
           </h2>
           <p
             className="mt-5 text-[16px] sm:text-[18px] lg:text-[20px] text-white/75 max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Real data. Better decisions. Better returns.
+            Real data. Better decisions. Higher yield.
           </p>
           <div
             className="mt-9 flex flex-wrap items-center justify-center gap-3"
@@ -203,7 +203,7 @@ export default function GetStartedPage() {
             className="mt-6 text-[12.5px] text-white/45"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            14-day free trial · No credit card required · Cancel anytime
+            7-day free trial · No credit card required · Cancel anytime
           </p>
         </div>
       </section>

@@ -12,25 +12,25 @@ The video currently plays silent + autoplay. Once you record the VO, swap `silen
 ## ▶ Paste this into ElevenLabs
 
 ```
-Welcome to AssetCentral. Here's how to get going in sixty seconds.
+Welcome to AssetCentral — your AI agent team for property yield. Here's how to get going in sixty seconds.
 
-Start with one property. Click Add Property and tell us a few basic details.
+Add your first property. Tell us the address, purchase price, rent, financing — the basics.
 
-Use whatever you have. Upload a file, enter the details manually, forward an email, or snap a photo on WhatsApp.
+Use whatever you have. Upload a file, enter the details manually, forward an email, or snap a photo on WhatsApp. Your Portfolio Personal Assistant handles the rest.
 
-AI reads it all, structures the data, and turns scattered information into a clear investment view.
+The team reads it all, structures the data, and turns scattered information into a clear investment view.
 
-See the key numbers instantly. Rent, yield, cashflow, IRR — and any risks that need attention.
+See the key numbers instantly. Rent, net yield, cashflow, IRR — and any risks that need attention.
 
 Pick the right tool. Calculate IRR, test a rent review, model a refinance, or compare short-term let.
 
-Compare scenarios. See how a rent uplift or a switch to short-term let affects your real return.
+Compare scenarios. See how a rent uplift or a switch to short-term let may change your yield.
 
-AI doesn't just show data. It explains what the numbers mean — and what you could do next.
+Your CEO ranks the actions that could improve yield — based on the team's analysis of your real numbers.
 
 Export a clear report — for yourself, your advisor, your lender, or your investment partners.
 
-Real data. Better decisions. Better returns. Start with one property — at AssetCentral dot AI.
+Real data. Better decisions. Higher yield. Add your first property — at AssetCentral dot AI.
 ```
 
 ---
@@ -39,16 +39,16 @@ Real data. Better decisions. Better returns. Start with one property — at Asse
 
 | Scene | Window      | Visual                              | VO line |
 |-------|-------------|-------------------------------------|---------|
-| 1     | 0–6s        | Welcome — title card                | "Welcome to AssetCentral. Here's how to get going in sixty seconds." |
-| 2     | 6–14s       | Step 1 — Properties dashboard with Add Property CTA | "Start with one property. Click Add Property and tell us a few basic details." |
-| 3     | 14–22.5s    | Step 2 — Four input cards (Upload / Manual / Email / WhatsApp) | "Use whatever you have. Upload a file, enter the details manually, forward an email, or snap a photo on WhatsApp." |
-| 4     | 22.5–30s    | Step 3 — Inputs flow into structured property fields | "AI reads it all, structures the data, and turns scattered information into a clear investment view." |
-| 5     | 30–37.5s    | Step 4 — KPI dashboard with sub-metrics + sparklines | "See the key numbers instantly. Rent, yield, cashflow, IRR — and any risks that need attention." |
+| 1     | 0–6s        | Welcome — title card                | "Welcome to AssetCentral — your AI agent team for property yield. Here's how to get going in sixty seconds." |
+| 2     | 6–14s       | Step 1 — Properties dashboard with Add Property CTA | "Add your first property. Tell us the address, purchase price, rent, financing — the basics." |
+| 3     | 14–22.5s    | Step 2 — Four input cards (Upload / Manual / Email / WhatsApp) | "Use whatever you have. Upload a file, enter the details manually, forward an email, or snap a photo on WhatsApp. Your Portfolio Personal Assistant handles the rest." |
+| 4     | 22.5–30s    | Step 3 — Inputs flow into structured property fields | "The team reads it all, structures the data, and turns scattered information into a clear investment view." |
+| 5     | 30–37.5s    | Step 4 — KPI dashboard with sub-metrics + sparklines | "See the key numbers instantly. Rent, net yield, cashflow, IRR — and any risks that need attention." |
 | 6     | 37.5–44.5s  | Step 5 — Six tool cards with previews | "Pick the right tool. Calculate IRR, test a rent review, model a refinance, or compare short-term let." |
-| 7     | 44.5–52s    | Step 6 — Three scenario comparison cards with bars + sparklines | "Compare scenarios. See how a rent uplift or a switch to short-term let affects your real return." |
-| 8     | 52–59s      | Step 7 — Three AI insight cards | "AI doesn't just show data. It explains what the numbers mean — and what you could do next." |
+| 7     | 44.5–52s    | Step 6 — Three scenario comparison cards with bars + sparklines | "Compare scenarios. See how a rent uplift or a switch to short-term let may change your yield." |
+| 8     | 52–59s      | Step 7 — Three AI insight cards | "Your CEO ranks the actions that could improve yield — based on the team's analysis of your real numbers." |
 | 9     | 59–65.5s    | Step 8 — Co-branded report preview + share panel | "Export a clear report — for yourself, your advisor, your lender, or your investment partners." |
-| 10    | 65.5–70s    | Closing — Real data / Better decisions / Better returns | "Real data. Better decisions. Better returns. Start with one property — at AssetCentral dot AI." |
+| 10    | 65.5–70s    | Closing — Real data / Better decisions / Higher yield | "Real data. Better decisions. Higher yield. Add your first property — at AssetCentral dot AI." |
 
 ---
 

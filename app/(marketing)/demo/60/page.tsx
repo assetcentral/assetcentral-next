@@ -11,9 +11,9 @@ import {
 } from "@/components/marketing/ExplainerVideoV2";
 import { DemoVideoSwitcher } from "@/components/marketing/DemoVideoSwitcher";
 
-const TITLE = "What is AssetCentral? — Your AI Team for Property Owners";
+const TITLE = "What is AssetCentral? — Your AI Agent Team for Property Yield";
 const DESCRIPTION =
-  "AssetCentral uses AI to find, structure and interpret real property data, helping owners and investors with 2 to 50 properties make faster decisions and improve portfolio returns.";
+  "AssetCentral gives private property owners an AI agent team — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on portfolios of 2 to 50 properties to identify practical actions that may improve yield.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -79,7 +79,7 @@ export default function Demo60Page() {
               </h1>
             </div>
             <span className="text-[12.5px] lg:text-[13.5px] text-white/55 max-w-xs text-right">
-              91-second explainer · for owners + investors with 2-50 properties
+              88-second explainer · for owners + investors with 2-50 properties
             </span>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function Demo60Page() {
               shots={SHOTS_60}
               subtitles={[]}
               audioSrc="/demo-vo-60.mp3"
-              totalMs={91000}
+              totalMs={88000}
               variantLabel=""
             />
           </div>
@@ -117,21 +117,23 @@ export default function Demo60Page() {
             className="text-[36px] sm:text-[44px] lg:text-[52px] leading-[1.05] tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Your AI-powered return platform for real estate.
+            Your AI agent team for property yield.
           </h2>
           <p
             className="mt-6 text-[17px] sm:text-[19px] leading-[1.55] text-white/80 max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            AssetCentral uses AI to find, structure and interpret real property
-            data — helping owners and investors with 2 to 50 properties make
-            faster decisions and improve portfolio returns.
+            AssetCentral gives private property owners five AI agents —
+            Your CEO, Finance Manager, Market Analyst, Operations Manager
+            and Portfolio Personal Assistant — working across portfolios of
+            2 to 50 properties to surface practical actions that may improve
+            yield.
           </p>
           <p
             className="mt-6 text-[20px] sm:text-[24px] leading-tight"
             style={{ fontFamily: "var(--font-display)", color: ACCENT }}
           >
-            Real data. Better decisions. Better returns.
+            Real data. Better decisions. Higher yield.
           </p>
         </div>
       </section>
@@ -263,13 +265,14 @@ export default function Demo60Page() {
             className="text-[32px] sm:text-[40px] lg:text-[52px] leading-[1.05] tracking-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Stop guessing what your portfolio is really earning.
+            You have a portfolio. Let the team find the yield.
           </h2>
           <p
             className="mt-5 text-[16px] sm:text-[18px] lg:text-[20px] text-white/75 max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Use real data to make better decisions and improve returns.
+            Use real data to make better decisions and identify actions that
+            may improve yield. Free for up to 3 properties.
           </p>
           <div
             className="mt-9 flex flex-wrap items-center justify-center gap-3"
@@ -279,7 +282,14 @@ export default function Demo60Page() {
               href="https://app.assetcentral.ai/signup"
               className="inline-flex items-center justify-center min-h-[48px] rounded-md bg-white text-[#0a0e27] px-6 text-[14.5px] font-medium hover:bg-white/90 transition-colors"
             >
-              Start with your first property →
+              Add your first property →
+            </Link>
+            <Link
+              href="https://app.assetcentral.ai/signup?plan=pro_monthly&intent=direct"
+              className="inline-flex items-center justify-center min-h-[48px] rounded-md px-6 text-[14.5px] font-medium text-white hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: ACCENT }}
+            >
+              Subscribe now
             </Link>
             <Link
               href="#video"
@@ -292,7 +302,7 @@ export default function Demo60Page() {
             className="mt-6 text-[12.5px] text-white/45"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            14-day free trial · No credit card required · Cancel anytime
+            7-day free trial · No credit card required · Cancel anytime
           </p>
         </div>
       </section>
