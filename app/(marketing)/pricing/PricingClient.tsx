@@ -54,7 +54,7 @@ export function PricingClient() {
               className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Free covers up to 3 properties with the Portfolio Personal Assistant. Pro unlocks the full AC Agent Team — Your CEO, Finance Manager, Market Analyst, Operations Manager — for €49 a month. 7-day free trial on Pro and Team, no credit card required to start.
+              Free covers up to 3 properties with your Portfolio PA. Pro unlocks the full AC Agent Team — Yield CEO, Finance Agent, Market Analyst, Operations Agent — for €49 a month. 7-day free trial on Pro and Team, no credit card required to start.
             </p>
           </div>
 
@@ -139,19 +139,19 @@ export function PricingClient() {
                 price={formatPrice(0, bill)}
                 sub="Forever — up to 3 properties"
               />
-              <Blurb>Portfolio Personal Assistant + basic dashboard. Try the model before committing.</Blurb>
+              <Blurb>Add up to 3 properties, see basic yield and understand what your AI Agent Team can unlock.</Blurb>
               <FeatureList
                 items={[
                   { label: "Up to 3 properties", on: true },
-                  { label: "Portfolio Personal Assistant", on: true },
+                  { label: "Portfolio PA", on: true },
                   { label: "Yield + cashflow dashboard", on: true },
                   { label: "All calculators, free", on: true },
-                  { label: "Your CEO + Finance / Market / Ops", on: false },
+                  { label: "Yield CEO + Finance / Market / Ops", on: false },
                   { label: "Decision Room + ranked actions", on: false },
                 ]}
               />
               <CTA href="/signup" variant="ghost">
-                Start free
+                Add your first property
               </CTA>
             </PlanCardLayout>
 
@@ -170,15 +170,15 @@ export function PricingClient() {
                 }
                 annualDiscount={annualDiscountPct(proPrice)}
               />
-              <Blurb>Full AC Agent Team. One user. Up to 20 properties.</Blurb>
+              <Blurb>Full AC Agent Team. Up to 50 properties. €49/month.</Blurb>
               <FeatureList
                 items={[
                   { label: "Everything in Free, plus:", on: true },
-                  { label: "Your CEO — ranked actions + decision support", on: true },
-                  { label: "Finance Manager — yield, cashflow, debt", on: true },
+                  { label: "Yield CEO — ranked actions + decision support", on: true },
+                  { label: "Finance Agent — yield, cashflow, debt", on: true },
                   { label: "Market Analyst — rent + market evidence", on: true },
-                  { label: "Operations Manager — alerts + checks", on: true },
-                  { label: "Up to 20 properties", on: true },
+                  { label: "Operations Agent — alerts + checks", on: true },
+                  { label: "Up to 50 properties", on: true },
                   { label: "Document vault + AI extraction", on: true },
                   { label: "Multi-currency + all report types", on: true },
                   { label: "Team members", on: false },

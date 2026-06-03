@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 const DISMISS_KEY = "ac_sticky_dismissed_v1";
 
 export function StickyCta({
-  label = "Start free",
+  label = "Add first property",
   href = "/signup",
-  message = "Meet your AC Agent Team — free for up to 3 properties.",
+  message = "Free for up to 3 properties. No card required.",
   /** Show after scrolling this fraction of the page (0–1). */
   threshold = 0.4,
 }: {

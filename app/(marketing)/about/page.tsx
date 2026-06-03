@@ -49,7 +49,7 @@ export default function AboutPage() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           <p>
-            Five specialists working on your portfolio. <strong>Your CEO</strong> ranks the highest-impact actions to improve returns. <strong>Finance Manager</strong> handles the numbers — yield, cashflow, debt, refinance. <strong>Market Analyst</strong> benchmarks rent and tracks comparable transactions. <strong>Operations Manager</strong> watches renewals, statements and cost anomalies. <strong>Portfolio Personal Assistant</strong> is the concierge — answers questions, completes data, sets alerts. In plain English: an AI team that runs your portfolio with you.
+            Five agents working on your portfolio. <strong>Yield CEO</strong> ranks the highest-impact actions to improve yield. <strong>Finance Agent</strong> handles the numbers — real net yield, cashflow, debt, refinance. <strong>Market Analyst</strong> benchmarks rent and tracks comparable transactions. <strong>Operations Agent</strong> watches renewals, statements and cost anomalies. <strong>Portfolio PA</strong> is the concierge — answers questions, organises data, sets alerts. In plain English: an AI agent team that works on your portfolio with you to identify practical actions that can improve yield.
           </p>
           <p>
             It&rsquo;s for private owners with anywhere from a second property to 50, often across multiple countries — managing their portfolio alongside a career or other business. Not first-time buyers. Not REITs. Not developers. Above 50 assets, we offer custom enterprise plans.
@@ -84,7 +84,7 @@ export default function AboutPage() {
             className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[14.5px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Start free — up to 3 properties
+            Add your first property
           </Link>
           <Link
             href="/features"

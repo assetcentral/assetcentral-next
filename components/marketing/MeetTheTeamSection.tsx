@@ -1,13 +1,14 @@
 // Marketing section that introduces the AC Agent Team — the five-agent
-// framing that the app uses post the 2026-06 redesign. Copy here mirrors
-// lib/agent-team.ts on the app side so a visitor sees the same names,
-// roles and descriptions on the marketing surface as on the dashboard.
+// framing that the app uses post the 2026-06 yield-led reposition.
+// Names now mirror the agent-team brand: Portfolio PA, Finance Agent,
+// Market Analyst, Operations Agent, Yield CEO.
 //
 // Ordering matches the app sidebar (organisational + frequency-of-use):
-// Your CEO → Finance Manager → Market Analyst → Operations Manager →
-// Portfolio Personal Assistant. Your CEO leads because it's the
-// synthesis layer — the headline promise. Portfolio PA sits last because
-// it's the support role / concierge.
+// Yield CEO → Finance Agent → Market Analyst → Operations Agent →
+// Portfolio PA. Yield CEO leads because it's the synthesis layer — the
+// headline promise. Portfolio PA sits last because it's the concierge.
+// Descriptions reorient around yield (the north-star metric) without
+// crowding out the other roles each agent plays.
 //
 // Compliance language matches the app: "may", "decision support",
 // "appears", "based on available data". Never "we recommend",
@@ -30,9 +31,9 @@ type Agent = {
 const agents: Agent[] = [
   {
     role: "CEO",
-    name: "Your CEO",
+    name: "Yield CEO",
     description:
-      "Turns portfolio data into decision support and ranks the highest-impact actions to improve returns.",
+      "Turns portfolio data into ranked decision support — what to hold, sell, refinance or improve to focus on the actions with the biggest yield impact.",
     owns: [
       "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
       "Portfolio health + concentration risk",
@@ -42,11 +43,11 @@ const agents: Agent[] = [
   },
   {
     role: "CFO",
-    name: "Finance Manager",
+    name: "Finance Agent",
     description:
-      "Provides the numbers and the financial analysis — real yield, cashflow, debt position, refinancing decisions and portfolio performance.",
+      "Provides the numbers and the financial analysis — real net yield, cashflow, debt position, refinancing decisions and per-property performance.",
     owns: [
-      "Yield analysis vs target",
+      "Real net yield vs target",
       "12-month cashflow forecast",
       "Debt tracker + refinance prep",
     ],
@@ -56,7 +57,7 @@ const agents: Agent[] = [
     role: "CMO",
     name: "Market Analyst",
     description:
-      "Benchmarks rent, market value, comparable transactions and yield opportunities across your markets.",
+      "Benchmarks rent against the local market, reviews comparable transactions and highlights where income may be below potential.",
     owns: [
       "Rent benchmarking",
       "Comparable sales + transaction radar",
@@ -66,9 +67,9 @@ const agents: Agent[] = [
   },
   {
     role: "COO",
-    name: "Operations Manager",
+    name: "Operations Agent",
     description:
-      "Tracks renewals, statements, reminders, costs, rent checks and operational actions across every property.",
+      "Stops yield leakage — checks renewals, operator statements, service charges, payments and cost anomalies before they reduce returns.",
     owns: [
       "Lease and renewal alerts",
       "Statement and rent-collection checks",
@@ -78,9 +79,9 @@ const agents: Agent[] = [
   },
   {
     role: "Concierge",
-    name: "Portfolio Personal Assistant",
+    name: "Portfolio PA",
     description:
-      "Your concierge. Answers how-to questions, helps you upload data, set alerts, generate reports, and flags anything missing across your properties.",
+      "Your concierge. Organises property data, helps you upload documents, sets alerts and keeps leases, loans and statements structured so the rest of the team can do its job.",
     owns: [
       "How-to guidance + setup wizards",
       "Document organising + data completeness",
@@ -112,9 +113,9 @@ export function MeetTheTeamSection() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             AssetCentral isn&rsquo;t a dashboard you have to drive. It&rsquo;s an AI
-            team — a CEO, a CFO, a market analyst, an operations manager and a
-            personal assistant — that works across every property you own, in every
-            currency, all the time.
+            team — Yield CEO, Finance Agent, Market Analyst, Operations Agent and
+            Portfolio PA — working across every property you own, in every currency,
+            all the time, to identify practical actions that can improve yield.
           </p>
         </div>
 
@@ -142,8 +143,8 @@ export function MeetTheTeamSection() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           AssetCentral provides software, analysis and decision support. It does
-          not provide regulated financial, tax, legal or investment advice. You
-          remain responsible for your own decisions.
+          not provide financial, tax, legal or investment advice. Owners and
+          investors remain responsible for their own decisions.
         </p>
       </div>
     </section>

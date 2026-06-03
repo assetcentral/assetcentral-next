@@ -9,18 +9,17 @@ import { YieldBadge } from "./YieldBadge";
 
 // The "How it works" demo. Restructured 2026-06 from a generic
 // 4-feature tab strip to a 4-step team workflow: each tab is a step in
-// the AssetCentral flow, and each step is owned by a named specialist
-// from the AC Agent Team. Order matches how a real owner uses the
-// product:
+// the AssetCentral flow, and each step is owned by a named agent from
+// the AC Agent Team. Order matches how a real owner uses the product:
 //
-//   Step 1  Get the data in        — Personal Assistant (concierge)
-//   Step 2  See your real position — Finance Manager   (CFO)
-//   Step 3  Catch what's coming    — Operations Manager (COO)
-//   Step 4  Decide what to do      — Your CEO          (synthesis)
+//   Step 1  Get the data in        — Portfolio PA      (concierge)
+//   Step 2  See your real position — Finance Agent     (CFO)
+//   Step 3  Catch what's coming    — Operations Agent  (COO)
+//   Step 4  Decide what to do      — Yield CEO         (synthesis)
 //
-// Tabs read top-to-bottom as a story rather than a feature menu. No
-// "PA" acronyms anywhere — the brief was explicit: always "Personal
-// Assistant" in full so the role registers as a person, not a label.
+// Tabs read top-to-bottom as a story rather than a feature menu. Agent
+// names use the post yield-led reposition brand: Portfolio PA, Finance
+// Agent, Operations Agent, Yield CEO (Market Analyst unchanged).
 
 type TabKey = "ingest" | "position" | "watch" | "decide";
 
@@ -44,33 +43,33 @@ const tabs: Tab[] = [
     key: "ingest",
     step: "01",
     label: "Get the data in",
-    agent: "Personal Assistant",
+    agent: "Portfolio PA",
     caption:
-      "Your Personal Assistant takes care of the boring part. Forward a WhatsApp, email a statement, drag in a PDF — AssetCentral reads it, extracts the numbers, and files it to the right property. No manual entry, no typing.",
+      "Your Portfolio PA takes care of the boring part. Forward a WhatsApp, email a statement, drag in a PDF — AssetCentral reads it, extracts the numbers, and files it to the right property. No manual entry, no typing.",
   },
   {
     key: "position",
     step: "02",
     label: "See your real position",
-    agent: "Finance Manager (CFO)",
+    agent: "Finance Agent",
     caption:
-      "Your Finance Manager builds the picture. Every property, every currency, your real net yield after costs, mortgage and vacancy. The number you've never quite had time to calculate — now updated automatically.",
+      "Your Finance Agent builds the picture. Every property, every currency, your real net yield after costs, mortgage and vacancy. The number you've never quite had time to calculate — now updated automatically.",
   },
   {
     key: "watch",
     step: "03",
     label: "Catch what's coming",
-    agent: "Operations Manager (COO)",
+    agent: "Operations Agent",
     caption:
-      "Your Operations Manager watches the calendar so you don't have to. Rate reversions, stage payments, lease renewals, statement audits — flagged before they become decisions you make in a rush.",
+      "Your Operations Agent watches the calendar so you don't have to. Rate reversions, stage payments, lease renewals, statement audits — flagged before they become decisions you make in a rush.",
   },
   {
     key: "decide",
     step: "04",
     label: "Decide what to do",
-    agent: "Your CEO",
+    agent: "Yield CEO",
     caption:
-      "Your CEO turns the team's work into ranked actions. Improve / Refinance / Hold / Review / Acquire — every recommendation backed by your actual numbers and your Market Analyst's evidence.",
+      "Your Yield CEO turns the team's work into ranked actions. Improve / Refinance / Hold / Review / Acquire — every recommendation backed by your actual numbers and your Market Analyst's evidence.",
   },
 ];
 
@@ -197,7 +196,7 @@ export function ProductDemoTabs() {
   );
 }
 
-/* ------------------ Step 2: Finance Manager (portfolio position) ------------------ */
+/* ------------------ Step 2: Finance Agent (portfolio position) ------------------ */
 
 type Row = {
   flag: string;
@@ -431,7 +430,7 @@ function PortfolioPanel() {
   );
 }
 
-/* ------------------ Step 3: Operations Manager (calendar + cashflow) ------------------ */
+/* ------------------ Step 3: Operations Agent (calendar + cashflow) ------------------ */
 
 const months = [
   { label: "Jan", rent: 9_500, mortgage: 3_300 },
@@ -506,7 +505,7 @@ function CashflowPanel() {
   );
 }
 
-/* ------------------ Step 4: Your CEO (ranked recommendations) ------------------ */
+/* ------------------ Step 4: Yield CEO (ranked recommendations) ------------------ */
 
 type Reco = {
   flag: string;
@@ -610,11 +609,11 @@ function IntelligencePanel() {
   );
 }
 
-/* ------------------ Step 1: Personal Assistant (ingestion) ------------------ */
+/* ------------------ Step 1: Portfolio PA (ingestion) ------------------ */
 
 function PaPanel() {
   return (
-    <DeviceFrame title="Personal Assistant · data ingestion">
+    <DeviceFrame title="Portfolio PA · data ingestion">
       <div className="p-5 grid gap-4 lg:grid-cols-2">
         {/* Left: forwarding inputs */}
         <div className="space-y-3">

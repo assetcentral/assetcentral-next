@@ -48,16 +48,16 @@ export function PricingPreview() {
             name="Free"
             price={formatPrice(0, bill)}
             cadence="forever"
-            blurb="Up to 3 properties. Portfolio Personal Assistant + dashboard + free calculators."
-            cta={{ label: "Start free", href: "/signup" }}
+            blurb="Add up to 3 properties, see basic yield and understand what your AI Agent Team can unlock."
+            cta={{ label: "Add your first property", href: "/signup" }}
           />
           <PlanCard
             name="Pro"
             price={formatPrice(pro.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(pro)}
-            blurb="Full AC Agent Team. Up to 20 properties. €49/month."
-            cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
+            blurb="Full AC Agent Team. Up to 50 properties. €49/month."
+            cta={{ label: "Start with your first property", href: "/signup" }}
             altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
@@ -66,7 +66,7 @@ export function PricingPreview() {
             price={formatPrice(team.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(team)}
-            blurb="Everything in Pro, plus up to 5 seats and 50 properties."
+            blurb="Everything in Pro, plus up to 5 seats and up to 50 properties."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
             altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=team_monthly&intent=direct" }}
           />

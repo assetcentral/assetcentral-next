@@ -38,7 +38,7 @@ type Hire = {
 const hires: Hire[] = [
   {
     role: "Portfolio analyst / CFO",
-    agent: "Finance Manager",
+    agent: "Finance Agent",
     cost: "from €2,500/month",
     blurb:
       "Tracks real yield, builds cashflow forecasts, runs refinance maths and prepares the lender pack.",
@@ -52,21 +52,21 @@ const hires: Hire[] = [
   },
   {
     role: "Operations manager / COO",
-    agent: "Operations Manager",
+    agent: "Operations Agent",
     cost: "from €1,200/month",
     blurb:
       "Watches renewals, audits operator statements, catches anomalies before they become losses.",
   },
   {
     role: "Personal assistant",
-    agent: "Portfolio Personal Assistant",
+    agent: "Portfolio PA",
     cost: "from €800/month",
     blurb:
       "Files documents, sets alerts, generates reports, answers how-to questions.",
   },
   {
     role: "Portfolio lead / CEO",
-    agent: "Your CEO",
+    agent: "Yield CEO",
     cost: "from €3,000/month",
     blurb:
       "Synthesises the team's work into ranked actions: Improve / Refinance / Hold / Review / Acquire.",
@@ -186,9 +186,9 @@ export function TeamForPriceSection() {
               className="mt-4 text-[14.5px] leading-[1.55] text-white/85"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              All five specialists, working on your portfolio together. Up to
-              20 properties across as many countries as you own in. No
-              per-asset fees, no per-currency fees.
+              Your full AC Agent Team for a 2 to 50 property portfolio, across
+              as many countries as you own in. No per-asset fees, no per-currency
+              fees.
             </p>
             <Link
               href="/signup?plan=pro_monthly"
@@ -202,7 +202,7 @@ export function TeamForPriceSection() {
               className="mt-2.5 flex w-full items-center justify-center min-h-[40px] text-[13px] text-white/80 hover:text-white underline decoration-white/30 hover:decoration-white"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Or start free — up to 3 properties →
+              Or add your first property — free up to 3 →
             </Link>
             <p
               className="mt-5 text-[11.5px] leading-[1.55] text-white/55"
@@ -211,7 +211,8 @@ export function TeamForPriceSection() {
               Cost figures above are illustrative market-rate ranges for
               fractional / part-time professional roles and vary widely by
               geography, scope and experience. AssetCentral provides software
-              and decision support, not regulated financial advice.
+              and decision support, not financial, tax, legal or investment
+              advice.
             </p>
           </aside>
         </div>

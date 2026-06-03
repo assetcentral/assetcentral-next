@@ -29,9 +29,9 @@ type AgentBlock = {
 const blocks: AgentBlock[] = [
   {
     role: "CEO",
-    name: "Your CEO",
+    name: "Yield CEO",
     framing:
-      "Reads the rest of the team's work and tells you what to do next.",
+      "Reads the rest of the team's work and ranks the actions with the biggest yield impact.",
     capabilities: [
       "Ranked actions: Improve / Refinance / Hold / Review / Acquire",
       "Portfolio health score and concentration risk",
@@ -41,9 +41,9 @@ const blocks: AgentBlock[] = [
   },
   {
     role: "CFO",
-    name: "Finance Manager",
+    name: "Finance Agent",
     framing:
-      "Owns the numbers. Real yield, cashflow, debt, refinance.",
+      "Owns the numbers. Real net yield, cashflow, debt, refinance.",
     capabilities: [
       "Real net yield per property and across the portfolio",
       "12-month cashflow forecast vs actual",
@@ -55,7 +55,7 @@ const blocks: AgentBlock[] = [
     role: "CMO",
     name: "Market Analyst",
     framing:
-      "Watches the markets you're in. Rent, comps, transactions, upside.",
+      "Watches the markets you're in. Rent, comps, transactions, possible upside.",
     capabilities: [
       "Rent benchmarking against the local median",
       "Comparable sales and live transaction radar (DLD / HMLR / DVF)",
@@ -65,9 +65,9 @@ const blocks: AgentBlock[] = [
   },
   {
     role: "COO",
-    name: "Operations Manager",
+    name: "Operations Agent",
     framing:
-      "Catches the things that go wrong while you're not looking.",
+      "Stops yield leakage — catches the things that go wrong while you're not looking.",
     capabilities: [
       "Lease renewals, mortgage reversion and stage-payment alerts",
       "Short-term rental and property-manager statement audits",
@@ -77,9 +77,9 @@ const blocks: AgentBlock[] = [
   },
   {
     role: "Concierge",
-    name: "Portfolio Personal Assistant",
+    name: "Portfolio PA",
     framing:
-      "The team member you talk to. Available on every plan.",
+      "The agent that organises your property data — and the team member you talk to. Available on every plan.",
     capabilities: [
       "Document vault with AI extraction — upload, snap or email",
       "Data ingestion via WhatsApp, email forwarding or file upload",
