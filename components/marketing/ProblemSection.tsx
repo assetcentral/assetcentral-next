@@ -3,26 +3,34 @@
 //
 // Reframed 2026-06: each problem is now (a) universal — applies to every
 // private owner with 2+ properties regardless of let type or geography —
-// and (b) cleanly attributed to a single specialist on the AC Agent Team.
+// and (b) attributed to the specialist(s) on the AC Agent Team who own
+// the problem. Some problems span more than one agent (let-type =
+// Finance + Market intelligence, timing = Finance forecasting +
+// Operations execution) and the attribution reflects that honestly.
 //
-// Earlier version had an "STR operator black box" problem which assumed
-// the owner was already running short-lets through a commissioned
-// operator. That's not universal — plenty of owners are pure long-let.
-// The truly universal version of that problem is the let-type decision
-// itself: every owner has to choose long-let or short-let, and most
-// commit to one without ever modelling the alternative.
+// Mapping post-reframe:
 //
-// Mapping post-reframe (one specialist per problem):
-//
-//   visibility gap        → Finance Manager (CFO)
-//   let-type decision     → Market Analyst (models the option)
-//   timing trap           → Operations Manager (COO)
-//   comparison problem    → Your CEO (synthesis)
-//
-// The Portfolio Personal Assistant doesn't own a problem here because the PA is the
-// concierge — they help with all four indirectly but the "Handled by"
-// attribution should name the agent who decides the outcome, not the
-// one who files the paperwork.
+//   1. visibility gap         → Portfolio Personal Assistant
+//                               (organising the picture comes first —
+//                                before any analysis or decision the
+//                                data has to be current and complete)
+//   2. let-type decision      → Finance Manager + Market Analyst
+//                               (Finance models the economics, Market
+//                                Analyst feeds in rents / comps / STR
+//                                benchmarks)
+//   3. timing trap            → Finance Manager + Operations Manager
+//                               (Finance handles forecasting and
+//                                liquidity; Operations actively manages
+//                                the events — capex, repairs, leases,
+//                                short-term agreements, payments)
+//   4. comparison problem     → Finance Manager (cross-portfolio
+//                                analysis — which asset is performing,
+//                                where the next euro of capital goes;
+//                                CFO territory, not CEO synthesis)
+//   5. continual change       → Your CEO (continual navigation —
+//                                market moves, rate cycles, life
+//                                events; the portfolio that worked
+//                                last year may not work this year)
 //
 // Compliance language: "may" / "appears" / "after costs" / "should know"
 // maintained. No "we recommend" / "guaranteed".
@@ -30,10 +38,9 @@
 type Problem = {
   title: string;
   body: string;
-  /** Which agent on the AC Agent Team handles this. Drives the
-   *  "Handled by" footer line — keeps copy tight to the post-2026-06
-   *  positioning (lib/agent-team.ts). One specialist per problem so
-   *  the attribution reads cleanly. */
+  /** Which agent(s) on the AC Agent Team own this problem. Drives the
+   *  "Handled by" footer line. May name one specialist or two when
+   *  the problem genuinely spans two roles. */
   handledBy: string;
 };
 
@@ -41,25 +48,31 @@ const problems: Problem[] = [
   {
     title: "The visibility gap",
     body:
-      "You find out what your portfolio actually earned when your accountant files the return — twelve months after the fact. In the meantime, the bank balance moves and you assume the picture is roughly right. It often isn't. Net yield, after-cost return, asset-by-asset performance — most owners haven't seen these numbers in real time.",
-    handledBy: "Finance Manager",
+      "You can't decide on what you can't see. Property data is scattered across statements, leases, debt papers, costs, tenant emails and operator portals. Before any analysis can happen — let alone any decision — the picture has to be current and complete. Most owners' portfolios live in their head plus a spreadsheet that's already out of date.",
+    handledBy: "Portfolio Personal Assistant",
   },
   {
     title: "The let-type decision",
     body:
       "Long-let or short-let? Every property forces this choice — and most owners pick one and never look back. Short-let advertises higher gross yield. After operator commission (typically 20–30%), seasonality, voids and the constant decisions, the net often disappoints. Long-let trades upside for predictability. You should know which model wins on each property before you commit — and check it's still winning after you have.",
-    handledBy: "Market Analyst",
+    handledBy: "Finance Manager + Market Analyst",
   },
   {
     title: "The timing trap",
     body:
-      "Your fixed mortgage rate reverts in four months. A stage payment is due in six. A lease expires in eight. None of these are on a calendar you check. By the time you remember, the window to prepare — refinance quotes, lender pack, rent review — is already closing.",
-    handledBy: "Operations Manager",
+      "Mortgage rate reverts in four months. Stage payment in six. Lease expires in eight. Capex due. Operator statements to audit. Rent collections to chase. None of these are on a calendar you check, and they don't wait. By the time you remember, the window to prepare — forecast the cashflow hit, line up liquidity, line up the next action — is already closing.",
+    handledBy: "Finance Manager + Operations Manager",
   },
   {
     title: "The comparison problem",
     body:
       "You have properties in different cities, different currencies, different tax regimes — sitting in different spreadsheets. You can't compare them, so you don't. You don't know which asset is working hardest, which one to sell, or where the next euro of capital should go.",
+    handledBy: "Finance Manager",
+  },
+  {
+    title: "The constant-change problem",
+    body:
+      "Everything is dynamic. The market goes up, the market goes down. Rates move. Tax rules shift. Your circumstances change — kids, careers, retirement, inheritance. A portfolio that made sense last year may not make sense this year. The work isn't picking the right strategy once — it's re-deciding as the world keeps changing around you.",
     handledBy: "Your CEO",
   },
 ];
@@ -79,7 +92,7 @@ export function ProblemSection() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Four problems every private owner hits. Each one needs a specialist.
+            Five problems every private owner hits. Each one needs a specialist.
           </h2>
           <p
             className="mt-5 text-[16.5px] leading-[1.6] text-[var(--color-muted)] max-w-2xl"
@@ -90,11 +103,18 @@ export function ProblemSection() {
           </p>
         </div>
 
+        {/* Grid: 1-col on mobile, 2-col from md+. The 5th card
+            (constant-change, the strategic "meta" problem owned by
+            Your CEO) spans both columns so the grid resolves cleanly
+            without an orphaned half-row AND so the synthesis problem
+            visually anchors the bottom of the section. */}
         <div className="mt-12 grid md:grid-cols-2 gap-5">
-          {problems.map((p) => (
+          {problems.map((p, idx) => (
             <article
               key={p.title}
-              className="rounded-2xl border border-[var(--color-border)] bg-white p-7 lg:p-8 flex flex-col"
+              className={`rounded-2xl border border-[var(--color-border)] bg-white p-7 lg:p-8 flex flex-col ${
+                idx === problems.length - 1 ? "md:col-span-2" : ""
+              }`}
             >
               <h3
                 className="text-[22px] lg:text-[24px] leading-[1.15] text-[var(--color-navy)] mb-3"

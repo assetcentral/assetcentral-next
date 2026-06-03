@@ -194,7 +194,7 @@ export function PricingClient() {
               <DualCTA
                 trialHref={`/signup?plan=pro_${billing}`}
                 directHref={`/signup?plan=pro_${billing}&intent=direct`}
-                directLabel={`Subscribe now — no trial`}
+                directLabel={`Subscribe now`}
               />
             </PlanCardLayout>
 
@@ -223,7 +223,7 @@ export function PricingClient() {
               <DualCTA
                 trialHref={`/signup?plan=team_${billing}`}
                 directHref={`/signup?plan=team_${billing}&intent=direct`}
-                directLabel={`Subscribe now — no trial`}
+                directLabel={`Subscribe now`}
                 trialVariant="ghost"
               />
             </PlanCardLayout>

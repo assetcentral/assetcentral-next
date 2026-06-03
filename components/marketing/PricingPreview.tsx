@@ -57,8 +57,8 @@ export function PricingPreview() {
             cadence="per month"
             annualDiscount={annualDiscountPct(pro)}
             blurb="Full AC Agent Team. Up to 50 properties. €49/month."
-            cta={{ label: "Start with your first property", href: "/signup" }}
-            altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=pro_monthly&intent=direct" }}
+            cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
+            altCta={{ label: "Subscribe now", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
           <PlanCard
@@ -68,7 +68,7 @@ export function PricingPreview() {
             annualDiscount={annualDiscountPct(team)}
             blurb="Everything in Pro, plus up to 5 seats and up to 50 properties."
             cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
-            altCta={{ label: "Subscribe now — no trial", href: "/signup?plan=team_monthly&intent=direct" }}
+            altCta={{ label: "Subscribe now", href: "/signup?plan=team_monthly&intent=direct" }}
           />
         </div>
 

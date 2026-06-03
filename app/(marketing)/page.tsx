@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { AgentYieldSection } from "@/components/marketing/AgentYieldSection";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
-import { FeaturesGrid } from "@/components/marketing/FeaturesGrid";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { HeroSection } from "@/components/marketing/HeroSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
@@ -43,28 +41,32 @@ export default function HomePage() {
           targeting (e.g. UK-investor-with-Dubai-property) lives on its
           own dedicated landing page at /uk-dubai, which the Google Ads
           campaign points at directly. */}
-      {/* Homepage flow post-2026-06 yield-led reposition:
+      {/* Homepage flow:
             HeroSection         — yield north-star strapline + agent-team H1
-            AgentYieldSection   — how each agent works to increase yield (new)
-            ProblemSection      — 4 problems, each mapped to the agent who handles it
-            MeetTheTeamSection  — formal intro to the five agents
-            TeamForPriceSection — "Five specialists. €49 a month." — the value-prop maths
-            ProductDemoTabs     — guided product walkthrough
-            FeaturesGrid        — what each agent does (grouped by agent owner)
-          AgentYieldSection slots in right after the hero so the
-          "increase yield" promise is unpacked into named agents and
-          their yield contribution before the visitor reads the
-          problem statement. Previously the flow jumped from hero
-          directly into problems; now the bridge is explicit. */}
-      <AgentYieldSection />
+            ProblemSection      — 5 problems, each mapped to the agent(s)
+                                  who handle them
+            MeetTheTeamSection  — meet the team + each agent's yield-job +
+                                  concrete capabilities they own
+            ProductDemoTabs     — How it works (guided product walkthrough)
+                                  Moved UP per the 2026-06 reorder so the
+                                  visitor sees how the team operates before
+                                  the cost / pricing pitch.
+            CalculatorsCta      — free calculators teaser
+            LeadMagnetsSection  — guides + downloads
+            TeamForPriceSection — "Five specialists. €49 a month." — moved
+                                  DOWN so it segues into PricingPreview as
+                                  the value-prop lead-in rather than an
+                                  early hero-style section. Visually toned
+                                  down (smaller padding + smaller H2) to
+                                  read as a supporting section, not a
+                                  full-stop. */}
       <ProblemSection />
       <MeetTheTeamSection />
-      <TeamForPriceSection />
       <div id="how-it-works" />
       <ProductDemoTabs />
-      <FeaturesGrid />
       <CalculatorsCta />
       <LeadMagnetsSection />
+      <TeamForPriceSection />
       <PricingPreview />
       <LeadCapture />
       <FinalCta />
