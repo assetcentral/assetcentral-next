@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // images inherited from the global app/opengraph-image.tsx
   },
 };
 

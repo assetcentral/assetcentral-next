@@ -11,9 +11,9 @@ import {
 } from "@/components/marketing/ExplainerVideoV2";
 import { DemoVideoSwitcher } from "@/components/marketing/DemoVideoSwitcher";
 
-const TITLE = "What is AssetCentral? — Your AI Agent Team for Property Yield";
+const TITLE = "What is AssetCentral? — 60-second tour";
 const DESCRIPTION =
-  "AssetCentral gives private property owners an AI agent team — Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant — working on portfolios of 2 to 50 properties to identify practical actions that may improve yield.";
+  "60-second video: five AI agents (CEO, Finance, Market, Operations, PA) working on private portfolios of 2 to 50 properties to find yield actions.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // images inherited from the global app/opengraph-image.tsx
   },
 };
 

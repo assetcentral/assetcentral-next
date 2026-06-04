@@ -10,9 +10,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const TITLE = "AssetCentral Broker Partner Program — Dubai";
+const TITLE = "Dubai Broker Partner Program";
 const DESCRIPTION =
-  "Earn partner income by introducing Dubai property owners and investors to AI-powered portfolio analysis. Re-engage clients, identify likely sellers, and offer professional portfolio reviews — all subject to partner terms.";
+  "Earn partner income by introducing Dubai property owners to AI-powered portfolio analysis. Re-engage clients, identify likely sellers, run portfolio reviews.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // images inherited from the global app/opengraph-image.tsx
   },
 };
 

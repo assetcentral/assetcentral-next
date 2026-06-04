@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Free Property Investment Calculators | AssetCentral",
+  // Was 51 chars before suffix; this lands at 43 chars before suffix
+  // so the appended "| AssetCentral" still fits inside ~60 total.
+  title: "Free Property Investment Calculators",
+  // Was 192 chars; trimmed to ~155.
   description:
-    "IRR calculator, short-term rental yield calculator, retrofit cost estimator, and ownership comparator. Free tools for residential property investors. No account required.",
+    "IRR, short-term rental yield, retrofit, mortgage and ownership comparator. Free tools for residential property investors — no account required.",
   alternates: { canonical: "/calculators" },
 };
 

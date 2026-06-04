@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About | AssetCentral",
+  // Keyword-stronger title than plain "About": flags the AI agent team
+  // and the audience (private owners) so the page earns visits from
+  // brand-curious search queries rather than just navigational ones.
+  title: "About — AI Agent Team for Private Owners",
+  // Was 220 chars; trimmed to 156 chars.
   description:
-    "AssetCentral was built by an experienced entrepreneur who hit every problem of owning property without a team of specialists handling it for him. An AI team for hands-on private property owners.",
+    "AssetCentral was built by an investor who hit every problem of owning property without a team behind him. An AI agent team for hands-on private owners.",
   alternates: { canonical: "/about" },
 };
 

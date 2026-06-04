@@ -15,7 +15,7 @@ import { DemoVideoSwitcher } from "@/components/marketing/DemoVideoSwitcher";
 
 const TITLE = "How to Use AssetCentral in 60 Seconds";
 const DESCRIPTION =
-  "A short, beginner-friendly walkthrough: add a property, see the numbers, compare scenarios, and export a clear report. No financial-modelling experience required.";
+  "Beginner-friendly walkthrough: add a property, see the numbers, compare scenarios and export a clear report. No financial-modelling experience required.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // images inherited from the global app/opengraph-image.tsx
   },
 };
 

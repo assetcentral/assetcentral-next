@@ -11,17 +11,19 @@ import Link from "next/link";
 
 const TITLE = "Partner with AssetCentral.ai";
 const DESCRIPTION =
-  "Two ways to partner with AssetCentral.ai — bring us your clients as a professional partner, or your friends as an ambassador. Upfront commission + recurring revenue on every introduction. Built for accountants, IFAs, wealth managers, property managers and brokers.";
+  "Two ways to partner: bring us your clients as a professional partner, or your friends as an ambassador. Upfront commission plus recurring revenue.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} · Earn alongside the owners you advise`,
+  // Short, focused title — the "Earn alongside the owners you advise"
+  // tagline lives on the page itself.
+  title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/partners" },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // images inherited from the global app/opengraph-image.tsx
   },
 };
 

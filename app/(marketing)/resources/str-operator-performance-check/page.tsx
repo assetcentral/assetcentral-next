@@ -7,10 +7,10 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 const SLUG = "str-operator-performance-check";
 const TITLE = "Is your short-term rental operator earning their 25%?";
 const DESCRIPTION =
-  "How short-term rental operators charge, what you should expect for the commission, how to read their statement, and three questions to ask before renewing.";
+  "How short-term rental operators charge, what to expect for the commission, how to read their statement, and three questions to ask before renewing.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
+  title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
   openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },

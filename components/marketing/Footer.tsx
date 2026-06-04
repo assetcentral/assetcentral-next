@@ -7,7 +7,10 @@ const columns = [
       { href: "/features", label: "Features" },
       { href: "/calculators", label: "Calculators" },
       { href: "/pricing", label: "Pricing" },
-      { href: "/resources", label: "Changelog" },
+      // Label was "Changelog" but the destination is the Resources hub
+      // (guides), not a changelog. Relabelled so the link tells the
+      // truth about where it sends you.
+      { href: "/resources", label: "All resources" },
     ],
   },
   {

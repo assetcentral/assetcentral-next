@@ -5,17 +5,19 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "yield-protection";
-const TITLE = "Keep yield from sliding back — the 11 things quietly eroding your portfolio";
+const PAGE_TITLE = "Keep yield from sliding back — the 11 things quietly eroding your portfolio";
+const SEO_TITLE = "Yield protection: 11 quiet eroders";
 const DESCRIPTION =
-  "Lifting yield is the easy part. The hard part is keeping it there. The 11 yield killers most owners miss, grouped by category, with the alerts that catch each one.";
+  "Lifting yield is the easy part. The 11 yield killers most owners miss, grouped by cost / revenue / capex / tax drift, with the alerts that catch each.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
-  description:
-    "The 11 things that quietly erode portfolio yield over a 24-month period, grouped by cost / revenue / capex / tax drift, with worked examples and a defence checklist.",
+  title: SEO_TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { title: PAGE_TITLE, description: DESCRIPTION, type: "article" },
 };
+
+const TITLE = PAGE_TITLE;
 
 export default function Article() {
   return (

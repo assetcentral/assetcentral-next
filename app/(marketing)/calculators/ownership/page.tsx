@@ -3,9 +3,10 @@ import { CalculatorShell } from "@/components/marketing/CalculatorShell";
 import { OwnershipCalculator } from "@/components/calculators/OwnershipCalculator";
 
 export const metadata: Metadata = {
-  title: "Mortgage vs Outright Ownership Calculator | AssetCentral",
+  title: "Mortgage vs Outright Ownership Calculator",
+  // ~140 chars.
   description:
-    "Compare outright and mortgaged ownership of the same property. Side-by-side IRR, cash-on-cash, year-1 cashflow, and exit proceeds.",
+    "Compare outright and mortgaged ownership of the same property. Side-by-side IRR, cash-on-cash, year-1 cashflow and exit proceeds.",
   alternates: { canonical: "/calculators/ownership" },
 };
 

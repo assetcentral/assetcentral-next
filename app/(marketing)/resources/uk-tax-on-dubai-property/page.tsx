@@ -8,10 +8,10 @@ const SLUG = "uk-tax-on-dubai-property";
 const TITLE =
   "UK tax on Dubai property: what British owners need to know";
 const DESCRIPTION =
-  "Income tax on Dubai rental, CGT on sale, SDLT surcharge implications, and personal-vs-corporate structuring. Plain-language orientation for UK residents owning Dubai property. Not tax advice.";
+  "Income tax on Dubai rental, CGT on sale, SDLT surcharge implications, and personal-vs-corporate structuring. Plain-language orientation for UK residents.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
+  title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
   openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
@@ -367,6 +367,18 @@ export default function Article() {
           href="/calculators/off-plan"
           label="Open the off-plan calculator"
           blurb="Model the assign-now-vs-hold decision in AED, see walk-away cash, three market scenarios, and the break-even handover value — all with live DLD comps. Free with a 14-day AssetCentral trial; no card required."
+        />
+
+        {/* Cross-link to the UK + Dubai landing page. Visitors arriving
+            here from a UK organic search for tax queries are exactly
+            the cohort the /uk-dubai campaign page is built for —
+            surfacing the workspace pitch alongside the tax article
+            keeps the funnel moving without competing with the off-plan
+            calculator CTA above. */}
+        <CtaBox
+          href="/uk-dubai"
+          label="Track your UK + Dubai portfolio in one place"
+          blurb="One workspace for both currencies, both tax regimes, both timezones. GBP and AED side-by-side, mortgage-rate alerts on the UK side, off-plan stage payments on the Dubai side. 14-day free trial."
         />
 
         <p

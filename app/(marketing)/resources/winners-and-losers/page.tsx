@@ -7,12 +7,11 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 const SLUG = "winners-and-losers";
 const TITLE = "Spot winners, prune losers, buy the next one well";
 const DESCRIPTION =
-  "Every portfolio has a quiet loser. Identifying it changes the conversation from 'should I buy another?' to 'should I sell the bottom one and trade up?' Here is the framework.";
+  "A three-factor portfolio ranking framework, the trade-up maths, acquisition screening against your yield baseline, and the sector traps to avoid.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
-  description:
-    "A three-factor portfolio ranking framework, the trade-up maths, acquisition screening against your existing yield baseline, and the sector-specific traps to avoid.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
   openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
 };

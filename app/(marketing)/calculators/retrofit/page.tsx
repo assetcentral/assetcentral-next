@@ -3,9 +3,10 @@ import { CalculatorShell } from "@/components/marketing/CalculatorShell";
 import { RetrofitCalculator } from "@/components/calculators/RetrofitCalculator";
 
 export const metadata: Metadata = {
-  title: "Property Retrofit Cost Calculator | Upgrade ROI | AssetCentral",
+  title: "Property Retrofit Cost Calculator",
+  // ~155 chars.
   description:
-    "Free retrofit ROI calculator. Compare upgrade costs against rent uplift, valuation uplift, and your discount rate. Includes void cost during refurbishment.",
+    "Free retrofit ROI calculator. Compare upgrade costs against rent uplift, valuation uplift and your discount rate. Includes void cost during refurb.",
   alternates: { canonical: "/calculators/retrofit" },
 };
 

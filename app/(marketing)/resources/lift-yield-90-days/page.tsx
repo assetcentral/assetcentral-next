@@ -5,17 +5,19 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "lift-yield-90-days";
-const TITLE = "Lift portfolio yield in 90 days — the four levers";
+const PAGE_TITLE = "Lift portfolio yield in 90 days — the four levers";
+const SEO_TITLE = "Lift portfolio yield in 90 days";
 const DESCRIPTION =
-  "Four levers move yield. Most owners pull only one. Here is how to pull all four — cost, rent, use, improvements — in the right order, in 90 days, with worked Dubai numbers.";
+  "The four levers that lift rental yield (cost, rent, use, capex), the order to pull them, and a 90-day sequence with worked Dubai examples.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
-  description:
-    "The four levers that lift rental yield (cost, rent, use, capex), the order to pull them, and a 90-day sequence with worked examples for a Dubai portfolio.",
+  title: SEO_TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { title: PAGE_TITLE, description: DESCRIPTION, type: "article" },
 };
+
+const TITLE = PAGE_TITLE;
 
 export default function Article() {
   return (

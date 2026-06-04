@@ -16,9 +16,10 @@ import {
 } from "@/components/marketing/FeatureMinis";
 
 export const metadata: Metadata = {
-  title: "Features | AssetCentral",
+  title: "Features",
+  // Was 197 chars; trimmed to ~155.
   description:
-    "What your AC Agent Team does. Real net yield, loan tracker, cashflow calendar, data ingestion, operator checker, sell vs hold, acquisition simulator, decision-room reports.",
+    "What your AC Agent Team does — real net yield, loan tracker, cashflow calendar, data ingestion, sell-vs-hold, acquisition simulator and decision reports.",
   alternates: { canonical: "/features" },
 };
 

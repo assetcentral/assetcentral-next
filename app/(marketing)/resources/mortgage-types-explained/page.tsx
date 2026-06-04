@@ -5,17 +5,25 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "mortgage-types-explained";
-const TITLE =
+// The on-page H1 keeps the full descriptive title; the SEO title uses a
+// shorter variant so the SERP entry fits the ~60-char Google budget
+// after "| AssetCentral" gets appended by the root layout's template.
+const PAGE_TITLE =
   "Mortgage types explained: fixed, variable, fix-then-revert, repayment, interest-only";
+const SEO_TITLE = "Mortgage types: fixed, variable, fix-then-revert";
 const DESCRIPTION =
-  "The five mortgage structures private property investors actually need to understand — what each one costs over the life of the loan, who they suit, and where they fail. Includes worked examples.";
+  "The five mortgage structures private property investors need to understand — what each costs, who they suit, and where they fail. With worked examples.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
+  title: SEO_TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { title: PAGE_TITLE, description: DESCRIPTION, type: "article" },
 };
+
+// Re-export full title under the old name for the JSON-LD and
+// ArticleLayout calls below — keeps the body of the file untouched.
+const TITLE = PAGE_TITLE;
 
 export default function Article() {
   return (

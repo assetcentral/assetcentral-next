@@ -5,17 +5,19 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "net-yield-vs-gross-yield";
-const TITLE = "Gross yield vs net yield — and why it matters more than you think";
+const PAGE_TITLE = "Gross yield vs net yield — and why it matters more than you think";
+const SEO_TITLE = "Gross yield vs net yield";
 const DESCRIPTION =
-  "A 7% gross yield can turn into a 3.8% net yield once costs are honest. Here is exactly how, with a worked Dubai apartment example.";
+  "Why gross yield is misleading, how to calculate real net yield step by step, and a worked Dubai example showing 7% gross becomes 3.8% net.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
-  description:
-    "Why gross yield is misleading, how to calculate real net yield step by step, and a worked Dubai example showing 7% gross becomes 3.8% net.",
+  title: SEO_TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { title: PAGE_TITLE, description: DESCRIPTION, type: "article" },
 };
+
+const TITLE = PAGE_TITLE;
 
 export default function Article() {
   return (

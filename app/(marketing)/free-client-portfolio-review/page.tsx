@@ -11,9 +11,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const TITLE = "Free Client Portfolio Review — AssetCentral";
+const TITLE = "Free Client Portfolio Review";
 const DESCRIPTION =
-  "Dubai brokers: bring one investor client and we'll run an AI-powered portfolio review free. See real net yield, cashflow, short-term rental vs long-let, hold vs sell — and how the broker partner program works.";
+  "Dubai brokers: bring one investor client and we'll run an AI-powered portfolio review free. Real net yield, cashflow, short-term vs long-let, hold vs sell.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // images inherited from the global app/opengraph-image.tsx
   },
 };
 

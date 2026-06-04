@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CookieBanner } from "@/components/marketing/CookieBanner";
@@ -23,18 +23,30 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// Viewport — sets the address-bar / status-bar tint to the brand navy on
+// supporting browsers (Android Chrome, iOS Safari standalone). Lives on
+// its own export per the Next 16 split: themeColor moved off Metadata.
+export const viewport: Viewport = {
+  themeColor: "#1a1a2e",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://assetcentral.ai"),
   title: {
-    default: "AssetCentral — Increase Property Yield with Your AI Agent Team",
+    default: "AI Agent Team for Property Yield — AssetCentral",
     template: "%s | AssetCentral",
   },
   description:
-    "AssetCentral gives private property investors a team of AI agents that organise, monitor and analyse their portfolio to identify practical actions that can improve yield. Built for portfolios of 2 to 50 properties.",
+    "Five AI agents on your portfolio of 2 to 50 properties. Real data, better decisions, higher yield. Built for private property investors. From €49/month.",
   openGraph: {
     type: "website",
     siteName: "AssetCentral",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    // Note: do NOT hardcode an OG image URL here — Next 16 picks up the
+    // global app/opengraph-image.tsx and injects og:image automatically.
+    // Setting images here would override that and force the placeholder
+    // path everywhere.
   },
   twitter: { card: "summary_large_image" },
   // Verification meta tags — set the matching env var (or hardcode the value)
@@ -52,7 +64,7 @@ const organisationSchema = {
   "@type": "Organization",
   name: "AssetCentral",
   url: "https://assetcentral.ai",
-  logo: "https://assetcentral.ai/og-image.png",
+  logo: "https://assetcentral.ai/opengraph-image.png",
   email: "hello@assetcentral.ai",
   description:
     "AI agent team for private property investors. Your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant work together to identify practical actions to improve yield across multi-country portfolios of 2 to 50 properties.",

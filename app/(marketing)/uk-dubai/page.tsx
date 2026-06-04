@@ -27,12 +27,15 @@ import Link from "next/link";
 // renders the header, but we keep the page content tightly focused.
 
 export const metadata: Metadata = {
-  title: "Manage your UK and Dubai property in one place | AssetCentral",
+  // Short, keyword-rich title aimed at the UK Google Ads campaign that
+  // points at this page. The root layout appends "| AssetCentral" so
+  // the SERP entry stays inside ~60 chars.
+  title: "UK + Dubai Property Portfolio Tracker",
   description:
-    "For British owners with UK BTL and Dubai property. Track rents in GBP and AED side-by-side, model off-plan assignment decisions, stay on top of UK tax — all from one workspace. Free 14-day trial, no card required.",
+    "For British owners with UK BTL and Dubai property. Track GBP and AED side-by-side, model off-plan exits, stay on top of UK tax. 14-day trial.",
   alternates: { canonical: "/uk-dubai" },
   openGraph: {
-    title: "Manage your UK and Dubai property in one place | AssetCentral",
+    title: "UK + Dubai Property Portfolio Tracker",
     description:
       "For British owners with UK BTL and Dubai property. One workspace for both currencies, both tax regimes, both timezones.",
     type: "website",

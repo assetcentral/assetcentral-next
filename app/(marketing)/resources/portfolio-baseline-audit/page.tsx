@@ -5,17 +5,19 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "portfolio-baseline-audit";
-const TITLE = "Know what you actually own — the portfolio baseline audit";
+const PAGE_TITLE = "Know what you actually own — the portfolio baseline audit";
+const SEO_TITLE = "The portfolio baseline audit";
 const DESCRIPTION =
-  "Most owners think they know their yield. Run this six-data-point audit and you will usually find it differs by 80–200 basis points from the figure in your head. Here is how to do it.";
+  "A six-data-point baseline audit for property portfolios. The numbers to gather, three things every audit reveals, and how to skip the spreadsheet.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
-  description:
-    "A six-data-point baseline audit for property portfolios. The numbers to gather, the three things every audit reveals, and how to skip the spreadsheet entirely.",
+  title: SEO_TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { title: PAGE_TITLE, description: DESCRIPTION, type: "article" },
 };
+
+const TITLE = PAGE_TITLE;
 
 export default function Article() {
   return (

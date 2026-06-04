@@ -12,9 +12,15 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection";
 
 export const metadata: Metadata = {
-  title: "AssetCentral — Increase Property Yield with Your AI Agent Team",
+  // Note: the homepage sets `title` directly (not templated) — the
+  // root layout's title template appends "| AssetCentral", which we
+  // don't want duplicated here since the brand is already in the
+  // sentence. Target: ≤60 chars.
+  title: "AI Agent Team for Property Yield — AssetCentral",
+  // Target: 140–160 chars. Communicates: 5 agents · portfolio scale ·
+  // outcome · price hook. Sits at ~155.
   description:
-    "AssetCentral gives private property investors a team of AI agents that organise, monitor and analyse their portfolio to identify practical actions that can improve yield. Built for portfolios of 2 to 50 properties.",
+    "Five AI agents on your portfolio of 2 to 50 properties. Real data, better decisions, higher yield. Built for private property investors. From €49/month.",
   alternates: { canonical: "/" },
 };
 

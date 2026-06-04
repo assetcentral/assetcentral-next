@@ -7,12 +7,11 @@ import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 const SLUG = "off-plan-handover-options";
 const TITLE = "Off-plan handover and you can't complete: four options";
 const DESCRIPTION =
-  "Stage payment is due. The cash isn't there. Here are the four realistic moves — completion finance, refinance, secondary-market sale, developer negotiation — and how to model each.";
+  "Stage payment is due, cash isn't there. The four realistic moves — completion finance, refinance, secondary-market sale, developer negotiation.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
-  description:
-    "What to do when your off-plan property is approaching handover and you're not sure you can complete. Four options — completion finance, refinance, secondary-market sale, developer negotiation — plus how the rolling-return calculator quantifies the choice.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
   openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
 };

@@ -3,9 +3,10 @@ import { CalculatorShell } from "@/components/marketing/CalculatorShell";
 import { STRYieldCalculator } from "@/components/calculators/STRYieldCalculator";
 
 export const metadata: Metadata = {
-  title: "Short-Term Rental Yield Calculator | Airbnb vs Long-Let | AssetCentral",
+  title: "Short-Term Rental Yield Calculator",
+  // ~155 chars.
   description:
-    "Free short-term rental yield calculator. Compare short-term rental income (after agency commission, cleaning, and fixed costs) against a long-let benchmark for the same property.",
+    "Free short-term rental yield calculator. Compare short-term rental income — after commission, cleaning and fixed costs — against a long-let benchmark.",
   alternates: { canonical: "/calculators/str-yield" },
 };
 

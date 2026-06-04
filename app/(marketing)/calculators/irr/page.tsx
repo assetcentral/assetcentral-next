@@ -3,9 +3,10 @@ import { CalculatorShell } from "@/components/marketing/CalculatorShell";
 import { IRRCalculator } from "@/components/calculators/IRRCalculator";
 
 export const metadata: Metadata = {
-  title: "Property IRR Calculator | Calculate Investment Return | AssetCentral",
+  title: "Property IRR Calculator",
+  // ~155 chars.
   description:
-    "Free IRR calculator for property investors. Model gross yield, net yield, cash-on-cash, and IRR over any hold period. Includes mortgage amortisation and exit proceeds.",
+    "Free IRR calculator for property investors. Model gross yield, net yield, cash-on-cash and IRR — including mortgage amortisation and exit proceeds.",
   alternates: { canonical: "/calculators/irr" },
 };
 

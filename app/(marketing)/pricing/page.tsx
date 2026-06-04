@@ -4,9 +4,10 @@ import { PLAN_PRICES } from "@/lib/pricing";
 import { PricingClient } from "./PricingClient";
 
 export const metadata: Metadata = {
-  title: "Pricing | AssetCentral",
+  title: "Pricing — €49/mo for the AC Agent Team",
+  // Was 208 chars; trimmed to ~155.
   description:
-    "Free for up to 3 properties. Pro €49/month for the full AC Agent Team. Team €199/month with up to 5 seats. 7-day free trial on paid plans, no credit card. Per-currency billing in EUR, USD, GBP, or AED.",
+    "Free for up to 3 properties. Pro €49/month for the full AC Agent Team. Team €199/month, 5 seats. 7-day trial, no card. EUR, USD, GBP or AED billing.",
   alternates: { canonical: "/pricing" },
 };
 

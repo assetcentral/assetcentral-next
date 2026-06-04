@@ -3,10 +3,11 @@ import { CalculatorShell } from "@/components/marketing/CalculatorShell";
 import { MortgageCalculator } from "@/components/calculators/MortgageCalculator";
 
 export const metadata: Metadata = {
-  title:
-    "Mortgage Calculator by Country | Fixed, Variable & Fix-then-Revert | AssetCentral",
+  title: "Mortgage Calculator by Country",
+  // Was 366 chars; trimmed to ~155. Country list stays as a teaser
+  // in the page body / H1 subtitle.
   description:
-    "Free residential mortgage calculator with country-specific rules. Fixed-rate, variable-rate (with stress test), and UK-style fix-then-revert structures. Monthly payment, total interest, stamp duty / transfer tax, LTV limits — for the UAE, UK, France, Spain, Portugal, Greece, Germany, and Switzerland.",
+    "Free mortgage calculator with country-specific rules. Monthly payment, total interest, stamp duty and LTV limits across 8 European + GCC markets.",
   alternates: { canonical: "/calculators/mortgage" },
 };
 

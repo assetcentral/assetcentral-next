@@ -5,17 +5,22 @@ import { StickyCta } from "@/components/marketing/StickyCta";
 import { articleBreadcrumb, articleSchema } from "@/lib/schema";
 
 const SLUG = "mortgage-rules-by-country";
-const TITLE =
+// On-page H1 retains the full country list; SEO title is shorter so
+// the SERP entry stays inside Google's ~60-char display budget.
+const PAGE_TITLE =
   "Mortgage rules by country: how the UAE, UK, France, Spain, Portugal, Greece, Germany, and Switzerland differ";
+const SEO_TITLE = "Mortgage rules by country — UAE, UK, EU";
 const DESCRIPTION =
-  "LTV caps, term limits, transfer taxes, stress tests, and the rules non-residents actually run into. A reference for investors buying across borders.";
+  "LTV caps, term limits, transfer taxes, stress tests and the rules non-residents actually run into. A reference for cross-border property investors.";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | AssetCentral`,
+  title: SEO_TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `/resources/${SLUG}` },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { title: PAGE_TITLE, description: DESCRIPTION, type: "article" },
 };
+
+const TITLE = PAGE_TITLE;
 
 export default function Article() {
   return (

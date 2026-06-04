@@ -5,11 +5,13 @@ export const metadata: Metadata = {
   // Title + description tuned for the audience the May-2026 Google Ads
   // campaign targets: UK residents (especially British investors who
   // own or are considering Dubai off-plan property). "Dubai off-plan"
-  // and "UK investor" are both in the meta description so paid + organic
-  // search results match the campaign keywords directly.
-  title: "Dubai Off-Plan Calculator — assign now or hold? | AssetCentral",
+  // stays in both title and description so paid + organic search
+  // results match the campaign keywords directly.
+  title: "Dubai Off-Plan Calculator — assign now or hold?",
+  // ~155 chars. Drops the audience teaser ("Used by UK and GCC
+  // investors...") which lives in the page hero body anyway.
   description:
-    "Should you assign your Dubai off-plan unit now or hold to handover? A rolling month-by-month model with cost of money, payment plan, three scenarios and live DLD market comps. Used by UK and GCC investors weighing the exit decision. Free with a 7-day trial.",
+    "Should you assign your Dubai off-plan unit now or hold to handover? Rolling month-by-month model with cost of money, three scenarios and live DLD comps.",
   alternates: { canonical: "/calculators/off-plan" },
 };
 
