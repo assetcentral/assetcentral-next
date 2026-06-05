@@ -62,7 +62,7 @@ export default function UaeExpatLanding() {
             className="text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.04] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Built for the busy professional who left London for Dubai — but still owns the flat. And the four BTLs in Manchester.
+            Built for the busy professional who left London, New York, Paris &mdash; or simply the rain &mdash; for Dubai. But still owns four BTLs in the UK. And now has a couple more here in the UAE.
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
