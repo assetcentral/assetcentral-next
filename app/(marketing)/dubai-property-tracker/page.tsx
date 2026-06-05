@@ -63,7 +63,7 @@ export default function DubaiPropertyTrackerLanding() {
             className="text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.04] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Three towers, three service-charge stories, one tenant rolling next quarter. Where&rsquo;s the dashboard?
+            Three apartments and two off-plan with payment schedules. A mortgage. A volatile market. Liquidity is tight. Where&rsquo;s the dashboard?
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
