@@ -11,6 +11,12 @@ const columns = [
       // (guides), not a changelog. Relabelled so the link tells the
       // truth about where it sends you.
       { href: "/resources", label: "All resources" },
+      // UAE Ads campaign (June 2026) — the highest-traffic of the three
+      // new ICP-focused landing pages goes here. The other two
+      // (/dubai-property-tracker, /multi-currency-portfolio) are
+      // reachable from the sitemap and from internal cross-links;
+      // keeping the footer column tight.
+      { href: "/uae-expat", label: "For UAE expats" },
     ],
   },
   {

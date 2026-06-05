@@ -10,7 +10,7 @@ const BASE = "https://assetcentral.ai";
 // a stable signal that beats `new Date()` on every build (which Google
 // reads as noise and may discount). When you ship a substantive change to
 // a route, bump the date here in the same commit.
-const ROUTE_LAST_MODIFIED = "2026-06-04";
+const ROUTE_LAST_MODIFIED = "2026-06-05";
 
 // Per-resource-article publish dates — kept in sync with the
 // `datePublished` constants inside each article's page.tsx.
@@ -77,6 +77,10 @@ const routes: Entry[] = [
   // Campaign landing pages
   { path: "/uk-dubai", priority: 0.8, changeFrequency: "monthly" },
   { path: "/free-client-portfolio-review", priority: 0.8, changeFrequency: "monthly" },
+  // UAE Ads campaign (June 2026) — three ICP-focused landing pages
+  { path: "/uae-expat", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/dubai-property-tracker", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/multi-currency-portfolio", priority: 0.7, changeFrequency: "monthly" },
 
   // Partner surfaces
   { path: "/partners", priority: 0.7, changeFrequency: "monthly" },
