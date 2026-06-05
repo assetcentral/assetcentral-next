@@ -1,39 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-// Dedicated landing page for the June 2026 UAE Google Ads campaign
-// targeting cross-border investors — owners with property in 2+
-// countries / currencies. AED + GBP + EUR + USD. They need
-// base-currency consolidation, real-time FX, and multi-market
-// benchmarks.
+// Dedicated landing page for the June 2026 UAE Google Ads campaign.
+// Target audience: the "Fractured Portfolio Investor" — a cross-border
+// investor with property in 2+ countries / currencies. Bay Area Tech
+// VP with a Stanford condo + off-plan Dubai. Munich surgeon with a
+// Berlin Mietshaus + Mallorca holiday lets. London family-office
+// director with portfolio across UK / Greece / France.
 //
-// Why this lives separately from the homepage:
-//   • Single ICP message — multi-currency owner. Homepage doesn't
-//     foreground the consolidation angle.
-//   • Google Ads quality score rewards precise message-match for
-//     "multi-currency property portfolio" search intent.
-//   • Conversion attribution clean.
+// Hero pivots from the multi-currency geo-hook to the ICP profile:
+// senior professional, time worth hundreds an hour, losing yield to
+// admin and FX confusion.
 //
-// Page structure follows the /uk-dubai template:
-//   1. Hero — flag row + headline + sub + dual CTA (signup + IRR
-//      calculator)
-//   2. Three-prong value props (base currency · 9 markets · forward
-//      in any language)
-//   3. Pain section — spreadsheet nightmare
-//   4. Solution — 5-agent team (Finance Manager + PA are heroes here)
-//   5. Trust block — 9-flag row + supported markets statement
-//   6. Pricing in EUR
-//   7. Final CTA
+// Structure:
+//   1. Hero — geo-hook → ICP self-ID
+//   2. Three named pains (WhatsApp/PDF, reversion anxiety, spreadsheet)
+//   3. Outcomes — what changes when you switch (5 cards)
+//   4. Persona snapshot — 4 cross-border portfolios
+//   5. Trust block — 9-flag row (kept) + outcome statement + cross-link
+//      to net-yield-vs-gross-yield + disclaimer
+//   6. Pricing band + ROI line
+//   7. Final CTA — outcome verb
+//
+// Route, canonical, OG type, sitemap, design tokens, UTM tagging and
+// disclaimers unchanged.
 
 export const metadata: Metadata = {
   title: "Multi-Currency Property Portfolio Tracker",
   description:
-    "Consolidate AED, GBP, EUR and USD property in one workspace. Real-time FX, 9-market data, AI extraction in any language. 7-day trial.",
+    "For cross-border investors running 3-30 units across UK, EU and the GCC. Real net cashflow in your base currency, refinance windows caught, sub-market rents flagged.",
   alternates: { canonical: "/multi-currency-portfolio" },
   openGraph: {
     title: "Multi-Currency Property Portfolio Tracker",
     description:
-      "For cross-border property investors. Pick your base currency, see consolidated yield across UAE, UK and EU markets.",
+      "Built for the cross-border senior professional. AED, GBP, EUR, USD rentals in one consolidated view — without the Sunday-afternoon spreadsheet.",
     type: "website",
   },
 };
@@ -68,22 +68,24 @@ export default function MultiCurrencyPortfolioLanding() {
             className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-5 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            <span aria-hidden className="text-base">🇬🇧 🇦🇪 🇪🇸 🇮🇪 🇫🇷</span>
-            Multi-currency · cross-border owner
+            <span aria-hidden className="text-base">🇬🇧 🇦🇪 🇪🇸 🇩🇪 🇫🇷</span>
+            For the cross-border investor with 3-30 units
           </div>
           <h1
             className="text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.04] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Multi-currency property portfolio — in one workspace.
+            One spreadsheet. Three currencies. Two regulators. None of it real-time.
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            AssetCentral consolidates your AED, GBP, EUR, USD rentals in
-            your base currency. Real-time FX. Live market data across 9
-            countries. Forwarding works in any language.
+            You&rsquo;re a Tech VP, surgeon, lawyer or family-office director
+            running 3 to 30 units across two or three countries. Your time
+            is worth hundreds an hour. Right now your AED rent, GBP costs
+            and EUR mortgages live in a tab nobody&rsquo;s updated since
+            March. One consolidated view — pick your base currency.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link
@@ -91,7 +93,7 @@ export default function MultiCurrencyPortfolioLanding() {
               className="inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Start 7-day trial
+              Get one view across currencies — 7-day trial
             </Link>
             <Link
               href="/calculators/irr"
@@ -110,139 +112,131 @@ export default function MultiCurrencyPortfolioLanding() {
         </div>
       </section>
 
-      {/* ── Three-prong value props ───────────────────────────────────── */}
-      <section className="bg-white border-y border-[var(--color-border)]">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
-          <h2
-            className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)] max-w-2xl mb-10"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Built for owners whose portfolio doesn&rsquo;t fit in one currency.
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Prong
-              flag="💱"
-              title="Pick your base currency"
-              points={[
-                "EUR, GBP, USD or AED as base",
-                "Total value, debt and net cashflow consolidated",
-                "FX rates from a daily-refreshed feed",
-                "Per-asset records stay in local currency",
-              ]}
-            />
-            <Prong
-              flag="🌐"
-              title="9 markets, one workspace"
-              points={[
-                "UAE, UK, France, Spain, Portugal, Greece",
-                "Germany, Switzerland, Ireland",
-                "Curated indicators — base rate, mortgage, CPI, growth",
-                "Add other markets manually any time",
-              ]}
-            />
-            <Prong
-              flag="🗣️"
-              title="Forward in any language"
-              points={[
-                "English, French, Arabic, Spanish, German, Italian",
-                "Portfolio PA extracts regardless of source language",
-                "Photos and PDFs both supported",
-                "AED, GBP, EUR, USD detected automatically",
-              ]}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Pain section — spreadsheet nightmare ──────────────────────── */}
-      <section className="bg-[var(--color-surface)]">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
-          <div className="grid md:grid-cols-[2fr_3fr] gap-10 items-start">
-            <div>
-              <p
-                className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                The picture today
-              </p>
-              <h2
-                className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Three countries, three regulators, one spreadsheet you don&rsquo;t trust.
-              </h2>
-            </div>
-            <div>
-              <p
-                className="text-[16px] leading-[1.6] text-[var(--color-ink)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Owning property in 3 countries is a spreadsheet nightmare.
-                Currencies drift. Each market&rsquo;s rent regulation rules
-                are different. By the time you&rsquo;ve manually consolidated
-                this quarter&rsquo;s numbers, the next quarter&rsquo;s started.
-              </p>
-              <p
-                className="mt-4 text-[16px] leading-[1.6] text-[var(--color-ink)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                AssetCentral keeps each unit in its local currency, applies a
-                daily FX feed, and rolls everything up into your chosen base.
-                You see real position, not a stale snapshot.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Solution — the 5-agent team ───────────────────────────────── */}
+      {/* ── Pain section — three named pains ──────────────────────────── */}
       <section className="bg-white border-y border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
           <p
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Your AI team
+            The three things eating your yield
           </p>
           <h2
-            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl"
+            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five specialists. One consolidated view of your portfolio.
+            Yield doesn&rsquo;t leak from bad markets. It leaks from currencies you can&rsquo;t see straight.
           </h2>
-          <p
-            className="mt-4 text-[16px] leading-[1.6] text-[var(--color-muted)] max-w-3xl"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            Each agent works across every country you own in — same logic,
-            different rules per market.
-          </p>
-          <div className="mt-10 grid md:grid-cols-2 gap-6">
-            <Agent
-              title="Your CEO"
-              note="Consolidates the actions that move yield most this month — across all 9 markets and currencies."
+          <div className="grid md:grid-cols-3 gap-6">
+            <Pain
+              tag="Pain #1"
+              title="The WhatsApp & PDF Nightmare"
+              body="Your Manchester agent emails monthly PDFs in GBP. Your Mallorca manager sends a quarterly Spanish spreadsheet in EUR. Your Dubai service-charge invoice arrives as a WhatsApp photo. Reconciling the quarter takes a Sunday — and then FX has moved."
+              cost="What's your real net cashflow this quarter in your base currency? If you can't answer in 10 seconds, you're already losing yield to admin."
             />
-            <Agent
-              title="Finance Manager"
-              note="Holds rent, costs and debt in local currency. Rolls up FX-aware totals into your chosen base."
+            <Pain
+              tag="Pain #2"
+              title="Reversion Anxiety"
+              body="Your UK fixed rate at 2.4% matures in nine months. Your Berlin Mietshaus has a tenant in below-Mietspiegel rent. Your Spanish lease rolls over to indefinida if you don't act in October. Three regulators. Three timeline calendars. One brain."
+              cost="One missed refinance window can cost £30k over five years. One sub-market rent review compounds quarterly. Across three countries the cost compounds in three places."
             />
-            <Agent
-              title="Market Analyst"
-              note="Per-market indicators (base rate, mortgage rate, CPI, residential growth) baked in for all 9 markets."
-            />
-            <Agent
-              title="Operations Manager"
-              note="Per-country rent regulation rules — renewal windows, rent caps, notice periods — all tracked."
-            />
-            <Agent
-              title="Portfolio Personal Assistant"
-              note="Forwards work in any language. AED invoices, GBP statements, EUR contracts — same inbox."
+            <Pain
+              tag="Pain #3"
+              title="Spreadsheet Fatigue"
+              body="It's Sunday afternoon in your SF Mission flat. You've opened the spreadsheet with the FX column you've maintained for three years. The kids are asking when you'll be done. You haven't refreshed FX since February."
+              cost="If your time is worth $400/hour, a Sunday afternoon of admin is $1,600. That's 24 sessions a year. $38,000 a year you didn't spend on the next deal — or your family."
             />
           </div>
         </div>
       </section>
 
-      {/* ── Trust block — 9-flag row + supported markets statement ───── */}
+      {/* ── Solution — outcomes, not features ─────────────────────────── */}
+      <section className="bg-[var(--color-surface)]">
+        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
+          <p
+            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            What changes when you switch
+          </p>
+          <h2
+            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Five outcomes. Same week you forward your first statement.
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Outcome
+              title="Real net cashflow in your base currency, in 10 seconds."
+              body="Forward every statement in any language. AED, GBP, EUR, USD — extracted in the local currency, rolled up FX-aware to your base. Daily-refreshed feed; per-asset records stay local."
+            />
+            <Outcome
+              title="Refinance windows you didn't know about — across three countries."
+              body="Every mortgage maturity, every fixed-rate end date, every payment-plan milestone. 90 days out you get an alert with rate-shopping options for that country's market."
+            />
+            <Outcome
+              title="Sub-market rent reviews caught early — per regulator."
+              body="UK Rightmove, Spanish Idealista, German Mietspiegel, RERA in Dubai. When you're 8%+ below market and the renewal window is open, we flag it with the comparable evidence."
+            />
+            <Outcome
+              title="Tax-efficient holding structures, surfaced."
+              body="UK BTL in your personal name while you're US-resident? German Mietshaus held outside a GmbH? Probably not optimal. We flag the mismatch — your tax adviser does the rest."
+            />
+            <Outcome
+              title="Sundays back. In any timezone."
+              body="Set up takes 90 seconds via voice or 3 minutes via spreadsheet. From there it's automatic. Forward AED invoices, GBP statements, EUR contracts to one inbox — no language tagging required."
+            />
+            <Outcome
+              title="One number you trust."
+              body="No more reconciling between an FX tab, an Excel sheet and three property managers. One portfolio view, one base currency, one number per quarter — and the math is auditable."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Persona snapshot — name them explicitly ───────────────────── */}
+      <section className="bg-white border-y border-[var(--color-border)]">
+        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
+          <p
+            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Who this is for
+          </p>
+          <h2
+            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-10"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            If you&rsquo;re one of these, AssetCentral is built for you.
+          </h2>
+          <div className="grid md:grid-cols-2 gap-5">
+            <Persona
+              title="The Bay Area tech VP"
+              shape="A Stanford-area condo she still owns, two off-plan Dubai units bought as a hedge, and a Lisbon apartment from her D7 visa days."
+            />
+            <Persona
+              title="The Munich orthopaedic surgeon"
+              shape="A Berlin Mietshaus, three Spanish holiday lets in Mallorca, an off-plan Dubai unit. Three regulators, three currencies, one Excel."
+            />
+            <Persona
+              title="The London family-office director"
+              shape="A portfolio across UK, Greece and France. Six BTLs in the Midlands, a Mykonos villa for short lets, an Antibes apartment held in an SCI."
+            />
+            <Persona
+              title="The Singapore banker with UK + UAE"
+              shape="Two Marylebone flats from her previous London posting, three Dubai units bought after relocating, a Sentosa condo where she lives."
+            />
+          </div>
+          <p
+            className="mt-8 text-[14px] leading-[1.55] text-[var(--color-muted)] italic max-w-3xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Illustrative profiles. Names are not real owners.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Trust block — 9-flag row + outcome statement + cross-link ── */}
       <section className="bg-[var(--color-surface)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
           <p
@@ -255,7 +249,7 @@ export default function MultiCurrencyPortfolioLanding() {
             className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)] max-w-3xl mx-auto text-center"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Nine markets today. Plus anything else you want to add manually.
+            Nine markets today. Add others manually.
           </h2>
           <div className="mt-10 grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-4">
             {FLAGS.map((m) => (
@@ -274,15 +268,25 @@ export default function MultiCurrencyPortfolioLanding() {
             ))}
           </div>
           <p
-            className="mt-8 text-[15px] leading-[1.6] text-[var(--color-ink)] max-w-3xl mx-auto text-center"
+            className="mt-8 text-[16px] leading-[1.6] text-[var(--color-ink)] max-w-3xl mx-auto text-center"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Covered today — UAE, UK, France, Spain, Portugal, Greece,
-            Germany, Switzerland, Ireland. Add other markets manually; AI
-            extraction works in any language and currency.
+            Built for owners running 3 to 30 properties in our nine
+            covered markets. The product can ingest, structure and
+            analyse a typical 8-property mixed-currency portfolio in 90
+            seconds — voice, email or spreadsheet, in any source language.
           </p>
+          <div className="mt-8 text-center">
+            <Link
+              href="/resources/net-yield-vs-gross-yield"
+              className="inline-flex items-center text-[14px] font-semibold text-[var(--color-accent)] hover:underline"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Read: Net yield vs gross yield — what cross-border owners get wrong →
+            </Link>
+          </div>
           <p
-            className="mt-6 text-[13px] leading-[1.55] text-[var(--color-muted)] italic max-w-3xl mx-auto"
+            className="mt-8 text-[13px] leading-[1.55] text-[var(--color-muted)] italic max-w-3xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             AssetCentral is software for tracking and analysing property
@@ -294,7 +298,7 @@ export default function MultiCurrencyPortfolioLanding() {
         </div>
       </section>
 
-      {/* ── Pricing band ──────────────────────────────────────────────── */}
+      {/* ── Pricing band — EUR-led with ROI framing ───────────────────── */}
       <section className="bg-white border-t border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
           <div className="text-center">
@@ -324,6 +328,15 @@ export default function MultiCurrencyPortfolioLanding() {
               <span aria-hidden>✓</span>
               Save 20% on annual — €470/yr instead of €588
             </div>
+            <p
+              className="mt-6 text-[15px] leading-[1.6] text-[var(--color-ink)] max-w-2xl mx-auto"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Pro is €49/month. If we catch one sub-market rent review per
+              year, the year pays for itself in the first month. If we
+              catch one refinance window across the portfolio, it pays for
+              itself for the next decade.
+            </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link
                 href="/signup?campaign=multi-currency&utm_source=multi_currency_lp&utm_medium=cta&utm_campaign=multi_currency&utm_content=pricing_band"
@@ -358,21 +371,21 @@ export default function MultiCurrencyPortfolioLanding() {
             className="text-[28px] lg:text-[36px] leading-[1.12] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Add your first property.
+            Get one consolidated view across currencies.
           </h2>
           <p
             className="mt-4 text-[16px] leading-[1.55] text-[var(--color-muted)] max-w-xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Forward one statement to agent@assetcentral.ai in whatever
-            language and currency you have it. We&rsquo;ll do the rest.
+            Forward one statement in any language and currency. Real net
+            cashflow in your base currency by the end of the day.
           </p>
           <Link
             href="/signup?campaign=multi-currency&utm_source=multi_currency_lp&utm_medium=cta&utm_campaign=multi_currency&utm_content=final"
             className="mt-7 inline-flex items-center justify-center px-6 py-3.5 rounded-md bg-[var(--color-navy)] text-white text-[16px] font-semibold hover:bg-[var(--color-navy-light)] transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Start 7-day trial →
+            Get one consolidated view across currencies →
           </Link>
           <p
             className="mt-3 text-[13px] text-[var(--color-muted)]"
@@ -388,59 +401,74 @@ export default function MultiCurrencyPortfolioLanding() {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function Prong({
-  flag,
+function Pain({
+  tag,
   title,
-  points,
+  body,
+  cost,
 }: {
-  flag: string;
+  tag: string;
   title: string;
-  points: string[];
+  body: string;
+  cost: string;
 }) {
   return (
-    <div style={{ fontFamily: "var(--font-sans)" }}>
-      <div className="flex items-center gap-2 mb-3">
-        <span aria-hidden className="text-[24px] leading-none">
-          {flag}
-        </span>
-        <h3
-          className="text-[18px] font-semibold text-[var(--color-navy)]"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {title}
-        </h3>
+    <div
+      className="rounded-xl border border-[var(--color-border)] bg-white p-6 flex flex-col"
+      style={{ fontFamily: "var(--font-sans)" }}
+    >
+      <div className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold mb-2">
+        {tag}
       </div>
-      <ul className="space-y-2">
-        {points.map((p) => (
-          <li
-            key={p}
-            className="text-[14px] leading-[1.5] text-[var(--color-ink)] flex items-start gap-2"
-          >
-            <span aria-hidden className="text-[var(--color-positive)] mt-0.5 shrink-0">
-              ✓
-            </span>
-            <span>{p}</span>
-          </li>
-        ))}
-      </ul>
+      <h3
+        className="text-[20px] font-semibold text-[var(--color-navy)] mb-3 leading-[1.2]"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {title}
+      </h3>
+      <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
+        {body}
+      </p>
+      <p className="mt-4 pt-4 border-t border-[var(--color-border)] text-[14px] leading-[1.55] text-[var(--color-ink)] font-medium">
+        {cost}
+      </p>
     </div>
   );
 }
 
-function Agent({ title, note }: { title: string; note: string }) {
+function Outcome({ title, body }: { title: string; body: string }) {
   return (
     <div
       className="rounded-xl border border-[var(--color-border)] bg-white p-5"
       style={{ fontFamily: "var(--font-sans)" }}
     >
       <h3
-        className="text-[18px] font-semibold text-[var(--color-navy)] mb-2"
+        className="text-[18px] font-semibold text-[var(--color-navy)] mb-2 leading-[1.25]"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {title}
       </h3>
       <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
-        {note}
+        {body}
+      </p>
+    </div>
+  );
+}
+
+function Persona({ title, shape }: { title: string; shape: string }) {
+  return (
+    <div
+      className="rounded-xl border border-[var(--color-border)] bg-white p-5"
+      style={{ fontFamily: "var(--font-sans)" }}
+    >
+      <h3
+        className="text-[16px] font-semibold text-[var(--color-navy)] mb-2"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {title}
+      </h3>
+      <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
+        {shape}
       </p>
     </div>
   );

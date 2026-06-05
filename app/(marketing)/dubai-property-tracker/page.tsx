@@ -1,41 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-// Dedicated landing page for the June 2026 UAE Google Ads campaign
-// targeting Dubai residents (expat or local) with a local Dubai
-// portfolio. Off-plan investors or rental owners — they want RERA
-// index tracking, DLD comparables, service-charge analysis, and
-// off-plan rolling-return modelling.
+// Dedicated landing page for the June 2026 UAE Google Ads campaign.
+// Target audience: the "Fractured Portfolio Investor" — a Dubai
+// resident (or resident-investor) with a local Dubai book of 3-30
+// units, often including off-plan. They optimise for yield and tax
+// savings. They're skeptical of generic AI marketing.
 //
-// Why this lives separately from the homepage:
-//   • Single ICP message — Dubai-portfolio owner. Homepage stays
-//     multi-market.
-//   • Lets us A/B-test calculator-led vs trial-led variants by
-//     duplicating the route.
-//   • Google Ads quality score rewards precise message-match.
-//   • Conversion attribution clean: signups originating here are
-//     measured separately from generic homepage signups.
+// Hero leads with Dubai-specific geo-hook, then pivots immediately
+// to the ICP profile. Pain section names the three pains the way
+// they actually sound for a Dubai-resident investor. Solution leads
+// with outcomes, not the 5-agent count.
 //
-// Page structure follows the /uk-dubai template:
-//   1. Hero — Dubai-specific badge + headline + sub + dual CTA
-//      (signup + off-plan calculator)
-//   2. Three-prong value props (RERA · off-plan rolling return ·
-//      service-charge audit)
-//   3. Pain section — the three-tower-three-charge picture
-//   4. Solution — the 5-agent team (Market Analyst is the hero here)
-//   5. Trust block — live CBUAE + DLD indicators, compliance copy
-//   6. Pricing in EUR with off-plan calculator trial perk
+// Structure:
+//   1. Hero — geo-hook → ICP self-ID
+//   2. Three named pains
+//   3. Outcomes — what changes when you switch
+//   4. Persona snapshot — 4 Dubai-shaped portfolios
+//   5. Trust block — live CBUAE + DLD indicators (kept) + outcome
+//      statement + cross-link to STR operator check + disclaimer
+//   6. Pricing band + ROI line
 //   7. Final CTA
+//
+// Route, canonical, OG type, sitemap, design tokens, UTM tagging
+// and disclaimers unchanged.
 
 export const metadata: Metadata = {
   title: "Dubai Property Portfolio Tracker",
   description:
-    "RERA-aware rent benchmarking, DLD comps, off-plan rolling-return modelling and service-charge audit. Built for owners with one Dubai unit or fifty.",
+    "For Dubai-based investors with 3-30 units across the Marina, JVC, Saadiyat or Palm. Real net cashflow, RERA renewal alerts, service-charge audit. Get off Excel.",
   alternates: { canonical: "/dubai-property-tracker" },
   openGraph: {
     title: "Dubai Property Portfolio Tracker",
     description:
-      "RERA + DLD + service-charge tracking for Dubai property owners. Off-plan rolling-return calculator included.",
+      "Built for the Dubai-resident investor running a local UAE book. RERA, DLD comps and service-charge tracking — without Sunday-afternoon spreadsheets.",
     type: "website",
   },
 };
@@ -59,21 +57,23 @@ export default function DubaiPropertyTrackerLanding() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <span aria-hidden className="text-base">🇦🇪</span>
-            Dubai-specific · RERA + DLD + off-plan
+            For the Dubai-resident investor with a local book
           </div>
           <h1
             className="text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.04] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Dubai property, tracked properly.
+            Three towers, three service-charge stories, one tenant rolling next quarter. Where&rsquo;s the dashboard?
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            RERA index integration, DLD comparables, off-plan rolling
-            return modelling, service-charge tracking. Built for owners
-            with one Dubai unit or fifty.
+            You&rsquo;re a Dubai-based professional or business owner with
+            3 to 30 units across the Marina, JVC, Saadiyat, the Palm — and
+            an off-plan unit handing over next year. Your time is worth
+            hundreds an hour. You shouldn&rsquo;t be hunting RERA index
+            data in tabs at 11pm.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link
@@ -81,7 +81,7 @@ export default function DubaiPropertyTrackerLanding() {
               className="inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Start 7-day trial
+              Get your Dubai portfolio off Excel — 7-day trial
             </Link>
             <Link
               href="/calculators/off-plan"
@@ -100,143 +100,131 @@ export default function DubaiPropertyTrackerLanding() {
         </div>
       </section>
 
-      {/* ── Three-prong value props ───────────────────────────────────── */}
-      <section className="bg-white border-y border-[var(--color-border)]">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
-          <h2
-            className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)] max-w-2xl mb-10"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Public data, made actionable. Three things every Dubai owner needs.
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Prong
-              flag="📊"
-              title="RERA-aware rent benchmarking"
-              points={[
-                "Per-area RERA index plumbed in",
-                "See what your unit should be renting for",
-                "Benchmark before negotiating with your tenant",
-                "Renewal-window alerts so you don't miss it",
-              ]}
-            />
-            <Prong
-              flag="🏗️"
-              title="Off-plan rolling return"
-              points={[
-                "Model launch → handover → resale or hold",
-                "Track payment plan and cost of money",
-                "Compare intermediate exit vs hold to handover",
-                "Specific to Dubai's developer-led market",
-              ]}
-            />
-            <Prong
-              flag="🧾"
-              title="Service charge audit"
-              points={[
-                "Track service charge per sqft per tower",
-                "Compare against community benchmarks",
-                "Flag overpayment before it compounds",
-                "Forward the invoice — AED extracted automatically",
-              ]}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Pain section — the three-tower-three-charge picture ──────── */}
-      <section className="bg-[var(--color-surface)]">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
-          <div className="grid md:grid-cols-[2fr_3fr] gap-10 items-start">
-            <div>
-              <p
-                className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                The picture today
-              </p>
-              <h2
-                className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Three units, three towers, three different service charge stories.
-              </h2>
-            </div>
-            <div>
-              <p
-                className="text-[16px] leading-[1.6] text-[var(--color-ink)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Dubai property looks simple until you own three units across
-                three towers. Service charges vary. RERA index moves quietly.
-                Off-plan payment plans overlap. The DLD comp data is public
-                but not in a form you can act on. Most owners can&rsquo;t
-                quickly answer &ldquo;should I sell this one and reinvest
-                into off-plan?&rdquo;
-              </p>
-              <p
-                className="mt-4 text-[16px] leading-[1.6] text-[var(--color-ink)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                AssetCentral pulls the public indicators into the dashboard
-                and lines them up against your own unit&rsquo;s rent, charges
-                and payment plan. The decision becomes obvious — not buried
-                in tabs.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Solution — the 5-agent team ───────────────────────────────── */}
+      {/* ── Pain section — three named pains ──────────────────────────── */}
       <section className="bg-white border-y border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
           <p
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Your AI team
+            The three things eating your yield
           </p>
           <h2
-            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl"
+            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five specialists. RERA + DLD live in your dashboard.
+            Yield doesn&rsquo;t leak out of bad investments. It leaks out of bad admin.
           </h2>
-          <p
-            className="mt-4 text-[16px] leading-[1.6] text-[var(--color-muted)] max-w-3xl"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            For Dubai owners the Market Analyst pulls the heaviest weight.
-            But all five agents work together on the portfolio job.
-          </p>
-          <div className="mt-10 grid md:grid-cols-2 gap-6">
-            <Agent
-              title="Market Analyst"
-              note="RERA index per area, DLD comp transactions, service-charge benchmarks. The Dubai-specific surface."
-              accent
+          <div className="grid md:grid-cols-3 gap-6">
+            <Pain
+              tag="Pain #1"
+              title="The WhatsApp & PDF Nightmare"
+              body="Three management companies. Two Owners' Association WhatsApp groups. A service-charge invoice that arrived as a photo. An Ejari PDF in your inbox from 2023. Whose tenancy is rolling — and is the rent at market?"
+              cost="If you can't answer 'what was my real net cashflow last quarter — by tower' in 10 seconds, you're already losing yield to admin."
             />
-            <Agent
-              title="Your CEO"
-              note="Surfaces the actions that move yield most this month — across your full Dubai book."
+            <Pain
+              tag="Pain #2"
+              title="Reversion Anxiety"
+              body="The Marina 2-bed RERA index says +12% YoY. Your tenant signed at AED 95k in 2024 — comparable units are letting at AED 118k now. Service charges on the Downtown unit went up 14% this quarter. None of this is in any one place."
+              cost="One missed RERA renewal at the right rent compounds quarterly. One off-plan payment plan missed costs developer-grade penalties. The cost of not knowing is always higher than the cost of knowing."
             />
-            <Agent
-              title="Finance Manager"
-              note="Tracks rent, costs and debt in AED. Flags overdue service charges and developer payment plans."
-            />
-            <Agent
-              title="Operations Manager"
-              note="Chases renewals, voids and capex. Reminds you when a tenancy is rolling and an Ejari is due."
-            />
-            <Agent
-              title="Portfolio Personal Assistant"
-              note="Ingests AED invoices, statements and photos via email, WhatsApp or voice. Files everything to the right unit."
+            <Pain
+              tag="Pain #3"
+              title="Spreadsheet Fatigue"
+              body="It's Saturday morning at home in Emirates Hills. You've got a meeting on Monday. You should be at the beach with the kids. You're updating the same Excel you've maintained for four years."
+              cost="If your time is worth AED 1,500/hour, a Saturday morning of admin is AED 6,000. That's a flight to London. That's a weekend with your sister. That's not what Dubai was supposed to look like."
             />
           </div>
         </div>
       </section>
 
-      {/* ── Trust block — live CBUAE + DLD indicators ────────────────── */}
+      {/* ── Solution — outcomes, not features ─────────────────────────── */}
+      <section className="bg-[var(--color-surface)]">
+        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
+          <p
+            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            What changes when you switch
+          </p>
+          <h2
+            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Five outcomes. Specific to a Dubai book.
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <Outcome
+              title="Real net cashflow, in 10 seconds."
+              body="Forward every management statement and service-charge invoice to one inbox. Rent in, costs out, by tower, in AED. The dashboard tells you the truth your Excel was supposed to."
+            />
+            <Outcome
+              title="RERA renewal windows caught at the right rent."
+              body="Your unit's rent vs the live RERA per-area index. When the renewal window opens and you're 8%+ below market, we flag it with comparable evidence to send your letting agent."
+            />
+            <Outcome
+              title="Service-charge audit, per tower per sqft."
+              body="Track service charge per sqft against community benchmarks. When the JLT bill jumps 14% YoY while neighbours sit flat, you see it before you pay it."
+            />
+            <Outcome
+              title="Off-plan rolling-return modelling."
+              body="Payment plan, cost of money, intermediate exit vs hold-to-handover. Built for Dubai's developer-led market — not a generic IRR calc."
+            />
+            <Outcome
+              title="Saturdays back."
+              body="Set up takes 90 seconds via voice or 3 minutes via spreadsheet. From there it's automatic. AED invoices and English statements both work; no language tagging needed."
+            />
+            <Outcome
+              title="DLD comparables on tap."
+              body="When you're deciding whether to sell the Downtown unit and roll into off-plan, DLD comp transactions are surfaced next to your unit — not buried six tabs deep on a portal."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Persona snapshot — name them explicitly ───────────────────── */}
+      <section className="bg-white border-y border-[var(--color-border)]">
+        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
+          <p
+            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Who this is for
+          </p>
+          <h2
+            className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-10"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            If you&rsquo;re one of these, AssetCentral is built for you.
+          </h2>
+          <div className="grid md:grid-cols-2 gap-5">
+            <Persona
+              title="The Dubai-Marina resident-investor"
+              shape="Lives in the Marina, owns the unit she lives in plus three more around JVC and the Greens. A Saturday-spreadsheet veteran."
+            />
+            <Persona
+              title="The expatriated-British in Palm Jumeirah"
+              shape="Sold up in Surrey, rolled into a Palm villa and three Downtown rentals. Still files a UK return. Cares about reversion timing."
+            />
+            <Persona
+              title="The Saadiyat resident with Abu Dhabi units"
+              shape="A senior medic on Saadiyat. Five clinical-staff rentals around Reem and Yas. Wants the RERA index for Abu Dhabi, not Dubai."
+            />
+            <Persona
+              title="The family-office director with off-plan"
+              shape="London-headquartered family office, four Dubai off-plan units across Emaar and DAMAC. Payment plans, handover dates, capital cycles."
+            />
+          </div>
+          <p
+            className="mt-8 text-[14px] leading-[1.55] text-[var(--color-muted)] italic max-w-3xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Illustrative profiles. Names are not real owners.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Trust block — live indicators + outcome statement + cross-link */}
       <section className="bg-[var(--color-surface)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
           <div className="grid md:grid-cols-[2fr_3fr] gap-10 items-start">
@@ -251,7 +239,7 @@ export default function DubaiPropertyTrackerLanding() {
                 className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Indicators we surface in your dashboard.
+                Sitting next to every unit in your dashboard.
               </h2>
               <p
                 className="mt-4 text-[13px] leading-[1.55] text-[var(--color-muted)] italic"
@@ -267,6 +255,29 @@ export default function DubaiPropertyTrackerLanding() {
               <Indicator label="Residential growth" value="+5.20%" note="YoY · DLD" />
             </div>
           </div>
+          <p
+            className="mt-8 text-[16px] leading-[1.6] text-[var(--color-ink)] max-w-3xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Built for owners running 3 to 30 properties in our nine
+            covered markets. The product can ingest, structure and
+            analyse a typical 8-unit Dubai book in 90 seconds — across
+            towers, payment plans and service-charge regimes.
+          </p>
+          <p
+            className="mt-4 text-[16px] leading-[1.6] text-[var(--color-ink)] max-w-3xl"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Letting your unit on a holiday-let platform? Operator quality
+            varies wildly in Dubai. Our reference guide on auditing them:
+          </p>
+          <Link
+            href="/resources/str-operator-performance-check"
+            className="mt-3 inline-flex items-center text-[14px] font-semibold text-[var(--color-accent)] hover:underline"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Read: How to audit your short-term rental operator&rsquo;s performance →
+          </Link>
           <p
             className="mt-8 text-[13px] leading-[1.55] text-[var(--color-muted)] italic max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
@@ -288,7 +299,7 @@ export default function DubaiPropertyTrackerLanding() {
         </div>
       </section>
 
-      {/* ── Pricing band — EUR-led with calculator perk ──────────────── */}
+      {/* ── Pricing band — EUR-led with ROI framing ───────────────────── */}
       <section className="bg-white border-t border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-14 lg:py-20">
           <div className="text-center">
@@ -318,6 +329,15 @@ export default function DubaiPropertyTrackerLanding() {
               <span aria-hidden>✓</span>
               Trial includes the off-plan rolling-return calculator (normally Pro-only)
             </div>
+            <p
+              className="mt-6 text-[15px] leading-[1.6] text-[var(--color-ink)] max-w-2xl mx-auto"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Pro is €49/month. If we catch one sub-market rent review at
+              the next RERA renewal, the year pays for itself in the first
+              month. If we catch one inflated service-charge increase, it
+              pays for itself again.
+            </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link
                 href="/signup?campaign=dubai-tracker&utm_source=dubai_tracker_lp&utm_medium=cta&utm_campaign=dubai_tracker&utm_content=pricing_band"
@@ -352,22 +372,22 @@ export default function DubaiPropertyTrackerLanding() {
             className="text-[28px] lg:text-[36px] leading-[1.12] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Track your first Dubai unit.
+            Get your Dubai portfolio off Excel.
           </h2>
           <p
             className="mt-4 text-[16px] leading-[1.55] text-[var(--color-muted)] max-w-xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Forward your tenancy contract or service-charge invoice to
-            agent@assetcentral.ai and you&rsquo;ll see your unit on the
-            board the same day.
+            Forward one Ejari, one service-charge invoice, or your last
+            management statement. Real net cashflow on your first unit by
+            the end of the day.
           </p>
           <Link
             href="/signup?campaign=dubai-tracker&utm_source=dubai_tracker_lp&utm_medium=cta&utm_campaign=dubai_tracker&utm_content=final"
             className="mt-7 inline-flex items-center justify-center px-6 py-3.5 rounded-md bg-[var(--color-navy)] text-white text-[16px] font-semibold hover:bg-[var(--color-navy-light)] transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Start 7-day trial →
+            Get your Dubai portfolio off Excel →
           </Link>
           <p
             className="mt-3 text-[13px] text-[var(--color-muted)]"
@@ -383,71 +403,74 @@ export default function DubaiPropertyTrackerLanding() {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function Prong({
-  flag,
+function Pain({
+  tag,
   title,
-  points,
+  body,
+  cost,
 }: {
-  flag: string;
+  tag: string;
   title: string;
-  points: string[];
-}) {
-  return (
-    <div style={{ fontFamily: "var(--font-sans)" }}>
-      <div className="flex items-center gap-2 mb-3">
-        <span aria-hidden className="text-[24px] leading-none">
-          {flag}
-        </span>
-        <h3
-          className="text-[18px] font-semibold text-[var(--color-navy)]"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {title}
-        </h3>
-      </div>
-      <ul className="space-y-2">
-        {points.map((p) => (
-          <li
-            key={p}
-            className="text-[14px] leading-[1.5] text-[var(--color-ink)] flex items-start gap-2"
-          >
-            <span aria-hidden className="text-[var(--color-positive)] mt-0.5 shrink-0">
-              ✓
-            </span>
-            <span>{p}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function Agent({
-  title,
-  note,
-  accent,
-}: {
-  title: string;
-  note: string;
-  accent?: boolean;
+  body: string;
+  cost: string;
 }) {
   return (
     <div
-      className={`rounded-xl border bg-white p-5 ${
-        accent
-          ? "border-[var(--color-accent)] shadow-[0_0_0_3px_rgba(79,110,247,0.08)]"
-          : "border-[var(--color-border)]"
-      }`}
+      className="rounded-xl border border-[var(--color-border)] bg-white p-6 flex flex-col"
       style={{ fontFamily: "var(--font-sans)" }}
     >
+      <div className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold mb-2">
+        {tag}
+      </div>
       <h3
-        className="text-[18px] font-semibold text-[var(--color-navy)] mb-2"
+        className="text-[20px] font-semibold text-[var(--color-navy)] mb-3 leading-[1.2]"
         style={{ fontFamily: "var(--font-display)" }}
       >
         {title}
       </h3>
       <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
-        {note}
+        {body}
+      </p>
+      <p className="mt-4 pt-4 border-t border-[var(--color-border)] text-[14px] leading-[1.55] text-[var(--color-ink)] font-medium">
+        {cost}
+      </p>
+    </div>
+  );
+}
+
+function Outcome({ title, body }: { title: string; body: string }) {
+  return (
+    <div
+      className="rounded-xl border border-[var(--color-border)] bg-white p-5"
+      style={{ fontFamily: "var(--font-sans)" }}
+    >
+      <h3
+        className="text-[18px] font-semibold text-[var(--color-navy)] mb-2 leading-[1.25]"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {title}
+      </h3>
+      <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
+        {body}
+      </p>
+    </div>
+  );
+}
+
+function Persona({ title, shape }: { title: string; shape: string }) {
+  return (
+    <div
+      className="rounded-xl border border-[var(--color-border)] bg-white p-5"
+      style={{ fontFamily: "var(--font-sans)" }}
+    >
+      <h3
+        className="text-[16px] font-semibold text-[var(--color-navy)] mb-2"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        {title}
+      </h3>
+      <p className="text-[14px] leading-[1.55] text-[var(--color-ink)]">
+        {shape}
       </p>
     </div>
   );
