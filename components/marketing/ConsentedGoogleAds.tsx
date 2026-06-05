@@ -1,13 +1,19 @@
 "use client";
 
-// Gates the Google Ads gtag.js loader on cookie consent.
+// Gates the Google Ads + GA4 gtag.js loader on cookie consent.
 //
 // Previously the gtag <Script> tags lived directly in app/layout.tsx
 // and loaded on every page view, unconditionally. That's fine for
 // product analytics (Plausible — cookieless) but Google Ads sets
 // advertising + remarketing cookies which require explicit consent
-// under PECR (UK) + GDPR (EU). We now load the gtag scripts ONLY
-// when the consent state is 'accepted'.
+// under PECR (UK) + GDPR (EU). GA4 sets the `_ga` + `_ga_<id>` cookies
+// which also fall under the consent requirement. We now load the gtag
+// scripts ONLY when the consent state is 'accepted'.
+//
+// A single gtag.js load routes events to BOTH destinations via two
+// `gtag('config', ...)` calls — no need for separate scripts:
+//   • AW-18179673413   Google Ads conversion + remarketing
+//   • G-VEX6ZKV6LH     GA4 web analytics (Enhanced Measurement)
 //
 // Listens for consent changes via the lib/cookieConsent event so a
 // user who accepts via the banner gets the tag loaded immediately
@@ -23,6 +29,7 @@ import Script from "next/script";
 import { onConsentChange, readConsent } from "@/lib/cookieConsent";
 
 const GOOGLE_ADS_ID = "AW-18179673413";
+const GA4_ID = "G-VEX6ZKV6LH";
 
 export function ConsentedGoogleAds() {
   const [consented, setConsented] = useState(false);
@@ -52,7 +59,8 @@ export function ConsentedGoogleAds() {
 function gtag(){dataLayer.push(arguments);}
 window.gtag = gtag;
 gtag('js', new Date());
-gtag('config', '${GOOGLE_ADS_ID}');`}
+gtag('config', '${GOOGLE_ADS_ID}', { cookie_domain: 'assetcentral.ai' });
+gtag('config', '${GA4_ID}', { cookie_domain: 'assetcentral.ai' });`}
       </Script>
     </>
   );
