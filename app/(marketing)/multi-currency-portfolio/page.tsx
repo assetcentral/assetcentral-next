@@ -119,18 +119,18 @@ export default function MultiCurrencyPortfolioLanding() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            The three things eating your yield
+            Three things eating your yield
           </p>
           <h2
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Yield doesn&rsquo;t leak from bad markets. It leaks from currencies you can&rsquo;t see straight.
+            Yield leaks from currencies you can&rsquo;t see straight.
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Pain
               tag="Pain #1"
-              title="The WhatsApp & PDF Nightmare"
+              title="WhatsApp. PDFs. Photos of invoices."
               body="Your Manchester agent emails monthly PDFs in GBP. Your Mallorca manager sends a quarterly Spanish spreadsheet in EUR. Your Dubai service-charge invoice arrives as a WhatsApp photo. Reconciling the quarter takes a Sunday — and then FX has moved."
               cost="What's your real net cashflow this quarter in your base currency? If you can't answer in 10 seconds, you're already losing yield to admin."
             />
@@ -157,21 +157,21 @@ export default function MultiCurrencyPortfolioLanding() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            What changes when you switch
+            What you get back
           </p>
           <h2
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five outcomes. Same week you forward your first statement.
+            Five outcomes. First statement, same week.
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <Outcome
-              title="Real net cashflow in your base currency, in 10 seconds."
+              title="Real net cashflow. Your base currency. 10 seconds."
               body="Forward every statement in any language. AED, GBP, EUR, USD — extracted in the local currency, rolled up FX-aware to your base. Daily-refreshed feed; per-asset records stay local."
             />
             <Outcome
-              title="Refinance windows you didn't know about — across three countries."
+              title="Refinance windows. Three countries. 90 days out."
               body="Every mortgage maturity, every fixed-rate end date, every payment-plan milestone. 90 days out you get an alert with rate-shopping options for that country's market."
             />
             <Outcome
@@ -207,7 +207,7 @@ export default function MultiCurrencyPortfolioLanding() {
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-10"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            If you&rsquo;re one of these, AssetCentral is built for you.
+            Built for one of these.
           </h2>
           <div className="grid md:grid-cols-2 gap-5">
             <Persona

@@ -106,18 +106,18 @@ export default function UaeExpatLanding() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            The three things eating your yield
+            Three things eating your yield
           </p>
           <h2
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            If two of these sound familiar, you&rsquo;re losing money you don&rsquo;t know about.
+            Two of these sound familiar? You&rsquo;re bleeding.
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Pain
               tag="Pain #1"
-              title="The WhatsApp & PDF Nightmare"
+              title="WhatsApp. PDFs. Photos of invoices."
               body="Three property managers. Three different PDF formats. Two WhatsApp groups. One blurry photo of a service-charge invoice. By the time you've reconciled the month, the next month's started."
               cost="How much real net cashflow are you running this quarter? If you can't answer in 10 seconds, you're already losing yield to admin."
             />
@@ -144,13 +144,13 @@ export default function UaeExpatLanding() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            What changes when you switch
+            What you get back
           </p>
           <h2
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five outcomes. Same week you forward your first statement.
+            Five outcomes. First statement, same week.
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <Outcome
@@ -194,7 +194,7 @@ export default function UaeExpatLanding() {
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-10"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            If you&rsquo;re one of these, AssetCentral is built for you.
+            Built for one of these.
           </h2>
           <div className="grid md:grid-cols-2 gap-5">
             <Persona
@@ -232,13 +232,13 @@ export default function UaeExpatLanding() {
                 className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Built for your portfolio shape
+                Your portfolio shape
               </p>
               <h2
                 className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                3 to 30 units. UK, India, GCC, EU. AED, GBP, EUR, INR, USD.
+                3 to 30 units. Four regions. Five currencies.
               </h2>
             </div>
             <div>

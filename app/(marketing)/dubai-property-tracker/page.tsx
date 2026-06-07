@@ -107,18 +107,18 @@ export default function DubaiPropertyTrackerLanding() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            The three things eating your yield
+            Three things eating your yield
           </p>
           <h2
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Yield doesn&rsquo;t leak out of bad investments. It leaks out of bad admin.
+            Yield doesn&rsquo;t leak from bad deals. It leaks from bad admin.
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Pain
               tag="Pain #1"
-              title="The WhatsApp & PDF Nightmare"
+              title="WhatsApp. PDFs. Photos of invoices."
               body="Three management companies. Two Owners' Association WhatsApp groups. A service-charge invoice that arrived as a photo. An Ejari PDF in your inbox from 2023. Whose tenancy is rolling — and is the rent at market?"
               cost="If you can't answer 'what was my real net cashflow last quarter — by tower' in 10 seconds, you're already losing yield to admin."
             />
@@ -145,13 +145,13 @@ export default function DubaiPropertyTrackerLanding() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            What changes when you switch
+            What you get back
           </p>
           <h2
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-12"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five outcomes. Specific to a Dubai book.
+            Five outcomes. Built for a Dubai book.
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <Outcome
@@ -195,7 +195,7 @@ export default function DubaiPropertyTrackerLanding() {
             className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)] max-w-3xl mb-10"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            If you&rsquo;re one of these, AssetCentral is built for you.
+            Built for one of these.
           </h2>
           <div className="grid md:grid-cols-2 gap-5">
             <Persona
@@ -239,7 +239,7 @@ export default function DubaiPropertyTrackerLanding() {
                 className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Sitting next to every unit in your dashboard.
+                Next to every unit. Always current.
               </h2>
               <p
                 className="mt-4 text-[13px] leading-[1.55] text-[var(--color-muted)] italic"
