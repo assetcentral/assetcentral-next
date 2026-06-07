@@ -80,7 +80,7 @@ export default function FreeReviewPage() {
             className="text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.05] tracking-tight max-w-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Get a free portfolio review for your first investor client.
+            One client. Full portfolio review. On us.
           </h1>
           <p
             className="mt-6 text-[18px] sm:text-[20px] leading-[1.5] text-white/85 max-w-3xl"
@@ -130,7 +130,7 @@ export default function FreeReviewPage() {
             className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[1.1] tracking-tight max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            A complete picture of your client&rsquo;s portfolio.
+            Six numbers. The whole portfolio.
           </h2>
           <p
             className="mt-6 text-[16px] lg:text-[18px] leading-[1.6] text-gray-600 max-w-3xl"
@@ -186,7 +186,7 @@ export default function FreeReviewPage() {
             className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[1.1] tracking-tight max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Three steps. About 48 hours, end to end.
+            Three steps. Forty-eight hours.
           </h2>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
             {HOW_IT_WORKS.map((s) => (

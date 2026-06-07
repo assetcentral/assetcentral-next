@@ -67,7 +67,7 @@ export default function UkDubaiLanding() {
             className="text-[40px] sm:text-[52px] lg:text-[60px] leading-[1.04] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Manage your UK and Dubai property in one place.
+            London salary. Manchester BTL. Dubai flat. Where&rsquo;s the dashboard?
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
@@ -111,7 +111,7 @@ export default function UkDubaiLanding() {
             className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)] max-w-2xl mb-10"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            One workspace, both portfolios, no more spreadsheet hopping.
+            Two countries. One workspace. Zero tab-hopping.
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Prong
@@ -157,13 +157,13 @@ export default function UkDubaiLanding() {
                 className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-3 font-semibold"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Calculator highlight
+                Off-plan calculator
               </p>
               <h2
                 className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Should you assign your Dubai off-plan now, or hold to handover?
+                Assign now. Or hold to handover. The math, in AED.
               </h2>
               <p
                 className="mt-4 text-[16px] leading-[1.55] text-[var(--color-ink)]"
@@ -232,7 +232,7 @@ export default function UkDubaiLanding() {
                 className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Your UK return doesn&rsquo;t care that the UAE is 0%.
+                HMRC doesn&rsquo;t care the UAE is 0%.
               </h2>
             </div>
             <div>
@@ -281,7 +281,7 @@ export default function UkDubaiLanding() {
               className="text-[28px] lg:text-[34px] leading-[1.12] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              From £39 a month. 14-day free trial.
+              From £39/mo. 14 days free.
             </h2>
             <p
               className="mt-4 text-[16px] leading-[1.55] text-[var(--color-muted)] max-w-2xl mx-auto"
@@ -317,7 +317,7 @@ export default function UkDubaiLanding() {
             className="text-[28px] lg:text-[36px] leading-[1.12] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Stop juggling tabs. Get your UK + Dubai portfolio under one roof.
+            Close the tabs. One roof. Both currencies.
           </h2>
           <Link
             href="/signup?utm_source=uk_dubai_lp&utm_medium=cta&utm_campaign=uk_dubai&utm_content=final"

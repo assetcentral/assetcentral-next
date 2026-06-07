@@ -53,7 +53,7 @@ export default function FeaturesPage() {
               className="text-[44px] lg:text-[56px] leading-[1.05] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Your AC Agent Team. Every property. Every month.
+              Five agents. Every property. Every month.
             </h1>
             <p
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
@@ -79,7 +79,7 @@ export default function FeaturesPage() {
             className="text-[32px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Add your first property in 5 minutes.
+            First property added. Five minutes.
           </h2>
           <p
             className="mt-4 text-[16.5px] text-[var(--color-muted)]"
@@ -181,11 +181,11 @@ const features: FeatureBlock[] = [
   {
     number: "01",
     jobName: "The Set-Up",
-    jobHeadline: "See what's going on",
+    jobHeadline: "See what you actually own.",
     intro: "Before you can improve your portfolio, you need to see it clearly. Most owners don't.",
     blocks: [
       {
-        title: "Your whole portfolio. One number that actually means something.",
+        title: "Real net yield. Live.",
         bullets: [
           "Real net yield per asset — after vacancy, costs, mortgage, fees, tax",
           "Multi-currency conversion to your base currency, daily FX",
@@ -194,7 +194,7 @@ const features: FeatureBlock[] = [
         mockup: <PortfolioMini />,
       },
       {
-        title: "Know what's coming before your bank reminds you.",
+        title: "Rate reversions. Caught 90 days out.",
         bullets: [
           "Rate reversion alerts 90 days out",
           "Full payment history per loan, per currency",
@@ -217,11 +217,11 @@ const features: FeatureBlock[] = [
   {
     number: "02",
     jobName: "The Uplift",
-    jobHeadline: "Improve what you earn",
+    jobHeadline: "Find the money you're leaving behind.",
     intro: "Your portfolio is probably earning less than it should. AssetCentral finds the gap and quantifies it.",
     blocks: [
       {
-        title: "Your rent, benchmarked against what the market is actually paying.",
+        title: "Your rent vs the market. To the euro.",
         bullets: [
           "Area median rent from market data",
           "Monthly upside calculated in your currency",
@@ -230,7 +230,7 @@ const features: FeatureBlock[] = [
         mockup: <YieldOptMini />,
       },
       {
-        title: "Is your short-term rental operator earning their 25%?",
+        title: "Your short-term rental operator. Audited monthly.",
         bullets: [
           "Verifies statements against expected bookings and rates",
           "Flags under-performance vs market occupancy",
@@ -240,7 +240,7 @@ const features: FeatureBlock[] = [
         flip: true,
       },
       {
-        title: "The bank wants a pack. We build it in minutes.",
+        title: "Refinance pack. Lender-ready. Minutes.",
         bullets: [
           "Rent roll, valuation evidence, DSCR calculation",
           "Comparable transactions assembled from your portfolio data",
@@ -253,7 +253,7 @@ const features: FeatureBlock[] = [
   {
     number: "03",
     jobName: "The Workhorse",
-    jobHeadline: "Checks you don't have time to do",
+    jobHeadline: "The unglamorous work. Done.",
     intro: "The unglamorous work that protects your returns. AssetCentral does it so you don't have to.",
     blocks: [
       {
@@ -280,11 +280,11 @@ const features: FeatureBlock[] = [
   {
     number: "04",
     jobName: "The Winners",
-    jobHeadline: "Better decisions, better timing",
+    jobHeadline: "Better decisions. Better timing.",
     intro: "Real estate returns are made at the margin — by people with better information and faster execution.",
     blocks: [
       {
-        title: "A portfolio score. And the reasoning behind it.",
+        title: "One score. The reasoning underneath.",
         bullets: [
           "Yield vs benchmark, leverage levels, cashflow resilience",
           "Upcoming risk events combined into a single score",
@@ -293,7 +293,7 @@ const features: FeatureBlock[] = [
         mockup: <ScoreMini />,
       },
       {
-        title: "At what price does selling outperform holding? We model it for every asset.",
+        title: "Sell or hold. Modelled, per asset.",
         bullets: [
           "Capital gain vs cumulative yield NPV",
           "Off-plan value acceleration curve near handover",
@@ -303,7 +303,7 @@ const features: FeatureBlock[] = [
         flip: true,
       },
       {
-        title: "See the portfolio-wide impact before you commit.",
+        title: "New acquisition. Portfolio impact. Before you commit.",
         bullets: [
           "Simulate any new property",
           "Compare base / bull / bear scenarios",
