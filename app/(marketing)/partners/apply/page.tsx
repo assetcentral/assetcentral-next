@@ -1,29 +1,30 @@
-// /partners/apply on the marketing site — orientation landing that
-// routes visitors into the in-app application form.
+// /partners/apply on the marketing site — the public apply form.
 //
-// Why this exists separately from the apply form itself:
-//   • The application form needs an authenticated user (partners.user_id
-//     is NOT NULL — a partner IS a user). So the form has to live on the
-//     app domain, gated by login.
-//   • But "apply" needs a memorable public URL the founder can put on
-//     business cards / mass emails / deck slides. That URL is
-//     assetcentral.ai/partners/apply.
-//   • This landing bridges the two: 30-second pitch refresher + a clear
-//     "sign up first if needed, then apply" path.
+// Direct-form pattern (same as /partners/dubai-brokers and
+// /free-client-portfolio-review): the form is a client island that POSTs
+// to app.assetcentral.ai/api/partner/apply. The submission inserts a
+// partner_applications row + fires the welcome + admin alert emails.
 //
-// Anyone arriving here ends up at app.assetcentral.ai/dashboard/partner/apply
-// after either signing up (new) or signing in (existing user).
+// No user signup required. At approval time the admin action provisions
+// the auth user automatically (or re-uses an existing one if an
+// AssetCentral customer already has an account). This removes the
+// previous detour where the page sent applicants through /signup first,
+// which dumped them into the product dashboard rather than the apply
+// form.
+//
+// Existing AssetCentral customers can still apply from inside the app at
+// /dashboard/partner/apply if they prefer — small footnote at the bottom.
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BrokerApplyForm } from "@/components/marketing/BrokerApplyForm";
 
 const TITLE = "Apply to the AssetCentral partner program";
 const DESCRIPTION =
   "Earn upfront + recurring commissions by introducing AssetCentral to property owners. Apply in 2 minutes — reviewed within 2 business days.";
 
 const APP_BASE = "https://app.assetcentral.ai";
-const APPLY_URL = `${APP_BASE}/dashboard/partner/apply`;
-const SIGNUP_URL = `${APP_BASE}/signup?next=/dashboard/partner/apply`;
+const IN_APP_APPLY_URL = `${APP_BASE}/dashboard/partner/apply`;
 
 export const metadata: Metadata = {
   title: `${TITLE} | AssetCentral.ai`,
@@ -36,6 +37,8 @@ export const metadata: Metadata = {
     // images inherited from the global app/opengraph-image.tsx
   },
 };
+
+const NAVY = "#1a1a2e";
 
 export default function PartnersApplyPage() {
   return (
@@ -60,95 +63,34 @@ export default function PartnersApplyPage() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             We review applications within 2 business days. Once approved we
-            email you a welcome pack with your unique referral code, marketing
-            materials, and an introduction to the partner portal where you can
-            track every referral and commission in real time.
+            email you a welcome pack with your unique referral code, three
+            ready-to-send client emails, and an introduction to the partner
+            portal where you can track every referral and commission in real
+            time.
           </p>
         </div>
       </section>
 
-      {/* ── Two-path CTA ─────────────────────────────────────────────── */}
-      <section className="bg-[var(--color-surface)] border-y border-[var(--color-border)]">
-        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-12 lg:py-16">
-          <div
-            className="text-[13px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-4"
-            style={{ fontFamily: "var(--font-sans)" }}
+      {/* ── The form ─────────────────────────────────────────────────── */}
+      <section style={{ backgroundColor: NAVY }} className="text-white">
+        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-14 lg:py-20">
+          <h2
+            className="text-[28px] lg:text-[36px] leading-[1.1] tracking-tight text-center"
+            style={{ fontFamily: "var(--font-display)" }}
           >
-            One step before the form
-          </div>
+            Tell us about you.
+          </h2>
           <p
-            className="text-[16px] leading-[1.65] text-[var(--color-ink)]"
+            className="mt-4 text-[16px] lg:text-[18px] leading-[1.6] text-white/75 text-center max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Partners are AssetCentral accounts, so the application form lives
-            inside the app. Pick whichever fits — both lead to the same
-            two-minute application screen:
+            Two minutes. No account needed — we&rsquo;ll provision one for you
+            when we approve.
           </p>
-
-          <div className="mt-8 grid sm:grid-cols-2 gap-4">
-            {/* New user path */}
-            <div className="rounded-xl border border-[var(--color-border)] bg-white p-6">
-              <div
-                className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-2"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                New to AssetCentral
-              </div>
-              <h2
-                className="text-[20px] leading-[1.2] text-[var(--color-navy)]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Create a free account, then apply
-              </h2>
-              <p
-                className="mt-2 text-[14px] leading-[1.55] text-[var(--color-muted)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Sign-up takes 30 seconds. You&rsquo;ll land straight on the
-                partner application form — no need to navigate around the
-                product first.
-              </p>
-              <Link
-                href={SIGNUP_URL}
-                className="mt-5 inline-flex items-center justify-center min-h-[44px] rounded-md bg-[var(--color-navy)] text-white px-5 text-[14px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Sign up & apply →
-              </Link>
-            </div>
-
-            {/* Existing user path */}
-            <div className="rounded-xl border border-[var(--color-border)] bg-white p-6">
-              <div
-                className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-2"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Existing customer
-              </div>
-              <h2
-                className="text-[20px] leading-[1.2] text-[var(--color-navy)]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Go straight to the application
-              </h2>
-              <p
-                className="mt-2 text-[14px] leading-[1.55] text-[var(--color-muted)]"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                You&rsquo;re already signed in. The form is on the partner
-                portal under <span className="font-mono text-[13px]">
-                  /dashboard/partner/apply
-                </span>.
-              </p>
-              <Link
-                href={APPLY_URL}
-                className="mt-5 inline-flex items-center justify-center min-h-[44px] rounded-md border border-[var(--color-border)] bg-white text-[var(--color-ink)] px-5 text-[14px] font-medium hover:border-[var(--color-navy)] transition-colors"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Open the form →
-              </Link>
-            </div>
-          </div>
+          <BrokerApplyForm
+            sourcePage="/partners/apply"
+            thanksPath="/partners/apply/thanks"
+          />
         </div>
       </section>
 
@@ -159,41 +101,52 @@ export default function PartnersApplyPage() {
             className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            What the form asks.
+            What happens next.
           </h2>
-          <ul
-            className="mt-6 space-y-3 text-[15px] leading-[1.65] text-[var(--color-ink)]"
+          <ol
+            className="mt-6 space-y-3 text-[15px] leading-[1.65] text-[var(--color-ink)] list-decimal list-outside ml-5"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <li>
-              <strong>Which track</strong> — Professional partner (B2B,
-              upfront + 12mo recurring), Ambassador (refer-a-friend),
-              or Enterprise (custom deal).
+              <strong>You get an immediate confirmation email</strong> with
+              two qualifying questions so we can move faster on approval.
             </li>
             <li>
-              <strong>Display name</strong> — how we show you in the
-              partner portal and any co-branded materials.
+              <strong>We review within 2 business days</strong> — usually
+              same-day if you reply with the answers.
             </li>
             <li>
-              <strong>Company / firm</strong> — optional. For pro / enterprise
-              applications.
+              <strong>Approval triggers a welcome pack</strong> — your unique
+              6-character referral code, three ready-to-send client email
+              templates with your code already filled in, two WhatsApp
+              variants, and your partner portal login.
             </li>
             <li>
-              <strong>Website or LinkedIn</strong> — helps us verify the
-              application without back-and-forth email.
+              <strong>You start earning</strong> — 20% recurring for 12
+              months on every client who converts. First payout on the 15th
+              of the following month.
             </li>
-            <li>
-              <strong>Anything we should know</strong> — your client base,
-              how you&rsquo;d use the program, or any custom-deal context.
-              Plain English. No marketing pitch needed.
-            </li>
-          </ul>
+          </ol>
         </div>
       </section>
 
-      {/* ── Need to read the terms first? ────────────────────────────── */}
+      {/* ── Existing-customer escape hatch + read-the-terms footer ─── */}
       <section className="bg-[var(--color-surface)] border-t border-[var(--color-border)]">
-        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-10 lg:py-12 text-center">
+        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-10 lg:py-12 text-center space-y-3">
+          <p
+            className="text-[14px] text-[var(--color-muted)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Already an AssetCentral customer? You can also apply from inside
+            the app at{" "}
+            <Link
+              href={IN_APP_APPLY_URL}
+              className="font-mono text-[13px] text-[var(--color-accent)] hover:underline"
+            >
+              /dashboard/partner/apply
+            </Link>{" "}
+            — same form, your account already linked.
+          </p>
           <p
             className="text-[14px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
@@ -204,7 +157,7 @@ export default function PartnersApplyPage() {
             </Link>
           </p>
           <p
-            className="mt-3 text-[12px] text-[var(--color-muted)]"
+            className="text-[12px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Questions before applying?{" "}
