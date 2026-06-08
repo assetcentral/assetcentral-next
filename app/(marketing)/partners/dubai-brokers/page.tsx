@@ -3,12 +3,14 @@
 // brokers specifically: their motivations, their client questions, their
 // commercial opportunity.
 //
-// Form posts via Netlify Forms — the hidden inputs at the top of the form
-// element are what Netlify's build-time scanner picks up. Submissions
-// land in the Netlify dashboard under Forms > "dubai-brokers-partner".
+// The application form is a client island (BrokerApplyForm) that posts
+// JSON to app.assetcentral.ai/api/partner/apply — which inserts the
+// partner_applications row, emails the applicant a welcome with the
+// qualifying questions, and emails partners@assetcentral.ai a triage
+// alert. Replaces the previous Netlify Forms submission (admin-only).
 
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BrokerApplyForm } from "@/components/marketing/BrokerApplyForm";
 
 const TITLE = "Dubai Broker Partner Program";
 const DESCRIPTION =
@@ -631,95 +633,16 @@ export default function DubaiBrokersPage() {
             revenue opportunity.
           </p>
 
-          {/* Netlify Form — picked up at build time via data-netlify="true".
-              The hidden form-name input ensures Netlify routes the submission.
-              The honeypot bot-field is a spam guard: real users leave it empty;
-              automated bots tend to fill every visible input. */}
-          <form
-            name="dubai-brokers-partner"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-            action="/partners/dubai-brokers/thanks"
-            className="mt-10 rounded-2xl bg-white text-gray-900 p-6 sm:p-8 shadow-2xl"
-          >
-            <input type="hidden" name="form-name" value="dubai-brokers-partner" />
-            <p className="hidden">
-              <label>Don&rsquo;t fill this out: <input name="bot-field" /></label>
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="First name"  name="first_name"  required />
-              <FormField label="Last name"   name="last_name"   required />
-              <FormField label="Agency name" name="agency"      colSpan="full" />
-              <FormField label="Email"       name="email"       type="email"  required />
-              <FormField label="Phone / WhatsApp" name="phone"  type="tel" />
-              <FormField
-                label="Number of investor clients (approx.)"
-                name="client_count"
-                colSpan="full"
-              />
-              <FormField
-                label="Typical client profile"
-                name="client_profile"
-                placeholder="e.g. Dubai Marina owners, expat investors, off-plan portfolios..."
-                colSpan="full"
-              />
-              <div className="sm:col-span-2">
-                <label
-                  className="block text-[13px] text-gray-700 mb-1.5"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                >
-                  Interested in
-                </label>
-                <select
-                  name="partner_type"
-                  required
-                  defaultValue=""
-                  className="w-full min-h-[44px] rounded-md border border-gray-300 px-3 text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#4f6ef7]/40 focus:border-[#4f6ef7]"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                >
-                  <option value="" disabled>Choose a partner model</option>
-                  <option value="referral">Referral Partner</option>
-                  <option value="agency">Agency Partner</option>
-                  <option value="portfolio_review">Portfolio Review Partner</option>
-                  <option value="strategic">Strategic Partner</option>
-                  <option value="not_sure">Not sure yet — open to a conversation</option>
-                </select>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  className="block text-[13px] text-gray-700 mb-1.5"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                >
-                  Anything else? (optional)
-                </label>
-                <textarea
-                  name="message"
-                  rows={3}
-                  placeholder="Anything we should know about you or your clients."
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#4f6ef7]/40 focus:border-[#4f6ef7]"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
-              <p
-                className="text-[12px] text-gray-500"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                Subject to partner terms. We&rsquo;ll reply within 2 business days.
-              </p>
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center min-h-[52px] rounded-md text-white px-8 text-[15px] font-semibold transition-colors"
-                style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans)" }}
-              >
-                Apply to become a partner
-              </button>
-            </div>
-          </form>
+          {/* React client island — posts JSON to the AssetCentral app's
+              /api/partner/apply. That endpoint writes the row to
+              partner_applications, fires the applicant welcome email, and
+              fires the partners@assetcentral.ai triage alert. On success
+              the form pushes the user to /thanks (which fires the Google
+              Ads conversion pixel). */}
+          <BrokerApplyForm
+            sourcePage="/partners/dubai-brokers"
+            thanksPath="/partners/dubai-brokers/thanks"
+          />
 
           <p
             className="mt-8 text-center text-[13px] text-white/55"
@@ -740,43 +663,6 @@ export default function DubaiBrokersPage() {
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────
-
-function FormField({
-  label,
-  name,
-  type = "text",
-  required = false,
-  placeholder,
-  colSpan,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-  colSpan?: "full";
-}) {
-  return (
-    <div className={colSpan === "full" ? "sm:col-span-2" : ""}>
-      <label
-        htmlFor={name}
-        className="block text-[13px] text-gray-700 mb-1.5"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        {label}{required && <span className="text-[#dc2626]"> *</span>}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="w-full min-h-[44px] rounded-md border border-gray-300 px-3 text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#4f6ef7]/40 focus:border-[#4f6ef7]"
-        style={{ fontFamily: "var(--font-sans)" }}
-      />
-    </div>
-  );
-}
 
 // Placeholder dashboard visual in the hero. Stylised KPIs + a property
 // row to suggest the real product without faking screenshots.
