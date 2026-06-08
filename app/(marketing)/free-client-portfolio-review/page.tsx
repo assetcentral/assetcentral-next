@@ -4,12 +4,14 @@
 // review, and a focused form.
 //
 // Targeted by ad groups 3, 4, 5 (Property Investor Clients, STR, Off-Plan).
-// Form posts to a separate Netlify form ("free-portfolio-review") so leads
-// don't mix with the full broker partner applications. Both share the
-// same Google Ads conversion (Broker Partner Lead) on the thanks page.
+// Form posts to the same /api/partner/apply endpoint as the dubai-brokers
+// page (was previously a separate Netlify Forms target which only emailed
+// the founder and never reached the database). Leads land in admin triage
+// with partner_type='portfolio_review' so the source page is preserved.
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FreePortfolioReviewForm } from "@/components/marketing/FreePortfolioReviewForm";
 
 const TITLE = "Free Client Portfolio Review";
 const DESCRIPTION =
@@ -253,98 +255,7 @@ export default function FreeReviewPage() {
             analysis. We&rsquo;ll email you within one business day.
           </p>
 
-          <form
-            name="free-portfolio-review"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-            action="/free-client-portfolio-review/thanks"
-            className="mt-10 rounded-2xl bg-white text-gray-900 p-6 sm:p-8 shadow-2xl"
-          >
-            <input type="hidden" name="form-name" value="free-portfolio-review" />
-            <p className="hidden">
-              <label>Don&rsquo;t fill this out: <input name="bot-field" /></label>
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField label="Your name"        name="broker_name"  required />
-              <FormField label="Agency"           name="agency"       required />
-              <FormField label="Your email"       name="email"        type="email" required />
-              <FormField label="Phone / WhatsApp" name="phone"        type="tel" />
-              <FormField
-                label="Client name (optional)"
-                name="client_name"
-                placeholder="You can use initials or 'Client A' if you prefer"
-                colSpan="full"
-              />
-              <FormField
-                label="Client property count"
-                name="client_property_count"
-                placeholder="e.g. 3 properties"
-              />
-              <FormField
-                label="Primary area"
-                name="client_area"
-                placeholder="e.g. Dubai Marina, Business Bay..."
-              />
-              <div className="sm:col-span-2">
-                <label
-                  className="block text-[13px] text-gray-700 mb-1.5"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                >
-                  What documents can you share?
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {["Tenancy contract(s)", "Mortgage statement", "Service charge invoices", "Rent receipts", "Operator reports", "None — manual entry"].map((label) => (
-                    <label
-                      key={label}
-                      className="inline-flex items-start gap-2 rounded-md border border-gray-300 p-3 text-[13px] text-gray-700 cursor-pointer hover:bg-gray-50"
-                      style={{ fontFamily: "var(--font-sans)" }}
-                    >
-                      <input
-                        type="checkbox"
-                        name="documents"
-                        value={label}
-                        className="mt-0.5 accent-[#4f6ef7]"
-                      />
-                      <span>{label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  className="block text-[13px] text-gray-700 mb-1.5"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                >
-                  Anything else? (optional)
-                </label>
-                <textarea
-                  name="message"
-                  rows={3}
-                  placeholder="What's the client trying to decide? Anything specific you'd like the review to focus on?"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#4f6ef7]/40 focus:border-[#4f6ef7]"
-                  style={{ fontFamily: "var(--font-sans)" }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
-              <p
-                className="text-[12px] text-gray-500"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                One free review per agency. Subject to partner terms.
-              </p>
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center min-h-[52px] rounded-md text-white px-8 text-[15px] font-semibold transition-colors"
-                style={{ backgroundColor: ACCENT, fontFamily: "var(--font-sans)" }}
-              >
-                Submit client portfolio
-              </button>
-            </div>
-          </form>
+          <FreePortfolioReviewForm thanksPath="/free-client-portfolio-review/thanks" />
 
           <p
             className="mt-8 text-center text-[13px] text-white/55"
@@ -364,39 +275,3 @@ export default function FreeReviewPage() {
   );
 }
 
-function FormField({
-  label,
-  name,
-  type = "text",
-  required = false,
-  placeholder,
-  colSpan,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-  colSpan?: "full";
-}) {
-  return (
-    <div className={colSpan === "full" ? "sm:col-span-2" : ""}>
-      <label
-        htmlFor={name}
-        className="block text-[13px] text-gray-700 mb-1.5"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        {label}{required && <span className="text-[#dc2626]"> *</span>}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        className="w-full min-h-[44px] rounded-md border border-gray-300 px-3 text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#4f6ef7]/40 focus:border-[#4f6ef7]"
-        style={{ fontFamily: "var(--font-sans)" }}
-      />
-    </div>
-  );
-}
