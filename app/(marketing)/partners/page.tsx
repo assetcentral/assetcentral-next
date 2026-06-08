@@ -11,7 +11,7 @@ import Link from "next/link";
 
 const TITLE = "Partner with AssetCentral.ai";
 const DESCRIPTION =
-  "Two ways to partner: bring us your clients as a professional partner, or your friends as an ambassador. 20% recurring commission for 12 months on every converted client.";
+  "Two ways to partner: bring us your clients as a professional partner, or your friends as an ambassador. €100 per Pro client, €400 per Team client — paid upfront on annual signups, recurring on monthly.";
 
 export const metadata: Metadata = {
   // Short, focused title — the "Earn alongside the owners you advise"
@@ -41,28 +41,40 @@ const PARTNER_TYPES = [
   { title: "Property educators & coaches", blurb: "Recommend a real tool to students learning how to run a portfolio properly." },
 ];
 
-// Three tiers — same deal across the board (20% / 12 months on every
-// converted client). The cards show the EXPECTED commission per
-// converted client based on the underlying plan price the client picks.
-// Pro (€49) → 20% × 12mo ≈ €118; Team (€199) → 20% × 12mo ≈ €478.
-// Enterprise is a custom revenue share negotiated at close.
+// Three tiers, all paying the same per-client number — the timing
+// depends on how the client commits.
+//
+//   • Annual signup    → broker is paid the full per-client amount UPFRONT
+//                        the day the client converts. We have the cash
+//                        on day one, so we can pass commission through
+//                        without churn risk.
+//   • Monthly signup   → broker accrues 20% of MRR for 12 months. Same
+//                        target total per Pro / Team client, just paid
+//                        over the year instead of in one hit.
+//
+// Round numbers (€100 / €400) because that's the deal — not because of
+// the underlying recurring calc. The recurring path may over/under by a
+// few EUR depending on what the client actually pays each month.
 const PRO_TIERS = [
   {
     plan: "Pro plan referral",
-    perClient: "Up to €118",
-    recurring: "20% for 12 months",
+    perClient: "€100",
+    label: "per converted client",
+    detail: "Paid upfront on annual signup, or 20% recurring on monthly",
     note: "Client on Pro at €49/mo",
   },
   {
     plan: "Team plan referral",
-    perClient: "Up to €478",
-    recurring: "20% for 12 months",
+    perClient: "€400",
+    label: "per converted client",
+    detail: "Paid upfront on annual signup, or 20% recurring on monthly",
     note: "Client on Team at €199/mo",
   },
   {
     plan: "Enterprise referral",
     perClient: "Negotiated",
-    recurring: "Custom revenue share",
+    label: "Custom revenue share",
+    detail: "Annual contracts and per-deal structures discussed at application",
     note: "Typically €1,000+ per closed deal",
   },
 ];
@@ -90,7 +102,7 @@ const FAQ = [
   { q: "Are there restrictions on how I market?",
     a: "Two rules. No paid-search bidding on AssetCentral-branded keywords. No spam — every prospect must have actually asked to hear from you." },
   { q: "What if my referral cancels later?",
-    a: "Your recurring share continues for whatever months they remained subscribed inside the 12-month window. If they cancel in month 4, you've already earned commission on months 1–4 and nothing further accrues." },
+    a: "If they signed up annual, your upfront commission stays — annual is a 12-month commit, non-refundable past 30 days. If they were on monthly, your recurring share continues for whatever months they actually paid; nothing further accrues after they cancel." },
   { q: "Do you offer white-label or reseller arrangements?",
     a: "Yes — for firms with 50+ clients we have a managed-reseller option with custom pricing and shared support. Email partners@assetcentral.ai to discuss." },
 ];
@@ -174,7 +186,7 @@ export default function PartnersPage() {
                 className="mt-4 text-[13px] text-[var(--color-muted)] leading-[1.5]"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                <strong className="text-[var(--color-ink)]">20% recurring</strong> for 12 months on every converted client — up to <strong className="text-[var(--color-ink)]">€478 per client</strong> on the Team plan.
+                <strong className="text-[var(--color-ink)]">€100</strong> per Pro client · <strong className="text-[var(--color-ink)]">€400</strong> per Team client. Paid upfront on annual signups, or 20% recurring on monthly.
               </div>
               <Link
                 href="/partners/apply"
@@ -326,15 +338,17 @@ export default function PartnersPage() {
             className="text-[32px] lg:text-[44px] leading-[1.08] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            20% recurring. 12 months. Every converted client.
+            €100 per Pro client. €400 per Team client.
           </h2>
           <p
             className="mt-5 text-[16px] lg:text-[18px] leading-[1.65] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Same deal across all three tracks — the upper bound varies with
-            the plan your client picks. Published transparently so you can
-            model the economics before you apply.
+            Same per-client number whether they sign up annual or monthly —
+            only the timing differs. Annual signups pay you upfront the day
+            they convert. Monthly signups accrue 20% recurring across the
+            12-month window. Published transparently so you can model the
+            economics before you apply.
           </p>
 
           <div className="mt-10 grid sm:grid-cols-3 gap-5">
@@ -352,19 +366,19 @@ export default function PartnersPage() {
                   {t.plan}
                 </div>
                 <div
-                  className="mt-3 text-[28px] text-[var(--color-navy)]"
+                  className="mt-3 text-[34px] text-[var(--color-navy)] leading-none"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t.perClient}
                 </div>
-                <div className="text-[12px] text-[var(--color-muted)]">per converted client</div>
+                <div className="text-[12px] text-[var(--color-muted)] mt-1">{t.label}</div>
                 <div
-                  className="mt-4 text-[15px] text-[var(--color-ink)]"
-                  style={{ fontFamily: "var(--font-display)" }}
+                  className="mt-4 text-[13.5px] text-[var(--color-ink)] leading-[1.5]"
+                  style={{ fontFamily: "var(--font-sans)" }}
                 >
-                  {t.recurring}
+                  {t.detail}
                 </div>
-                <div className="text-[12px] text-[var(--color-muted)] mt-1">{t.note}</div>
+                <div className="text-[12px] text-[var(--color-muted)] mt-3">{t.note}</div>
               </div>
             ))}
           </div>
@@ -373,11 +387,12 @@ export default function PartnersPage() {
             className="mt-8 text-[13px] text-[var(--color-muted)] leading-[1.55] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Per-client figures assume the client stays subscribed across the
-            full 12-month window. If they cancel earlier, you earn for the
-            months they paid. High-volume partners (10+ active referrals per
-            quarter) qualify for extended recurring windows — discussed at
-            application.
+            Annual upfronts are paid the day the client&rsquo;s subscription
+            activates. Monthly recurring is paid monthly on the 15th for the
+            prior month&rsquo;s accruals (minimum €50 — smaller balances
+            roll over). High-volume partners (10+ active referrals per
+            quarter) qualify for extended recurring windows on monthly
+            signups — discussed at application.
           </p>
         </div>
       </section>

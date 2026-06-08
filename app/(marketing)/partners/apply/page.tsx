@@ -122,9 +122,10 @@ export default function PartnersApplyPage() {
               variants, and your partner portal login.
             </li>
             <li>
-              <strong>You start earning</strong> — 20% recurring for 12
-              months on every client who converts. First payout on the 15th
-              of the following month.
+              <strong>You start earning</strong> — €100 per Pro client,
+              €400 per Team client. Annual signups pay upfront the day the
+              client converts; monthly signups accrue as 20% recurring
+              across the 12-month window. First monthly payout on the 15th.
             </li>
           </ol>
         </div>
