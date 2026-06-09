@@ -13,6 +13,7 @@ import {
 export function PricingPreview() {
   const { code } = useCurrency();
   const bill = billingFor(code);
+  const individual = PLAN_PRICES.individual[bill];
   const pro = PLAN_PRICES.pro[bill];
   const team = PLAN_PRICES.team[bill];
 
@@ -30,7 +31,7 @@ export function PricingPreview() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            The full team for €49 a month.
+            Three tiers. Pick the size of your portfolio.
           </h2>
           <p
             className="mt-3 text-[14px] text-[var(--color-muted)]"
@@ -45,19 +46,21 @@ export function PricingPreview() {
 
         <div className="mt-12 grid md:grid-cols-3 gap-5">
           <PlanCard
-            name="Free"
-            price={formatPrice(0, bill)}
-            cadence="forever"
-            blurb="Add up to 3 properties, see basic yield and understand what your AI Agent Team can unlock."
-            cta={{ label: "Add your first property", href: "/signup" }}
+            name="Individual"
+            price={formatPrice(individual.monthly, bill)}
+            cadence="per month"
+            annualDiscount={annualDiscountPct(individual)}
+            blurb="1–3 properties, just you. The full Model · Monitor · Manage framework, for owners getting started."
+            cta={{ label: "Start 7-day trial", href: "/signup?plan=individual_monthly" }}
+            altCta={{ label: "Subscribe now", href: "/signup?plan=individual_monthly&intent=direct" }}
           />
           <PlanCard
             name="Pro"
             price={formatPrice(pro.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(pro)}
-            blurb="Full AC Agent Team. Up to 50 properties. €49/month."
-            cta={{ label: "Start 7-day free trial", href: "/signup?plan=pro_monthly" }}
+            blurb="More than 3 properties, just you. Full agent team, up to 50 properties, every report type."
+            cta={{ label: "Start 7-day trial", href: "/signup?plan=pro_monthly" }}
             altCta={{ label: "Subscribe now", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
@@ -66,8 +69,8 @@ export function PricingPreview() {
             price={formatPrice(team.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(team)}
-            blurb="Everything in Pro, plus up to 5 seats and up to 50 properties."
-            cta={{ label: "Start 7-day free trial", href: "/signup?plan=team_monthly" }}
+            blurb="Up to 50 properties, 2–5 users. For brokers, family offices, advisors with shared workspaces."
+            cta={{ label: "Start 7-day trial", href: "/signup?plan=team_monthly" }}
             altCta={{ label: "Subscribe now", href: "/signup?plan=team_monthly&intent=direct" }}
           />
         </div>
@@ -76,7 +79,7 @@ export function PricingPreview() {
           className="mt-8 text-[14px] text-[var(--color-muted)] text-center"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          7-day free trial on Pro and Team. No credit card required. Free covers up to 3 properties.{" "}
+          7-day free trial on every tier. No credit card required to start.{" "}
           <Link
             href="/pricing"
             className="text-[var(--color-accent)] font-medium hover:underline"

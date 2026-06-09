@@ -30,6 +30,7 @@ export function PricingClient() {
     setBill(billingFor(display.code));
   }, [display.code]);
 
+  const individualPrice = PLAN_PRICES.individual[bill];
   const proPrice = PLAN_PRICES.pro[bill];
   const teamPrice = PLAN_PRICES.team[bill];
 
@@ -48,13 +49,13 @@ export function PricingClient() {
               className="text-[44px] lg:text-[56px] leading-[1.05] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Start free. Upgrade when you&rsquo;re ready.
+              Three tiers. Pick the size of your portfolio.
             </h1>
             <p
               className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Free covers up to 3 properties with your Portfolio Personal Assistant. Pro unlocks the full AC Agent Team — Your CEO, Finance Manager, Market Analyst, Operations Manager — for €49 a month. 7-day free trial on Pro and Team, no credit card required to start.
+              Individual covers 1–3 properties for a single owner. Pro lifts the cap to 50 properties (still solo). Team adds up to 5 users for brokers, family offices, and advisor workspaces. Same Model · Monitor · Manage framework across every tier. 7-day free trial on all three.
             </p>
           </div>
 
@@ -133,26 +134,40 @@ export function PricingClient() {
       <section className="bg-white pb-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Free */}
-            <PlanCardLayout name="Free">
+            {/* Individual — replaces the Free tier as of the 2026-06
+                pricing change. €19/mo for 1-3 properties, single user,
+                full Model · Monitor · Manage framework. The entry tier
+                is now paid; the trial is the no-card path. */}
+            <PlanCardLayout name="Individual">
               <PriceBlock
-                price={formatPrice(0, bill)}
-                sub="Forever — up to 3 properties"
+                price={formatPrice(individualPrice.monthly, bill)}
+                sub={
+                  billing === "monthly"
+                    ? "per month"
+                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(individualPrice.annual), bill)}/mo (${formatPrice(individualPrice.annual, bill)}/year, save ${annualSavings(individualPrice, bill)})`
+                }
+                annualDiscount={annualDiscountPct(individualPrice)}
               />
-              <Blurb>Add up to 3 properties, see basic yield and understand what your AI Agent Team can unlock.</Blurb>
+              <DualCTA
+                trialHref={`/signup?plan=individual_${billing}`}
+                directHref={`/signup?plan=individual_${billing}&intent=direct`}
+                directLabel={`Subscribe now`}
+                trialVariant="ghost"
+              />
+              <Blurb>1–3 properties, just you. Getting your model on paper for the first time.</Blurb>
               <FeatureList
                 items={[
                   { label: "Up to 3 properties", on: true },
-                  { label: "Portfolio Personal Assistant", on: true },
-                  { label: "Yield + cashflow dashboard", on: true },
-                  { label: "All calculators, free", on: true },
-                  { label: "Your CEO + Finance / Market / Ops", on: false },
-                  { label: "Decision Room + ranked actions", on: false },
+                  { label: "1 user", on: true },
+                  { label: "Full Model · Monitor · Manage framework", on: true },
+                  { label: "All five AI agents", on: true },
+                  { label: "All calculators + market data", on: true },
+                  { label: "Document vault + AI extraction", on: true },
+                  { label: "Standard reports (PDF + Word)", on: true },
+                  { label: "Multi-currency tracking", on: true },
+                  { label: "Team members", on: false },
                 ]}
               />
-              <CTA href="/signup" variant="ghost">
-                Add your first property
-              </CTA>
             </PlanCardLayout>
 
             {/* Pro — headline always shows the monthly amount so the
@@ -187,17 +202,16 @@ export function PricingClient() {
                 directHref={`/signup?plan=pro_${billing}&intent=direct`}
                 directLabel={`Subscribe now`}
               />
-              <Blurb>Full AC Agent Team. Up to 50 properties. €49/month.</Blurb>
+              <Blurb>More than 3 properties, just you. Full portfolio scale, single user.</Blurb>
               <FeatureList
                 items={[
-                  { label: "Everything in Free, plus:", on: true },
-                  { label: "Your CEO — ranked actions + decision support", on: true },
-                  { label: "Finance Manager — yield, cashflow, debt", on: true },
-                  { label: "Market Analyst — rent + market evidence", on: true },
-                  { label: "Operations Manager — alerts + checks", on: true },
+                  { label: "Everything in Individual, plus:", on: true },
                   { label: "Up to 50 properties", on: true },
-                  { label: "Document vault + AI extraction", on: true },
-                  { label: "Multi-currency + all report types", on: true },
+                  { label: "Advanced scenario sim (sell/hold, refi, STR)", on: true },
+                  { label: "Board Report + Refinancing Pack + Investor Pitch", on: true },
+                  { label: "Per-property deep-dive reports", on: true },
+                  { label: "Priority document parsing", on: true },
+                  { label: "All five AI agents at full capacity", on: true },
                   { label: "Team members", on: false },
                 ]}
               />
@@ -220,14 +234,14 @@ export function PricingClient() {
                 directLabel={`Subscribe now`}
                 trialVariant="ghost"
               />
-              <Blurb>Everything in Pro, plus up to 5 seats and 50 properties.</Blurb>
+              <Blurb>Up to 50 properties, 2–5 users. Brokers, family offices, advisory firms.</Blurb>
               <FeatureList
                 items={[
                   { label: "Everything in Pro, plus:", on: true },
-                  { label: "Up to 50 properties", on: true },
-                  { label: "Up to 5 team members", on: true },
+                  { label: "2 to 5 team members", on: true },
                   { label: "Role-based access (admin, analyst, viewer)", on: true },
                   { label: "Multiple portfolio workspaces", on: true },
+                  { label: "Partner co-branding on reports", on: true },
                   { label: "Priority support", on: true },
                 ]}
               />
@@ -261,7 +275,7 @@ export function PricingClient() {
             className="mt-8 text-center text-[14px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Free is forever (up to 3 properties). Pro and Team include a 7-day free trial — no credit card required to start. VAT applied per local regulations.
+            7-day free trial on every paid tier — no credit card required to start. Cancel anytime. VAT applied per local regulations.
           </p>
         </div>
       </section>

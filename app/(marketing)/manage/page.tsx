@@ -142,7 +142,7 @@ export default function ManagePage() {
             className="mt-4 text-[13px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Free for up to 3 properties. No card required.
+            From €19/month. 7-day free trial on every tier, no card required.
           </p>
         </div>
       </section>

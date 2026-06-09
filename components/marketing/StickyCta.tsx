@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 const DISMISS_KEY = "ac_sticky_dismissed_v1";
 
 export function StickyCta({
-  label = "Add first property",
-  href = "/signup",
-  message = "Free for up to 3 properties. No card required.",
+  label = "Start 7-day trial",
+  href = "/signup?plan=individual_monthly",
+  message = "From €19/month — 7-day trial on every tier, no card required.",
   /** Show after scrolling this fraction of the page (0–1). */
   threshold = 0.4,
 }: {

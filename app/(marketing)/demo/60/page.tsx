@@ -272,7 +272,7 @@ export default function Demo60Page() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Use real data to make better decisions and identify actions that
-            may improve yield. Free for up to 3 properties.
+            may improve yield. From €19/month — 7-day trial, no card.
           </p>
           <div
             className="mt-9 flex flex-wrap items-center justify-center gap-3"

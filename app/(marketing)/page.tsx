@@ -9,8 +9,12 @@ import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
 import { StickyCta } from "@/components/marketing/StickyCta";
-import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection";
 import { ThreePillarsSection } from "@/components/marketing/ThreePillarsSection";
+// TeamForPriceSection ("Five specialists. €49 a month." — the cost-of-
+// hiring-manually math) retired in the 2026-06 reposition. It pitched a
+// number-vs-number comparison that didn't earn its real estate next to
+// the M/M/M framework cards. Component left in the repo for now in case
+// we want it back; just not imported.
 
 export const metadata: Metadata = {
   // Note: the homepage sets `title` directly (not templated) — the
@@ -74,7 +78,6 @@ export default function HomePage() {
       <ProductDemoTabs />
       <CalculatorsCta />
       <LeadMagnetsSection />
-      <TeamForPriceSection />
       <PricingPreview />
       <LeadCapture />
       <FinalCta />

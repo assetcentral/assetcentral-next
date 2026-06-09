@@ -4,10 +4,10 @@ import { PLAN_PRICES } from "@/lib/pricing";
 import { PricingClient } from "./PricingClient";
 
 export const metadata: Metadata = {
-  title: "Pricing — €49/mo for the AC Agent Team",
-  // Was 208 chars; trimmed to ~155.
+  title: "Pricing — Individual, Pro, Team for property portfolios",
+  // Three tiers framed by portfolio size. ~158 chars.
   description:
-    "Free for up to 3 properties. Pro €49/month for the full AC Agent Team. Team €199/month, 5 seats. 7-day trial, no card. EUR, USD, GBP or AED billing.",
+    "Individual €19/mo for 1–3 properties. Pro €49/mo for up to 50 properties, single user. Team €199/mo for up to 5 users. 7-day trial on every tier, no card.",
   alternates: { canonical: "/pricing" },
 };
 
@@ -29,6 +29,20 @@ const productSchema = {
     "Property portfolio management platform for private owners with 2–50 properties across multiple countries.",
   brand: { "@type": "Brand", name: "AssetCentral" },
   offers: [
+    {
+      "@type": "Offer",
+      name: "Individual",
+      price: String(PLAN_PRICES.individual.EUR.monthly),
+      priceCurrency: "EUR",
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: String(PLAN_PRICES.individual.EUR.monthly),
+        priceCurrency: "EUR",
+        unitText: "MONTH",
+      },
+      availability: "https://schema.org/InStock",
+      url: "https://assetcentral.ai/pricing",
+    },
     {
       "@type": "Offer",
       name: "Pro",

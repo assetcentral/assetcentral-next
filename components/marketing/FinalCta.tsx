@@ -12,7 +12,7 @@ export function FinalCta() {
           className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Real data. Better decisions. Higher yield.
+          Model. Monitor. Manage.
         </p>
         <h2
           className="text-[40px] lg:text-[56px] leading-[1.05] text-white"
@@ -24,26 +24,24 @@ export function FinalCta() {
           className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-white/75 max-w-2xl mx-auto"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Add your first property in 5 minutes. See your real yield. Let your CEO rank the actions that could improve returns. Free for up to 3 properties.
+          Add your first property in 5 minutes. See your real yield. Let your CEO rank the actions that could improve returns. From €19/month — 7-day trial on every tier.
         </p>
 
-        {/* CTA hierarchy on the final-cta:
-              Primary   "Add your first property"  — free activation path
-              Primary   "Subscribe now"            — direct paid conversion
-              Tertiary  "Or start a 7-day trial"   — quiet text link below
+        {/* CTA hierarchy on the final-cta (2026-06 pricing change):
+              Primary    "Start 7-day trial"        — no-card entry path
+              Primary    "Subscribe now"            — direct paid conversion
+              Tertiary   currency line              — quiet text below
 
-            Both primary buttons are filled / equally weighted so the
-            visitor reads them as paired options. The trial drops to a
-            small underline-on-hover text link beneath — still
-            available for prospects who need the safety net but no
-            longer competing for attention. */}
+            Free signup retired alongside the Free tier. The trial is
+            now the no-card-required entry; "Subscribe now" remains the
+            high-intent path that goes straight to Stripe Checkout. */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/signup"
+            href="/signup?plan=individual_monthly"
             className="plausible-event-name=signup_cta_click plausible-event-location=final inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-white text-[var(--color-navy)] text-[15.5px] font-semibold hover:bg-slate-100 transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Add your first property
+            Start 7-day free trial
           </Link>
           <Link
             href="/signup?plan=pro_monthly&intent=direct"
@@ -57,14 +55,7 @@ export function FinalCta() {
           className="mt-4 text-center text-[12.5px] text-white/55"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Or{" "}
-          <Link
-            href="/signup?plan=pro_monthly"
-            className="text-white/80 underline decoration-white/30 hover:decoration-white hover:text-white"
-          >
-            start a 7-day free trial
-          </Link>{" "}
-          — no card required.
+          No credit card to start. Cancel any time.
         </p>
 
         <ul

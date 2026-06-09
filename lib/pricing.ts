@@ -16,7 +16,23 @@ export const BILLING_CURRENCY_LABEL: Record<BillingCurrency, string> = {
   AED: "AED · د.إ",
 };
 
-export type PlanId = "free" | "pro" | "team" | "enterprise";
+// PlanId — Free retired in the 2026-06 pricing change. Individual
+// (€19/mo for up to 3 properties, 1 user) replaces it as the entry-level
+// paid tier. Pro and Team unchanged in price; their scope statements
+// shifted to "more than 3 properties" to make the ladder obvious.
+//
+// We KEEP "free" in the enum for backwards compatibility with any
+// app-side reads of legacy users whose subscription_plan was set to
+// 'free' before the change. New signups go to 'individual'. The Stripe
+// product setup for individual_monthly / individual_annual is a
+// follow-up ship — until those are configured the signup flow may
+// need to short-circuit to the trial path.
+export type PlanId =
+  | "free"
+  | "individual"
+  | "pro"
+  | "team"
+  | "enterprise";
 
 type Price = { monthly: number; annual: number };
 
@@ -24,11 +40,21 @@ type Price = { monthly: number; annual: number };
  * Per-market subscription pricing. Not derived from FX — these are the actual
  * prices we bill in each currency. Annual = 10 months of the monthly rate
  * (the "save 2 months" convention).
+ *
+ * Individual is the entry tier replacing Free. Priced for the 1-3 property
+ * private owner who's just getting started — low enough to be impulse-
+ * acceptable, high enough to signal "this is a serious tool, not freeware."
  */
 export const PLAN_PRICES: Record<
   Exclude<PlanId, "free" | "enterprise">,
   Record<BillingCurrency, Price>
 > = {
+  individual: {
+    EUR: { monthly: 19, annual: 190 },
+    USD: { monthly: 25, annual: 250 },
+    GBP: { monthly: 17, annual: 170 },
+    AED: { monthly: 99, annual: 990 },
+  },
   pro: {
     EUR: { monthly: 49, annual: 490 },
     USD: { monthly: 59, annual: 590 },

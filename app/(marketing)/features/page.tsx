@@ -85,7 +85,7 @@ export default function FeaturesPage() {
             className="mt-4 text-[16.5px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            See your real yield. Let your CEO rank the actions that could improve returns. Free for up to 3 properties — 7-day trial on Pro.
+            See your real yield. Let your CEO rank the actions that could improve returns. From €19/month — 7-day trial on every tier.
           </p>
           <div className="mt-7">
             <Link

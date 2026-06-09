@@ -4,8 +4,8 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
     a: "You pay in the currency you select at checkout — EUR, USD, GBP, or AED. We default to the closest currency to where you are. You can change it before subscribing.",
   },
   {
-    q: "No card for the trial?",
-    a: "Correct — start the 7-day Pro trial without a card. Add payment details before day 7 if you want to continue. Free (up to 3 properties) doesn't need a trial at all.",
+    q: "What does the 7-day trial cover?",
+    a: "Start any paid tier — Individual, Pro, or Team — with no card. You get the full feature set of that tier for 7 days. Add payment details before day 7 to continue; do nothing and your trial ends without charge.",
   },
   {
     q: "What happens to my data if I cancel?",
@@ -13,11 +13,11 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Can I switch plans?",
-    a: "Yes — upgrade or downgrade instantly from your billing settings.",
+    a: "Yes — upgrade or downgrade instantly from your billing settings. Prorated automatically.",
   },
   {
     q: "Can my accountant access my portfolio?",
-    a: "Yes — on the Team plan, invite up to 4 members with controlled access (read-only viewer, or full analyst).",
+    a: "Yes — on the Team tier, invite 1 to 4 additional members (2 to 5 users total) with controlled access (read-only viewer, or full analyst).",
   },
   {
     q: "What currencies does AssetCentral support for tracking assets?",
@@ -29,15 +29,15 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is there a refund policy?",
-    a: "We offer a 7-day trial on paid plans. After that, subscriptions are non-refundable but cancel anytime. Free is forever for up to 3 properties.",
+    a: "We offer a 7-day trial on every tier. After that, subscriptions are non-refundable but cancel anytime.",
   },
   {
-    q: "What do I get on the Free plan?",
-    a: "Free covers up to 3 properties with your Portfolio Personal Assistant — your concierge for organising data, uploading documents, setting alerts and generating reports — plus a basic yield dashboard and all free calculators. The Pro tier adds the rest of the AC Agent Team (Your CEO, Finance Manager, Market Analyst, Operations Manager) and lifts the cap to 50 properties.",
+    q: "What's the difference between Individual, Pro, and Team?",
+    a: "Individual is €19/month for 1 to 3 properties, single user — the entry tier for owners getting started. Pro is €49/month for more than 3 properties (up to 50), still single user — for owners with a full portfolio. Team is €199/month for up to 50 properties with 2 to 5 users — for brokers, family offices, and advisor workspaces that need a shared view.",
   },
   {
-    q: "What's the difference between Pro and Team?",
-    a: "Pro is one user, up to 50 properties, with the full AC Agent Team — your CEO, Finance Manager, Market Analyst, Operations Manager and Portfolio Personal Assistant. Team adds up to 4 additional seats (accountant, property manager, family member) and keeps the 50-property cap.",
+    q: "Which tier should I pick?",
+    a: "Three properties or fewer → Individual. Four to 50 properties, just you → Pro. Four to 50 properties with collaborators (broker, accountant, family member) → Team. The Model · Monitor · Manage framework is identical across all three tiers — only the property cap and user count differ.",
   },
   {
     q: "I have more than 50 properties. What do I do?",
