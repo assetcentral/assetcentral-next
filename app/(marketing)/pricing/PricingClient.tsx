@@ -249,9 +249,20 @@ export function PricingClient() {
               />
             </PlanCardLayout>
 
-            {/* Enterprise */}
+            {/* Enterprise — element order matches the three paid plans
+                (PriceBlock → CTA → Blurb → FeatureList) so the "Contact
+                sales" button sits at the same vertical anchor as the
+                three "Subscribe now" buttons. Previously the CTA was at
+                the bottom of the card after FeatureList, leaving it well
+                below the Subscribe row. */}
             <PlanCardLayout name="Enterprise">
-              <PriceBlock price="Custom" sub="Talk to us" />
+              <PriceBlock price="Custom" sub="Talk to us about a tailored plan and onboarding programme." />
+              <CTA
+                href="mailto:hello@assetcentral.ai?subject=Enterprise%20enquiry"
+                variant="ghost"
+              >
+                Contact sales
+              </CTA>
               <Blurb>More than 50 properties, multiple teams, or specific compliance needs.</Blurb>
               <FeatureList
                 items={[
@@ -264,12 +275,6 @@ export function PricingClient() {
                   { label: "Account manager", on: true },
                 ]}
               />
-              <CTA
-                href="mailto:hello@assetcentral.ai?subject=Enterprise%20enquiry"
-                variant="ghost"
-              >
-                Contact sales
-              </CTA>
             </PlanCardLayout>
           </div>
 
@@ -328,13 +333,18 @@ function PlanCardLayout({
 }) {
   return (
     <article
-      // mt-3 on the popular card so the absolute-positioned "-top-3"
-      // badge has room to render without overflowing the parent grid's
-      // top edge on cold scroll (especially when the grid is the very
-      // first thing in viewport on mobile).
-      className={`relative rounded-2xl bg-white p-7 lg:p-8 flex flex-col ${
+      // mt-3 is applied to ALL cards (not just the popular one) so the
+      // Subscribe buttons line up horizontally across the row. Previously
+      // mt-3 was popular-only — to give the absolute -top-3 badge room
+      // — but it pushed the Pro card's content 12px below Individual /
+      // Team, breaking horizontal alignment of every internal element
+      // (price, CTA, blurb). Applying mt-3 to all four cards keeps the
+      // badge breathing room AND aligns the row. The border-2 on popular
+      // adds 1px on each side; we compensate by leaving the other cards
+      // at 1px and accepting the sub-pixel offset (invisible in practice).
+      className={`relative rounded-2xl bg-white p-7 lg:p-8 mt-3 flex flex-col ${
         popular
-          ? "mt-3 border-2 border-[var(--color-navy)] shadow-[0_24px_60px_-25px_rgba(26,26,46,0.35)]"
+          ? "border-2 border-[var(--color-navy)] shadow-[0_24px_60px_-25px_rgba(26,26,46,0.35)]"
           : "border border-[var(--color-border)]"
       }`}
     >
@@ -370,30 +380,39 @@ function PriceBlock({
    *  Only paid plans pass this — Free and Enterprise omit. */
   annualDiscount?: number;
 }) {
+  // Fixed-height block so the CTA that comes after it sits at the same
+  // vertical position across every card in the row. min-h covers:
+  //   mt-3 (12) + price line (40) + mt-2 (8) + chip slot (24)
+  //   + mt-2 (8) + sub min-h (52) ≈ 144px
+  // The chip slot is reserved (h-[24px]) even on Enterprise / no-discount
+  // cards so the sub-line below doesn't shift up and pull the CTA with
+  // it. min-h on `sub` bumped from 36 → 52 to fit the 3-line annual copy
+  // ("per month billed annually — effective €X/mo (€Y/year, save €Z)")
+  // without wrapping past the CTA's anchor point.
   return (
-    <>
+    <div className="min-h-[144px]">
       <div className="mt-3 flex items-baseline gap-1.5">
         <span className="num text-[36px] lg:text-[40px] font-semibold text-[var(--color-ink)] leading-none">
           {price}
         </span>
       </div>
-      {annualDiscount !== undefined && annualDiscount > 0 && (
-        <div className="mt-2">
+      <div className="mt-2 h-[24px]">
+        {annualDiscount !== undefined && annualDiscount > 0 && (
           <span
             className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-800"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Save {annualDiscount}% with annual
           </span>
-        </div>
-      )}
+        )}
+      </div>
       <p
-        className="mt-2 text-[12.5px] text-[var(--color-muted)] min-h-[36px]"
+        className="mt-2 text-[12.5px] text-[var(--color-muted)] min-h-[52px]"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         {sub}
       </p>
-    </>
+    </div>
   );
 }
 

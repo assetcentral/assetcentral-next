@@ -139,37 +139,43 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
           Most popular
         </span>
       )}
-      <h3
-        className="text-[22px] font-semibold text-[var(--color-navy)]"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        {name}
-      </h3>
-      <div className="mt-3 flex items-baseline gap-1.5">
-        <span className="num text-[36px] lg:text-[40px] font-semibold text-[var(--color-ink)] leading-none">
-          {price}
-        </span>
-        <span
-          className="text-[13.5px] text-[var(--color-muted)]"
+      {/* Fixed-height header zone — locks the position of the Subscribe
+          button below so all three Subscribe buttons align horizontally
+          across cards regardless of which has a discount chip / longer
+          plan name. min-h covers: h3 (28px) + mt-3 + price line (40px)
+          + mt-2 + discount slot (22px) + buffer. */}
+      <div className="min-h-[110px]">
+        <h3
+          className="text-[22px] font-semibold text-[var(--color-navy)]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          {cadence}
-        </span>
-      </div>
-      {annualDiscount !== undefined && annualDiscount > 0 && (
-        // Small inline chip immediately under the monthly headline price.
-        // Keeps the monthly amount as the dominant reading — the chip is
-        // information, not a competing price. Buyers who want to lock in
-        // the discount click into /pricing and pick the annual toggle.
-        <div className="mt-2">
+          {name}
+        </h3>
+        <div className="mt-3 flex items-baseline gap-1.5">
+          <span className="num text-[36px] lg:text-[40px] font-semibold text-[var(--color-ink)] leading-none">
+            {price}
+          </span>
           <span
-            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11.5px] font-semibold text-emerald-800"
+            className="text-[13.5px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Save {annualDiscount}% with annual billing
+            {cadence}
           </span>
         </div>
-      )}
+        {annualDiscount !== undefined && annualDiscount > 0 && (
+          // Small inline chip immediately under the monthly headline price.
+          // Keeps the monthly amount as the dominant reading — the chip is
+          // information, not a competing price.
+          <div className="mt-2">
+            <span
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11.5px] font-semibold text-emerald-800"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Save {annualDiscount}% with annual billing
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* CTA hierarchy:
           - When altCta exists (paid plans) the direct-subscribe is the
