@@ -5,7 +5,9 @@ import {
   COUNTRY_CURRENCY,
   CURRENCY_SYMBOLS,
   type CurrencyCode,
+  formatAmount,
   formatMoney,
+  isCodePrefix,
   isCurrencyCode,
 } from "@/lib/currency";
 
@@ -96,7 +98,28 @@ export function useCurrency() {
   return useContext(CurrencyContext);
 }
 
+/** Render a EUR base amount converted to the visitor's currency.
+ *
+ *  Structural output (not a plain string) so the ISO-code prefix (AED,
+ *  CHF) can be styled in sans-serif while the digit portion inherits
+ *  whatever `.num` / mono treatment its container applies. Single-glyph
+ *  symbols (€, $, £) sit directly against the digits with no prefix
+ *  span — the visual weight matches the digits and they don't need the
+ *  override.
+ *
+ *  Negative amounts render the minus sign in front of the symbol so
+ *  "−€1,200" / "−AED 4,800" reads naturally regardless of prefix type. */
 export function Money({ eur, short = false }: { eur: number; short?: boolean }) {
-  const { format } = useCurrency();
-  return <>{format(eur, { short })}</>;
+  const { code } = useCurrency();
+  const symbol = CURRENCY_SYMBOLS[code];
+  const isCode = isCodePrefix(code);
+  const negative = eur < 0;
+  const amount = formatAmount(eur, code, short ? "short" : "full");
+  return (
+    <>
+      {negative && "−"}
+      {isCode ? <span className="money-prefix">{symbol}</span> : symbol}
+      {amount}
+    </>
+  );
 }

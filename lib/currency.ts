@@ -11,13 +11,25 @@ export const FX_VS_EUR: Record<CurrencyCode, number> = {
   CHF: 0.95,
 };
 
+// Visible currency mark. Single glyphs (€, $, £) sit directly against
+// the number. Multi-letter ISO codes (AED, CHF) get a separator inserted
+// at render time and are styled in the surrounding sans-serif font, so
+// they don't read like code when placed inside a `.num` (mono) wrapper.
 export const CURRENCY_SYMBOLS: Record<CurrencyCode, string> = {
   EUR: "€",
   USD: "$",
   GBP: "£",
-  AED: "AED ",
-  CHF: "CHF ",
+  AED: "AED",
+  CHF: "CHF",
 };
+
+/** True when the "symbol" is actually a multi-letter ISO code (AED,
+ *  CHF) rather than a single glyph. Used by the renderer to insert a
+ *  non-breaking space between the code and the digits, and to style
+ *  the code as sans-serif inside a `.num`-wrapped value. */
+export function isCodePrefix(code: CurrencyCode): boolean {
+  return CURRENCY_SYMBOLS[code].length > 1;
+}
 
 // Country code → preferred display currency. Covers our likely audience.
 // Anything not listed falls back to EUR.
@@ -47,6 +59,31 @@ export function convertFromEur(eurAmount: number, target: CurrencyCode): number 
 
 type FormatStyle = "full" | "short";
 
+/** Numeric portion of a converted amount — no symbol, no sign. The
+ *  symbol is rendered separately so it can be styled in the surrounding
+ *  sans-serif font even when the amount sits inside a `.num` mono span. */
+export function formatAmount(
+  eurAmount: number,
+  target: CurrencyCode,
+  style: FormatStyle = "full",
+): string {
+  const local = convertFromEur(eurAmount, target);
+  return formatAbs(Math.abs(local), style);
+}
+
+/** Format a positive number into the short or full digit string used by
+ *  CountUp's animation tick. Pulled out of formatMoney so CountUp can
+ *  call it directly on the in-flight animated value without rebuilding
+ *  the sign-handling logic. */
+export function formatAbs(abs: number, style: FormatStyle): string {
+  if (style === "short") {
+    if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(2)}m`;
+    if (abs >= 100_000) return `${(abs / 1_000).toFixed(0)}k`;
+    if (abs >= 10_000) return `${(abs / 1_000).toFixed(1)}k`;
+  }
+  return Math.round(abs).toLocaleString("en-GB");
+}
+
 export function formatMoney(
   eurAmount: number,
   target: CurrencyCode,
@@ -56,11 +93,8 @@ export function formatMoney(
   const abs = Math.abs(local);
   const sign = local < 0 ? "−" : "";
   const symbol = CURRENCY_SYMBOLS[target];
-
-  if (style === "short") {
-    if (abs >= 1_000_000) return `${sign}${symbol}${(abs / 1_000_000).toFixed(2)}m`;
-    if (abs >= 100_000) return `${sign}${symbol}${(abs / 1_000).toFixed(0)}k`;
-    if (abs >= 10_000) return `${sign}${symbol}${(abs / 1_000).toFixed(1)}k`;
-  }
-  return `${sign}${symbol}${Math.round(abs).toLocaleString("en-GB")}`;
+  // Multi-letter codes get a non-breaking space between code and digits;
+  // single glyphs sit directly against the digits.
+  const sep = isCodePrefix(target) ? " " : "";
+  return `${sign}${symbol}${sep}${formatAbs(abs, style)}`;
 }

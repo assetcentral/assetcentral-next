@@ -42,3 +42,20 @@ h1, h2, h3 {
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-variant-numeric: tabular-nums;
 }
+
+/* Currency prefix when an ISO-code symbol (AED, CHF) precedes a
+   `.num`-styled amount. Forces sans-serif rendering so the letters
+   read as a label, not as monospace code, and drops one weight step
+   so the digits remain the visual emphasis. The 0.85em scales to
+   whichever .num font-size wraps the value, keeping the AED label
+   at the right proportion in both KPI cards (18px) and table cells
+   (12.5px). */
+.money-prefix {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-variant-numeric: normal;
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin-right: 0.2em;
+  color: var(--color-muted);
+}

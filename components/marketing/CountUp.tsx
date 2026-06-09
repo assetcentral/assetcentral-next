@@ -2,7 +2,12 @@
 
 import { animate, useInView, useMotionValue, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { convertFromEur, CURRENCY_SYMBOLS } from "@/lib/currency";
+import {
+  convertFromEur,
+  CURRENCY_SYMBOLS,
+  formatAbs,
+  isCodePrefix,
+} from "@/lib/currency";
 import { useCurrency } from "./CurrencyProvider";
 
 type Props = {
@@ -42,9 +47,16 @@ export function CountUp({
   const inView = useInView(ref, { once: true, margin: "-10%" });
   const mv = useMotionValue(0);
 
+  // The animated text — for money mode, this is JUST the digit portion
+  // (no symbol). The symbol is rendered as a static sibling span so the
+  // ISO-code prefix (AED, CHF) can be styled in sans-serif via the
+  // .money-prefix class instead of inheriting the parent's `.num`
+  // monospace, which made "AED" read like code and pushed an oversized
+  // space between code and digits.
   const text = useTransform(mv, (latest) => {
     if (isMoney) {
-      return formatLocalMoney(latest, currency.code, short);
+      const sign = latest < 0 ? "−" : "";
+      return `${sign}${formatAbs(Math.abs(latest), short ? "short" : "full")}`;
     }
     const n = decimals > 0 ? Number(latest.toFixed(decimals)) : Math.round(latest);
     if (format) return format(n);
@@ -67,21 +79,15 @@ export function CountUp({
     return () => unsub();
   }, [text]);
 
-  return <span ref={ref} className={className} style={style} />;
-}
-
-function formatLocalMoney(
-  local: number,
-  code: keyof typeof CURRENCY_SYMBOLS,
-  short: boolean,
-): string {
-  const abs = Math.abs(local);
-  const sign = local < 0 ? "−" : "";
-  const sym = CURRENCY_SYMBOLS[code];
-  if (short) {
-    if (abs >= 1_000_000) return `${sign}${sym}${(abs / 1_000_000).toFixed(2)}m`;
-    if (abs >= 100_000) return `${sign}${sym}${(abs / 1_000).toFixed(0)}k`;
-    if (abs >= 10_000) return `${sign}${sym}${(abs / 1_000).toFixed(1)}k`;
+  if (isMoney) {
+    const symbol = CURRENCY_SYMBOLS[currency.code];
+    const isCode = isCodePrefix(currency.code);
+    return (
+      <>
+        {isCode ? <span className="money-prefix">{symbol}</span> : symbol}
+        <span ref={ref} className={className} style={style} />
+      </>
+    );
   }
-  return `${sign}${sym}${Math.round(abs).toLocaleString("en-GB")}`;
+  return <span ref={ref} className={className} style={style} />;
 }

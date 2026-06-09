@@ -27,11 +27,20 @@ export function AlertBadge({
   const styles = severityStyles[severity];
   return (
     <div
-      className={`flex items-center gap-2 rounded-md border px-3 py-2 text-[12px] ${styles.wrap} ${className}`}
+      // items-start (not items-center) + relative dot positioning so a
+      // two-line wrap looks tidy: the dot stays aligned with the first
+      // line of text instead of vertically centring across both lines.
+      // leading-[1.4] gives wrapped lines enough air without bloating
+      // single-line badges. min-w-0 lets the badge shrink in a grid
+      // without forcing horizontal overflow.
+      className={`flex items-start gap-2 rounded-md border px-3 py-2 text-[12px] leading-[1.4] min-w-0 ${styles.wrap} ${className}`}
       style={{ fontFamily: "var(--font-sans)" }}
     >
-      <span className={`inline-block w-1.5 h-1.5 rounded-full ${styles.dot}`} aria-hidden />
-      <span className="truncate">{children}</span>
+      <span
+        className={`inline-block w-1.5 h-1.5 mt-1.5 rounded-full shrink-0 ${styles.dot}`}
+        aria-hidden
+      />
+      <span className="min-w-0">{children}</span>
     </div>
   );
 }
