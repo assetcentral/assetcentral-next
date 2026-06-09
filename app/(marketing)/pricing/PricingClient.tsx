@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCurrency } from "@/components/marketing/CurrencyProvider";
 import {
   annualDiscountPct,
@@ -23,12 +23,14 @@ const faqs = PRICING_FAQS;
 export function PricingClient() {
   const display = useCurrency();
   const [billing, setBilling] = useState<Billing>("annual");
-  const [bill, setBill] = useState<BillingCurrency>("EUR");
-
-  // After the IP geo lookup resolves, default to the closest billing currency.
-  useEffect(() => {
-    setBill(billingFor(display.code));
-  }, [display.code]);
+  // Derive the billing currency from the IP-geo lookup, with the user
+  // dropdown as an explicit override. Avoids the setState-in-useEffect
+  // pattern (react-hooks/set-state-in-effect rule) — Vercel's ESLint
+  // preset rejects that even for "sync external state on mount" cases.
+  // When `billOverride` is null, bill follows display.code; when the
+  // user picks from the selector we set billOverride and that wins.
+  const [billOverride, setBillOverride] = useState<BillingCurrency | null>(null);
+  const bill: BillingCurrency = billOverride ?? billingFor(display.code);
 
   const individualPrice = PLAN_PRICES.individual[bill];
   const proPrice = PLAN_PRICES.pro[bill];
@@ -116,7 +118,7 @@ export function PricingClient() {
               <select
                 id="billing-currency"
                 value={bill}
-                onChange={(e) => setBill(e.target.value as BillingCurrency)}
+                onChange={(e) => setBillOverride(e.target.value as BillingCurrency)}
                 className="rounded-md border border-[var(--color-border)] bg-white px-3 py-1.5 text-[13.5px] text-[var(--color-ink)] focus:border-[var(--color-navy)] focus:outline-none focus:ring-2 focus:ring-[var(--color-navy)]/10"
                 style={{ fontFamily: "var(--font-sans)" }}
               >

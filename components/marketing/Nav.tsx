@@ -380,8 +380,11 @@ function DesktopDropdownInner(
 }
 
 // React.forwardRef wrapper — keeps the parent able to wire a click-outside
-// detector via the dropdownRef ref.
+// detector via the dropdownRef ref. Explicit displayName so React DevTools
+// and any ESLint react/display-name rule (Vercel's preset triggers on it
+// even when the local Next build skips lint) are happy.
 const DesktopDropdown = forwardRef(DesktopDropdownInner);
+DesktopDropdown.displayName = "DesktopDropdown";
 
 // ── Mobile collapsible group ───────────────────────────────────────────
 
