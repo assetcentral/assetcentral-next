@@ -10,7 +10,7 @@ const BASE = "https://assetcentral.ai";
 // a stable signal that beats `new Date()` on every build (which Google
 // reads as noise and may discount). When you ship a substantive change to
 // a route, bump the date here in the same commit.
-const ROUTE_LAST_MODIFIED = "2026-06-05";
+const ROUTE_LAST_MODIFIED = "2026-06-08";
 
 // Per-resource-article publish dates — kept in sync with the
 // `datePublished` constants inside each article's page.tsx.
@@ -53,6 +53,14 @@ const routes: Entry[] = [
   { path: "/features", priority: 0.8, changeFrequency: "monthly" },
   { path: "/calculators", priority: 0.8, changeFrequency: "monthly" },
   { path: "/resources", priority: 0.8, changeFrequency: "weekly" },
+
+  // Three-pillar framework pages (Model / Monitor / Manage). Each one
+  // is a top-level positioning surface — owns SEO + ad-funnel for its
+  // pillar's intent. Sit at the same priority as /features since they
+  // map directly to buyer-journey verbs the homepage now leads with.
+  { path: "/model", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/monitor", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/manage", priority: 0.8, changeFrequency: "monthly" },
 
   // Calculators (individual)
   { path: "/calculators/mortgage", priority: 0.7, changeFrequency: "monthly" },

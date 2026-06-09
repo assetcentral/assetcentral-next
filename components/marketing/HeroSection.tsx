@@ -18,43 +18,47 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-14 items-center">
           {/* copy */}
           <div>
-            {/* Strapline. 2026-06 yield-led reposition: the homepage now
-                leads with yield as the north-star promise. The previous
-                "Better returns" strapline tested broader but obscured
-                the specific job the product does (improve yield on a
-                portfolio that already exists). Yield is the metric the
-                AC Agent Team optimises for inside the app — it should
-                be the first three words on the homepage too. */}
+            {/* Strapline. 2026-06 second reposition: previously "Real
+                data. Better decisions. Higher yield." led the hero with
+                the OUTCOME (yield). That worked but didn't tell the
+                visitor what the product DOES day-to-day. The
+                Model/Monitor/Manage framework names the three jobs in
+                the order a real portfolio runs through them, gives
+                visitors a mental model they can map their own
+                workflow onto, and earns the price tag — these are the
+                jobs serious portfolios pay institutional tools to do,
+                and we do them at residential scale. Yield is still
+                the north-star outcome, named in the subhead. */}
             <p
               className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Real data. Better decisions. Higher yield.
+              Model. Monitor. Manage.
             </p>
             <h1
               className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Increase property yield with your AI agent team
+              Portfolio intelligence for private landlords.
             </h1>
 
-            {/* Subhead: two paragraphs. First sets the job (yield + the
-                portfolio segment). Second names the five agents by name
-                — Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations
-                Agent, Yield CEO — dropping the org-chart job titles in
-                favour of the agent-team brand. The team idea lands as
-                a named team, not as job-titles in the abstract. */}
+            {/* Subhead: one paragraph that says what each pillar DOES,
+                names yield as the outcome, and sizes the buyer. Second
+                paragraph keeps the named agents on the page — they
+                stay the differentiator we have over single-purpose
+                tools, just demoted from headline to "and here's HOW we
+                do it" supporting line. */}
             <p
               className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              AssetCentral gives private owners and investors a team of AI agents that organise, monitor and analyse their portfolio to identify practical actions that can improve yield. Built for portfolios of 2 to 50 properties.
+              AssetCentral models every property as a live financial object, monitors how it performs against forecast, and surfaces the decisions that move yield. Built for portfolios of 2 to 50 properties.
             </p>
             <p
               className="mt-4 text-[16px] lg:text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Your Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager and Your CEO work together to find yield improvement opportunities.
+              Five AI agents — Portfolio PA, Finance Manager, Market Analyst, Operations Manager, and Your CEO — execute across all three pillars.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">

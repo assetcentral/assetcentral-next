@@ -10,17 +10,18 @@ import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
 import { StickyCta } from "@/components/marketing/StickyCta";
 import { TeamForPriceSection } from "@/components/marketing/TeamForPriceSection";
+import { ThreePillarsSection } from "@/components/marketing/ThreePillarsSection";
 
 export const metadata: Metadata = {
   // Note: the homepage sets `title` directly (not templated) — the
   // root layout's title template appends "| AssetCentral", which we
   // don't want duplicated here since the brand is already in the
   // sentence. Target: ≤60 chars.
-  title: "AI Agent Team for Property Yield — AssetCentral",
-  // Target: 140–160 chars. Communicates: 5 agents · portfolio scale ·
-  // outcome · price hook. Sits at ~155.
+  title: "Model. Monitor. Manage. — AssetCentral",
+  // Target: 140–160 chars. Communicates: framework verbs · agents ·
+  // segment · price hook. Sits at ~159.
   description:
-    "Five AI agents on your portfolio of 2 to 50 properties. Real data, better decisions, higher yield. Built for private property investors. From €49/month.",
+    "Portfolio intelligence for private landlords. Model every property, monitor it against forecast, manage the decisions that move yield. Five AI agents. From €49/month.",
   alternates: { canonical: "/" },
 };
 
@@ -47,25 +48,26 @@ export default function HomePage() {
           targeting (e.g. UK-investor-with-Dubai-property) lives on its
           own dedicated landing page at /uk-dubai, which the Google Ads
           campaign points at directly. */}
-      {/* Homepage flow:
-            HeroSection         — yield north-star strapline + agent-team H1
+      {/* Homepage flow (2026-06 Model/Monitor/Manage reorder):
+            HeroSection         — M/M/M strapline + "portfolio intelligence
+                                  for private landlords" H1
+            ThreePillarsSection — three cards naming each pillar with
+                                  cross-links to /model, /monitor,
+                                  /manage. Sits right under the hero so
+                                  visitors can map their own workflow
+                                  onto the framework before the deeper
+                                  agent / problem sections kick in.
             ProblemSection      — 5 problems, each mapped to the agent(s)
                                   who handle them
             MeetTheTeamSection  — meet the team + each agent's yield-job +
                                   concrete capabilities they own
             ProductDemoTabs     — How it works (guided product walkthrough)
-                                  Moved UP per the 2026-06 reorder so the
-                                  visitor sees how the team operates before
-                                  the cost / pricing pitch.
             CalculatorsCta      — free calculators teaser
             LeadMagnetsSection  — guides + downloads
-            TeamForPriceSection — "Five specialists. €49 a month." — moved
-                                  DOWN so it segues into PricingPreview as
-                                  the value-prop lead-in rather than an
-                                  early hero-style section. Visually toned
-                                  down (smaller padding + smaller H2) to
-                                  read as a supporting section, not a
-                                  full-stop. */}
+            TeamForPriceSection — "Five specialists. €49 a month." — segues
+                                  into PricingPreview as the value-prop
+                                  lead-in. */}
+      <ThreePillarsSection />
       <ProblemSection />
       <MeetTheTeamSection />
       <div id="how-it-works" />
