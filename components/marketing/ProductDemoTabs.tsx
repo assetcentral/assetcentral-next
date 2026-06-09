@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { AlertBadge } from "./AlertBadge";
 import { CashflowChart } from "./CashflowChart";
-import { Money } from "./CurrencyProvider";
+import { Money, useCurrency } from "./CurrencyProvider";
 import { YieldBadge } from "./YieldBadge";
 
 // The "How it works" demo. Restructured 2026-06 from a generic
@@ -292,8 +292,14 @@ const typeStyles: Record<Row["type"], string> = {
 };
 
 function PortfolioPanel() {
+  // Reads the IP-detected currency from CurrencyProvider so the header
+  // reflects the visitor's local currency (a Dubai visitor sees
+  // "base AED", a London visitor sees "base GBP", etc.) — matching the
+  // cell values, which already convert via <Money />. Falls back to EUR
+  // when geolocation is unavailable (network blocked, private mode).
+  const { code } = useCurrency();
   return (
-    <DeviceFrame title="Portfolio · 5 assets · base EUR">
+    <DeviceFrame title={`Portfolio · 5 assets · base ${code}`}>
       {/* Mobile: stacked cards */}
       <div className="sm:hidden p-4 space-y-2">
         {portfolioRows.map((r) => (
