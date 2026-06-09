@@ -1,28 +1,76 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 // Nav order is deliberate:
 //   • Watch first — pure orientation for a first-time visitor with the
 //     lowest commitment (60 seconds, just press play).
-//   • Features / Calculators / Pricing / Partners — the product surface.
+//   • Product (dropdown) — the three-pillar framework: Model / Monitor /
+//     Manage. Each pillar has its own landing page; "All features" links
+//     to /features for the comprehensive index.
+//   • Calculators / Pricing / Partners — the rest of the product surface.
 //   • Resources + Get started together at the end — both are "go deeper"
 //     entry points (Resources is the written guides; Get started is the
 //     90-second walkthrough video showing HOW to use the product).
-const navLinks = [
-  { href: "/demo/60", label: "Watch" },
-  { href: "/features", label: "Features" },
-  { href: "/calculators", label: "Calculators" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/partners", label: "Partners" },
-  { href: "/resources", label: "Resources" },
-  { href: "/demo/get-started", label: "Get started" },
+//
+// The Product dropdown swaps in for the previous flat "Features" link.
+// The framework is now the primary navigation surface; /features still
+// exists at the bottom of the dropdown as the "all features" exhaustive
+// view for visitors who want one page that shows everything.
+
+type FlatLink = { href: string; label: string; kind?: "flat" };
+type DropdownGroup = {
+  kind: "dropdown";
+  label: string;
+  items: { href: string; label: string; description?: string }[];
+};
+type NavItem = FlatLink | DropdownGroup;
+
+const navItems: NavItem[] = [
+  { href: "/demo/60", label: "Watch", kind: "flat" },
+  {
+    kind: "dropdown",
+    label: "Product",
+    items: [
+      {
+        href: "/model",
+        label: "Model",
+        description: "Every property, on paper, in 10 minutes.",
+      },
+      {
+        href: "/monitor",
+        label: "Monitor",
+        description: "Catch the drift before it costs you.",
+      },
+      {
+        href: "/manage",
+        label: "Manage",
+        description: "Make the call the agents would make.",
+      },
+      {
+        href: "/features",
+        label: "All features",
+        description: "Every surface and capability in one page.",
+      },
+    ],
+  },
+  { href: "/calculators", label: "Calculators", kind: "flat" },
+  { href: "/pricing", label: "Pricing", kind: "flat" },
+  { href: "/partners", label: "Partners", kind: "flat" },
+  { href: "/resources", label: "Resources", kind: "flat" },
+  { href: "/demo/get-started", label: "Get started", kind: "flat" },
 ];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  // Desktop dropdown open state — keyed by the dropdown label. Only one
+  // can be open at a time (we only have one dropdown for now, but keying
+  // by label keeps the code extensible without restructuring later).
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  // Mobile expanded-group state — same shape.
+  const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -51,6 +99,28 @@ export function Nav() {
     }
   }, [open]);
 
+  // Close the desktop dropdown on Escape, on click-outside, and when the
+  // user clicks any link inside it (handled by the Link onClick below).
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!openDropdown) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenDropdown(null);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (!dropdownRef.current) return;
+      if (!dropdownRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("mousedown", onClick);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("mousedown", onClick);
+    };
+  }, [openDropdown]);
+
   return (
     <header
       className={`sticky top-0 z-50 transition-[background,border,backdrop-filter] duration-200 ${
@@ -78,17 +148,29 @@ export function Nav() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              {l.label}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-7">
+          {navItems.map((item) =>
+            item.kind === "dropdown" ? (
+              <DesktopDropdown
+                key={item.label}
+                ref={item.label === openDropdown ? dropdownRef : null}
+                item={item}
+                isOpen={openDropdown === item.label}
+                onOpen={() => setOpenDropdown(item.label)}
+                onClose={() => setOpenDropdown(null)}
+              />
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                onMouseEnter={() => setOpenDropdown(null)}
+                className="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -166,19 +248,33 @@ export function Nav() {
             className="md:hidden absolute left-0 right-0 top-full border-t border-[var(--color-border)] bg-white shadow-lg z-50"
           >
             <nav
-              className="mx-auto max-w-7xl px-6 py-4 flex flex-col gap-1"
+              className="mx-auto max-w-7xl px-6 py-4 flex flex-col gap-1 max-h-[80vh] overflow-y-auto"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              {navLinks.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center min-h-[48px] px-3 rounded-md text-[15px] font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition-colors"
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {navItems.map((item) =>
+                item.kind === "dropdown" ? (
+                  <MobileGroup
+                    key={item.label}
+                    item={item}
+                    isOpen={openMobileGroup === item.label}
+                    onToggle={() =>
+                      setOpenMobileGroup((cur) =>
+                        cur === item.label ? null : item.label,
+                      )
+                    }
+                    onLinkClick={() => setOpen(false)}
+                  />
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="flex items-center min-h-[48px] px-3 rounded-md text-[15px] font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ),
+              )}
               <div className="mt-3 pt-3 border-t border-[var(--color-border)] flex flex-col gap-2">
                 <Link
                   href="/login"
@@ -204,3 +300,137 @@ export function Nav() {
     </header>
   );
 }
+
+// ── Desktop dropdown ───────────────────────────────────────────────────
+//
+// Hover-on-enter, click-to-toggle. Closes on Escape / click-outside
+// (wired in the parent useEffect). Each item shows label + 1-line
+// description for at-a-glance comprehension — the dropdown is
+// information-dense by design since visitors land here looking for the
+// framework, not a one-word menu of features.
+
+interface DesktopDropdownProps {
+  item: DropdownGroup;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
+
+function DesktopDropdownInner(
+  { item, isOpen, onOpen, onClose }: DesktopDropdownProps,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) {
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={onOpen}
+      onMouseLeave={onClose}
+    >
+      <button
+        type="button"
+        onClick={() => (isOpen ? onClose() : onOpen())}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+        className="inline-flex items-center gap-1 text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {item.label}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="currentColor"
+          aria-hidden
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+        >
+          <path d="M5 7.5 1.5 3.5h7L5 7.5Z" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div
+          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[320px] rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2"
+          // Pad the top with a transparent overlay so the user can move
+          // from the button to the menu without the mouseLeave firing
+          // (the gap would otherwise trigger close).
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {item.items.map((sub) => (
+            <Link
+              key={sub.href}
+              href={sub.href}
+              onClick={onClose}
+              className="block px-3 py-2.5 rounded-md hover:bg-[var(--color-surface)] transition-colors"
+            >
+              <div className="text-[14px] font-medium text-[var(--color-navy)]">
+                {sub.label}
+              </div>
+              {sub.description && (
+                <div className="text-[12.5px] leading-[1.4] text-[var(--color-muted)] mt-0.5">
+                  {sub.description}
+                </div>
+              )}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// React.forwardRef wrapper — keeps the parent able to wire a click-outside
+// detector via the dropdownRef ref.
+const DesktopDropdown = forwardRef(DesktopDropdownInner);
+
+// ── Mobile collapsible group ───────────────────────────────────────────
+
+function MobileGroup({
+  item,
+  isOpen,
+  onToggle,
+  onLinkClick,
+}: {
+  item: DropdownGroup;
+  isOpen: boolean;
+  onToggle: () => void;
+  onLinkClick: () => void;
+}) {
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        className="flex w-full items-center justify-between min-h-[48px] px-3 rounded-md text-[15px] font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition-colors"
+      >
+        <span>{item.label}</span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 10 10"
+          fill="currentColor"
+          aria-hidden
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+        >
+          <path d="M5 7.5 1.5 3.5h7L5 7.5Z" />
+        </svg>
+      </button>
+      {isOpen && (
+        <div className="ml-3 pl-3 border-l border-[var(--color-border)] mt-1 mb-1 flex flex-col gap-0.5">
+          {item.items.map((sub) => (
+            <Link
+              key={sub.href}
+              href={sub.href}
+              onClick={onLinkClick}
+              className="flex items-center min-h-[44px] px-3 rounded-md text-[14px] text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              {sub.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
