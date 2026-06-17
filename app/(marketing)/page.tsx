@@ -1,31 +1,27 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
 import { FinalCta } from "@/components/marketing/FinalCta";
-import { HeroSection } from "@/components/marketing/HeroSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
-import { LeadMagnetsSection } from "@/components/marketing/LeadMagnetsSection";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
-import { ProblemSection } from "@/components/marketing/ProblemSection";
 import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
 import { StickyCta } from "@/components/marketing/StickyCta";
-import { ThreePillarsSection } from "@/components/marketing/ThreePillarsSection";
-// TeamForPriceSection ("Five specialists. €49 a month." — the cost-of-
-// hiring-manually math) retired in the 2026-06 reposition. It pitched a
-// number-vs-number comparison that didn't earn its real estate next to
-// the M/M/M framework cards. Component left in the repo for now in case
-// we want it back; just not imported.
+// HeroSection / ThreePillarsSection / ProblemSection / LeadMagnetsSection
+// were retired in the 2026-06 "team-as-hero" simplification. The team
+// section now opens the page as the landing hero — it carries the
+// headline, the Model/Monitor/Manage discipline pills, the five
+// portraits, and the synthesis card, so the standalone hero / pillars /
+// problem framings were redundant. Components are kept in the repo for
+// possible reuse but no longer imported from the homepage.
 
 export const metadata: Metadata = {
-  // Note: the homepage sets `title` directly (not templated) — the
-  // root layout's title template appends "| AssetCentral", which we
-  // don't want duplicated here since the brand is already in the
-  // sentence. Target: ≤60 chars.
-  title: "Model. Monitor. Manage. — AssetCentral",
-  // Target: 140–160 chars. Communicates: framework verbs · agents ·
-  // segment · price hook. Sits at ~159.
+  // The team section IS the hero, so the title leads with the team
+  // framing rather than the framework verbs.
+  title: "Your AI Property Management Team — AssetCentral",
+  // Target: 140–160 chars. Communicates: the team metaphor · target
+  // segment (2–50 properties) · north star (yield) · price hook.
   description:
-    "Portfolio intelligence for private landlords. Model every property, monitor it against forecast, manage the decisions that move yield. Five AI agents. From €49/month.",
+    "Five AI specialists working on your portfolio across Model, Monitor and Manage — for property owners with 2 to 50 properties. Grow your returns. From €19/month.",
   alternates: { canonical: "/" },
 };
 
@@ -34,9 +30,9 @@ const jsonLd = {
   "@type": "SoftwareApplication",
   name: "AssetCentral",
   applicationCategory: "FinanceApplication",
-  offers: { "@type": "Offer", price: "49", priceCurrency: "EUR" },
+  offers: { "@type": "Offer", price: "19", priceCurrency: "EUR" },
   description:
-    "AI agent team for private property investors — Portfolio Personal Assistant, Finance Manager, Market Analyst, Operations Manager and Your CEO working to identify practical actions to improve yield.",
+    "AI property management team for owners with 2–50 properties — a Chief Investment Officer, Chief Financial Officer, Chief Executive Officer, Chief Operations Officer and Personal Assistant working continuously across Model, Monitor and Manage to grow portfolio yield.",
 };
 
 export default function HomePage() {
@@ -46,44 +42,24 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HeroSection />
-      {/* The homepage stays market-agnostic — investors landing here
-          may be in any of our 9 supported markets. Campaign-specific
-          targeting (e.g. UK-investor-with-Dubai-property) lives on its
-          own dedicated landing page at /uk-dubai, which the Google Ads
-          campaign points at directly. */}
-      {/* Homepage flow (2026-06 Model/Monitor/Manage reorder):
-            HeroSection         — M/M/M strapline + "portfolio intelligence
-                                  for private landlords" H1
-            ThreePillarsSection — three cards naming each pillar with
-                                  cross-links to /model, /monitor,
-                                  /manage. Sits right under the hero so
-                                  visitors can map their own workflow
-                                  onto the framework before the deeper
-                                  agent / problem sections kick in.
-            ProblemSection      — 5 problems, each mapped to the agent(s)
-                                  who handle them
-            MeetTheTeamSection  — meet the team + each agent's yield-job +
-                                  concrete capabilities they own
-            ProductDemoTabs     — How it works (guided product walkthrough)
-            CalculatorsCta      — free calculators teaser
-            LeadMagnetsSection  — guides + downloads
-            TeamForPriceSection — "Five specialists. €49 a month." — segues
-                                  into PricingPreview as the value-prop
-                                  lead-in. */}
-      <ThreePillarsSection />
-      <ProblemSection />
+      {/* Homepage flow (2026-06 team-as-hero simplification):
+            MeetTheTeamSection — five-portrait landing hero with the
+                                 Model/Monitor/Manage discipline pills,
+                                 "Your AI Property Management Team" H1
+                                 and the team synthesis card
+            ProductDemoTabs    — guided product walkthrough
+            CalculatorsCta     — free calculators teaser
+            PricingPreview     — Individual / Pro / Team tiers
+            LeadCapture        — email capture
+            FinalCta           — close
+            StickyCta          — mobile-only conversion pill */}
       <MeetTheTeamSection />
       <div id="how-it-works" />
       <ProductDemoTabs />
       <CalculatorsCta />
-      <LeadMagnetsSection />
       <PricingPreview />
       <LeadCapture />
       <FinalCta />
-      {/* Mobile sticky CTA — appears after scrolling 40% of the page.
-          Default props now push "Add first property" / yield framing
-          rather than the older "Meet your AC Agent Team" pitch. */}
       <StickyCta />
     </>
   );

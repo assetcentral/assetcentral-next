@@ -427,15 +427,18 @@ export function MeetTheTeamSection() {
     <section
       id="team"
       aria-label="Your AI property management team"
-      className="bg-white py-16 md:py-24"
+      className="bg-white pt-20 pb-16 md:pt-28 md:pb-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* LEFT COLUMN — headline + disciplines + CTA */}
+          {/* LEFT COLUMN — headline + disciplines + CTA. The H1 lives
+              here because this section IS the page hero (2026-06
+              team-as-hero simplification — the standalone HeroSection
+              was retired). */}
           <div className="lg:col-span-4">
-            <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-semibold text-[color:var(--color-navy)] leading-[1.05] tracking-tight">
+            <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-semibold text-[color:var(--color-navy)] leading-[1.05] tracking-tight">
               Your AI Property Management Team
-            </h2>
+            </h1>
             <p className="mt-5 text-base md:text-lg text-[color:var(--color-muted)] leading-relaxed">
               Five experts. Three disciplines.
               <br />
