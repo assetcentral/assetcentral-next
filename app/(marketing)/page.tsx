@@ -5,8 +5,15 @@ import { GetDataInSection } from "@/components/marketing/GetDataInSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
-import { ProductDemoTabs } from "@/components/marketing/ProductDemoTabs";
 import { StickyCta } from "@/components/marketing/StickyCta";
+import { WhatAIUnlocksSection } from "@/components/marketing/WhatAIUnlocksSection";
+// ProductDemoTabs (the prior 4-step "Get the data in / See your real
+// position / Catch what's coming / Run the portfolio for yield" tab
+// strip) retired in the 2026-06 "family-office capabilities" reframe.
+// The new WhatAIUnlocksSection positions the product as a list of
+// capabilities owners used to need a family office to access, rather
+// than a generic feature walkthrough. Component kept in the repo for
+// possible reuse — just no longer imported from the homepage.
 // HeroSection / ThreePillarsSection / ProblemSection / LeadMagnetsSection
 // were retired in the 2026-06 "team-as-hero" simplification. The team
 // section now opens the page as the landing hero — it carries the
@@ -52,7 +59,10 @@ export default function HomePage() {
                                  "now how do I start?" right after the
                                  team intro. Voice positioned as "your
                                  PA calls you".
-            ProductDemoTabs    — guided product walkthrough
+            WhatAIUnlocksSection — six family-office-grade capabilities
+                                   the AI team gives you access to.
+                                   Replaces the prior ProductDemoTabs
+                                   walkthrough.
             CalculatorsCta     — free calculators teaser
             PricingPreview     — Individual / Pro / Team tiers
             LeadCapture        — email capture
@@ -60,8 +70,7 @@ export default function HomePage() {
             StickyCta          — mobile-only conversion pill */}
       <MeetTheTeamSection />
       <GetDataInSection />
-      <div id="how-it-works" />
-      <ProductDemoTabs />
+      <WhatAIUnlocksSection />
       <CalculatorsCta />
       <PricingPreview />
       <LeadCapture />

@@ -3,21 +3,19 @@
 import Link from "next/link";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
-// Nav order is deliberate:
-//   • Watch first — pure orientation for a first-time visitor with the
-//     lowest commitment (60 seconds, just press play).
-//   • Product (dropdown) — the three-pillar framework: Model / Monitor /
-//     Manage. Each pillar has its own landing page; "All features" links
-//     to /features for the comprehensive index.
-//   • Calculators / Pricing / Partners — the rest of the product surface.
-//   • Resources + Get started together at the end — both are "go deeper"
-//     entry points (Resources is the written guides; Get started is the
-//     90-second walkthrough video showing HOW to use the product).
+// Nav order:
+//   • Watch — the 60-second explainer; first stop for a first-time
+//     visitor (lowest commitment).
+//   • Product (dropdown) — the three-pillar framework: Model /
+//     Monitor / Manage. "All features" sits at the bottom of the
+//     dropdown as the exhaustive view.
+//   • Calculators / Pricing / Partners / Resources — the rest of the
+//     product surface.
 //
-// The Product dropdown swaps in for the previous flat "Features" link.
-// The framework is now the primary navigation surface; /features still
-// exists at the bottom of the dropdown as the "all features" exhaustive
-// view for visitors who want one page that shows everything.
+// "Get started" was folded into "Watch" in the 2026-06 simplification —
+// the two video entry points were doing the same first-step job. The
+// signup CTA in the right-hand actions handles the conversion-action
+// side; visitors who want to see the product land on /demo/60.
 
 type FlatLink = { href: string; label: string; kind?: "flat" };
 type DropdownGroup = {
@@ -59,7 +57,6 @@ const navItems: NavItem[] = [
   { href: "/pricing", label: "Pricing", kind: "flat" },
   { href: "/partners", label: "Partners", kind: "flat" },
   { href: "/resources", label: "Resources", kind: "flat" },
-  { href: "/demo/get-started", label: "Get started", kind: "flat" },
 ];
 
 export function Nav() {
