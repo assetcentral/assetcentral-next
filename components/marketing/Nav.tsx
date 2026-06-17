@@ -26,8 +26,22 @@ type DropdownGroup = {
 type NavItem = FlatLink | DropdownGroup;
 
 const navItems: NavItem[] = [
-  { href: "/demo/60", label: "Watch", kind: "flat" },
-  { href: "/#how-it-works", label: "How it works", kind: "flat" },
+  {
+    kind: "dropdown",
+    label: "How it works",
+    items: [
+      {
+        href: "/#how-it-works",
+        label: "What the team unlocks",
+        description: "Family-office capabilities in six cards on the homepage.",
+      },
+      {
+        href: "/demo/60",
+        label: "Watch the 60-second explainer",
+        description: "The product walked through in under a minute.",
+      },
+    ],
+  },
   {
     kind: "dropdown",
     label: "Product",
@@ -54,7 +68,47 @@ const navItems: NavItem[] = [
       },
     ],
   },
-  { href: "/calculators", label: "Calculators", kind: "flat" },
+  {
+    kind: "dropdown",
+    label: "Calculators",
+    items: [
+      {
+        href: "/calculators/mortgage",
+        label: "Mortgage",
+        description: "Country rules for 10 markets — GCC, UK, EU.",
+      },
+      {
+        href: "/calculators/irr",
+        label: "IRR",
+        description: "Return over any hold period.",
+      },
+      {
+        href: "/calculators/str-yield",
+        label: "Short-let yield",
+        description: "Compare short-term vs long-term rental income.",
+      },
+      {
+        href: "/calculators/retrofit",
+        label: "Retrofit cost",
+        description: "Upgrade costs vs yield improvement.",
+      },
+      {
+        href: "/calculators/ownership",
+        label: "Ownership comparator",
+        description: "Personal, company, long-let side-by-side.",
+      },
+      {
+        href: "/calculators/off-plan",
+        label: "Off-plan",
+        description: "Assign now or hold to handover?",
+      },
+      {
+        href: "/calculators",
+        label: "All calculators",
+        description: "Every calculator in one page.",
+      },
+    ],
+  },
   { href: "/pricing", label: "Pricing", kind: "flat" },
   { href: "/partners", label: "Partners", kind: "flat" },
   { href: "/resources", label: "Resources", kind: "flat" },
