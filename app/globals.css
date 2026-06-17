@@ -13,6 +13,32 @@
   --color-border: #e2e8f0;
   --color-surface: #f8fafc;
 
+  /* AI Property Team — per-role accent colours. Each role gets a
+     three-stop scale: tint (light card background), mid (chip + text),
+     deep (heading / hover). Used by MeetTheTeamSection and the in-app
+     agent cards so the marketing and product surfaces stay aligned. */
+  --color-cio-tint: #ede9fe;
+  --color-cio-mid: #8b5cf6;
+  --color-cio-deep: #5b21b6;
+  --color-cfo-tint: #dbeafe;
+  --color-cfo-mid: #3b82f6;
+  --color-cfo-deep: #1e40af;
+  --color-ceo-tint: #e2e8f0;
+  --color-ceo-mid: #1e293b;
+  --color-ceo-deep: #0f172a;
+  --color-coo-tint: #ccfbf1;
+  --color-coo-mid: #14b8a6;
+  --color-coo-deep: #0f766e;
+  --color-pa-tint: #fce7f3;
+  --color-pa-mid: #ec4899;
+  --color-pa-deep: #be185d;
+
+  /* Three disciplines — Model / Monitor / Manage. Used for the
+     left-side discipline pills on the marketing team section. */
+  --color-disc-model: #8b5cf6;
+  --color-disc-monitor: #3b82f6;
+  --color-disc-manage: #14b8a6;
+
   /* Fonts wired via next/font in app/layout.tsx */
   --font-display: var(--font-instrument-serif);
   --font-sans: var(--font-dm-sans);
