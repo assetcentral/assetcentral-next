@@ -51,12 +51,12 @@ const WHAT_GETS_WATCHED = [
 
 const AGENTS_ON_MONITOR = [
   {
-    name: "Finance Manager",
+    name: "Chief Financial Officer",
     role:
       "Watches cashflow, liquidity, funding. Flags the moments where the portfolio crosses a budget line — not just at month-end.",
   },
   {
-    name: "Operations Manager",
+    name: "Chief Operations Officer",
     role:
       "Watches the operational layer — voids, service charges, agent performance, contract dates. Reports the friction before you feel it.",
   },

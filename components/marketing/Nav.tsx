@@ -27,6 +27,7 @@ type NavItem = FlatLink | DropdownGroup;
 
 const navItems: NavItem[] = [
   { href: "/demo/60", label: "Watch", kind: "flat" },
+  { href: "/#how-it-works", label: "How it works", kind: "flat" },
   {
     kind: "dropdown",
     label: "Product",

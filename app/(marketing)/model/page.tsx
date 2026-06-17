@@ -10,7 +10,7 @@
 //   3. What you can model — ingestion paths (Voice, document upload,
 //      spreadsheet, manual), illustrated as a 4-card grid.
 //   4. The agents on Model — names the two agents that lead this
-//      pillar (Market Analyst + Portfolio PA) so visitors map agents
+//      pillar (Chief Investment Officer + Personal Assistant) so visitors map agents
 //      to pillars from the outset.
 //   5. Cross-link to /monitor — "once your portfolio is modelled,
 //      monitor it" navigation.
@@ -75,12 +75,12 @@ const WHAT_GETS_MODELLED = [
 
 const AGENTS_ON_MODEL = [
   {
-    name: "Portfolio PA",
+    name: "Personal Assistant",
     role:
       "Pulls data in from anywhere — voice notes, statements, spreadsheets — and stitches it into a single property record.",
   },
   {
-    name: "Market Analyst",
+    name: "Chief Investment Officer",
     role:
       "Benchmarks every line item against local comparables — rent, costs, valuation. Catches anomalies before they become assumptions.",
   },

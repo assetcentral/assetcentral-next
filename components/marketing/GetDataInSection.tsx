@@ -5,8 +5,8 @@
 // — five ways to get the data in, your team does the rest".
 //
 // Voice + WhatsApp pick up the PA pink accent because those two
-// channels route to the Portfolio Personal Assistant. Email, File
-// upload, Manual use the navy primary accent because they're neutral
+// channels route to the Personal Assistant. Email, File upload,
+// Manual use the navy primary accent because they're neutral
 // ingestion paths.
 //
 // Voice ships with a small "Coming soon" badge — the runtime is
@@ -46,7 +46,7 @@ const CHANNELS: ReadonlyArray<{
   {
     key: "whatsapp",
     name: "WhatsApp",
-    blurb: "Snap a photo, your Portfolio PA does the rest.",
+    blurb: "Snap a photo, your Personal Assistant does the rest.",
     accent: "pa",
     icon: (
       <svg

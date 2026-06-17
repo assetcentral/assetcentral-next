@@ -70,7 +70,7 @@ export const SHOTS_120: Shot[] = [
 // Arc:
 //   0  Positioning hero          → "AI just changed what's possible…"
 //   1  Pro vs private contrast   → "…asset managers. …spreadsheets — or, at most, a family office."
-//   8  Five-agent team reveal    → "…five AI agents — led by Your CEO, with a Finance Manager, Market Analyst, Operations Manager and Portfolio PA."
+//   8  Five-agent team reveal    → "…five AI agents — led by Your CEO, with a Chief Financial Officer, Chief Investment Officer, Chief Operations Officer and Personal Assistant."
 //   4  Scattered information
 //   5  Data sources
 //   7  Owner's unanswered questions
@@ -181,7 +181,7 @@ export const SUBTITLES_60: Subtitle[] = [
 
   // Scene 8 — five-agent team reveal, led by Your CEO (22 → 32s)
   { from: 22000, to: 27000,  text: "AssetCentral collapses that team into five AI agents — led by Your CEO," },
-  { from: 27000, to: 32000,  text: "with a Finance Manager, Market Analyst, Operations Manager, and Portfolio Personal Assistant." },
+  { from: 27000, to: 32000,  text: "with a Chief Financial Officer, Chief Investment Officer, Chief Operations Officer, and Personal Assistant." },
 
   // Scene 4 — scattered info (32 → 38s)
   { from: 32000, to: 38000,  text: "The information that drives portfolio yield is scattered across emails, PDFs, bank accounts, portals and spreadsheets." },
@@ -1943,10 +1943,10 @@ function Scene7() {
 // 4-column row beneath, outline-styled to read as "reporting to".
 function Scene8() {
   const specialists = [
-    { name: "Finance Manager",    role: "CFO", note: "Yield · cashflow · debt"      },
-    { name: "Market Analyst",     role: "CIO", note: "Comps · demand · evidence"    },
-    { name: "Operations Manager", role: "COO", note: "Voids · capex · leases"       },
-    { name: "Portfolio PA",       role: "PA",  note: "Inbox · docs · structure"     },
+    { name: "Chief Financial Officer",    role: "CFO", note: "Yield · cashflow · debt"      },
+    { name: "Chief Investment Officer",     role: "CIO", note: "Comps · demand · evidence"    },
+    { name: "Chief Operations Officer", role: "COO", note: "Voids · capex · leases"       },
+    { name: "Personal Assistant",       role: "PA",  note: "Inbox · docs · structure"     },
   ];
   return (
     <div className="w-full px-[6%]">
@@ -3402,10 +3402,10 @@ function SceneStep1AddProperty() {
   // (CEO / CFO / CIO / COO / PA), with a status line under each agent.
   const AGENTS = [
     { role: "CEO", name: "Your CEO",                 status: "Watching for opportunities",   delay: 0.45 },
-    { role: "CFO", name: "Finance Manager",          status: "Tracking your debt schedule",  delay: 0.55 },
-    { role: "CIO", name: "Market Analyst",           status: "Scanning market comps",        delay: 0.65 },
-    { role: "COO", name: "Operations Manager",       status: "Monitoring leases",            delay: 0.75 },
-    { role: "PA",  name: "Portfolio Personal Assistant", status: "Inbox empty — ready for docs", delay: 0.85 },
+    { role: "CFO", name: "Chief Financial Officer",          status: "Tracking your debt schedule",  delay: 0.55 },
+    { role: "CIO", name: "Chief Investment Officer",           status: "Scanning market comps",        delay: 0.65 },
+    { role: "COO", name: "Chief Operations Officer",       status: "Monitoring leases",            delay: 0.75 },
+    { role: "PA",  name: "Personal Assistant", status: "Inbox empty — ready for docs", delay: 0.85 },
   ];
 
   // Google Places autocomplete suggestions — the top one highlighted to

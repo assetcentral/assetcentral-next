@@ -124,8 +124,8 @@ export default function Demo60Page() {
             style={{ fontFamily: "var(--font-sans)" }}
           >
             AssetCentral gives private property owners five AI agents —
-            Your CEO, Finance Manager, Market Analyst, Operations Manager
-            and Portfolio Personal Assistant — working across portfolios of
+            Your CEO, Chief Financial Officer, Chief Investment Officer, Chief Operations Officer
+            and Personal Assistant — working across portfolios of
             2 to 50 properties to surface practical actions that may improve
             yield.
           </p>
