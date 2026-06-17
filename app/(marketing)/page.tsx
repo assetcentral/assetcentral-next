@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
 import { FinalCta } from "@/components/marketing/FinalCta";
+import { GetDataInSection } from "@/components/marketing/GetDataInSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
@@ -47,6 +48,10 @@ export default function HomePage() {
                                  Model/Monitor/Manage discipline pills,
                                  "Your AI Property Management Team" H1
                                  and the team synthesis card
+            GetDataInSection   — five-channel ingestion strip; answers
+                                 "now how do I start?" right after the
+                                 team intro. Voice positioned as "your
+                                 PA calls you".
             ProductDemoTabs    — guided product walkthrough
             CalculatorsCta     — free calculators teaser
             PricingPreview     — Individual / Pro / Team tiers
@@ -54,6 +59,7 @@ export default function HomePage() {
             FinalCta           — close
             StickyCta          — mobile-only conversion pill */}
       <MeetTheTeamSection />
+      <GetDataInSection />
       <div id="how-it-works" />
       <ProductDemoTabs />
       <CalculatorsCta />
