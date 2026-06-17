@@ -1,202 +1,294 @@
-// Marketing section that introduces the AC Agent Team — the five-agent
-// framing that the app uses post the 2026-06 yield-led reposition.
-// Names now mirror the agent-team brand: Portfolio Personal Assistant, Finance Manager,
-// Market Analyst, Operations Manager, Your CEO.
+// Marketing section that introduces the AI Property Team — the five
+// C-suite agents framing introduced in the 2026-06 "team that works
+// for you" positioning pivot.
 //
-// Ordering matches the app sidebar (organisational + frequency-of-use):
-// Your CEO → Finance Manager → Market Analyst → Operations Manager →
-// Portfolio Personal Assistant. Your CEO leads because it's the synthesis layer — the
-// headline promise. Portfolio Personal Assistant sits last because it's the concierge.
-// Descriptions reorient around yield (the north-star metric) without
-// crowding out the other roles each agent plays.
+// Layout: a connected-team composition. CEO sits centrally because
+// that's the agent that synthesises the team's findings into a
+// recommendation. CIO and CFO cluster on the LEFT under the "Model"
+// discipline. COO and PA cluster on the RIGHT under "Monitor" and
+// "Manage". A thin connector rail above the cards shows the five
+// agents work as one team, not five independent chatbots.
 //
 // Compliance language matches the app: "may", "decision support",
-// "appears", "based on available data". Never "we recommend",
-// "guaranteed".
+// "based on available data". Never "we recommend", "guaranteed",
+// "will improve".
 
 import Link from "next/link";
-import { roleFullName } from "@/lib/role-glossary";
 
-type Agent = {
-  /** Role label shown above the name (CFO, CEO, Concierge, etc). */
-  role: string;
-  /** Full name as it appears in the app sidebar. */
+/** Disciplines drive the layout grouping. CFO and COO each have a
+ *  secondary discipline but appear under their primary in the
+ *  connected-team layout to avoid duplication. */
+type Discipline = "Model" | "Monitor" | "Manage" | "Coordinate";
+
+/** Role accent — restrained colour cue per spec. Mapped to Tailwind-
+ *  friendly class strings so the cards render server-side without any
+ *  runtime style computation. */
+interface Accent {
+  badgeBg: string;
+  badgeText: string;
+  dot: string;
+  cardTint: string;
+  cardBorder: string;
+}
+
+interface Agent {
+  /** Acronym chip: CIO, CFO, CEO, COO, PA. */
+  acronym: string;
+  /** Full C-suite name. */
   name: string;
-  /** Punchy one-line headline — what the agent does for yield in one
-   *  breath. Sits between the agent name and the longer description.
-   *  Inherited from the (now-merged) AgentYieldSection so this card
-   *  is both the team introduction AND the yield-job introduction
-   *  in one place. */
-  headline: string;
-  /** Longer one-line description of what the agent does. */
-  description: string;
-  /** Specific capabilities each agent owns. Used to be a short conceptual
-   *  list ("Rent benchmarking", "Cashflow forecast") — now the richer
-   *  concrete list inherited from the (now-merged) FeaturesGrid section
-   *  ("Real net yield per property and across the portfolio",
-   *   "12-month cashflow forecast vs actual" etc) so the merged section
-   *  carries both the team intro AND the feature breakdown without the
-   *  visitor having to scroll between two near-duplicate sections. */
+  /** Primary discipline(s) — first one drives layout placement. */
+  disciplines: Discipline[];
+  /** Punchy one-line purpose. Stays close to the spec's "purpose"
+   *  field per agent. */
+  purpose: string;
+  /** Six-ish concrete functions. Same level of detail as the app
+   *  side carries on the AgentMeta type. */
   capabilities: string[];
-  /** Yield-link strapline at the bottom of the card — italic, accent
-   *  colour. Ties the agent's job back to the yield north star so
-   *  every card ends with a yield connection. */
-  yieldLink: string;
-  /** Card tint — alternates navy / white for visual rhythm.
-   *  Your CEO is navy (lead) so it visually anchors the grid. */
-  tint: "navy" | "white";
+  /** Sample current-activity status line — owner-voice phrasing
+   *  ("Modelling…", "Reviewing…"). The marketing site is allowed
+   *  to use these illustratively; the app side reads real status. */
+  exampleStatus: string;
+  accent: Accent;
+}
+
+const ACCENT_CIO: Accent = {
+  badgeBg: "bg-purple-100",
+  badgeText: "text-purple-900",
+  dot: "bg-purple-500",
+  cardTint: "bg-purple-50/40",
+  cardBorder: "border-purple-200",
+};
+const ACCENT_CFO: Accent = {
+  badgeBg: "bg-blue-100",
+  badgeText: "text-blue-900",
+  dot: "bg-blue-500",
+  cardTint: "bg-blue-50/40",
+  cardBorder: "border-blue-200",
+};
+const ACCENT_CEO: Accent = {
+  badgeBg: "bg-slate-900",
+  badgeText: "text-white",
+  dot: "bg-slate-900",
+  cardTint: "bg-white",
+  cardBorder: "border-slate-300",
+};
+const ACCENT_COO: Accent = {
+  badgeBg: "bg-teal-100",
+  badgeText: "text-teal-900",
+  dot: "bg-teal-500",
+  cardTint: "bg-teal-50/40",
+  cardBorder: "border-teal-200",
+};
+const ACCENT_PA: Accent = {
+  badgeBg: "bg-pink-100",
+  badgeText: "text-pink-900",
+  dot: "bg-pink-500",
+  cardTint: "bg-pink-50/40",
+  cardBorder: "border-pink-200",
 };
 
-const agents: Agent[] = [
+// Order matters — this is left-to-right placement in the connected-team
+// composition. CEO sits in slot 3 (the centre). CIO + CFO precede it
+// (Model side), COO + PA follow (Monitor / Manage side).
+const TEAM: Agent[] = [
   {
-    role: "CEO",
-    name: "Your CEO",
-    headline: "Runs the portfolio for yield",
-    description:
-      "Sets portfolio strategy and drives it through the team. Reports what's driven yield this period, charts where the portfolio is heading next, and seeks out opportunities to grow and strengthen returns.",
+    acronym: "CIO",
+    name: "Chief Investment Officer",
+    disciplines: ["Model"],
+    purpose: "Models investments, scenarios and capital allocation.",
     capabilities: [
-      "Strategy: hold / refinance / improve / sell / acquire across every property",
-      "Progress report — what's driven yield up or down this period",
-      "Forward view — where yield, equity and cashflow are heading next",
-      "Opportunity radar — refinancing windows, value-add moves, growth bets",
-      "Ranked actions across the portfolio: the brief, the maths, the comp set",
-      "Portfolio health score and concentration risk in one Decision Room view",
+      "Investment modelling",
+      "Scenario analysis",
+      "IRR & equity multiple",
+      "Market insights",
+      "Hold · sell · refinance · improve",
+      "Acquisition analysis",
     ],
-    yieldLink: "Strategy → execution → progress → opportunity.",
-    tint: "navy",
+    exampleStatus:
+      "Modelling the five-year return on your Dubai Marina property.",
+    accent: ACCENT_CIO,
   },
   {
-    role: "CFO",
-    name: "Finance Manager",
-    headline: "Finds your real net yield",
-    description:
-      "Provides the numbers and the financial analysis — real net yield, cashflow, debt position, refinancing decisions and per-property performance.",
+    acronym: "CFO",
+    name: "Chief Financial Officer",
+    disciplines: ["Model", "Monitor"],
+    purpose: "Understands the real financial performance of every property.",
     capabilities: [
-      "Real net yield per property and across the portfolio",
-      "12-month cashflow forecast vs actual",
-      "Loan tracker — rate reversion dates, maturity, monthly payment",
-      "Refinancing maths and the lender pack, generated from your data",
+      "Cashflow modelling",
+      "Net-yield calculations",
+      "Debt & financing",
+      "Liquidity forecasting",
+      "Budget vs actual",
+      "Portfolio financial reporting",
     ],
-    yieldLink: "See which assets are really performing.",
-    tint: "white",
+    exampleStatus:
+      "Analysing cashflow and refinancing options across your portfolio.",
+    accent: ACCENT_CFO,
   },
   {
-    role: "CIO",
-    name: "Market Analyst",
-    headline: "Finds market upside",
-    description:
-      "Benchmarks rent against the local market, reviews comparable transactions and highlights where income may be below potential.",
+    acronym: "CEO",
+    name: "Chief Executive Officer",
+    disciplines: ["Manage"],
+    purpose:
+      "Turns the team's findings into priorities and a clear recommendation.",
     capabilities: [
-      "Rent benchmarking against the local median",
-      "Comparable sales and live transaction radar (DLD / HMLR / DVF)",
-      "Short-term rental vs long-let modelling per asset",
-      "Acquisition simulator: portfolio impact of a candidate purchase",
+      "Portfolio strategy",
+      "Decision support",
+      "Goal setting",
+      "Prioritisation",
+      "Executive briefings",
+      "Big-picture portfolio focus",
     ],
-    yieldLink: "Identify possible rent and value upside.",
-    tint: "white",
+    exampleStatus:
+      "Reviewing the strategic impact of three recommended actions.",
+    accent: ACCENT_CEO,
   },
   {
-    role: "COO",
-    name: "Operations Manager",
-    headline: "Stops yield leakage",
-    description:
-      "Stops yield leakage — checks renewals, operator statements, service charges, payments and cost anomalies before they reduce returns.",
+    acronym: "COO",
+    name: "Chief Operations Officer",
+    disciplines: ["Monitor", "Manage"],
+    purpose:
+      "Monitors property operations and makes sure actions get completed.",
     capabilities: [
-      "Lease renewals, mortgage reversion and stage-payment alerts",
-      "Short-term rental and property-manager statement audits",
-      "Cost anomaly flags — service charges, capex, utility spikes",
-      "Rent collection monitoring across every property",
+      "Property operations",
+      "Occupancy monitoring",
+      "Lease & tenancy tracking",
+      "Property-manager oversight",
+      "Maintenance oversight",
+      "Cost control",
     ],
-    yieldLink: "Catch issues before they reduce returns.",
-    tint: "white",
+    exampleStatus:
+      "Checking lease expiries, occupancy and overdue actions.",
+    accent: ACCENT_COO,
   },
   {
-    role: "Concierge",
-    name: "Portfolio Personal Assistant",
-    headline: "Organises your property data",
-    description:
-      "Your concierge. Organises property data, helps you upload documents, sets alerts and keeps leases, loans and statements structured so the rest of the team can do its job.",
+    acronym: "PA",
+    name: "Personal Assistant",
+    disciplines: ["Manage", "Coordinate"],
+    purpose:
+      "Organises information, tasks, documents and follow-ups for the team.",
     capabilities: [
-      "Document vault with AI extraction — upload, snap or email",
-      "Data ingestion via WhatsApp, email forwarding or file upload",
-      "Setup wizards for new properties, calculators and reports",
-      "Glossary and how-to guidance any time you're unsure",
+      "Information retrieval",
+      "Task management",
+      "Reminders & alerts",
+      "Document management",
+      "Calendar & deadlines",
+      "Drafting communications",
     ],
-    yieldLink: "Better data means better yield decisions.",
-    tint: "white",
+    exampleStatus:
+      "Preparing your portfolio briefing and action list.",
+    accent: ACCENT_PA,
   },
 ];
 
 export function MeetTheTeamSection() {
   return (
-    <section className="bg-white" id="meet-the-team">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-28">
+    <section className="bg-white" id="meet-the-team" aria-label="Your AI Property Team">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20 lg:py-24">
+        {/* ── Heading ────────────────────────────────────────────── */}
         <div className="max-w-3xl">
           <p
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Meet your AC Agent Team
+            Your AI Property Team
           </p>
           <h2
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Five specialists. One mission: higher yield.
+            Five specialists. Three disciplines. One objective.
           </h2>
           <p
             className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            AssetCentral isn&rsquo;t a dashboard you have to drive. It&rsquo;s an AI
-            team — Your CEO, Finance Manager, Market Analyst, Operations Manager and
-            Portfolio Personal Assistant — working across every property you own,
-            in every currency, all the time. Below: what each one does and how their
-            work ties to higher yield.
+            You own the assets. Your AI team models opportunities, monitors
+            performance and manages the actions that improve your returns —
+            so you&rsquo;re not the one running every calculator and checking
+            every metric yourself.
           </p>
         </div>
 
-        {/* Hero card: Your CEO spans the full width. The synthesis layer
-            is the headline product — giving it the lead position visually
-            mirrors how the app puts it first in the sidebar. */}
-        <div className="mt-12">
-          <AgentCard agent={agents[0]} featured />
+        {/* ── Discipline rail ────────────────────────────────────────
+            Three labelled discipline tags that explain how the agents
+            split. Renders above the team grid as a key the visitor can
+            map onto the cards below. */}
+        <div className="mt-10 grid grid-cols-3 gap-4 max-w-2xl">
+          <DisciplinePill label="Model" tag="Run the numbers." />
+          <DisciplinePill label="Monitor" tag="Track performance." />
+          <DisciplinePill label="Manage" tag="Take action." />
         </div>
 
-        {/* The other four — two-up on tablet, four-up on desktop. */}
-        <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {agents.slice(1).map((a) => (
-            <AgentCard key={a.name} agent={a} />
+        {/* ── Connector rail ──────────────────────────────────────────
+            Thin line + five dots above the cards, hinting that the
+            agents work as one team. Pure decorative SVG; hidden on
+            small screens because the cards stack vertically and the
+            connector wouldn't read. */}
+        <div
+          className="hidden lg:block mt-12 mb-3 px-6"
+          aria-hidden="true"
+        >
+          <ConnectorRail accents={TEAM.map((a) => a.accent.dot)} />
+        </div>
+
+        {/* ── Team grid ───────────────────────────────────────────────
+            Desktop: 5 columns left-to-right (CIO · CFO · CEO · COO · PA)
+            so the visual mirrors the connector rail above. CEO card
+            sits in the centre and gets a thicker border to read as the
+            synthesiser.
+            Tablet: 2 columns, CEO spans both at the top of row 2.
+            Mobile: stacked single column, CEO leads (most important
+            agent — the synthesis layer). */}
+        <div className="lg:hidden mt-8 space-y-4">
+          {/* CEO first on small screens — leads the read. */}
+          <AgentCard agent={TEAM[2]} featured />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <AgentCard agent={TEAM[0]} />
+            <AgentCard agent={TEAM[1]} />
+            <AgentCard agent={TEAM[3]} />
+            <AgentCard agent={TEAM[4]} />
+          </div>
+        </div>
+        <div className="hidden lg:grid grid-cols-5 gap-3">
+          {TEAM.map((a, idx) => (
+            <AgentCard key={a.acronym} agent={a} featured={idx === 2} />
           ))}
         </div>
 
-        {/* "And more" link — brought across from the previous
-            FeaturesGrid section (now merged into this one) so the
-            visitor still gets a clear "there's more than this on
-            the features page" signal without a separate near-
-            duplicate section listing the same five agents. */}
-        <p
-          className="mt-10 text-[14.5px] text-[var(--color-ink)]"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          And more — multi-currency, full report suite, team seats on Team
-          and Enterprise, partner programmes for brokers and advisers.{" "}
+        {/* ── One-team line ─────────────────────────────────────────── */}
+        <div className="mt-10 bg-slate-50 border border-slate-200 rounded-lg p-5 max-w-3xl">
+          <p
+            className="text-[14.5px] text-[var(--color-ink)] leading-[1.55]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            <span className="font-semibold">One team. One goal. Your portfolio.</span>{" "}
+            Your AI team collaborates so you can focus on the decisions that
+            matter. The CIO models. The CFO checks the numbers. The COO watches
+            operations. The PA keeps everything organised. The CEO synthesises
+            it all into a clear next step.
+          </p>
+        </div>
+
+        {/* ── CTAs ────────────────────────────────────────────────── */}
+        <div className="mt-8 flex items-center gap-4 flex-wrap">
+          <Link
+            href="/get-started"
+            className="px-6 py-3 bg-[var(--color-accent)] text-white text-[15px] font-semibold rounded hover:opacity-90 transition-opacity"
+          >
+            Meet your AI team →
+          </Link>
           <Link
             href="/features"
-            className="text-[var(--color-accent)] font-medium hover:underline"
+            className="text-[15px] text-[var(--color-accent)] font-medium hover:underline"
           >
-            See all features →
+            See all features
           </Link>
-        </p>
+        </div>
 
-        {/* Cautious-language disclaimer — same posture as the app's
-            DECISION_SUPPORT_DISCLAIMER. The marketing site doesn't need
-            it verbatim, but it should be visible enough that a visitor
-            understands the "decision support, not advice" framing
-            before they sign up. The role acronyms (CEO / CFO / CIO /
-            COO) are expanded inline under each chip in AgentCard. */}
+        {/* ── Compliance line ────────────────────────────────────── */}
         <p
-          className="mt-6 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
+          className="mt-10 text-[13px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           AssetCentral provides software, analysis and decision support. It does
@@ -208,124 +300,105 @@ export function MeetTheTeamSection() {
   );
 }
 
-function AgentCard({
-  agent,
-  featured,
-}: {
-  agent: Agent;
-  /** The featured card spans full width with a larger description block
-   *  and the role badge sitting prominently in the corner. Used for the
-   *  Your CEO card at the top of the grid. */
-  featured?: boolean;
-}) {
-  const isNavy = agent.tint === "navy";
+// ─── Atoms ───────────────────────────────────────────────────────────────
+
+function DisciplinePill({ label, tag }: { label: string; tag: string }) {
+  return (
+    <div className="border border-slate-200 rounded-lg p-3">
+      <div
+        className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-navy)] font-bold"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {label}
+      </div>
+      <div
+        className="text-[12px] text-[var(--color-muted)] mt-1"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {tag}
+      </div>
+    </div>
+  );
+}
+
+function ConnectorRail({ accents }: { accents: string[] }) {
+  return (
+    <div className="relative h-6">
+      {/* Connecting line */}
+      <div className="absolute top-1/2 left-3 right-3 h-px bg-slate-200" />
+      {/* Dots evenly spaced — one per agent */}
+      <div className="absolute inset-0 flex items-center justify-between px-3">
+        {accents.map((dotClass, i) => (
+          <span
+            key={i}
+            className={`w-3 h-3 rounded-full ${dotClass} ring-4 ring-white`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AgentCard({ agent, featured = false }: { agent: Agent; featured?: boolean }) {
   return (
     <article
-      className={`rounded-2xl border p-7 lg:p-9 flex flex-col gap-5 ${
-        isNavy
-          ? "bg-[var(--color-navy)] border-[var(--color-navy)] text-white"
-          : "bg-white border-[var(--color-border)] text-[var(--color-ink)]"
-      } ${featured ? "lg:p-10" : ""}`}
+      className={`rounded-xl p-5 border ${agent.accent.cardTint} ${
+        featured
+          ? `${agent.accent.cardBorder} border-2 shadow-sm`
+          : agent.accent.cardBorder
+      }`}
     >
-      {/* Role chip + inline definition. Acronym on top in uppercase,
-          full chief-officer name immediately below in italic muted —
-          self-explanatory in place rather than needing a separate
-          glossary block. The Portfolio Personal Assistant card has
-          a non-acronym role label ("Concierge") so the second line
-          is skipped. */}
-      <div className="flex items-baseline justify-between gap-4">
-        <div>
-          <span
-            className={`block text-[12px] uppercase tracking-[0.12em] font-semibold ${
-              isNavy ? "text-white/80" : "text-[var(--color-muted)]"
-            }`}
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            {agent.role}
-          </span>
-          {roleFullName(agent.role) && (
-            <span
-              className={`block mt-0.5 text-[10.5px] italic leading-tight ${
-                isNavy ? "text-white/55" : "text-[var(--color-muted)]"
-              }`}
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              {roleFullName(agent.role)}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <div>
+      {/* Acronym chip + name */}
+      <div className="flex items-baseline gap-2 flex-wrap mb-1">
+        <span
+          className={`text-[10px] uppercase tracking-[0.12em] font-bold px-2 py-0.5 rounded ${agent.accent.badgeBg} ${agent.accent.badgeText}`}
+        >
+          {agent.acronym}
+        </span>
         <h3
-          className={`${
-            featured ? "text-[30px] lg:text-[40px]" : "text-[22px] lg:text-[24px]"
-          } leading-[1.1] ${isNavy ? "text-white" : "text-[var(--color-navy)]"}`}
-          style={{ fontFamily: "var(--font-display)" }}
+          className="text-[14.5px] font-semibold text-[var(--color-navy)] leading-tight"
+          style={{ fontFamily: "var(--font-sans)" }}
         >
           {agent.name}
         </h3>
-        {/* Yield-led headline — what the agent does for yield in one
-            breath. Brought across from the (now-merged) AgentYieldSection
-            so the card reads as both team intro AND yield-job intro
-            without the visitor having to scroll between sections. */}
-        <p
-          className={`mt-2 ${
-            featured ? "text-[16px] lg:text-[17px]" : "text-[14px] lg:text-[15px]"
-          } font-semibold leading-[1.35] ${
-            isNavy ? "text-white/95" : "text-[var(--color-ink)]"
-          }`}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {agent.headline}
-        </p>
-        <p
-          className={`mt-3 ${
-            featured ? "text-[15px] lg:text-[16px]" : "text-[13.5px] lg:text-[14px]"
-          } leading-[1.55] ${isNavy ? "text-white/75" : "text-[var(--color-muted)]"}`}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {agent.description}
-        </p>
       </div>
 
-      <ul className={`space-y-2.5 ${featured ? "lg:grid lg:grid-cols-3 lg:gap-4 lg:space-y-0" : ""}`}>
-        {agent.capabilities.map((item) => (
-          <li
-            key={item}
-            className={`flex gap-3 text-[13.5px] leading-[1.5] ${
-              isNavy ? "text-white/90" : "text-[var(--color-ink)]"
-            }`}
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <span
-              aria-hidden
-              className={`mt-2 inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                isNavy ? "bg-[var(--color-accent)]" : "bg-[var(--color-navy)]"
-              }`}
-            />
-            <span>{item}</span>
+      {/* Discipline tags */}
+      <div
+        className="text-[10px] uppercase tracking-[0.06em] text-[var(--color-muted)] font-semibold mb-3"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {agent.disciplines.join(" · ")}
+      </div>
+
+      {/* Purpose */}
+      <p
+        className="text-[13px] leading-[1.45] text-[var(--color-ink)] mb-3"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {agent.purpose}
+      </p>
+
+      {/* Capabilities */}
+      <ul
+        className="text-[12px] text-[var(--color-muted)] space-y-1 mb-3"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {agent.capabilities.map((c) => (
+          <li key={c} className="flex items-start gap-1.5">
+            <span aria-hidden className={`mt-1.5 w-1 h-1 rounded-full ${agent.accent.dot} shrink-0`} />
+            <span>{c}</span>
           </li>
         ))}
       </ul>
 
-      {/* Yield-link strapline — closes every card with a one-line
-          connection to the yield north star. Italic accent on the
-          white cards, accent-on-navy on the featured card. Bordered
-          off so it reads as a punchline, not part of the bullets. */}
+      {/* Example status — italic, sits at the bottom so the eye reads
+          purpose → capabilities → "what they're up to right now" */}
       <div
-        className={`mt-auto pt-4 border-t ${
-          isNavy ? "border-white/15" : "border-[var(--color-border)]"
-        }`}
+        className="text-[11.5px] italic text-[var(--color-muted)] pt-3 border-t border-slate-200/70"
+        style={{ fontFamily: "var(--font-sans)" }}
       >
-        <p
-          className={`text-[12.5px] italic leading-[1.45] ${
-            isNavy ? "text-[var(--color-accent)]/90" : "text-[var(--color-accent)]"
-          }`}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {agent.yieldLink}
-        </p>
+        {agent.exampleStatus}
       </div>
     </article>
   );
