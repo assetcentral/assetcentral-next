@@ -437,12 +437,15 @@ export function MeetTheTeamSection() {
               was retired). */}
           <div className="lg:col-span-4">
             <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-semibold text-[color:var(--color-navy)] leading-[1.05] tracking-tight">
-              Your AI Property Management Team
+              Your AI Property Family Office.
             </h1>
-            <p className="mt-5 text-base md:text-lg text-[color:var(--color-muted)] leading-relaxed">
-              Five experts. Three disciplines.
+            <p className="mt-5 font-[family-name:var(--font-display)] text-2xl md:text-3xl text-[color:var(--color-navy)] leading-tight">
+              Model. Monitor. Manage.
+            </p>
+            <p className="mt-4 text-base md:text-lg text-[color:var(--color-muted)] leading-relaxed">
+              One call. Five AI experts.
               <br />
-              All working for you to grow your returns.
+              Every property decision.
             </p>
 
             {/* Discipline pills */}
@@ -471,12 +474,25 @@ export function MeetTheTeamSection() {
               ))}
             </ul>
 
-            <div className="mt-9">
+            {/* Dual CTA — Call My Team is the lead family-office framing.
+                "Add your first property" remains as the concrete signup
+                action for visitors who'd rather start with their data. */}
+            <div className="mt-9 flex flex-col sm:flex-row gap-3">
               <Link
-                href="/demo"
-                className="inline-flex items-center gap-2 rounded-md bg-[color:var(--color-navy)] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[color:var(--color-navy-light)]"
+                href="/signup?plan=pro_monthly&intent=call-team"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-navy)] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[color:var(--color-navy-light)]"
               >
-                See Your Team in Action
+                <span
+                  aria-hidden
+                  className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-pa-mid)]"
+                />
+                Call My Team
+              </Link>
+              <Link
+                href="/signup?plan=pro_monthly&intent=direct"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-[color:var(--color-border)] bg-white px-6 py-3.5 text-sm font-semibold text-[color:var(--color-navy)] transition hover:bg-[color:var(--color-surface)]"
+              >
+                Add your first property
                 <span aria-hidden>→</span>
               </Link>
             </div>

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
+import { CallYourTeamSection } from "@/components/marketing/CallYourTeamSection";
+import { DailyBriefingSection } from "@/components/marketing/DailyBriefingSection";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { GetDataInSection } from "@/components/marketing/GetDataInSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
@@ -7,29 +9,20 @@ import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { StickyCta } from "@/components/marketing/StickyCta";
 import { WhatAIUnlocksSection } from "@/components/marketing/WhatAIUnlocksSection";
-// ProductDemoTabs (the prior 4-step "Get the data in / See your real
-// position / Catch what's coming / Run the portfolio for yield" tab
-// strip) retired in the 2026-06 "family-office capabilities" reframe.
-// The new WhatAIUnlocksSection positions the product as a list of
-// capabilities owners used to need a family office to access, rather
-// than a generic feature walkthrough. Component kept in the repo for
-// possible reuse — just no longer imported from the homepage.
 // HeroSection / ThreePillarsSection / ProblemSection / LeadMagnetsSection
-// were retired in the 2026-06 "team-as-hero" simplification. The team
-// section now opens the page as the landing hero — it carries the
-// headline, the Model/Monitor/Manage discipline pills, the five
-// portraits, and the synthesis card, so the standalone hero / pillars /
-// problem framings were redundant. Components are kept in the repo for
-// possible reuse but no longer imported from the homepage.
+// retired in the 2026-06 team-as-hero simplification.
+// ProductDemoTabs retired in the family-office capabilities reframe.
+// Components stay in the repo for possible reuse — just no longer
+// imported from the homepage.
 
 export const metadata: Metadata = {
-  // The team section IS the hero, so the title leads with the team
-  // framing rather than the framework verbs.
-  title: "Your AI Property Management Team — AssetCentral",
-  // Target: 140–160 chars. Communicates: the team metaphor · target
-  // segment (2–50 properties) · north star (yield) · price hook.
+  // 2026-06 family-office positioning shift. Title leads with the
+  // family-office framing; description names the team + briefing +
+  // segment + price hook.
+  title: "Your AI Property Family Office — AssetCentral",
+  // Target: 140–160 chars.
   description:
-    "Five AI specialists working on your portfolio across Model, Monitor and Manage — for property owners with 2 to 50 properties. Grow your returns. From €19/month.",
+    "Hire an AI Property Family Office. Five executives — CIO, CFO, CEO, COO, PA — already briefed on your portfolio and today's market. From €19/month.",
   alternates: { canonical: "/" },
 };
 
@@ -40,7 +33,7 @@ const jsonLd = {
   applicationCategory: "FinanceApplication",
   offers: { "@type": "Offer", price: "19", priceCurrency: "EUR" },
   description:
-    "AI property management team for owners with 2–50 properties — a Chief Investment Officer, Chief Financial Officer, Chief Executive Officer, Chief Operations Officer and Personal Assistant working continuously across Model, Monitor and Manage to grow portfolio yield.",
+    "AI Property Family Office for owners with 2–50 properties. Five AI executives — Chief Investment Officer, Chief Financial Officer, Chief Executive Officer, Chief Operations Officer and Personal Assistant — work continuously across Model, Monitor and Manage. Daily briefings, on-call advice, recommended actions.",
 };
 
 export default function HomePage() {
@@ -50,26 +43,35 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Homepage flow (2026-06 team-as-hero simplification):
-            MeetTheTeamSection — five-portrait landing hero with the
-                                 Model/Monitor/Manage discipline pills,
-                                 "Your AI Property Management Team" H1
-                                 and the team synthesis card
-            GetDataInSection   — five-channel ingestion strip; answers
-                                 "now how do I start?" right after the
-                                 team intro. Voice positioned as "your
-                                 PA calls you".
-            WhatAIUnlocksSection — six family-office-grade capabilities
-                                   the AI team gives you access to.
-                                   Replaces the prior ProductDemoTabs
-                                   walkthrough.
-            CalculatorsCta     — free calculators teaser
-            PricingPreview     — Individual / Pro / Team tiers
-            LeadCapture        — email capture
-            FinalCta           — close
-            StickyCta          — mobile-only conversion pill */}
+      {/* Homepage flow (2026-06 AI Property Family Office reposition,
+          Phase 1):
+            MeetTheTeamSection      — the team hero. H1 now reads
+                                      "Your AI Property Family Office."
+                                      Dual CTA: Call My Team + Add
+                                      your first property.
+            CallYourTeamSection     — NEW. Boardroom + example transcript.
+                                      Pre-positions the conversational
+                                      experience before the underlying
+                                      voice screen ships in Phase 4.
+            DailyBriefingSection    — NEW. "Letter from your team"
+                                      briefing card + sources strip.
+                                      Pre-positions the in-app
+                                      TodaysBriefingPanel that lands
+                                      in Phase 2.
+            GetDataInSection        — five-channel ingestion strip.
+            WhatAIUnlocksSection    — six family-office capabilities.
+            CalculatorsCta          — free calculators teaser.
+            PricingPreview          — Individual / Pro / Team tiers.
+            LeadCapture             — email capture.
+            FinalCta                — close. Call My Team is now the
+                                      lead conversion action.
+            StickyCta               — mobile-only conversion pill,
+                                      defaults to Call My Team. */}
       <MeetTheTeamSection />
+      <CallYourTeamSection />
+      <DailyBriefingSection />
       <GetDataInSection />
+      <div id="how-it-works" />
       <WhatAIUnlocksSection />
       <CalculatorsCta />
       <PricingPreview />

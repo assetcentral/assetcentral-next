@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 const DISMISS_KEY = "ac_sticky_dismissed_v1";
 
 export function StickyCta({
-  label = "Start 7-day trial",
-  href = "/signup?plan=individual_monthly",
-  message = "From €19/month — 7-day trial on every tier, no card required.",
+  label = "Call My Team",
+  href = "/signup?plan=pro_monthly&intent=call-team",
+  message = "Five AI experts on one call. Already briefed. From €19/month.",
   /** Show after scrolling this fraction of the page (0–1). */
   threshold = 0.4,
 }: {
@@ -66,9 +66,13 @@ export function StickyCta({
         </div>
         <Link
           href={href}
-          className="plausible-event-name=signup_cta_click plausible-event-location=sticky inline-flex items-center justify-center whitespace-nowrap min-h-[44px] rounded-md bg-white text-[var(--color-navy)] text-[13.5px] sm:text-[14px] font-semibold px-3.5 sm:px-5 hover:bg-slate-100 transition-colors"
+          className="plausible-event-name=signup_cta_click plausible-event-location=sticky inline-flex items-center justify-center gap-1.5 whitespace-nowrap min-h-[44px] rounded-md bg-white text-[var(--color-navy)] text-[13.5px] sm:text-[14px] font-semibold px-3.5 sm:px-5 hover:bg-slate-100 transition-colors"
         >
-          {label} →
+          <span
+            aria-hidden
+            className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-pa-mid)]"
+          />
+          {label}
         </Link>
         <button
           type="button"

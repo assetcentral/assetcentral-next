@@ -18,37 +18,39 @@ export function FinalCta() {
           className="text-[40px] lg:text-[56px] leading-[1.05] text-white"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          You have a portfolio. Let the team find the yield.
+          Hire a property family office. From €19 a month.
         </h2>
         <p
           className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-white/75 max-w-2xl mx-auto"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Add your first property in 5 minutes. See your real yield. Let your CEO rank the actions that could improve returns. From €19/month — 7-day trial on every tier.
+          Five AI executives. Every property decision. Every morning briefed. Add your first property in 5 minutes — or just call your team and ask.
         </p>
 
-        {/* CTA hierarchy on the final-cta (2026-06 pricing change):
-              Primary    "Start 7-day trial"        — no-card entry path
-              Primary    "Subscribe now"            — direct paid conversion
-              Tertiary   currency line              — quiet text below
-
-            Free signup retired alongside the Free tier. The trial is
-            now the no-card-required entry; "Subscribe now" remains the
-            high-intent path that goes straight to Stripe Checkout. */}
+        {/* CTA hierarchy on the final-cta (2026-06 family-office shift):
+              Primary    "Call My Team"             — lead family-office action
+              Secondary  "Subscribe now"            — direct paid conversion
+            Both routes land in the signup flow, differentiated by
+            `intent=` so the post-signup experience can branch (Phase 4
+            voice screen for call-team, dashboard for direct). */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/signup?plan=individual_monthly"
-            className="plausible-event-name=signup_cta_click plausible-event-location=final inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-white text-[var(--color-navy)] text-[15.5px] font-semibold hover:bg-slate-100 transition-colors"
+            href="/signup?plan=pro_monthly&intent=call-team"
+            className="plausible-event-name=signup_cta_click plausible-event-location=final_call_team inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-white text-[var(--color-navy)] text-[15.5px] font-semibold hover:bg-slate-100 transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Start 7-day free trial
+            <span
+              aria-hidden
+              className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-pa-mid)]"
+            />
+            Call My Team
           </Link>
           <Link
             href="/signup?plan=pro_monthly&intent=direct"
             className="plausible-event-name=signup_cta_click plausible-event-location=final_direct inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-[var(--color-accent)] text-white text-[15.5px] font-semibold hover:opacity-90 transition-opacity"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Subscribe now
+            Add your first property
           </Link>
         </div>
         <p
