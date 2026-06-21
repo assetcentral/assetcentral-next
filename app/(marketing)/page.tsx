@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
+import { CallMeBackForm } from "@/components/marketing/CallMeBackForm";
 import { CallYourTeamSection } from "@/components/marketing/CallYourTeamSection";
 import { DailyBriefingSection } from "@/components/marketing/DailyBriefingSection";
 import { FinalCta } from "@/components/marketing/FinalCta";
@@ -74,6 +75,21 @@ export default function HomePage() {
           graphic. Phase 1 of the marketing voice ship — phone-callback
           form (Phase 2) will slot directly under this band. */}
       <HeroLiveTeam />
+      {/* CallMeBackForm — the conversion driver. Anonymous visitors enter
+          their phone, verify via SMS, get called back by the AI team
+          within ~60s. Sits immediately under the animated portrait band
+          so the "hear it for yourself" beat is the first ask on the page. */}
+      <section
+        aria-label="Get a call from your AI property team"
+        className="relative w-full bg-[#1a1a2e] pb-12 sm:pb-16"
+      >
+        <div className="mx-auto max-w-5xl px-4">
+          <p className="text-center text-sm sm:text-base text-white/70 mb-5">
+            Want to hear it for yourself? Two minutes, free, no signup.
+          </p>
+          <CallMeBackForm variant="hero" />
+        </div>
+      </section>
       <MeetTheTeamSection />
       <CallYourTeamSection />
       <DailyBriefingSection />
