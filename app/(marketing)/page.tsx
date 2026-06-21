@@ -4,6 +4,7 @@ import { CallYourTeamSection } from "@/components/marketing/CallYourTeamSection"
 import { DailyBriefingSection } from "@/components/marketing/DailyBriefingSection";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { GetDataInSection } from "@/components/marketing/GetDataInSection";
+import { HeroLiveTeam } from "@/components/marketing/HeroLiveTeam";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
@@ -67,6 +68,12 @@ export default function HomePage() {
                                       lead conversion action.
             StickyCta               — mobile-only conversion pill,
                                       defaults to Call My Team. */}
+      {/* HeroLiveTeam — animated portrait band (3s loop, pure CSS).
+          Sits ABOVE the static MeetTheTeamSection so the first thing
+          a visitor sees is the team "speaking" rather than a marketing
+          graphic. Phase 1 of the marketing voice ship — phone-callback
+          form (Phase 2) will slot directly under this band. */}
+      <HeroLiveTeam />
       <MeetTheTeamSection />
       <CallYourTeamSection />
       <DailyBriefingSection />
