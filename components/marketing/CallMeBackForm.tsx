@@ -51,6 +51,11 @@ const COUNTRY_DIAL = [
 
 type Stage = "phone" | "code" | "calling" | "error";
 
+// Default countdown if the API doesn't return one — matches the
+// estimated_dial_seconds the verify endpoint sends after kicking off
+// an inline SIP dial.
+const DEFAULT_COUNTDOWN_SECONDS = 10;
+
 interface CallMeBackFormProps {
   /** Where the form is mounted — sent to the API as the trigger source
    *  so we can A/B test homepage embed vs /try later. */
@@ -64,6 +69,7 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
   const [code, setCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [secondsLeft, setSecondsLeft] = useState(DEFAULT_COUNTDOWN_SECONDS);
   const codeInputRef = useRef<HTMLInputElement | null>(null);
 
   // When we move into code stage, auto-focus the code input so the
@@ -73,6 +79,20 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
       codeInputRef.current.focus();
     }
   }, [stage]);
+
+  // Countdown timer for the calling stage. Ticks once per second from
+  // whatever the verify endpoint reported (default 10s) down to 0,
+  // then stays at 0 — the post-zero copy ("your phone is ringing")
+  // replaces the number. Cleanup on unmount or stage change so a
+  // stale interval doesn't keep firing after a reset.
+  useEffect(() => {
+    if (stage !== "calling") return;
+    if (secondsLeft <= 0) return;
+    const t = setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(t);
+  }, [stage, secondsLeft]);
 
   // E.164: + then 1-9 followed by 6–14 more digits.
   const fullPhone = `${dialCode}${phoneLocal.replace(/\D/g, "")}`;
@@ -115,12 +135,23 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: fullPhone, code }),
       });
-      const data = (await res.json().catch(() => ({}))) as { error?: string; message?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        message?: string;
+        estimated_dial_seconds?: number;
+      };
       if (!res.ok) {
         setErrorMsg(data.message ?? "That code didn't work. Try again.");
         setSubmitting(false);
         return;
       }
+      // Seed the countdown from the API's estimate so the form stays in
+      // sync with whatever the backend actually scheduled. Clamp to
+      // [3, 60] so a corrupt value can't render gibberish.
+      const eta = Number(data.estimated_dial_seconds);
+      setSecondsLeft(
+        Number.isFinite(eta) ? Math.max(3, Math.min(60, Math.round(eta))) : DEFAULT_COUNTDOWN_SECONDS,
+      );
       setStage("calling");
     } catch {
       setErrorMsg("Network error. Try again.");
@@ -134,6 +165,7 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
     setPhoneLocal("");
     setCode("");
     setErrorMsg(null);
+    setSecondsLeft(DEFAULT_COUNTDOWN_SECONDS);
   }
 
   // ── UI ──────────────────────────────────────────────────────────────────
@@ -142,30 +174,73 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
     : "w-full max-w-lg mx-auto";
 
   if (stage === "calling") {
+    const ringing = secondsLeft <= 0;
     return (
       <div className={wrapClass}>
         <div className="rounded-2xl border border-blue-400/40 bg-blue-500/10 p-6 sm:p-8 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/30">
-            <span className="relative flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-300 opacity-75" />
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-400" />
-            </span>
-          </div>
-          <h3 className="text-lg sm:text-xl font-semibold text-white">
-            Calling you in about a minute
-          </h3>
-          <p className="mt-2 text-sm text-blue-100/80">
-            Your AI team is being dispatched to {fullPhone}. The call should arrive
-            within 60 seconds — answer when it does. If you miss it, we&apos;ll try
-            again later.
+          {/* Big animated counter — drops to a ringing pulse at 0. */}
+          {!ringing ? (
+            <>
+              <p className="text-xs uppercase tracking-[0.2em] text-blue-200/80 font-semibold">
+                Calling you in
+              </p>
+              <div
+                key={secondsLeft}
+                className="mt-2 text-6xl sm:text-7xl font-bold text-white tabular-nums callmeback-tick"
+                style={{ lineHeight: 1 }}
+              >
+                {secondsLeft}
+              </div>
+              <p className="mt-1 text-sm text-blue-100/80">
+                {secondsLeft === 1 ? "second" : "seconds"}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/30">
+                <span className="relative flex h-4 w-4">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-300 opacity-75" />
+                  <span className="relative inline-flex h-4 w-4 rounded-full bg-blue-400" />
+                </span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold text-white">
+                Your phone should be ringing now
+              </h3>
+            </>
+          )}
+          <p className="mt-4 text-sm text-blue-100/80">
+            {ringing ? (
+              <>
+                Answer the call to <span className="font-mono">{fullPhone}</span> —
+                your AI team is on the line.
+              </>
+            ) : (
+              <>
+                Dialling <span className="font-mono">{fullPhone}</span>. Have your
+                phone handy.
+              </>
+            )}
           </p>
           <button
             type="button"
             onClick={reset}
-            className="mt-4 text-xs text-blue-200 underline hover:text-white"
+            className="mt-5 text-xs text-blue-200 underline hover:text-white"
           >
             Wrong number? Start over
           </button>
+          {/* Local keyframe so the digit "pops" each tick — cheap scale +
+              fade-in keyed off the changing element. */}
+          <style>{`
+            @keyframes callmeback-tick-pop {
+              0%   { transform: scale(0.85); opacity: 0; }
+              60%  { transform: scale(1.06); opacity: 1; }
+              100% { transform: scale(1);    opacity: 1; }
+            }
+            .callmeback-tick {
+              animation: callmeback-tick-pop 360ms cubic-bezier(.2,.7,.2,1);
+              will-change: transform, opacity;
+            }
+          `}</style>
         </div>
       </div>
     );
@@ -180,7 +255,8 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
               Get a call from your AI team
             </label>
             <p className="text-sm text-white/80 mb-4">
-              Two minutes. Free. No signup. We&apos;ll text you a code, then call.
+              Two minutes. Free. No signup. We&apos;ll text you a code — your call
+              arrives within 10 seconds of verifying.
             </p>
             <div className="flex gap-2">
               <select
@@ -214,7 +290,7 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
               style={{ backgroundColor: phoneValid && !submitting ? ACCENT : "rgba(79,110,247,0.4)" }}
               className="mt-4 w-full rounded-lg text-white font-semibold py-3 text-sm transition disabled:cursor-not-allowed hover:brightness-110"
             >
-              {submitting ? "Sending code…" : "Call me in 60 seconds"}
+              {submitting ? "Sending code…" : "Text me a code"}
             </button>
             <p className="mt-3 text-[11px] text-white/50 text-center">
               Standard SMS rates may apply. By continuing you agree to receive a
