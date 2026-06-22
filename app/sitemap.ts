@@ -10,7 +10,7 @@ const BASE = "https://assetcentral.ai";
 // a stable signal that beats `new Date()` on every build (which Google
 // reads as noise and may discount). When you ship a substantive change to
 // a route, bump the date here in the same commit.
-const ROUTE_LAST_MODIFIED = "2026-06-08";
+const ROUTE_LAST_MODIFIED = "2026-06-22";
 
 // Per-resource-article publish dates — kept in sync with the
 // `datePublished` constants inside each article's page.tsx.
@@ -61,6 +61,17 @@ const routes: Entry[] = [
   { path: "/model", priority: 0.8, changeFrequency: "monthly" },
   { path: "/monitor", priority: 0.8, changeFrequency: "monthly" },
   { path: "/manage", priority: 0.8, changeFrequency: "monthly" },
+
+  // Per-agent SEO landing pages (2026-06-22). Owns search intent for
+  // "AI property [CEO/CIO/CFO/COO/PA]" — one page per agent in the
+  // five-agent property team. Same priority as /model/etc. since they
+  // share the buyer-journey weight: pillar pages frame the framework,
+  // agent pages frame the team.
+  { path: "/ai-property-ceo", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/ai-property-cio", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/ai-property-cfo", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/ai-property-coo", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/ai-property-pa", priority: 0.8, changeFrequency: "monthly" },
 
   // Calculators (individual)
   { path: "/calculators/mortgage", priority: 0.7, changeFrequency: "monthly" },

@@ -62,6 +62,31 @@ const navItems: NavItem[] = [
         description: "Make the call the agents would make.",
       },
       {
+        href: "/ai-property-ceo",
+        label: "Meet your AI CEO",
+        description: "Portfolio strategy + ranked priorities.",
+      },
+      {
+        href: "/ai-property-cio",
+        label: "Meet your AI CIO",
+        description: "Investment modelling — hold, sell, refinance.",
+      },
+      {
+        href: "/ai-property-cfo",
+        label: "Meet your AI CFO",
+        description: "Net yield, cash flow, debt, liquidity.",
+      },
+      {
+        href: "/ai-property-coo",
+        label: "Meet your AI COO",
+        description: "Leases, occupancy, operational risk.",
+      },
+      {
+        href: "/ai-property-pa",
+        label: "Meet your AI PA",
+        description: "Documents, reminders, briefings.",
+      },
+      {
         href: "/features",
         label: "All features",
         description: "Every surface and capability in one page.",
