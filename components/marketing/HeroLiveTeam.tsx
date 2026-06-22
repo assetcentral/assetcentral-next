@@ -38,7 +38,7 @@ export function HeroLiveTeam() {
   return (
     <section
       aria-label="Your AI property team — live"
-      className="relative w-full bg-gradient-to-b from-[#0f172a] via-[#1a1a2e] to-[#1a1a2e] py-10 sm:py-14"
+      className="relative w-full bg-gradient-to-b from-[#0f172a] via-[#1a1a2e] to-[#1a1a2e] py-5 sm:py-7"
     >
       {/* Keyframes scoped to this component. The 3s cycle × 5 portraits
           = 0.6s "talking" per portrait. 20%-80% holds the active state
@@ -89,36 +89,39 @@ export function HeroLiveTeam() {
       `}</style>
 
       <div className="mx-auto max-w-5xl px-4">
-        <div className="text-center mb-7 sm:mb-9">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-100 text-[11px] sm:text-xs font-medium tracking-wide">
-            <span className="relative flex h-2 w-2">
+        {/* 2026-06-22: compacted aggressively — section now ~50% of
+            its prior height. Subhead paragraph dropped, headline
+            shrunk, portraits smaller, agent subtitle line removed.
+            Goal: the band reads as a quick "here they are, alive"
+            beat before the CallMeBackForm just below; doesn't
+            compete for vertical real-estate. */}
+        <div className="text-center mb-3 sm:mb-4">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-100 text-[10px] sm:text-[11px] font-medium tracking-wide">
+            <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-red-500" />
             </span>
             On a call right now
           </div>
-          <h2 className="mt-4 text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
+          <h2 className="mt-2 text-base sm:text-lg md:text-xl font-semibold text-white tracking-tight">
             Your AI property team. Talking through a real portfolio.
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-blue-100/80 max-w-xl mx-auto">
-            Five specialists. One conversation. Always on, never billable.
-          </p>
         </div>
 
         {/* Portrait band — flex row, responsive sizes. The animation
             is symmetrical so the row stays centred at every scale. */}
-        <div className="flex justify-center items-end gap-3 sm:gap-6 md:gap-10">
+        <div className="flex justify-center items-end gap-2.5 sm:gap-5 md:gap-8">
           {AGENTS.map((a) => (
             <div
               key={a.key}
               className="flex flex-col items-center"
-              style={{ width: "min(100%, 140px)" }}
+              style={{ width: "min(100%, 100px)" }}
             >
               <div
                 className="hero-team-portrait relative rounded-full overflow-hidden border-2 border-white/20"
                 style={{
-                  width: "clamp(54px, 14vw, 96px)",
-                  height: "clamp(54px, 14vw, 96px)",
+                  width: "clamp(40px, 10vw, 60px)",
+                  height: "clamp(40px, 10vw, 60px)",
                   animationDelay: a.delay,
                 }}
               >
@@ -126,7 +129,7 @@ export function HeroLiveTeam() {
                   src={`/team/${a.key}.webp`}
                   alt={`${a.role} portrait`}
                   fill
-                  sizes="(max-width: 640px) 14vw, 96px"
+                  sizes="(max-width: 640px) 10vw, 60px"
                   className="object-cover"
                   priority={a.key === "ceo"}
                 />
@@ -136,7 +139,7 @@ export function HeroLiveTeam() {
                   to the same delay as the portrait, so it appears
                   active when the portrait is the speaking one. */}
               <div
-                className="hero-team-label mt-2 sm:mt-3 flex items-end gap-[2px] h-3"
+                className="hero-team-label mt-1.5 flex items-end gap-[2px] h-2"
                 style={{ animationDelay: a.delay }}
               >
                 <div className="hero-team-bar hero-team-bar-1 w-[2px] h-full bg-blue-400 rounded-full" />
@@ -146,14 +149,11 @@ export function HeroLiveTeam() {
               </div>
 
               <div
-                className="hero-team-label mt-1.5 text-center"
+                className="hero-team-label mt-1 text-center"
                 style={{ animationDelay: a.delay }}
               >
-                <div className="text-[10px] sm:text-xs uppercase tracking-wider font-bold text-blue-200">
+                <div className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-blue-200">
                   {a.role}
-                </div>
-                <div className="hidden sm:block text-[10px] text-white/60 leading-tight mt-0.5">
-                  {a.subtitle}
                 </div>
               </div>
             </div>
