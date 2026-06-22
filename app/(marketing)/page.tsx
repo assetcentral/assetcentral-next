@@ -69,16 +69,19 @@ export default function HomePage() {
                                       lead conversion action.
             StickyCta               — mobile-only conversion pill,
                                       defaults to Call My Team. */}
-      {/* HeroLiveTeam — animated portrait band (3s loop, pure CSS).
-          Sits ABOVE the static MeetTheTeamSection so the first thing
-          a visitor sees is the team "speaking" rather than a marketing
-          graphic. Phase 1 of the marketing voice ship — phone-callback
-          form (Phase 2) will slot directly under this band. */}
+      {/* MeetTheTeamSection — "Your AI Property Family Office" team
+          hero. Promoted to first position (was second under
+          HeroLiveTeam) per 2026-06-22 user feedback: the brand-led
+          "Family Office" frame should be the first thing a visitor
+          reads, before the live-call demo. The HeroLiveTeam band
+          (with its embedded phone-callback form) now sits directly
+          underneath as the "hear it for yourself" beat. */}
+      <MeetTheTeamSection />
+      {/* HeroLiveTeam — animated portrait band (3s loop, pure CSS) +
+          the embedded CallMeBackForm conversion driver. Sits BELOW
+          the static MeetTheTeamSection so the brand intro reads
+          first, then the visitor can immediately hear it. */}
       <HeroLiveTeam />
-      {/* CallMeBackForm — the conversion driver. Anonymous visitors enter
-          their phone, verify via SMS, get called back by the AI team
-          within ~60s. Sits immediately under the animated portrait band
-          so the "hear it for yourself" beat is the first ask on the page. */}
       <section
         aria-label="Get a call from your AI property team"
         className="relative w-full bg-[#1a1a2e] pb-12 sm:pb-16"
@@ -90,7 +93,6 @@ export default function HomePage() {
           <CallMeBackForm variant="hero" />
         </div>
       </section>
-      <MeetTheTeamSection />
       <CallYourTeamSection />
       <DailyBriefingSection />
       <GetDataInSection />
