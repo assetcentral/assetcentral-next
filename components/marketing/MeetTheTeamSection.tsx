@@ -431,7 +431,14 @@ export function MeetTheTeamSection() {
       className="bg-white pt-20 pb-16 md:pt-28 md:pb-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        {/* lg:items-center — vertically center the two columns so the
+            5-card row floats to the middle of the right column rather
+            than anchoring to the top with dead space underneath. With
+            the form moved into the left column under the CTAs, the
+            left is naturally taller; centering the right column's
+            short content (just the cards) against it reads as
+            intentional balance instead of mismatched heights. */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start lg:items-center">
           {/* LEFT COLUMN — headline + disciplines + CTA. The H1 lives
               here because this section IS the page hero (2026-06
               team-as-hero simplification — the standalone HeroSection
@@ -497,6 +504,17 @@ export function MeetTheTeamSection() {
                 <span aria-hidden>→</span>
               </Link>
             </div>
+
+            {/* Get-a-call form — sits below the dual CTA in the left
+                column so all the "action" elements (CTAs + free call)
+                flow together. Was floating right under the 5 portraits
+                in the right column, which left awkward dead space and
+                no visual anchor. Bringing it into the action stack
+                balances the column heights and gives the form a clear
+                home. */}
+            <div className="mt-6">
+              <CallMeBackForm variant="compact" />
+            </div>
           </div>
 
           {/* RIGHT COLUMN — 5 portrait cards with connector rail */}
@@ -545,15 +563,6 @@ export function MeetTheTeamSection() {
               {TEAM.map((agent) => (
                 <AgentCard key={agent.acronym} agent={agent} />
               ))}
-            </div>
-
-            {/* Get-a-call CTA — slotted under the 5 portraits in the
-                right column. The form's `compact` variant renders its
-                own slim dark card, so we don't double-wrap with another
-                navy box here (was a double-card before; visually noisy
-                and dominated the section). Just sizing + alignment. */}
-            <div className="mt-6 lg:mt-8 lg:max-w-xs lg:ml-auto">
-              <CallMeBackForm variant="compact" />
             </div>
           </div>
         </div>
