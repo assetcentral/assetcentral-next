@@ -7,12 +7,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const TITLE = "Monitor your property portfolio — AssetCentral";
+import {
+  MonitorKpiGridSection,
+  PortfolioSnapshotSection,
+  YieldByPropertyChartSection,
+  MonitoringAlertsSection,
+  MonitoringRolePanelsSection,
+} from "@/components/marketing/mmm/monitor-visuals";
+
+const TITLE = "Monitor Property Portfolio Yield and Cash Flow | AssetCentral";
 const DESCRIPTION =
-  "Catch the drift before it costs you. Live yield, cashflow vs. budget, service-charge spikes, void days, refinance windows. Every property, every month. From €49/month.";
+  "See what a monitored portfolio looks like — five properties, live yield, cash flow, debt risk and alerts. Examples of every trigger AssetCentral watches. From €19/month.";
 
 export const metadata: Metadata = {
-  title: TITLE,
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: "/monitor" },
   openGraph: {
@@ -46,19 +54,6 @@ const WHAT_GETS_WATCHED = [
   {
     label: "Document inbox",
     body: "Statements, invoices, contracts parsed as they arrive — no manual entry, no missed items.",
-  },
-] as const;
-
-const AGENTS_ON_MONITOR = [
-  {
-    name: "Chief Financial Officer",
-    role:
-      "Watches cashflow, liquidity, funding. Flags the moments where the portfolio crosses a budget line — not just at month-end.",
-  },
-  {
-    name: "Chief Operations Officer",
-    role:
-      "Watches the operational layer — voids, service charges, agent performance, contract dates. Reports the friction before you feel it.",
   },
 ] as const;
 
@@ -179,42 +174,13 @@ export default function MonitorPage() {
         </div>
       </section>
 
-      {/* ── Agents on this pillar ───────────────────────────────────── */}
-      <section className="bg-[var(--color-surface)] border-y border-[var(--color-border)]">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-24">
-          <p
-            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-4"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            The agents on Monitor
-          </p>
-          <h2
-            className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Two agents lead this pillar.
-          </h2>
-          <div className="mt-10 grid lg:grid-cols-2 gap-5">
-            {AGENTS_ON_MONITOR.map((a) => (
-              <div
-                key={a.name}
-                className="rounded-xl border border-[var(--color-border)] bg-white p-6"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                <div
-                  className="text-[22px] text-[var(--color-navy)]"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {a.name}
-                </div>
-                <p className="mt-2 text-[14.5px] leading-[1.65] text-[var(--color-ink)]">
-                  {a.role}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── New: concrete demo sections (KPI grid → portfolio snapshot →
+              yield chart → alerts table → CFO/COO role panels) ───────── */}
+      <MonitorKpiGridSection />
+      <PortfolioSnapshotSection />
+      <YieldByPropertyChartSection />
+      <MonitoringAlertsSection />
+      <MonitoringRolePanelsSection />
 
       {/* ── Next pillar nav ─────────────────────────────────────────── */}
       <section style={{ backgroundColor: NAVY }} className="text-white">

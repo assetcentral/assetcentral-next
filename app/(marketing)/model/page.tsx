@@ -20,12 +20,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const TITLE = "Model your property portfolio — AssetCentral";
+import {
+  ModelledPropertySection,
+  ScenarioComparisonSection,
+  AiTeamContributionSection,
+  DataCompletenessSection,
+} from "@/components/marketing/mmm/model-visuals";
+
+const TITLE = "Model Property Investment Decisions | AssetCentral";
 const DESCRIPTION =
-  "Model every property as a live financial object — rent, mortgage, costs, yield, market position. Built from your documents, voice notes, or spreadsheets in 10 minutes. From €49/month.";
+  "See what a modelled property looks like — inputs, yields, scenarios and AI-team review. Compare hold, sell, refinance and renovation cases with example portfolio data. From €19/month.";
 
 export const metadata: Metadata = {
-  title: TITLE,
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: "/model" },
   openGraph: {
@@ -71,19 +78,6 @@ const WHAT_GETS_MODELLED = [
   "Market position vs. local comparables",
   "Refinance windows and rate-reset risk",
   "Currency exposure for cross-border owners",
-] as const;
-
-const AGENTS_ON_MODEL = [
-  {
-    name: "Personal Assistant",
-    role:
-      "Pulls data in from anywhere — voice notes, statements, spreadsheets — and stitches it into a single property record.",
-  },
-  {
-    name: "Chief Investment Officer",
-    role:
-      "Benchmarks every line item against local comparables — rent, costs, valuation. Catches anomalies before they become assumptions.",
-  },
 ] as const;
 
 const NAVY = "#1a1a2e";
@@ -167,6 +161,13 @@ export default function ModelPage() {
         </div>
       </section>
 
+      {/* ── New: concrete demo sections (modelled property, scenarios,
+              data completeness, AI team) ─────────────────────────────── */}
+      <ModelledPropertySection />
+      <ScenarioComparisonSection />
+      <DataCompletenessSection />
+      <AiTeamContributionSection />
+
       {/* ── Ingestion paths ─────────────────────────────────────────── */}
       <section className="bg-white">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-24">
@@ -231,43 +232,6 @@ export default function ModelPage() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* ── Agents on this pillar ───────────────────────────────────── */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-24">
-          <p
-            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-4"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            The agents on Model
-          </p>
-          <h2
-            className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Two agents lead this pillar.
-          </h2>
-          <div className="mt-10 grid lg:grid-cols-2 gap-5">
-            {AGENTS_ON_MODEL.map((a) => (
-              <div
-                key={a.name}
-                className="rounded-xl border border-[var(--color-border)] bg-white p-6"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                <div
-                  className="text-[22px] text-[var(--color-navy)]"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {a.name}
-                </div>
-                <p className="mt-2 text-[14.5px] leading-[1.65] text-[var(--color-ink)]">
-                  {a.role}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -5,12 +5,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const TITLE = "Manage your property portfolio — AssetCentral";
+import {
+  ActionPrioritySection,
+  ManagementWorkflowSection,
+  CeoBriefingSection,
+  MissingDocumentsSection,
+  BeforeAfterSection,
+} from "@/components/marketing/mmm/manage-visuals";
+
+const TITLE = "Manage Property Portfolio Actions | AssetCentral";
 const DESCRIPTION =
-  "Make the call the agents would make. Sell or hold? Refinance or wait? Switch to short-term? Scenarios, recommendations, and the co-branded report to back it up. From €49/month.";
+  "See what managed actions look like — a sample action board, a weekly CEO briefing, the missing-documents workflow and the seven steps from insight to outcome. From €19/month.";
 
 export const metadata: Metadata = {
-  title: TITLE,
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: "/manage" },
   openGraph: {
@@ -73,19 +81,6 @@ const DELIVERABLES = [
     label: "Single-asset deep-dive",
     body:
       "Per-property report covering yield, cashflow, hold-vs-sell IRR, refinance opportunity.",
-  },
-] as const;
-
-const AGENTS_ON_MANAGE = [
-  {
-    name: "Portfolio Manager",
-    role:
-      "Owns sell/hold, refinance, and capital-allocation decisions. Models the scenarios end-to-end and ranks them by IRR uplift.",
-  },
-  {
-    name: "Your CEO",
-    role:
-      "Owns the long-arc strategy — concentration, currency, jurisdiction. Writes the board report you can hand to anyone.",
   },
 ] as const;
 
@@ -250,42 +245,13 @@ export default function ManagePage() {
         </div>
       </section>
 
-      {/* ── Agents on this pillar ───────────────────────────────────── */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-24">
-          <p
-            className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-4"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            The agents on Manage
-          </p>
-          <h2
-            className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Two agents lead this pillar.
-          </h2>
-          <div className="mt-10 grid lg:grid-cols-2 gap-5">
-            {AGENTS_ON_MANAGE.map((a) => (
-              <div
-                key={a.name}
-                className="rounded-xl border border-[var(--color-border)] bg-white p-6"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                <div
-                  className="text-[22px] text-[var(--color-navy)]"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {a.name}
-                </div>
-                <p className="mt-2 text-[14.5px] leading-[1.65] text-[var(--color-ink)]">
-                  {a.role}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── New: concrete demo sections (action board, workflow, CEO
+              briefing, missing-docs, before/after) ───────────────────── */}
+      <ActionPrioritySection />
+      <ManagementWorkflowSection />
+      <CeoBriefingSection />
+      <MissingDocumentsSection />
+      <BeforeAfterSection />
 
       {/* ── Back-to-pillars nav ─────────────────────────────────────── */}
       <section style={{ backgroundColor: NAVY }} className="text-white">
