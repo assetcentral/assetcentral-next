@@ -24,6 +24,7 @@ import {
   VisualSection,
   DataCompletenessBar,
 } from "./shared";
+import { EquityProjectionChart, AnnualCashflowChart } from "./model-charts";
 
 const AGENT_PAGE: Record<AgentKey, string> = {
   CIO: "/ai-property-cio",
@@ -313,6 +314,33 @@ export function ScenarioComparisonSection() {
           <span>Sized bars indicate relative 12-month cash flow.</span>
           <ComplianceNote />
         </footer>
+      </div>
+    </VisualSection>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Section 2.5: Scenario progression (time-series graphics)
+ *   - Five-year equity projection per scenario (multi-line SVG)
+ *   - Year-by-year cash-flow composition (stacked bars)
+ *   Both are accessible: numeric values are exposed in a hidden
+ *   <details> table, and the SVG carries a role/img + aria-label
+ *   summary.
+ * ────────────────────────────────────────────────────────────── */
+
+export function ScenarioProjectionSection() {
+  return (
+    <VisualSection bg="white" id="model-progression">
+      <SectionHeading
+        eyebrow="Five years out"
+        title="See how each decision plays out over time."
+        subtitle="The scenario table tells you what the year-one cash flow looks like. The charts below show what the five-year compounding looks like — and what makes the cash flow in any given year."
+        badge={<ExampleBadge label="Sample AssetCentral output" />}
+      />
+
+      <div className="grid lg:grid-cols-2 gap-5 lg:gap-6">
+        <EquityProjectionChart />
+        <AnnualCashflowChart />
       </div>
     </VisualSection>
   );

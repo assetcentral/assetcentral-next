@@ -23,6 +23,7 @@ import Link from "next/link";
 import {
   ModelledPropertySection,
   ScenarioComparisonSection,
+  ScenarioProjectionSection,
   AiTeamContributionSection,
   DataCompletenessSection,
 } from "@/components/marketing/mmm/model-visuals";
@@ -162,9 +163,10 @@ export default function ModelPage() {
       </section>
 
       {/* ── New: concrete demo sections (modelled property, scenarios,
-              data completeness, AI team) ─────────────────────────────── */}
+              5-year progression charts, data completeness, AI team) ── */}
       <ModelledPropertySection />
       <ScenarioComparisonSection />
+      <ScenarioProjectionSection />
       <DataCompletenessSection />
       <AiTeamContributionSection />
 
