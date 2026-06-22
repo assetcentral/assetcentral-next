@@ -74,26 +74,24 @@ export default function HomePage() {
           test it for real" beat. */}
       <MeetTheTeamSection />
 
-      {/* Get-a-call CTA strip — sits underneath the team portraits per
-          2026-06-22 user direction: visitor reads the brand-led
-          "Family Office" pitch + sees the 5 photos first, then is
-          offered the live test. Labelled "Test the system" so it
-          reads as DIFFERENT from the subscriber-facing "Call My Team"
-          CTA inside MeetTheTeamSection above. */}
+      {/* Get-a-call CTA — a self-contained dark card on the right side
+          of the page, sitting in the blank space under MeetTheTeamSection's
+          "Call My Team" / "Add your first property" dual CTA. No
+          full-width band; page background shows through.
+          2026-06-22: was a navy band, demoted to card per user feedback
+          ("don't make this a band, make it a CTA in a box/card"). */}
       <section
         aria-label="Try the system — get a call"
-        className="w-full bg-[#1a1a2e] py-5 sm:py-7"
+        className="w-full py-4 sm:py-6"
       >
-        <div className="mx-auto max-w-6xl px-4 flex flex-col md:flex-row md:items-center md:justify-end gap-3 md:gap-6">
-          <div className="md:text-right md:max-w-xs">
-            <div className="text-[11px] uppercase tracking-wider font-semibold text-blue-300">
+        <div className="mx-auto max-w-6xl px-4 flex justify-end">
+          <div className="w-full md:max-w-md bg-[#1a1a2e] rounded-2xl shadow-lg p-5 sm:p-6">
+            <div className="text-[11px] uppercase tracking-wider font-semibold text-blue-300 mb-1">
               Test the system
             </div>
-            <p className="text-sm text-blue-100/80 mt-1 leading-snug">
+            <p className="text-sm text-blue-100/80 mb-4 leading-snug">
               Get a free call from your AI team in 10 seconds — no signup.
             </p>
-          </div>
-          <div className="w-full md:w-auto md:max-w-sm">
             <CallMeBackForm variant="hero" />
           </div>
         </div>
