@@ -73,6 +73,16 @@ const routes: Entry[] = [
   { path: "/ai-property-coo", priority: 0.8, changeFrequency: "monthly" },
   { path: "/ai-property-pa", priority: 0.8, changeFrequency: "monthly" },
 
+  // Comparison landing pages (2026-06-22). Owns "AssetCentral vs …"
+  // search intent. /compare/ is the hub at the same weight as /features,
+  // the five detail pages at 0.7 each.
+  { path: "/compare", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/compare/assetcentral-vs-spreadsheets", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/compare/assetcentral-vs-property-management-software", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/compare/assetcentral-vs-accounting-software", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/compare/assetcentral-vs-broker-valuation", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/compare/assetcentral-vs-family-office", priority: 0.7, changeFrequency: "monthly" },
+
   // Calculators (individual)
   { path: "/calculators/mortgage", priority: 0.7, changeFrequency: "monthly" },
   { path: "/calculators/irr", priority: 0.7, changeFrequency: "monthly" },

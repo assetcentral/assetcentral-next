@@ -40,6 +40,11 @@ const navItems: NavItem[] = [
         label: "Watch the 60-second explainer",
         description: "The product walked through in under a minute.",
       },
+      {
+        href: "/compare/",
+        label: "Compare options",
+        description: "AssetCentral vs spreadsheets, property management software, accounting software, broker valuation and family office.",
+      },
     ],
   },
   {

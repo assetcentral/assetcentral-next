@@ -145,6 +145,21 @@ export function GetDataInSection() {
           Rough numbers are fine — your AI team fills the gaps.
         </p>
 
+        {/* Compare-options bridge — surfaces the /compare hub right at
+            the point a visitor is thinking about how their current setup
+            (spreadsheets, accounting software, broker valuations) maps
+            onto AssetCentral. Quiet inline link, not a hero band. */}
+        <p className="mt-4 text-[14.5px] text-[color:var(--color-muted)]">
+          Still using spreadsheets, accounting software or broker valuations to
+          make portfolio decisions?{" "}
+          <a
+            href="/compare/"
+            className="font-semibold text-[color:var(--color-accent)] hover:underline"
+          >
+            Compare AssetCentral with other options →
+          </a>
+        </p>
+
         <ul className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {CHANNELS.map((c) => (
             <li
