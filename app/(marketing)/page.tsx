@@ -68,13 +68,18 @@ export default function HomePage() {
                                       lead conversion action.
             StickyCta               — mobile-only conversion pill,
                                       defaults to Call My Team. */}
-      {/* Top strip — Get-a-call CTA pinned to the right side, sitting
-          above the MeetTheTeamSection on desktop. Sub-headline labels
-          it "Test the system" so it reads as DIFFERENT from the
-          subscriber-facing "Call My Team" CTA buried in MeetTheTeamSection
-          below. On mobile, this strip wraps and the form sits full-width
-          above the team hero. The dark-blue HeroLiveTeam band was
-          removed in this iteration — duplicated team portraits. */}
+      {/* MeetTheTeamSection — "Your AI Property Family Office" team
+          hero. Leads the page. The Get-a-call strip below picks up
+          right after the visitor sees the 5 portraits — the "now
+          test it for real" beat. */}
+      <MeetTheTeamSection />
+
+      {/* Get-a-call CTA strip — sits underneath the team portraits per
+          2026-06-22 user direction: visitor reads the brand-led
+          "Family Office" pitch + sees the 5 photos first, then is
+          offered the live test. Labelled "Test the system" so it
+          reads as DIFFERENT from the subscriber-facing "Call My Team"
+          CTA inside MeetTheTeamSection above. */}
       <section
         aria-label="Try the system — get a call"
         className="w-full bg-[#1a1a2e] py-5 sm:py-7"
@@ -93,12 +98,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* MeetTheTeamSection — "Your AI Property Family Office" team
-          hero. The dark-blue HeroLiveTeam band was removed in this
-          iteration — it duplicated the team portraits the
-          MeetTheTeamSection already shows. */}
-      <MeetTheTeamSection />
       <CallYourTeamSection />
       <DailyBriefingSection />
       <GetDataInSection />
