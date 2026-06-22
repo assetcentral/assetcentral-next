@@ -24,6 +24,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { CallMeBackForm } from "./CallMeBackForm";
 
 /** Disciplines drive the left-column pills. The three pillars also
  *  reappear as per-card tags above each role's name. */
@@ -544,6 +545,23 @@ export function MeetTheTeamSection() {
               {TEAM.map((agent) => (
                 <AgentCard key={agent.acronym} agent={agent} />
               ))}
+            </div>
+
+            {/* Get-a-call CTA card — slotted under the 5 portraits in the
+                right column, so it sits visually next to the "Call My
+                Team" / "Add your first property" dual CTA on the left.
+                Self-contained dark navy card with the CallMeBackForm
+                inside; matches the dark-on-light visual treatment used
+                elsewhere on the page. Mobile: stacks below the portrait
+                grid full-width. */}
+            <div className="mt-8 lg:mt-10 lg:max-w-md lg:ml-auto rounded-2xl bg-[color:var(--color-navy)] shadow-lg p-5 sm:p-6">
+              <div className="text-[11px] uppercase tracking-wider font-semibold text-blue-300 mb-1">
+                Test the system
+              </div>
+              <p className="text-sm text-blue-100/80 mb-4 leading-snug">
+                Get a free call from your AI team in 10 seconds — no signup.
+              </p>
+              <CallMeBackForm variant="hero" />
             </div>
           </div>
         </div>

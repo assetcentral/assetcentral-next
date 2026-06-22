@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
-import { CallMeBackForm } from "@/components/marketing/CallMeBackForm";
 import { CallYourTeamSection } from "@/components/marketing/CallYourTeamSection";
 import { DailyBriefingSection } from "@/components/marketing/DailyBriefingSection";
 import { FinalCta } from "@/components/marketing/FinalCta";
@@ -69,33 +68,11 @@ export default function HomePage() {
             StickyCta               — mobile-only conversion pill,
                                       defaults to Call My Team. */}
       {/* MeetTheTeamSection — "Your AI Property Family Office" team
-          hero. Leads the page. The Get-a-call strip below picks up
-          right after the visitor sees the 5 portraits — the "now
-          test it for real" beat. */}
+          hero. The Get-a-call CTA card lives INSIDE this section now,
+          slotted under the 5 portraits in the right column (was a
+          standalone section underneath; user wanted it tucked into
+          the blank space next to the dual CTA on the left). */}
       <MeetTheTeamSection />
-
-      {/* Get-a-call CTA — a self-contained dark card on the right side
-          of the page, sitting in the blank space under MeetTheTeamSection's
-          "Call My Team" / "Add your first property" dual CTA. No
-          full-width band; page background shows through.
-          2026-06-22: was a navy band, demoted to card per user feedback
-          ("don't make this a band, make it a CTA in a box/card"). */}
-      <section
-        aria-label="Try the system — get a call"
-        className="w-full py-4 sm:py-6"
-      >
-        <div className="mx-auto max-w-6xl px-4 flex justify-end">
-          <div className="w-full md:max-w-md bg-[#1a1a2e] rounded-2xl shadow-lg p-5 sm:p-6">
-            <div className="text-[11px] uppercase tracking-wider font-semibold text-blue-300 mb-1">
-              Test the system
-            </div>
-            <p className="text-sm text-blue-100/80 mb-4 leading-snug">
-              Get a free call from your AI team in 10 seconds — no signup.
-            </p>
-            <CallMeBackForm variant="hero" />
-          </div>
-        </div>
-      </section>
       <CallYourTeamSection />
       <DailyBriefingSection />
       <GetDataInSection />
