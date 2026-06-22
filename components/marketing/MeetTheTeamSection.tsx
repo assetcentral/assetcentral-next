@@ -547,21 +547,13 @@ export function MeetTheTeamSection() {
               ))}
             </div>
 
-            {/* Get-a-call CTA card — slotted under the 5 portraits in the
-                right column, so it sits visually next to the "Call My
-                Team" / "Add your first property" dual CTA on the left.
-                Self-contained dark navy card with the CallMeBackForm
-                inside; matches the dark-on-light visual treatment used
-                elsewhere on the page. Mobile: stacks below the portrait
-                grid full-width. */}
-            <div className="mt-8 lg:mt-10 lg:max-w-md lg:ml-auto rounded-2xl bg-[color:var(--color-navy)] shadow-lg p-5 sm:p-6">
-              <div className="text-[11px] uppercase tracking-wider font-semibold text-blue-300 mb-1">
-                Test the system
-              </div>
-              <p className="text-sm text-blue-100/80 mb-4 leading-snug">
-                Get a free call from your AI team in 10 seconds — no signup.
-              </p>
-              <CallMeBackForm variant="hero" />
+            {/* Get-a-call CTA — slotted under the 5 portraits in the
+                right column. The form's `compact` variant renders its
+                own slim dark card, so we don't double-wrap with another
+                navy box here (was a double-card before; visually noisy
+                and dominated the section). Just sizing + alignment. */}
+            <div className="mt-6 lg:mt-8 lg:max-w-xs lg:ml-auto">
+              <CallMeBackForm variant="compact" />
             </div>
           </div>
         </div>

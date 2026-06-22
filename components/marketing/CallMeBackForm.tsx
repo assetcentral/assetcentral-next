@@ -58,8 +58,14 @@ const DEFAULT_COUNTDOWN_SECONDS = 10;
 
 interface CallMeBackFormProps {
   /** Where the form is mounted — sent to the API as the trigger source
-   *  so we can A/B test homepage embed vs /try later. */
-  variant?: "hero" | "page";
+   *  so we can A/B test homepage embed vs /try later.
+   *
+   *  - `hero`    — max-w-md, roomy padding. Standalone hero card.
+   *  - `page`    — max-w-lg, used on the dedicated /try page.
+   *  - `compact` — max-w-xs, tight padding, single-line eyebrow.
+   *                Used in the homepage team section where it sits
+   *                under the 5 portraits and must not dominate. */
+  variant?: "hero" | "page" | "compact";
 }
 
 export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
@@ -169,9 +175,16 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
   }
 
   // ── UI ──────────────────────────────────────────────────────────────────
-  const wrapClass = variant === "hero"
-    ? "w-full max-w-md mx-auto"
-    : "w-full max-w-lg mx-auto";
+  const wrapClass =
+    variant === "compact"
+      ? "w-full max-w-xs"
+      : variant === "hero"
+        ? "w-full max-w-md mx-auto"
+        : "w-full max-w-lg mx-auto";
+  const compact = variant === "compact";
+  const cardPad = compact ? "p-3.5" : "p-5 sm:p-7";
+  const inputPad = compact ? "py-2" : "py-3";
+  const btnPad = compact ? "py-2.5" : "py-3";
 
   if (stage === "calling") {
     const ringing = secondsLeft <= 0;
@@ -248,22 +261,24 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
 
   return (
     <div className={wrapClass}>
-      <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur p-5 sm:p-7">
+      <div className={`rounded-xl border border-white/10 bg-[color:var(--color-navy)] ${cardPad}`}>
         {stage === "phone" && (
           <form onSubmit={submitPhone} noValidate>
-            <label className="block text-xs uppercase tracking-wider font-semibold text-blue-200 mb-2">
-              Get a call from your AI team
+            <label className={`block text-[11px] uppercase tracking-wider font-semibold text-blue-200 ${compact ? "mb-2" : "mb-2"}`}>
+              {compact ? "Get a free call — no signup" : "Get a call from your AI team"}
             </label>
-            <p className="text-sm text-white/80 mb-4">
-              Two minutes. Free. No signup. We&apos;ll text you a code — your call
-              arrives within 10 seconds of verifying.
-            </p>
+            {!compact && (
+              <p className="text-sm text-white/80 mb-4">
+                Two minutes. Free. No signup. We&apos;ll text you a code — your call
+                arrives within 10 seconds of verifying.
+              </p>
+            )}
             <div className="flex gap-2">
               <select
                 aria-label="Country dial code"
                 value={dialCode}
                 onChange={(e) => setDialCode(e.target.value)}
-                className="rounded-lg bg-slate-900/60 border border-white/15 text-white px-2 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 w-[120px]"
+                className={`rounded-lg bg-slate-900/60 border border-white/15 text-white px-2 ${inputPad} text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 ${compact ? "w-[88px]" : "w-[120px]"}`}
               >
                 {COUNTRY_DIAL.map((c) => (
                   <option key={c.code} value={c.code} className="bg-slate-900">
@@ -278,35 +293,39 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
                 placeholder="7700 900123"
                 value={phoneLocal}
                 onChange={(e) => setPhoneLocal(e.target.value)}
-                className="flex-1 rounded-lg bg-slate-900/60 border border-white/15 text-white px-3 py-3 text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className={`flex-1 min-w-0 rounded-lg bg-slate-900/60 border border-white/15 text-white px-3 ${inputPad} text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-blue-400`}
               />
             </div>
             {errorMsg && (
-              <p className="mt-3 text-sm text-red-300" role="alert">{errorMsg}</p>
+              <p className="mt-2 text-xs text-red-300" role="alert">{errorMsg}</p>
             )}
             <button
               type="submit"
               disabled={!phoneValid || submitting}
               style={{ backgroundColor: phoneValid && !submitting ? ACCENT : "rgba(79,110,247,0.4)" }}
-              className="mt-4 w-full rounded-lg text-white font-semibold py-3 text-sm transition disabled:cursor-not-allowed hover:brightness-110"
+              className={`mt-3 w-full rounded-lg text-white font-semibold ${btnPad} text-sm transition disabled:cursor-not-allowed hover:brightness-110`}
             >
-              {submitting ? "Sending code…" : "Text me a code"}
+              {submitting ? "Sending code…" : compact ? "Call me" : "Text me a code"}
             </button>
-            <p className="mt-3 text-[11px] text-white/50 text-center">
-              Standard SMS rates may apply. By continuing you agree to receive a
-              one-off verification text + one demo call.
-            </p>
+            {!compact && (
+              <p className="mt-3 text-[11px] text-white/50 text-center">
+                Standard SMS rates may apply. By continuing you agree to receive a
+                one-off verification text + one demo call.
+              </p>
+            )}
           </form>
         )}
 
         {stage === "code" && (
           <form onSubmit={submitCode} noValidate>
-            <label className="block text-xs uppercase tracking-wider font-semibold text-blue-200 mb-2">
-              Enter the code we just texted
+            <label className="block text-[11px] uppercase tracking-wider font-semibold text-blue-200 mb-2">
+              Enter the code we texted
             </label>
-            <p className="text-sm text-white/80 mb-4">
-              We sent a 6-digit code to <span className="font-mono">{fullPhone}</span>.
-            </p>
+            {!compact && (
+              <p className="text-sm text-white/80 mb-4">
+                We sent a 6-digit code to <span className="font-mono">{fullPhone}</span>.
+              </p>
+            )}
             <input
               ref={codeInputRef}
               type="text"
@@ -317,23 +336,23 @@ export function CallMeBackForm({ variant = "hero" }: CallMeBackFormProps) {
               placeholder="123456"
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-              className="w-full text-center tracking-[0.4em] font-mono text-2xl rounded-lg bg-slate-900/60 border border-white/15 text-white px-3 py-4 placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className={`w-full text-center tracking-[0.4em] font-mono ${compact ? "text-lg py-2.5" : "text-2xl py-4"} rounded-lg bg-slate-900/60 border border-white/15 text-white px-3 placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400`}
             />
             {errorMsg && (
-              <p className="mt-3 text-sm text-red-300" role="alert">{errorMsg}</p>
+              <p className="mt-2 text-xs text-red-300" role="alert">{errorMsg}</p>
             )}
             <button
               type="submit"
               disabled={!codeValid || submitting}
               style={{ backgroundColor: codeValid && !submitting ? ACCENT : "rgba(79,110,247,0.4)" }}
-              className="mt-4 w-full rounded-lg text-white font-semibold py-3 text-sm transition disabled:cursor-not-allowed hover:brightness-110"
+              className={`mt-3 w-full rounded-lg text-white font-semibold ${btnPad} text-sm transition disabled:cursor-not-allowed hover:brightness-110`}
             >
-              {submitting ? "Verifying…" : "Verify and call me"}
+              {submitting ? "Verifying…" : compact ? "Verify" : "Verify and call me"}
             </button>
             <button
               type="button"
               onClick={reset}
-              className="mt-3 w-full text-xs text-white/60 underline hover:text-white"
+              className="mt-2 w-full text-[11px] text-white/60 underline hover:text-white"
             >
               Use a different number
             </button>
