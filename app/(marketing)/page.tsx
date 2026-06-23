@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
-import { CallYourTeamSection } from "@/components/marketing/CallYourTeamSection";
 import { DailyBriefingSection } from "@/components/marketing/DailyBriefingSection";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { GetDataInSection } from "@/components/marketing/GetDataInSection";
+import { InfrastructureSection } from "@/components/marketing/InfrastructureSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
@@ -73,7 +73,13 @@ export default function HomePage() {
           standalone section underneath; user wanted it tucked into
           the blank space next to the dual CTA on the left). */}
       <MeetTheTeamSection />
-      <CallYourTeamSection />
+      {/* InfrastructureSection — answers "what does the infrastructure
+          actually include?" Replaces the standalone CallYourTeamSection
+          (whose copy was compressed into a sub-hero strip inside
+          MeetTheTeamSection above). Categorised list of every shipping
+          tool: calculators, reports library, live market data,
+          monitoring + voice. */}
+      <InfrastructureSection />
       <DailyBriefingSection />
       <GetDataInSection />
       <div id="how-it-works" />

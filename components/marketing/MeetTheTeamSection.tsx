@@ -264,6 +264,65 @@ export function MeetTheTeamSection() {
             </p>
           </div>
         </div>
+
+        {/* ── Sub-hero: "Talk to your team. Anytime." ──────────
+             Replaces the standalone CallYourTeamSection (which used
+             to live underneath as its own page section with a full
+             boardroom + transcript). Compressed here to a single
+             cross-section strip so the conversational hook still
+             lands without taking up the real-estate of a second hero. */}
+        <div className="mt-12 lg:mt-16 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-5 py-5 lg:px-7 lg:py-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+          <div className="flex items-center gap-4">
+            <span
+              aria-hidden
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white border border-[color:var(--color-border)] shadow-sm shrink-0"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-[color:var(--color-pa-mid)]"
+              >
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.72 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0122 16.92z" />
+              </svg>
+            </span>
+            <div>
+              <p
+                className="text-[11.5px] uppercase tracking-[0.12em] text-[color:var(--color-accent)] font-semibold"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                How it feels
+              </p>
+              <h2
+                className="mt-0.5 text-[20px] lg:text-[24px] text-[color:var(--color-navy)] leading-tight font-semibold"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Talk to your team. Anytime.
+              </h2>
+              <p
+                className="mt-1 text-[13.5px] lg:text-[14px] text-[color:var(--color-muted)] leading-snug max-w-2xl"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Five experts on one call — voice or text — already briefed on your portfolio and today&rsquo;s market.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/signup?plan=pro_monthly&intent=call-team"
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-navy)] px-5 py-3 text-[14px] font-semibold text-white transition hover:bg-[color:var(--color-navy-light)]"
+          >
+            <span
+              aria-hidden
+              className="inline-block h-2 w-2 rounded-full bg-[color:var(--color-pa-mid)]"
+            />
+            Call My Team
+          </Link>
+        </div>
       </div>
     </section>
   );
