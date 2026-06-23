@@ -169,38 +169,39 @@ export function MeetTheTeamSection() {
           {/* ── LEFT COLUMN — value prop + CTAs + MMM chips + call link */}
           <div className="lg:col-span-5">
             <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-[58px] font-semibold text-[color:var(--color-navy)] leading-[1.05] tracking-tight">
-              Your AI Property Family Office.
+              Your instincts beat the funds. Your spreadsheet doesn&rsquo;t.
             </h1>
             <p className="mt-5 text-base md:text-lg text-[color:var(--color-navy)] leading-relaxed">
-              An AI-native team for owners and investors managing 2 to 50 properties.
+              Mega-funds don&rsquo;t have better judgement than the people who built their portfolios property by property. They have better <strong className="font-semibold">infrastructure</strong>.
             </p>
             <p className="mt-3 text-[15px] md:text-base text-[color:var(--color-muted)] leading-relaxed max-w-xl">
-              Model decisions, monitor performance and manage actions across your
-              portfolio — without running everything through spreadsheets.
+              Live operational data, standardized underwriting, mapped debt maturities, modelled capital runway. AssetCentral hands the same architecture to private investors holding 2 to 50 properties. €49 a month.
             </p>
 
-            {/* ── CTAs — Add a property is the dominant action.
-                 Meet your AI team is the secondary, educational action. */}
+            {/* ── CTAs — "Build the map" replaces "Add your first property"
+                 as the dominant primary, matching the institutional-parity
+                 positioning. Secondary points at /model (the underwriting
+                 demo) rather than #how-it-works. */}
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link
                 href="/signup?plan=pro_monthly&intent=direct"
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-navy)] px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm transition hover:bg-[color:var(--color-navy-light)]"
               >
-                Add your first property
+                Build the map
                 <span aria-hidden>→</span>
               </Link>
               <Link
-                href="#how-it-works"
+                href="/model"
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-[color:var(--color-border)] bg-white px-6 py-3.5 text-[15px] font-semibold text-[color:var(--color-navy)] transition hover:border-[color:var(--color-navy)]"
               >
-                Meet your AI team
+                See an institutional underwrite
               </Link>
             </div>
             <p
               className="mt-3 text-[12.5px] text-[color:var(--color-muted)]"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              See your real yield and first recommendations in minutes.
+              7-day trial. No card. Your first property modelled in under ten minutes.
             </p>
 
             {/* ── Compact M/M/M chips — three side-by-side, one short

@@ -15,6 +15,7 @@ import {
   PLAN_PRICES,
 } from "@/lib/pricing";
 import { PRICING_FAQS } from "@/lib/pricing-faqs";
+import { PricingConversionGrid } from "@/components/marketing/PricingConversionGrid";
 
 type Billing = "monthly" | "annual";
 
@@ -133,8 +134,24 @@ export function PricingClient() {
         </div>
       </section>
 
-      <section className="bg-white pb-20">
+      <PricingConversionGrid />
+
+      <section className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mb-10 max-w-3xl">
+            <p
+              className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-3"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              The three tiers
+            </p>
+            <h2
+              className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Same architecture. Priced to the size of your portfolio.
+            </h2>
+          </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* Individual — replaces the Free tier as of the 2026-06
                 pricing change. €19/mo for 1-3 properties, single user,

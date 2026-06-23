@@ -15,7 +15,7 @@ import {
 
 const TITLE = "Manage Property Portfolio Actions | AssetCentral";
 const DESCRIPTION =
-  "See what managed actions look like — a sample action board, a weekly CEO briefing, the missing-documents workflow and the seven steps from insight to outcome. From €19/month.";
+  "Map every debt maturity, model capital runway under stress, generate lender-ready refinance packs on demand. The capital-flexibility architecture funds use — for portfolios of 2 to 50 properties. €49/month.";
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -96,32 +96,29 @@ export default function ManagePage() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Pillar 03 · Manage
+            Pillar III · Capital Flexibility
           </p>
           <h1
             className="text-[44px] lg:text-[60px] leading-[1.05] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Make the call the agents would make.
+            Never get cornered by your own debt stack.
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Sell or hold? Refinance or wait? Switch to short-term?
-            AssetCentral runs the scenarios, ranks the recommendations,
-            and writes the report you can hand to a lender, tenant, or
-            accountant.
+            Every loan tracked to maturity. Refinance windows counted down against live market rates. Capital runway stress-tested at -20% rent, six months of voids, a service-charge special call. You move on capital decisions with twelve months of foresight — not ninety days of panic.
           </p>
           <div
             className="mt-8 flex flex-col sm:flex-row gap-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <Link
-              href="/signup"
+              href="/signup?plan=pro_monthly&intent=direct"
               className="inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
             >
-              Run your first scenario →
+              Map your capital runway →
             </Link>
             <Link
               href="/demo/60"
@@ -149,16 +146,13 @@ export default function ManagePage() {
             className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            The yield that matters is the one you didn&rsquo;t leave behind.
+            Funds survive downturns because they know every maturity date.
           </h2>
           <p
             className="mt-5 text-[16px] lg:text-[18px] leading-[1.65] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            A model that flags &ldquo;refinance window open&rdquo; is useful.
-            A monitor that flags &ldquo;you&rsquo;re paying 1.2% above market&rdquo;
-            is useful. Neither makes the call. Management is the layer
-            where a portfolio stops drifting and starts compounding.
+            The reason institutional capital weathers a cycle is not superior judgement. It is that every fund knows — to the month — when every loan matures, what the refinance pipeline looks like at current rates, where the next call on capital lands, and how many months of runway the operating cash flow buys at zero occupancy. Private investors usually learn these dates ninety days before a rate reset they didn&rsquo;t model. Capital flexibility is a system, not a talent.
           </p>
         </div>
       </section>

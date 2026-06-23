@@ -19,10 +19,10 @@ export const metadata: Metadata = {
   // 2026-06 family-office positioning shift. Title leads with the
   // family-office framing; description names the team + briefing +
   // segment + price hook.
-  title: "Your AI Property Family Office — AssetCentral",
+  title: { absolute: "Institutional Property Infrastructure for Private Investors — AssetCentral" },
   // Target: 140–160 chars.
   description:
-    "Hire an AI Property Family Office. Five executives — CIO, CFO, CEO, COO, PA — already briefed on your portfolio and today's market. From €19/month.",
+    "The decision-making architecture institutional desks run on — live data, standardized underwriting, debt-maturity maps, capital runway — for portfolios of 2 to 50 properties. €49/month.",
   alternates: { canonical: "/" },
 };
 

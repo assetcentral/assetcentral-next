@@ -17,7 +17,7 @@ import {
 
 const TITLE = "Monitor Property Portfolio Yield and Cash Flow | AssetCentral";
 const DESCRIPTION =
-  "See what a monitored portfolio looks like — five properties, live yield, cash flow, debt risk and alerts. Examples of every trigger AssetCentral watches. From €19/month.";
+  "Real-time NOI, yield drift and variance tracking — not rear-view accounting. The live operational map institutional desks run on, for private portfolios of 2 to 50 properties. €49/month.";
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -69,31 +69,29 @@ export default function MonitorPage() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Pillar 02 · Monitor
+            Pillar I · Information Parity
           </p>
           <h1
             className="text-[44px] lg:text-[60px] leading-[1.05] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Catch the drift before it costs you.
+            Stop running your portfolio in the rear-view mirror.
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Live yield. Cashflow vs. budget. Service-charge spikes. Void
-            days mounting. Refinance windows opening. Every property,
-            every month — without you opening a spreadsheet.
+            A fund&rsquo;s asset manager knows what every property earned last week — NOI, occupancy, variance against budget, yield drift, service-charge creep. Private investors learn the same numbers six months later, once the WhatsApps and PDFs are reconciled. AssetCentral closes that gap.
           </p>
           <div
             className="mt-8 flex flex-col sm:flex-row gap-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <Link
-              href="/signup"
+              href="/signup?plan=pro_monthly&intent=direct"
               className="inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
             >
-              Start monitoring →
+              Build the live map →
             </Link>
             <Link
               href="/demo/60"
@@ -121,18 +119,13 @@ export default function MonitorPage() {
             className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            The yield you lose is rarely in the rent. It&rsquo;s in the drift.
+            Yield drift is invisible until the variance lands.
           </h2>
           <p
             className="mt-5 text-[16px] lg:text-[18px] leading-[1.65] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            A service charge that crept up 18% over two years. A tenancy
-            that rolled at the same rent for a fourth year while
-            comparables climbed 9%. A fixed-rate window that closed
-            without a refinance conversation. None of these announce
-            themselves. All of them show up as a smaller bank balance
-            twelve months later.
+            A service charge that crept 18% over two years. A tenancy that rolled at the same rent for a fourth year while comparables climbed 9%. A fixed-rate window that closed without a refinance conversation. None of these announce themselves on the spreadsheet — they show up as a smaller bank balance twelve months later. Institutional desks catch each one in the week it starts. AssetCentral hands you the same week-one telemetry.
           </p>
         </div>
       </section>

@@ -30,7 +30,7 @@ import {
 
 const TITLE = "Model Property Investment Decisions | AssetCentral";
 const DESCRIPTION =
-  "See what a modelled property looks like — inputs, yields, scenarios and AI-team review. Compare hold, sell, refinance and renovation cases with example portfolio data. From €19/month.";
+  "Underwrite every property decision before you make it. IRR, rate-shock at +200bps, lease rollover, yield drift — the same standardized framework an investment committee runs. €49/month.";
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -93,32 +93,29 @@ export default function ModelPage() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Pillar 01 · Model
+            Pillar II · Structural Experience
           </p>
           <h1
             className="text-[44px] lg:text-[60px] leading-[1.05] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Every property, on paper, in 10 minutes.
+            Underwrite every decision before you make it.
           </h1>
           <p
             className="mt-6 text-[18px] lg:text-[20px] leading-[1.55] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Upload a tenancy contract. Paste a rent receipt. Tell AC Voice
-            the address. The model builds itself — rent, mortgage, costs,
-            ownership, market position — and five AI agents validate as
-            you go.
+            Investment committees don&rsquo;t approve hold-vs-sell from instinct. They run the same modelled framework on every property — IRR, cash-on-cash, rate-shock at +200bps, lease rollover at -10%. AssetCentral ships that framework as a one-click underwrite on each of your properties.
           </p>
           <div
             className="mt-8 flex flex-col sm:flex-row gap-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <Link
-              href="/signup"
+              href="/signup?plan=pro_monthly&intent=direct"
               className="inline-flex w-full sm:w-auto items-center justify-center min-h-[48px] px-5 py-3 rounded-md bg-[var(--color-navy)] text-white text-[15px] font-medium hover:bg-[var(--color-navy-light)] transition-colors"
             >
-              Model your first property →
+              Underwrite your first property →
             </Link>
             <Link
               href="/demo/60"
@@ -146,18 +143,13 @@ export default function ModelPage() {
             className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Without a model, your portfolio is just a list.
+            The institutional desks aren&rsquo;t smarter. They&rsquo;re structured.
           </h2>
           <p
             className="mt-5 text-[16px] lg:text-[18px] leading-[1.65] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            A spreadsheet with addresses, rents, and mortgages is data —
-            not a model. A model knows what each line item should be,
-            flags when it isn&rsquo;t, and projects what changes when
-            something shifts. That&rsquo;s the difference between knowing
-            you own a property and knowing how it&rsquo;s actually
-            performing.
+            A fund&rsquo;s investment committee runs the same modelled framework on every property — IRR, cash-on-cash, equity multiple, stress-tested at +100, +200, +300bps, lease rolled at -5%, -10%, -15%. Private investors run the same calculation in their head, commit the capital, and discover the gap twelve months later when the variance lands. AssetCentral gives you the framework, not the headcount.
           </p>
         </div>
       </section>
