@@ -76,7 +76,7 @@ const ACCENT_PA: RoleAccent = {
 const TEAM: Agent[] = [
   {
     acronym: "CIO",
-    fullTitle: "Investment Modelling",
+    fullTitle: "Chief Investment Officer",
     href: "/ai-property-cio",
     shortFunction: "Models hold, sell, refinance and reinvest scenarios.",
     avatarSrc: "/team/cio.webp",
@@ -84,7 +84,7 @@ const TEAM: Agent[] = [
   },
   {
     acronym: "CFO",
-    fullTitle: "Financial Performance",
+    fullTitle: "Chief Financial Officer",
     href: "/ai-property-cfo",
     shortFunction: "Tracks yield, cash flow, debt and liquidity.",
     avatarSrc: "/team/cfo.webp",
@@ -92,7 +92,7 @@ const TEAM: Agent[] = [
   },
   {
     acronym: "CEO",
-    fullTitle: "Portfolio Strategy",
+    fullTitle: "Chief Executive Officer",
     href: "/ai-property-ceo",
     shortFunction: "Sets priorities and turns analysis into decisions.",
     avatarSrc: "/team/ceo.webp",
@@ -101,7 +101,7 @@ const TEAM: Agent[] = [
   },
   {
     acronym: "COO",
-    fullTitle: "Property Operations",
+    fullTitle: "Chief Operations Officer",
     href: "/ai-property-coo",
     shortFunction: "Monitors leases, occupancy and action execution.",
     avatarSrc: "/team/coo.webp",
@@ -109,7 +109,7 @@ const TEAM: Agent[] = [
   },
   {
     acronym: "PA",
-    fullTitle: "Tasks & Documents",
+    fullTitle: "Personal Assistant",
     href: "/ai-property-pa",
     shortFunction: "Organises documents, reminders and next steps.",
     avatarSrc: "/team/pa.webp",
