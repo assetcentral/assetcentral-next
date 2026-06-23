@@ -169,13 +169,13 @@ export function MeetTheTeamSection() {
           {/* ── LEFT COLUMN — value prop + CTAs + MMM chips + call link */}
           <div className="lg:col-span-5">
             <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-[58px] font-semibold text-[color:var(--color-navy)] leading-[1.05] tracking-tight">
-              Your instincts beat the funds. Your spreadsheet doesn&rsquo;t.
+              Run your portfolio on the same infrastructure as a fund.
             </h1>
             <p className="mt-5 text-base md:text-lg text-[color:var(--color-navy)] leading-relaxed">
-              Mega-funds don&rsquo;t have better judgement than the people who built their portfolios property by property. They have better <strong className="font-semibold">infrastructure</strong>.
+              Funds don&rsquo;t have sharper instincts than you. They have better <strong className="font-semibold">infrastructure</strong> — the kind that beats a spreadsheet every time.
             </p>
             <p className="mt-3 text-[15px] md:text-base text-[color:var(--color-muted)] leading-relaxed max-w-xl">
-              Live operational data, standardized underwriting, mapped debt maturities, modelled capital runway. AssetCentral hands the same architecture to private investors holding 2 to 50 properties. €49 a month.
+              Live operational data, standardized underwriting, mapped debt maturities, modelled capital runway. AssetCentral hands the same architecture to private investors with 2 to 50 properties. €49 a month.
             </p>
 
             {/* ── CTAs — "Build the map" replaces "Add your first property"
