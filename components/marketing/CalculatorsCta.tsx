@@ -49,13 +49,13 @@ export function CalculatorsCta() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Start with our free tools
+            Try our calculator tools
           </h2>
           <p
             className="mt-4 text-[16.5px] leading-[1.6] text-[var(--color-muted)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Our calculators are free, always. No account required. Used by thousands of investors to evaluate properties before they buy.
+            Mortgage, IRR, short-term yield, retrofit cost and ownership comparator — free, no account required. The same underwriting maths the platform runs on every property.
           </p>
         </div>
 

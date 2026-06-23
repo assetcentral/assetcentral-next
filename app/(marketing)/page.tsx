@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
-import { DailyBriefingSection } from "@/components/marketing/DailyBriefingSection";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { GetDataInSection } from "@/components/marketing/GetDataInSection";
+import { GetStartedSection } from "@/components/marketing/GetStartedSection";
 import { InfrastructureSection } from "@/components/marketing/InfrastructureSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { StickyCta } from "@/components/marketing/StickyCta";
-import { WhatAIUnlocksSection } from "@/components/marketing/WhatAIUnlocksSection";
 // HeroSection / ThreePillarsSection / ProblemSection / LeadMagnetsSection
 // retired in the 2026-06 team-as-hero simplification.
 // ProductDemoTabs retired in the family-office capabilities reframe.
@@ -80,10 +79,14 @@ export default function HomePage() {
           tool: calculators, reports library, live market data,
           monitoring + voice. */}
       <InfrastructureSection />
-      <DailyBriefingSection />
-      <GetDataInSection />
+      {/* GetStartedSection — worked example of a modelled property:
+          inputs table + 5-year equity projection chart. Replaces the
+          "every morning" DailyBriefingSection and the "what changes"
+          WhatAIUnlocksSection so the homepage now lands the actual
+          product shape before asking the visitor to send their data. */}
+      <GetStartedSection />
       <div id="how-it-works" />
-      <WhatAIUnlocksSection />
+      <GetDataInSection />
       <CalculatorsCta />
       <PricingPreview />
       <LeadCapture />
