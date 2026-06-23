@@ -353,15 +353,16 @@ function AgentCard({ agent }: { agent: Agent }) {
         />
       </div>
 
-      {/* Role band — coloured strip with acronym + title (one short
-          subtitle each per the spec; no capability list in hero). */}
-      <div className={`${agent.accent.band} px-3 py-2.5 text-white`}>
-        <div className="text-base lg:text-lg font-bold leading-none">
-          {agent.acronym}
-        </div>
-        <div className="text-[11px] lg:text-[11.5px] font-medium leading-tight mt-0.5 opacity-95">
-          {agent.fullTitle}
-        </div>
+      {/* Role band — coloured strip with just the full title. The
+          acronym is already baked into the portrait avatar (small
+          coloured chip overlaid at the bottom of each /team/*.webp),
+          so showing it on the band as well duplicated the same short
+          form on every card. The band's colour does the role-coding
+          work; the full title sits on it for the proper name. */}
+      <div
+        className={`${agent.accent.band} px-3 py-2.5 text-white text-[12px] lg:text-[12.5px] font-semibold leading-snug`}
+      >
+        {agent.fullTitle}
       </div>
 
       {/* Short function — ONE line per the spec. Detailed capability
