@@ -75,10 +75,10 @@ const CEO: AgentSeoConfig = {
   roleTitle: "Chief Executive Officer",
   h1: "AI Property CEO for portfolio strategy",
   subheadline:
-    "Your AssetCentral CEO ranks priorities across your property portfolio, frames the call you actually need to make, and keeps the team aligned on the small set of decisions that move yield.",
-  metaTitle: "AI Property CEO for Portfolio Strategy | AssetCentral",
+    "Your AssetCentral CEO ranks priorities across your portfolio AND writes the board-grade investment memos and bank-ready credit packs — the structural authority a fund brings to every lender conversation, for a private portfolio of 2 to 50 properties.",
+  metaTitle: "AI Property CEO for Portfolio Strategy + Bank Memos | AssetCentral",
   metaDescription:
-    "Meet AssetCentral's AI Property CEO, helping owners with 2 to 50 properties model, monitor and manage portfolio strategy, priorities and capital decisions.",
+    "Meet AssetCentral's AI Property CEO, helping owners with 2 to 50 properties rank priorities AND package board-grade investment memos and bank-ready credit pages for lenders and partners.",
   portraitSrc: "/team/ceo.webp",
   accent: {
     midVar: "var(--color-ceo-mid)",
@@ -87,26 +87,26 @@ const CEO: AgentSeoConfig = {
   },
   pillars: ["Manage"],
   pillarRationale:
-    "The CEO sits at the Manage pillar — the agent that turns the team's modelling and monitoring into ranked decisions you can actually act on.",
+    "The CEO sits at the Manage pillar — the agent that turns the team's modelling and monitoring into ranked decisions internally, and into investment memos and credit packs externally.",
   roleExplanation:
-    "Owning 2–50 properties usually means more open decisions than time to think them through. Refinance the London flat now or wait? Sell the underperformer or hold and renovate? Where should next year's deposit go? Your AssetCentral CEO synthesises what the CIO, CFO, COO and PA have surfaced into a short, ranked decision list — what to do this week, this month, this quarter, and why each item sits where it does. You stay the decision-maker; the CEO removes the noise around it.",
+    "Owning 2–50 properties usually means more open decisions than time to think them through — and when a bank, IC or equity partner asks for a polished portfolio view, you scramble to assemble one. Your AssetCentral CEO does both jobs. Internally, it synthesises what the CIO, CFO, COO and PA have surfaced into a short, ranked decision list. Externally, it packages the same underlying work into board-grade investment memos and lender-ready credit packs — the structure of a corporate fund's IC submission, the format a commercial lender is expecting. You stay the decision-maker; the CEO removes the noise around it and writes the memo when you need to raise.",
   capabilities: [
-    "Portfolio strategy",
-    "Priority setting across all properties",
+    "Portfolio strategy and priority ranking",
     "Decision briefings ahead of meetings",
     "Capital deployment ranking",
-    "Risk focus — where to look first",
     "Action ranking by yield impact",
-    "Portfolio direction over a 12-month view",
+    "Board-grade investment memos (IC submission format)",
+    "Bank-ready credit packs (lender-formatted)",
+    "Equity partner / co-investment decks",
   ],
   exampleQuestions: [
     "What are the top three priorities across my portfolio?",
-    "What should I do next?",
-    "Which actions have the greatest impact on my yield?",
+    "Package a credit pack for the London refi conversation.",
+    "Write the IC memo for the Manchester acquisition.",
     "Where should I focus capital this quarter?",
   ],
   exampleOutput:
-    "Your CEO has ranked this week's three priorities: (1) Refinance the London flat — its fixed period ends in 9 weeks and the rate-reset gap is the largest single yield risk on the portfolio. (2) Push through the rent review on the Manchester property — current rent sits 11% below local comparables. (3) Decide on the Dubai off-plan handover option before the developer's deadline next month.",
+    "Your CEO has prepared a lender-ready credit pack for the London refi conversation: portfolio overview (8 assets, AED 12.8m AUM, 5.1% blended net yield), current debt stack with maturity ladder, the CFO's stress test at +200bps, the CIO's hold vs. release-equity scenario, and a cover memo framing the asks. The same week's internal priorities are ranked alongside: (1) sign the refi pack and submit, (2) close out the Manchester rent review, (3) confirm Dubai handover option before month-end.",
   faqs: [
     {
       question: "What is an AI Property CEO?",
@@ -142,10 +142,10 @@ const CIO: AgentSeoConfig = {
   roleTitle: "Chief Investment Officer",
   h1: "AI Property CIO for investment modelling",
   subheadline:
-    "Your AssetCentral CIO runs the hold-versus-sell, refinance-versus-retain and acquisition models behind every capital decision — with IRR, equity multiple and trapped-equity figures you can read off the page.",
-  metaTitle: "AI Property CIO for Investment Modelling | AssetCentral",
+    "Your AssetCentral CIO runs multi-year institutional-grade underwriting on every property — unlevered vs. levered IRR, repositioning scenarios (long-let vs. short-let), and the break-even assumptions that decide whether capital deploys or waits.",
+  metaTitle: "AI Property CIO for Multi-Year Underwriting | AssetCentral",
   metaDescription:
-    "Meet AssetCentral's AI Property CIO, helping owners with 2 to 50 properties model returns, allocate capital and pressure-test hold, sell, refinance and acquisition scenarios.",
+    "Meet AssetCentral's AI Property CIO, helping owners with 2 to 50 properties run multi-year underwriting, unlevered vs. levered IRR, and asset-repositioning scenarios on every capital decision.",
   portraitSrc: "/team/cio.webp",
   accent: {
     midVar: "var(--color-cio-mid)",
@@ -154,26 +154,26 @@ const CIO: AgentSeoConfig = {
   },
   pillars: ["Model"],
   pillarRationale:
-    "The CIO sits at the Model pillar — the agent that builds and pressure-tests the scenarios capital decisions rest on.",
+    "The CIO sits at the Model pillar — the agent that builds and pressure-tests every capital decision against institutional-grade underwriting before you deploy.",
   roleExplanation:
-    "Capital decisions on a private property portfolio usually get made on instinct because the modelling is too painful. The CIO does the modelling for you: a five-year hold versus sell, a refinance scenario at three different rates, a renovation that lifts rent by 8% — each one returns IRR, equity multiple, cash-on-cash and the break-even assumption. When you ask 'should I sell?' the CIO gives you the number behind the answer, not just the answer.",
+    "Capital decisions on a private property portfolio usually get made on instinct because the modelling is too painful. The CIO does institutional-grade underwriting for you: multi-year hold vs. sell with unlevered AND levered IRR side-by-side, a refinance scenario at three different rates, a renovation that lifts rent by 8%, a repositioning from long-let to short-let with seasonality factored in. Each one returns IRR, equity multiple, cash-on-cash and the break-even assumption. The discipline is the point — only deals that survive institutional underwriting reach your capital.",
   capabilities: [
+    "Multi-year underwriting on hold and acquisition",
+    "Unlevered vs. levered IRR side-by-side",
     "Hold versus sell scenarios",
     "Refinance versus retain modelling",
-    "Renovation return scenarios",
-    "Acquisition modelling on prospective buys",
+    "Long-let vs. short-let repositioning",
     "Capital allocation across the portfolio",
-    "IRR, equity multiple, cash-on-cash",
     "Trapped equity analysis",
   ],
   exampleQuestions: [
     "Should I sell or hold this property?",
-    "Where is my equity underperforming?",
+    "What's the unlevered vs. levered IRR on this scenario?",
     "Which acquisition scenario has the best return?",
     "Should I switch from long-term rental to short-term rental?",
   ],
   exampleOutput:
-    "Your CIO has modelled a five-year hold versus a sale on the Marina property. Holding produces a 9.4% IRR if rent grows 5% per year and the refinance lands below 4.6%. Selling at the current comparable price returns a 7.1% IRR after costs and tax. The hold case becomes weaker if rents stay flat — the inflection point sits at 2.1% annual rent growth.",
+    "Your CIO has run a five-year underwrite on the Marina property. Hold: 9.4% levered IRR / 6.1% unlevered, assuming rent grows 5% per year and the refinance lands below 4.6%. Sell at the current comparable: 7.1% IRR after costs and tax. Repositioning to short-let (operator-led, 28% gross uplift, 5% vacancy and ops drag): 11.2% levered IRR, but with a stricter cash-flow profile in the soft season. Inflection point on hold: 2.1% annual rent growth.",
   faqs: [
     {
       question: "What is an AI Property CIO?",
@@ -208,10 +208,10 @@ const CFO: AgentSeoConfig = {
   roleTitle: "Chief Financial Officer",
   h1: "AI Property CFO for rental portfolio cash flow",
   subheadline:
-    "Your AssetCentral CFO monitors real net yield, cash flow, debt, costs and liquidity across your property portfolio — and tells you which property is dragging the blend before the year-end statement does.",
-  metaTitle: "AI Property CFO for Rental Portfolio Cash Flow | AssetCentral",
+    "Your AssetCentral CFO monitors real net yield and cash flow — and aggressively stress-tests every position. DSCR per property, rate-shock at +200bps, six-month void scenarios, capex spikes. The portfolio stays defensively insulated, not just visible.",
+  metaTitle: "AI Property CFO for Cash Flow + Stress-Testing | AssetCentral",
   metaDescription:
-    "Meet AssetCentral's AI Property CFO, helping owners with 2 to 50 properties monitor net yield, cash flow, mortgages, costs and refinance windows across their portfolio.",
+    "Meet AssetCentral's AI Property CFO, helping owners with 2 to 50 properties monitor net yield AND stress-test against rate jumps, voids and capex — DSCR, capital runway, refinance window.",
   portraitSrc: "/team/cfo.webp",
   accent: {
     midVar: "var(--color-cfo-mid)",
@@ -220,26 +220,26 @@ const CFO: AgentSeoConfig = {
   },
   pillars: ["Model", "Monitor"],
   pillarRationale:
-    "The CFO sits across Model and Monitor — building the financial model per property and then watching it live, flagging the moment a number drifts off target.",
+    "The CFO sits across Model and Monitor — modelling each property's financial position and then aggressively stress-testing it against the macro shocks that catch private investors flat-footed.",
   roleExplanation:
-    "Most private investors look at their portfolio's financial picture once a year, when the accountant sends a statement. By then the underperforming property has been underperforming for ten months. Your AssetCentral CFO holds the live financial picture: net yield per property, blended yield across the portfolio, cash flow this month, debt outstanding, mortgage rates and reset dates, service-charge drift, and the liquidity headroom you have for the next opportunity or repair bill. Ask 'what's my real yield?' and the answer accounts for every line item — not the gross headline you'd get from a letting agent.",
+    "Most private investors look at their portfolio's financial picture once a year, when the accountant sends a statement. By then the underperforming property has been underperforming for ten months — and a 200bps rate rise at the next reset is twelve months from cornering them. Your AssetCentral CFO holds the live picture (net yield per property, cash flow, debt position, liquidity headroom) AND runs the institutional stress tests: DSCR per property and at portfolio level, rate-shock at +100/+200/+300bps at the next refinance window, six-month void on the biggest unit, a service-charge special call. Ask 'what's my real yield?' and 'what happens if rates jump 2%?' — the CFO answers both.",
   capabilities: [
-    "Net yield calculation per property and across the portfolio",
+    "Net yield per property and blended across the portfolio",
     "Cash-flow monitoring month by month",
-    "Mortgage and debt review with reset dates",
-    "Budget versus actual on operating costs",
-    "Expense tracking with anomaly flags",
-    "Liquidity forecasting over the next 12 months",
+    "DSCR per property and at portfolio level",
+    "Rate-shock stress tests at +100/+200/+300 bps",
+    "Capital runway forecast under voids + capex shocks",
+    "Mortgage tracking with refinance-window countdowns",
     "Refinance readiness — what to fix before approaching a lender",
   ],
   exampleQuestions: [
     "What is my real net yield?",
-    "Which property has the weakest cash flow?",
-    "What happens if my mortgage rate increases by 1.5 percentage points?",
+    "What's my DSCR if rates jump 200bps at the next reset?",
+    "How many months of runway do I have if rent drops 20%?",
     "Which property should I refinance first?",
   ],
   exampleOutput:
-    "Your CFO has identified that the Brighton property has a net yield 2.3 percentage points below the portfolio average. Financing costs and service charges absorb 46% of rental income — well above the 31% portfolio average. Next step: review refinancing options on this property's mortgage and benchmark current rent against comparable two-bedroom flats in the same postcode.",
+    "Your CFO has stress-tested the portfolio for the next twelve months. Today's DSCR is 1.42 at portfolio level — comfortable. At +200bps shock against the two loans resetting in the next nine months, blended DSCR drops to 1.11 with the London flat falling below the lender's 1.20 covenant. Six-month void on the biggest unit + a £18k Brighton capex call takes runway from 14 months to 6. Action queue: open the London refi conversation now, shore up cash before the Brighton works begin.",
   faqs: [
     {
       question: "What is an AI Property CFO?",
@@ -279,10 +279,10 @@ const COO: AgentSeoConfig = {
   roleTitle: "Chief Operations Officer",
   h1: "AI Property COO for property operations",
   subheadline:
-    "Your AssetCentral COO tracks leases, occupancy, maintenance and property-manager performance — and flags the small operational problems that quietly erode yield.",
-  metaTitle: "AI Property COO for Property Operations | AssetCentral",
+    "Your AssetCentral COO runs continuous variance tracking — actuals vs. the original underwriting — and maps lease-rollover concentration so the portfolio never faces a simultaneous vacancy cliff. Yield drift stops before it turns into a cash-flow crisis.",
+  metaTitle: "AI Property COO for Asset Management + Variance Tracking | AssetCentral",
   metaDescription:
-    "Meet AssetCentral's AI Property COO, helping owners with 2 to 50 properties track leases, occupancy, maintenance and operational risk across their property portfolio.",
+    "Meet AssetCentral's AI Property COO — the 24/7 asset manager that reconciles monthly actuals against underwriting, maps lease-rollover concentration, and stops yield drift before it compounds.",
   portraitSrc: "/team/coo.webp",
   accent: {
     midVar: "var(--color-coo-mid)",
@@ -291,26 +291,26 @@ const COO: AgentSeoConfig = {
   },
   pillars: ["Monitor", "Manage"],
   pillarRationale:
-    "The COO sits across Monitor and Manage — watching every property's operational state and then turning what it sees into action items the team or your manager can follow through on.",
+    "The COO sits across Monitor and Manage — the 24/7 watchdog that reconciles every property's live performance against the underwriting forecast and turns each variance into an action.",
   roleExplanation:
-    "Yield doesn't usually leak through one big problem — it leaks through five small ones. A lease that quietly expired into a periodic. A property manager who answered four emails late this quarter. A boiler that's been on the brink for six months. Your AssetCentral COO tracks every one of these signals across every property, ranks them by yield impact, and flags the small operational problems before they compound into a vacant unit or a bad review.",
+    "Yield doesn't usually leak through one big problem — it leaks through five small ones, and the worst of them is when six leases roll in the same quarter and you didn't see it coming. Your AssetCentral COO reconciles monthly actuals against the original underwriting forecast (variance tracking, line by line), maps lease-rollover concentration so a simultaneous vacancy cliff is impossible to walk into, monitors property-manager performance and maintenance follow-through, and ranks every operational signal by yield impact. Systemic experience, not heroics — the institutional discipline that stops yield drift before it compounds.",
   capabilities: [
+    "Variance tracking — actuals vs. underwriting, line by line",
+    "Lease-rollover concentration mapping (vacancy-cliff prevention)",
     "Lease expiry monitoring with renewal lead times",
     "Occupancy tracking and vacancy alerts",
-    "Property manager performance across response time and outcomes",
+    "Property manager performance — response time and outcomes",
     "Maintenance follow-up and ticket-status visibility",
-    "Cost leakage detection on operating expenses",
     "Action execution — turning flags into follow-throughs",
-    "Operational risk per property and across the portfolio",
   ],
   exampleQuestions: [
     "Which leases expire in the next 90 days?",
-    "Which property has operational issues right now?",
-    "Which actions are overdue across my managers?",
-    "Where is occupancy below my target?",
+    "Show me variance to underwriting across the portfolio.",
+    "Where is my lease-rollover concentration risk?",
+    "Which managers are slipping on response time?",
   ],
   exampleOutput:
-    "Your COO has flagged three operational items this week: (1) Two leases expire in the next 60 days — the Manchester and Bristol units — and neither tenant has confirmed renewal. (2) The Birmingham property's service charge has risen 14% year-on-year, well above the 4% portfolio average. (3) The Marina manager's average response time on maintenance tickets has slipped from 8 to 22 hours over the last quarter.",
+    "Your COO has reconciled the month's actuals against the underwriting. Three variances worth your attention: (1) Birmingham service charge is 14% above the underwritten figure — well above the 4% portfolio drift. (2) Marina manager's response time has slipped from 8 to 22 hours; tracking toward a Q3 occupancy event. (3) Lease-rollover concentration: 4 of 8 leases now roll inside a 12-week window in Q1 2027 — start the renewal conversations now or stagger expiry on the next two re-lets.",
   faqs: [
     {
       question: "What is an AI Property COO?",
@@ -351,10 +351,10 @@ const PA: AgentSeoConfig = {
   roleTitle: "Personal Assistant",
   h1: "AI Property PA for property documents and tasks",
   subheadline:
-    "Your AssetCentral PA keeps your property documents organised, tasks on track, reminders firing on time, and routes any question to the right AI specialist on your team.",
-  metaTitle: "AI Property PA for Property Documents and Tasks | AssetCentral",
+    "Your AssetCentral PA sits at the gateway of your data stream — WhatsApp, email, desktop uploads. It intercepts every scanned tenancy, every 50-page brokerage PDF, every messy Excel rent roll, parses the unstructured content and hands organised data to the rest of the C-suite. Zero manual data-entry lag.",
+  metaTitle: "AI Property PA for Document Intake + Parsing | AssetCentral",
   metaDescription:
-    "Meet AssetCentral's AI Property PA, helping owners with 2 to 50 properties keep documents, tasks, reminders and briefings organised across the portfolio.",
+    "Meet AssetCentral's AI Property PA — the intake clerk that intercepts every inbound document (WhatsApp, email, PDF, Excel, voice), parses the unstructured content, and feeds clean data to your AI C-suite.",
   portraitSrc: "/team/pa.webp",
   accent: {
     midVar: "var(--color-pa-mid)",
@@ -363,26 +363,26 @@ const PA: AgentSeoConfig = {
   },
   pillars: ["Manage", "Coordinate"],
   pillarRationale:
-    "The PA sits at the Manage pillar and coordinates across the team — making sure the right document is to hand, the right reminder fires, and any question lands with the right specialist agent.",
+    "The PA sits at the gateway of the data stream — the intake clerk that turns inbound chaos (PDF, image, voice, Excel, WhatsApp) into clean, structured records the rest of the team can act on.",
   roleExplanation:
-    "Most of the friction in running a property portfolio isn't strategic — it's organisational. A tenancy contract you can't find when the renewal comes up. A service-charge demand sitting in a forwarded email. A reminder you set six months ago that never fired. Your AssetCentral PA holds every property document, every task, every reminder and every briefing in one place — and when you ask a question, routes it to the right specialist on your AI team rather than making you choose.",
+    "Most of the friction in running a property portfolio is administrative chaos. A 50-page brokerage PDF lands in your inbox. A scanned tenancy comes in over WhatsApp. A raw Excel rent roll forwarded from your property manager. A voice note from a contractor. Your AssetCentral PA intercepts every one of these at the gateway, runs unstructured-data parsing, cleans the formatting, extracts the relevant fields (dates, amounts, parties, terms), and files it against the right property — so the rest of your AI team works from clean, structured data. Information asymmetry resolved. Zero manual data-entry lag.",
   capabilities: [
-    "Document organisation per property and across the portfolio",
-    "Task creation and follow-through",
+    "Intercepts every inbound document (WhatsApp, email, file, voice)",
+    "Unstructured-data parsing (PDF, image, Excel, voice notes)",
+    "Field extraction — dates, amounts, parties, terms",
+    "Files parsed records to the right property automatically",
     "Reminders for renewals, payments and key dates",
     "Missing-information flags — what the team still needs",
-    "Briefing preparation ahead of meetings or calls",
-    "Email and report draft generation for your review",
-    "Routing questions to the right AI specialist on your team",
+    "Routes any question to the right AI specialist",
   ],
   exampleQuestions: [
     "What documents are missing from my portfolio?",
-    "Prepare my monthly portfolio briefing.",
+    "Parse this brokerage PDF and file it.",
     "Remind me about upcoming lease expiries.",
     "Summarise the next actions across my team.",
   ],
   exampleOutput:
-    "Your PA has prepared your monthly briefing. Two documents are missing: the latest service-charge statement on the Brighton flat and the EPC certificate on the Edinburgh property. Three reminders fire in the next 30 days: the Manchester lease renewal decision, the London mortgage rate reset and the Dubai handover deadline. Your CFO has three flags, your COO has two, and your CIO has one model ready for your review.",
+    "Your PA has processed this week's inbound: 14 documents in (3 PDFs, 6 WhatsApp images, 2 rent-roll Excels, 1 voice note, 2 emailed statements), 14 parsed and filed. Two documents still missing for full model coverage: the latest service-charge statement on Brighton and the EPC on Edinburgh — chase emails drafted for your review. Three reminders fire in the next 30 days; Your CFO has three flags, your COO has two, and your CIO has one model ready for your review.",
   faqs: [
     {
       question: "What is an AI Property PA?",

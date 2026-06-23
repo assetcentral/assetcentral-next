@@ -126,23 +126,23 @@ export interface RoleContribution {
 export const MODEL_ROLE_CONTRIBUTIONS: RoleContribution[] = [
   {
     agent: "CIO",
-    fullName: "Investment Modelling",
-    body: "Models hold, sell, refinance and improve options side by side.",
+    fullName: "Chief Investment Officer",
+    body: "Runs the multi-year underwrite — hold, sell, refinance, reposition — with unlevered and levered IRR per scenario.",
   },
   {
     agent: "CFO",
-    fullName: "Financial Performance",
-    body: "Checks cash flow, debt and liquidity impact of every scenario.",
+    fullName: "Chief Financial Officer",
+    body: "Stress-tests each scenario for DSCR, rate-shock at +200bps and capital runway under voids or capex.",
   },
   {
     agent: "CEO",
-    fullName: "Portfolio Strategy",
-    body: "Ranks the decision against portfolio priorities and constraints.",
+    fullName: "Chief Executive Officer",
+    body: "Ranks the scenarios against portfolio priorities and writes the IC memo if you need to raise.",
   },
   {
     agent: "PA",
-    fullName: "Tasks & Documents",
-    body: "Identifies missing documents and assumptions before they bite.",
+    fullName: "Personal Assistant",
+    body: "Parses inbound documents (PDF, image, Excel, voice) and files every source so the model is audit-ready.",
   },
 ];
 
