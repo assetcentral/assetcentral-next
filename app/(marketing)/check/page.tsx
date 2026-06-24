@@ -39,7 +39,7 @@ export default function CheckPage() {
             className="text-[36px] md:text-[44px] lg:text-[52px] leading-[1.05] text-[color:var(--color-navy)] font-semibold"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            A proper underwrite of the property, before you commit.
+            A proper analysis of the property, before you commit.
           </h1>
           <p
             className="mt-4 text-[16px] lg:text-[18px] leading-[1.55] text-[color:var(--color-muted)]"

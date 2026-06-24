@@ -277,7 +277,7 @@ export function PropertyCheckClient() {
             >
               No further checks needed for a personal-use purchase — the
               monthly payment above is your decision number. If you want the
-              full underwrite (stamp duty by country, fixed-rate reset risk,
+              full analysis (stamp duty by country, fixed-rate reset risk,
               cash needed at completion), the deeper mortgage calculator is{" "}
               <Link
                 href="/calculators/mortgage"
