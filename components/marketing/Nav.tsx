@@ -413,9 +413,18 @@ function DesktopDropdownInner(
 
       {isOpen && (
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[320px] rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2"
+          // Outer wrapper sits flush with the button (`top-full`, no
+          // gap) so the hover region is continuous from the button
+          // down through the dropdown. A transparent 12px spacer
+          // inside the wrapper creates the visual gap above the
+          // visible panel — without it, moving the mouse from button
+          // to dropdown crossed an unhoverable gap and `mouseLeave`
+          // fired before the user could reach a link.
+          className="absolute left-1/2 -translate-x-1/2 top-full w-[320px]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
+          <div className="h-3" aria-hidden />
+          <div className="rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2">
           {(() => {
             // Render the items with a small uppercase caption whenever
             // the `section` value changes from the previous item. Lets
@@ -452,6 +461,7 @@ function DesktopDropdownInner(
               );
             });
           })()}
+          </div>
         </div>
       )}
     </div>
