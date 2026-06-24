@@ -569,6 +569,128 @@ function VerdictCard({ result }: { result: CheckResult }) {
         <Stat label="DSCR" value={`${result.dscr.toFixed(2)}x`} />
       </div>
 
+      {/* ── Second-row stats — capital required + 5y cumulative ── */}
+      <div
+        className="mt-3 rounded-xl bg-[color:var(--color-surface)] border border-[color:var(--color-border)] p-4 grid grid-cols-2 sm:grid-cols-4 gap-4"
+      >
+        <Stat label="Gross yield" value={`${result.grossYieldPct.toFixed(1)}%`} />
+        <Stat label="Opex / rent" value={`${result.opexRatioPct.toFixed(0)}%`} tone={result.opexRatioPct > 30 ? "negative" : undefined} />
+        <Stat label="Capital required" value={fmtMoney(result.capitalRequired)} />
+        <Stat
+          label="5-year cumulative CF"
+          value={fmtMoney(result.fiveYearCumulativeCashFlow)}
+          tone={result.fiveYearCumulativeCashFlow >= 0 ? "positive" : "negative"}
+        />
+      </div>
+
+      {/* ── Stress-test table ──────────────────────────────────
+           Three scenarios. Mirrors the per-calculator stress test
+           that ships elsewhere on the site so the on-screen
+           pattern is consistent. Tone-coloured chips on the
+           left flag ok / watch / fail at a glance. */}
+      <div className="mt-6">
+        <p
+          className="text-[11.5px] uppercase tracking-[0.12em] text-[color:var(--color-muted)] font-bold mb-2"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          Stress tests — what happens if it goes sideways
+        </p>
+        <div className="rounded-xl border border-[color:var(--color-border)] bg-white overflow-hidden">
+          <table className="w-full text-left text-[13.5px]" style={{ fontFamily: "var(--font-sans)" }}>
+            <thead className="bg-[color:var(--color-surface)] text-[11px] uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
+              <tr>
+                <th scope="col" className="px-4 py-2.5 font-semibold w-[34%]">Scenario</th>
+                <th scope="col" className="px-4 py-2.5 font-semibold text-right">Cash flow / month</th>
+                <th scope="col" className="px-4 py-2.5 font-semibold text-right hidden sm:table-cell">vs base</th>
+                <th scope="col" className="px-4 py-2.5 font-semibold hidden sm:table-cell">Read</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.stressTests.map((s, i) => (
+                <tr key={s.label} className={i > 0 ? "border-t border-[color:var(--color-border)]" : ""}>
+                  <th scope="row" className="px-4 py-2.5 font-medium text-[color:var(--color-ink)] align-top">
+                    <div className="flex items-center gap-2">
+                      <ToneDot tone={s.tone} />
+                      {s.label}
+                    </div>
+                  </th>
+                  <td className="px-4 py-2.5 text-right tabular-nums align-top">
+                    <span style={{ color: s.monthlyCashFlow >= 0 ? "var(--color-positive)" : "var(--color-negative)" }}>
+                      {fmtMoney(s.monthlyCashFlow)}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2.5 text-right tabular-nums text-[color:var(--color-muted)] align-top hidden sm:table-cell">
+                    {s.deltaMonthly === 0 ? "—" : `${s.deltaMonthly > 0 ? "+" : ""}${fmtMoney(s.deltaMonthly)}`}
+                  </td>
+                  <td className="px-4 py-2.5 text-[color:var(--color-ink)] align-top hidden sm:table-cell">
+                    {s.note}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ── Cash-flow breakdown — audit trail ──────────────────
+           So the visitor sees how the headline cash-flow number
+           was assembled. No magic — gross rent down to NCF. */}
+      <div className="mt-6">
+        <p
+          className="text-[11.5px] uppercase tracking-[0.12em] text-[color:var(--color-muted)] font-bold mb-2"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          How the cash flow was built
+        </p>
+        <div className="rounded-xl border border-[color:var(--color-border)] bg-white overflow-hidden">
+          <table className="w-full text-left text-[13.5px]" style={{ fontFamily: "var(--font-sans)" }}>
+            <tbody>
+              {result.cashflowBreakdown.map((line, i) => (
+                <tr
+                  key={line.label}
+                  className={
+                    (i > 0 ? "border-t border-[color:var(--color-border)] " : "") +
+                    (line.kind === "subtotal" ? "bg-[color:var(--color-surface)]" : "") +
+                    (line.kind === "total" ? "bg-[color:var(--color-surface)]" : "")
+                  }
+                >
+                  <th
+                    scope="row"
+                    className={
+                      "px-4 py-2.5 align-top " +
+                      (line.kind === "subtotal" || line.kind === "total"
+                        ? "font-bold text-[color:var(--color-navy)]"
+                        : "font-medium text-[color:var(--color-ink)]")
+                    }
+                  >
+                    {line.label}
+                  </th>
+                  <td
+                    className={
+                      "px-4 py-2.5 text-right tabular-nums align-top " +
+                      (line.kind === "subtotal" || line.kind === "total"
+                        ? "font-bold"
+                        : line.amount < 0
+                          ? "text-[color:var(--color-negative)]"
+                          : "text-[color:var(--color-ink)]")
+                    }
+                    style={
+                      line.kind === "total"
+                        ? { color: line.amount >= 0 ? "var(--color-positive)" : "var(--color-negative)" }
+                        : line.kind === "subtotal"
+                          ? { color: "var(--color-navy)" }
+                          : undefined
+                    }
+                  >
+                    {fmtMoney(line.amount)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* ── Red flag + improvement ─────────────────────────── */}
       <div className="mt-6 grid lg:grid-cols-2 gap-4">
         <div className="rounded-xl bg-white border border-[color:var(--color-border)] p-4">
@@ -598,6 +720,23 @@ function VerdictCard({ result }: { result: CheckResult }) {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Coloured dot for the stress-test rows. */
+function ToneDot({ tone }: { tone: "ok" | "watch" | "fail" }) {
+  const colour =
+    tone === "ok"
+      ? "var(--color-positive)"
+      : tone === "watch"
+        ? "var(--color-warning)"
+        : "var(--color-negative)";
+  return (
+    <span
+      aria-hidden
+      className="inline-block h-2.5 w-2.5 rounded-full flex-shrink-0"
+      style={{ background: colour }}
+    />
   );
 }
 

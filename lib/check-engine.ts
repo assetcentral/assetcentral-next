@@ -50,6 +50,33 @@ export interface Verdict {
   improvement: { title: string; body: string };
 }
 
+export interface CashflowLine {
+  /** Plain-English label, e.g. "Gross annual rent". */
+  label: string;
+  /** Currency amount. Negatives shown with a minus prefix in the UI. */
+  amount: number;
+  /** Drives the row's visual treatment.
+   *  - in:  rent rolling in
+   *  - out: costs going out
+   *  - subtotal: bold / underlined intermediate
+   *  - total: bold / coloured by sign — the bottom line
+   */
+  kind: "in" | "out" | "subtotal" | "total";
+}
+
+export interface StressTest {
+  /** Scenario name shown in the row, e.g. "Rates +200bps". */
+  label: string;
+  /** Headline result for the scenario — monthly cash flow. */
+  monthlyCashFlow: number;
+  /** Change vs the base case (monthly). Negative = worse. */
+  deltaMonthly: number;
+  /** Drives the colour treatment — "ok" green, "watch" amber, "fail" red. */
+  tone: "ok" | "watch" | "fail";
+  /** Short plain-English commentary. */
+  note: string;
+}
+
 export interface CheckResult {
   /** Monthly mortgage payment. */
   monthlyMortgage: number;
@@ -67,6 +94,21 @@ export interface CheckResult {
   netYieldPct: number;
   /** DSCR = NOI / annual debt service. */
   dscr: number;
+  /** Operating-expense ratio = opex / effective rent, as a percent. */
+  opexRatioPct: number;
+  /** Five-year cumulative cash flow if everything holds — useful as a
+   *  reality check on the monthly number. Pure scalar, no growth model. */
+  fiveYearCumulativeCashFlow: number;
+  /** Capital required at completion: deposit + estimated acquisition
+   *  costs (rough 5% bundle covering stamp duty + legal + survey). */
+  capitalRequired: number;
+  /** Per-line cash-flow waterfall — gross rent → net rent → NOI →
+   *  cash flow. Renders as a table in the UI; lets the visitor see
+   *  how the headline cash-flow number was built. */
+  cashflowBreakdown: CashflowLine[];
+  /** Three stress scenarios — rate, void, rent. Mirrors the per-
+   *  calculator stress test rendered elsewhere on the site. */
+  stressTests: StressTest[];
   /** Verdict bundle. */
   verdict: Verdict;
 }
@@ -122,6 +164,50 @@ export function runCheck(inputs: CheckInputs): CheckResult {
     dscr,
   });
 
+  // ── Stress tests ─────────────────────────────────────────────────
+  // Three scenarios mirroring the per-calculator stress test that
+  // ships across the rest of the site. The engine returns the result
+  // in shape; the UI renders the table.
+  const stressTests: StressTest[] = [
+    rateShockStress(inputs, monthlyCashFlow, annualOpex, effectiveAnnualRent),
+    vacancyStress(inputs, monthlyCashFlow),
+    rentDropStress(inputs, monthlyCashFlow, annualOpex, annualDebtService),
+  ];
+
+  // ── Cash-flow breakdown — explicit audit trail ──────────────────
+  // Order matters: visitor reads it top-to-bottom and ends with the
+  // headline cash-flow line. Opex / debt-service rows render in red.
+  const grossAnnualRent = inputs.monthlyRent * 12;
+  const vacancyCost = inputs.monthlyRent * inputs.vacancyMonths;
+  const cashflowBreakdown: CashflowLine[] = [
+    { label: "Gross annual rent (full occupancy)", amount: r(grossAnnualRent), kind: "in" },
+    { label: `Vacancy loss (${inputs.vacancyMonths} months / year)`, amount: -r(vacancyCost), kind: "out" },
+    { label: "Effective annual rent", amount: r(effectiveAnnualRent), kind: "subtotal" },
+    { label: "Operating costs (service, maintenance, management)", amount: -r(annualOpex), kind: "out" },
+    { label: "Net operating income (NOI)", amount: r(noi), kind: "subtotal" },
+    { label: "Annual debt service (mortgage)", amount: -r(annualDebtService), kind: "out" },
+    { label: "Annual cash flow", amount: r(noi - annualDebtService), kind: "total" },
+  ];
+
+  // ── Capital required at completion ───────────────────────────────
+  // Rough 5% bundle for acquisition costs (stamp duty band-blended,
+  // legal, survey) on top of the deposit. The country-specific
+  // mortgage calculator handles the precise stamp duty maths; this is
+  // a one-line check for the visitor planning the cash needed.
+  const acquisitionCostBundle = inputs.price * 0.05;
+  const capitalRequired = inputs.deposit + acquisitionCostBundle;
+
+  // ── 5-year cumulative cash flow ──────────────────────────────────
+  // No growth model — pure scalar so the visitor sees what they'll
+  // pocket (or pay in) over a typical hold if the year-1 numbers
+  // simply repeat. Stops a one-off "+£50/mo" from looking better
+  // than a "−£100/mo" deal that bleeds £6k over five years.
+  const fiveYearCumulativeCashFlow = monthlyCashFlow * 60;
+
+  // Opex ratio — also drives the verdict's "opex too high" branch.
+  const opexRatioPct =
+    effectiveAnnualRent > 0 ? (annualOpex / effectiveAnnualRent) * 100 : 0;
+
   return {
     monthlyMortgage: r(pm),
     effectiveAnnualRent: r(effectiveAnnualRent),
@@ -131,7 +217,98 @@ export function runCheck(inputs: CheckInputs): CheckResult {
     grossYieldPct: Math.round(grossYieldPct * 10) / 10,
     netYieldPct: Math.round(netYieldPct * 10) / 10,
     dscr: Math.round(dscr * 100) / 100,
+    opexRatioPct: Math.round(opexRatioPct * 10) / 10,
+    fiveYearCumulativeCashFlow: r(fiveYearCumulativeCashFlow),
+    capitalRequired: r(capitalRequired),
+    cashflowBreakdown,
+    stressTests,
     verdict,
+  };
+}
+
+// ── Stress-test builders ─────────────────────────────────────────────
+
+function rateShockStress(
+  inputs: CheckInputs,
+  baseMonthlyCashFlow: number,
+  annualOpex: number,
+  effectiveAnnualRent: number,
+): StressTest {
+  const stressedMortgage = monthlyMortgage(
+    Math.max(0, inputs.price - inputs.deposit),
+    inputs.ratePct + 2,
+    inputs.termYrs,
+  );
+  const stressed =
+    (effectiveAnnualRent - annualOpex - stressedMortgage * 12) / 12;
+  const delta = stressed - baseMonthlyCashFlow;
+  return {
+    label: "Rates +200bps",
+    monthlyCashFlow: Math.round(stressed),
+    deltaMonthly: Math.round(delta),
+    tone: stressed >= 0 ? "ok" : stressed >= -300 ? "watch" : "fail",
+    note:
+      stressed >= 0
+        ? "Still cash-flow positive even if rates jump 2%."
+        : stressed >= -300
+          ? "Slips negative under a rate shock — workable but tight."
+          : "Falls deeply negative under a rate shock — out of pocket each month.",
+  };
+}
+
+function vacancyStress(
+  inputs: CheckInputs,
+  baseMonthlyCashFlow: number,
+): StressTest {
+  // Six-month void on top of the user's existing vacancy assumption.
+  // Lost rent is net of management (no rent → no agent fee).
+  const sixMonthVoid =
+    inputs.monthlyRent * 6 * (1 - inputs.managementPct / 100);
+  const monthlyImpact = sixMonthVoid / 12;
+  const stressed = baseMonthlyCashFlow - monthlyImpact;
+  return {
+    label: "Six-month void",
+    monthlyCashFlow: Math.round(stressed),
+    deltaMonthly: Math.round(-monthlyImpact),
+    tone: stressed >= 0 ? "ok" : stressed >= -250 ? "watch" : "fail",
+    note:
+      stressed >= 0
+        ? "A half-year void doesn't push the deal under."
+        : `Half-year void costs ${fmt(sixMonthVoid)} across the year.`,
+  };
+}
+
+function rentDropStress(
+  inputs: CheckInputs,
+  baseMonthlyCashFlow: number,
+  annualOpex: number,
+  annualDebtService: number,
+): StressTest {
+  // Rent re-lets 10% lower (e.g. softening market, downward pressure).
+  // Recompute opex's management slice from the new lower rent.
+  const newMonthlyRent = inputs.monthlyRent * 0.9;
+  const newEffectiveAnnualRent =
+    newMonthlyRent * Math.max(0, 12 - inputs.vacancyMonths);
+  const newManagement =
+    newEffectiveAnnualRent * (inputs.managementPct / 100);
+  const newAnnualOpex =
+    annualOpex -
+    inputs.monthlyRent *
+      Math.max(0, 12 - inputs.vacancyMonths) *
+      (inputs.managementPct / 100) +
+    newManagement;
+  const stressed =
+    (newEffectiveAnnualRent - newAnnualOpex - annualDebtService) / 12;
+  const delta = stressed - baseMonthlyCashFlow;
+  return {
+    label: "Rent re-lets −10%",
+    monthlyCashFlow: Math.round(stressed),
+    deltaMonthly: Math.round(delta),
+    tone: stressed >= 0 ? "ok" : stressed >= -200 ? "watch" : "fail",
+    note:
+      stressed >= 0
+        ? "Holds positive even if rent softens 10% on re-let."
+        : "Slips negative if the rent benchmark drops 10%.",
   };
 }
 

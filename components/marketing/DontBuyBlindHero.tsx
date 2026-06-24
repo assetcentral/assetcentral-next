@@ -22,7 +22,7 @@ export function DontBuyBlindHero() {
           className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-accent)] font-semibold mb-5"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          DON&rsquo;T BUY BLIND
+          MAKE BETTER PROPERTY DECISIONS
         </p>
 
         <h1
