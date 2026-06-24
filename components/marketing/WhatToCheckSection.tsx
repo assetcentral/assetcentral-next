@@ -73,6 +73,13 @@ const DECISIONS: DecisionCard[] = [
     cta: "Compare lets",
     dotColor: "var(--color-pa-mid)",
   },
+  {
+    who: "I'm comparing properties",
+    body: "Run two or three options side by side — yield, cash flow and IRR — and see which one actually wins.",
+    href: "/calculators/ownership",
+    cta: "Compare properties",
+    dotColor: "var(--color-ceo-mid)",
+  },
 ];
 
 export function WhatToCheckSection() {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCurrency } from "@/components/marketing/CurrencyProvider";
+import { TeamGalleryStrip } from "@/components/marketing/TeamGalleryStrip";
 import {
   annualDiscountPct,
   annualMonthlyEquiv,
@@ -376,6 +377,17 @@ export function PricingClient() {
           </div>
         </div>
       </section>
+
+      {/* ── Team faces — the Pro tier sells the 5-agent team, so the
+           team strip sits directly under the tier cards and above the
+           FAQ. Visitors comparing Starter vs Pro see the faces that
+           come with the Pro tier without having to click Features. ── */}
+      <TeamGalleryStrip
+        eyebrow="What Pro unlocks"
+        heading="Five AI agents — the team built into Pro."
+        body="Starter unlocks the full property decision report. Pro adds these five — modelling, monitoring and managing your portfolio month after month."
+        background="white"
+      />
 
       {/* FAQ */}
       <section className="bg-[var(--color-surface)]">

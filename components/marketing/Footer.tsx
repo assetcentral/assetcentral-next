@@ -1,22 +1,30 @@
 import Link from "next/link";
 
+// Footer columns mirror the top-nav order set in Nav.tsx:
+//   How it works | Calculators | Product | Pricing | Partners | Resources
+// Grouped here as Product / Calculators / Resources / Company so the
+// 4-column grid still reads cleanly without inventing a fifth column.
 const columns = [
   {
     heading: "Product",
     links: [
+      { href: "/how-it-works", label: "How it works" },
       { href: "/features", label: "Features" },
-      { href: "/calculators", label: "Calculators" },
+      { href: "/model", label: "Model" },
+      { href: "/monitor", label: "Monitor" },
+      { href: "/manage", label: "Manage" },
       { href: "/pricing", label: "Pricing" },
-      // Label was "Changelog" but the destination is the Resources hub
-      // (guides), not a changelog. Relabelled so the link tells the
-      // truth about where it sends you.
-      { href: "/resources", label: "All resources" },
-      // UAE Ads campaign (June 2026) — the highest-traffic of the three
-      // new ICP-focused landing pages goes here. The other two
-      // (/dubai-property-tracker, /multi-currency-portfolio) are
-      // reachable from the sitemap and from internal cross-links;
-      // keeping the footer column tight.
-      { href: "/uae-expat", label: "For UAE expats" },
+    ],
+  },
+  {
+    heading: "Calculators",
+    links: [
+      { href: "/calculators", label: "All calculators" },
+      { href: "/calculators/mortgage", label: "Mortgage" },
+      { href: "/calculators/irr", label: "Buy-to-let (IRR)" },
+      { href: "/calculators/sell-or-hold", label: "Sell or hold" },
+      { href: "/calculators/refinance", label: "Refinance" },
+      { href: "/check", label: "Free AI property check" },
     ],
   },
   {
@@ -27,7 +35,7 @@ const columns = [
       { href: "/resources/net-yield-vs-gross-yield", label: "Net yield guide" },
       { href: "/resources/str-operator-performance-check", label: "Short-term rental operator check" },
       { href: "/downloads/portfolio-health-checklist", label: "Free: Health Checklist" },
-      { href: "/downloads/off-plan-handover-decision-tree", label: "Free: Handover Tree" },
+      { href: "/uae-expat", label: "For UAE expats" },
     ],
   },
   {

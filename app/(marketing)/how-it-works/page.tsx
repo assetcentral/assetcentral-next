@@ -20,6 +20,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TeamGalleryStrip } from "@/components/marketing/TeamGalleryStrip";
 
 export const metadata: Metadata = {
   title: "How AssetCentral Works",
@@ -193,6 +194,17 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Team faces — keeps the AI team visible on /how-it-works
+           between the 7-step ladder and the "upgrade when serious"
+           bottom strap. Tier 7 of the ladder names the team; this
+           strip puts faces to the names. ── */}
+      <TeamGalleryStrip
+        eyebrow="Step 7 in faces"
+        heading="The five agents your decisions get reviewed by."
+        body="When the decision is serious enough to talk through, you're talking to these five."
+        background="white"
+      />
 
       {/* ── Bottom strap ─────────────────────────────────────────── */}
       <section className="bg-[color:var(--color-navy)] text-white">

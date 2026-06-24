@@ -146,22 +146,50 @@ export function CalculatorShell({
             >
               {doesNotInclude}
             </p>
+            {/* Three next-steps. Compare another property keeps the
+                visitor inside the free funnel; Import into portfolio
+                routes via free signup (we store the calc result and
+                drop them into the in-app importer); Upgrade to Pro is
+                the direct-subscribe nudge for buyers already sold. */}
             <div
               className="mt-5 rounded-lg border border-[var(--color-border)] bg-white p-4"
               style={{ fontFamily: "var(--font-sans)" }}
             >
               <div className="text-[14px] font-semibold text-[var(--color-navy)] mb-1">
-                Save this result
+                Next steps
               </div>
-              <p className="text-[13px] text-[var(--color-muted)] mb-3">
-                Create a free account to save this result and import it into your portfolio later.
+              <p className="text-[13px] text-[var(--color-muted)] mb-4">
+                Keep going on this property, or move it into the full portfolio
+                so you can track it month after month.
               </p>
-              <Link
-                href="/signup?plan=pro_monthly&intent=direct"
-                className="inline-flex items-center text-[13.5px] font-medium px-4 py-2 rounded-md bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
+              <div className="grid sm:grid-cols-3 gap-2">
+                <Link
+                  href={`/calculators/${slug}?compare=1`}
+                  className="inline-flex items-center justify-center text-center min-h-[42px] text-[13px] font-semibold px-3 rounded-md border border-[var(--color-border)] bg-white text-[var(--color-navy)] hover:border-[var(--color-navy)] transition-colors"
+                >
+                  Compare another property
+                </Link>
+                <Link
+                  href={`/signup?plan=individual_monthly&intent=import-calc&calc=${slug}`}
+                  className="inline-flex items-center justify-center text-center min-h-[42px] text-[13px] font-semibold px-3 rounded-md border border-[color:var(--color-positive)] bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-colors"
+                >
+                  Import into portfolio
+                </Link>
+                <Link
+                  href="/signup?plan=pro_monthly&intent=direct"
+                  className="inline-flex items-center justify-center text-center min-h-[42px] text-[13px] font-semibold px-3 rounded-md bg-[var(--color-navy)] text-white hover:bg-[var(--color-navy-light)] transition-colors"
+                >
+                  Upgrade to Pro
+                </Link>
+              </div>
+              <p
+                className="mt-3 text-[11.5px] text-[var(--color-muted)] leading-[1.5]"
+                style={{ fontFamily: "var(--font-sans)" }}
               >
-                Subscribe now
-              </Link>
+                Import into portfolio uses the free Starter trial — no card to
+                start. Upgrade to Pro adds the full AI team and portfolio
+                dashboard.
+              </p>
             </div>
           </div>
         </div>
