@@ -12,8 +12,8 @@ import Link from "next/link";
 export function FreeAIResultSection() {
   return (
     <section
-      id="free-ai-result"
-      aria-label="What the free AI property check returns"
+      id="example-analysis"
+      aria-label="Example AI property analysis"
       className="bg-white py-16 lg:py-24"
     >
       <div className="mx-auto max-w-6xl px-6 lg:px-10">

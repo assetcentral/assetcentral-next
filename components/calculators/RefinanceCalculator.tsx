@@ -1,0 +1,117 @@
+"use client";
+
+// Refinance checker — Level 1 free tool. Compares the current loan
+// against a refinance proposal: monthly saving, cash flow change,
+// payback period for arrangement fees.
+
+import { useMemo, useState } from "react";
+import { annuityPayment, fmtMoneyFull } from "@/lib/calc-math";
+import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { SaveResultForm } from "./SaveResultForm";
+
+export function RefinanceCalculator() {
+  const [currentBalance, setCurrentBalance] = useState(180_000);
+  const [currentRatePct, setCurrentRatePct] = useState(5.5);
+  const [currentRemainingYears, setCurrentRemainingYears] = useState(22);
+  const [newRatePct, setNewRatePct] = useState(4.2);
+  const [newTermYears, setNewTermYears] = useState(25);
+  const [arrangementFee, setArrangementFee] = useState(2400);
+  const [exitFee, setExitFee] = useState(1500);
+
+  const r = useMemo(() => {
+    const currentPayment =
+      currentBalance > 0 && currentRemainingYears > 0
+        ? annuityPayment(currentBalance, currentRatePct / 100, currentRemainingYears)
+        : 0;
+    const newPayment =
+      currentBalance > 0 && newTermYears > 0
+        ? annuityPayment(currentBalance, newRatePct / 100, newTermYears)
+        : 0;
+    const monthlySaving = currentPayment - newPayment;
+    const totalFees = arrangementFee + exitFee;
+    const paybackMonths = monthlySaving > 0 ? totalFees / monthlySaving : null;
+    const fiveYearSaving = monthlySaving * 60 - totalFees;
+    const tenYearSaving = monthlySaving * 120 - totalFees;
+    return {
+      currentPayment,
+      newPayment,
+      monthlySaving,
+      totalFees,
+      paybackMonths,
+      fiveYearSaving,
+      tenYearSaving,
+    };
+  }, [currentBalance, currentRatePct, currentRemainingYears, newRatePct, newTermYears, arrangementFee, exitFee]);
+
+  const verdict: "worth_it" | "borderline" | "skip" =
+    r.paybackMonths !== null && r.paybackMonths < 24 && r.fiveYearSaving > 0
+      ? "worth_it"
+      : r.paybackMonths !== null && r.paybackMonths < 60 && r.tenYearSaving > 0
+        ? "borderline"
+        : "skip";
+  const verdictLabel =
+    verdict === "worth_it" ? "Worth it" : verdict === "borderline" ? "Borderline" : "Skip";
+  const verdictTone =
+    verdict === "worth_it" ? "positive" : verdict === "borderline" ? "warning" : "negative";
+
+  const summary = [
+    "Refinance checker result",
+    `Inputs: current loan €${currentBalance.toLocaleString()} at ${currentRatePct}% / ${currentRemainingYears} yrs remaining, new offer ${newRatePct}% / ${newTermYears} yrs, arrangement fee €${arrangementFee}, exit fee €${exitFee}`,
+    `Outputs: current payment ${fmtMoneyFull(r.currentPayment)}, new payment ${fmtMoneyFull(r.newPayment)}, monthly saving ${fmtMoneyFull(r.monthlySaving)}, total fees ${fmtMoneyFull(r.totalFees)}, fee payback ${r.paybackMonths && isFinite(r.paybackMonths) ? r.paybackMonths.toFixed(1) + " mo" : "—"}, 5-yr net ${fmtMoneyFull(r.fiveYearSaving)}, 10-yr net ${fmtMoneyFull(r.tenYearSaving)}, signal: ${verdictLabel}`,
+  ].join("\n");
+
+  return (
+    <>
+      <div className="grid lg:grid-cols-[1.1fr_1fr] gap-5 lg:gap-7 items-start">
+        <CalcCard title="Inputs">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <NumberField label="Current balance" prefix="€" value={currentBalance} onChange={setCurrentBalance} step={5000} min={0} />
+            <NumberField label="Current rate" suffix="%" value={currentRatePct} onChange={setCurrentRatePct} step={0.1} min={0} />
+            <NumberField label="Years remaining" suffix="yrs" value={currentRemainingYears} onChange={setCurrentRemainingYears} step={1} min={1} max={40} />
+            <NumberField label="New rate" suffix="%" value={newRatePct} onChange={setNewRatePct} step={0.1} min={0} />
+            <NumberField label="New term" suffix="yrs" value={newTermYears} onChange={setNewTermYears} step={1} min={1} max={40} />
+            <NumberField label="Arrangement fee" prefix="€" value={arrangementFee} onChange={setArrangementFee} step={100} min={0} />
+            <NumberField label="Exit fee on old loan" prefix="€" value={exitFee} onChange={setExitFee} step={100} min={0} hint="Early repayment charge" />
+          </div>
+        </CalcCard>
+
+        <CalcCard title="Results">
+          <div className="space-y-6">
+            <Stat label="Signal" value={verdictLabel} tone={verdictTone} big />
+            <div className="grid grid-cols-2 gap-5">
+              <Stat label="Current payment" value={fmtMoneyFull(r.currentPayment)} />
+              <Stat label="New payment" value={fmtMoneyFull(r.newPayment)} />
+              <Stat
+                label="Monthly saving"
+                value={fmtMoneyFull(r.monthlySaving)}
+                tone={r.monthlySaving > 0 ? "positive" : r.monthlySaving < 0 ? "negative" : "neutral"}
+              />
+              <Stat label="Total fees" value={fmtMoneyFull(r.totalFees)} />
+              <Stat
+                label="Fee payback"
+                value={r.paybackMonths && isFinite(r.paybackMonths) ? `${r.paybackMonths.toFixed(1)} mo` : "—"}
+              />
+              <Stat
+                label="5-year net"
+                value={fmtMoneyFull(r.fiveYearSaving)}
+                tone={r.fiveYearSaving > 0 ? "positive" : "negative"}
+              />
+              <Stat
+                label="10-year net"
+                value={fmtMoneyFull(r.tenYearSaving)}
+                tone={r.tenYearSaving > 0 ? "positive" : "negative"}
+              />
+            </div>
+            <div
+              className="pt-4 border-t border-[var(--color-border)] text-[13px] leading-[1.55] text-[var(--color-muted)]"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Worth it: fees pay back in under 2 years and the 5-year net is positive. Skip: fees out-run the saving over 10 years. Pro adds rate-shock scenarios, multi-product comparison and lender-ready packs.
+            </div>
+          </div>
+        </CalcCard>
+      </div>
+      <SaveResultForm calc="refinance" calcName="Refinance" summary={summary} />
+    </>
+  );
+}

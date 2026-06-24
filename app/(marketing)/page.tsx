@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalculatorsCta } from "@/components/marketing/CalculatorsCta";
 import { DontBuyBlindHero } from "@/components/marketing/DontBuyBlindHero";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { FreeAIResultSection } from "@/components/marketing/FreeAIResultSection";
+import { FreeToolsGridSection } from "@/components/marketing/FreeToolsGridSection";
 import { FreeVsProSection } from "@/components/marketing/FreeVsProSection";
 import { GetDataInSection } from "@/components/marketing/GetDataInSection";
 import { GetStartedSection } from "@/components/marketing/GetStartedSection";
 import { InfrastructureSection } from "@/components/marketing/InfrastructureSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
+import { PartnerStripSection } from "@/components/marketing/PartnerStripSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { StickyCta } from "@/components/marketing/StickyCta";
 import { WhatToCheckSection } from "@/components/marketing/WhatToCheckSection";
@@ -20,13 +21,13 @@ import { WhatToCheckSection } from "@/components/marketing/WhatToCheckSection";
 // imported from the homepage.
 
 export const metadata: Metadata = {
-  // 2026-06 family-office positioning shift. Title leads with the
-  // family-office framing; description names the team + briefing +
-  // segment + price hook.
-  title: { absolute: "Don't Buy Blind — Free AI Property Check | AssetCentral" },
+  // 2026-06 Phase 2 — "Run the numbers first" repositioning. Title
+  // leads with the behavioural ask; description names the eight
+  // decisions AssetCentral checks for and the freemium ladder.
+  title: { absolute: "Run the Numbers First | AssetCentral" },
   // Target: 140–160 chars.
   description:
-    "Before you buy, run the numbers. Free AI property check on any deal — mortgage, yield, cash flow, red flags. Pro for owners of 2 to 50 properties. €49/month.",
+    "Before you buy, sell, mortgage, refinance, renovate or rent out a property, run the numbers first on AssetCentral. Free AI property checks. Upgrade for the full report.",
   alternates: { canonical: "/" },
 };
 
@@ -47,41 +48,43 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Homepage flow (2026-06 AI Property Family Office reposition,
-          Phase 1):
-            MeetTheTeamSection      — the team hero. H1 now reads
-                                      "Your AI Property Family Office."
-                                      Dual CTA: Call My Team + Add
-                                      your first property.
-            CallYourTeamSection     — NEW. Boardroom + example transcript.
-                                      Pre-positions the conversational
-                                      experience before the underlying
-                                      voice screen ships in Phase 4.
-            DailyBriefingSection    — NEW. "Letter from your team"
-                                      briefing card + sources strip.
-                                      Pre-positions the in-app
-                                      TodaysBriefingPanel that lands
-                                      in Phase 2.
-            GetDataInSection        — five-channel ingestion strip.
-            WhatAIUnlocksSection    — six family-office capabilities.
-            CalculatorsCta          — free calculators teaser.
-            PricingPreview          — Individual / Pro / Team tiers.
+      {/* Homepage flow (2026-06 Phase 2 — "Run the numbers first").
+          AssetCentral.ai is repositioned as the default place people
+          go BEFORE making any property decision. The page is a wide
+          B2C funnel above the #pro anchor, with the existing Pro
+          story preserved below for the 2-50 property owner cohort.
+
+            DontBuyBlindHero        — "Run the numbers first." Primary
+                                      CTA: Check a property for free.
+            WhatToCheckSection      — Decision router. Seven cards
+                                      (buy / sell / mortgage / refi /
+                                      works / rent-out / STR-vs-LTR)
+                                      plus a quieter "I own multiple"
+                                      row pointing at Pro.
+            FreeAIResultSection     — Example analysis card. Makes the
+                                      free AI output tangible.
+            FreeToolsGridSection    — Eight free Level 1 tools in a
+                                      grid. The freemium acquisition
+                                      layer.
+            FreeVsProSection        — Side-by-side: free run-the-
+                                      numbers vs Pro decide-properly.
+            ProTransitionBand       — Transition into the Pro story.
+            MeetTheTeamSection      — Pro: five-agent AI team.
+            InfrastructureSection   — Pro: what the agent infra unlocks.
+            GetStartedSection       — Pro: getting started.
+            GetDataInSection        — Pro: ingestion channels.
+            PricingPreview          — Free / Individual / Pro / Team /
+                                      Enterprise pricing.
+            PartnerStripSection     — Quiet bottom CTA for advisors.
             LeadCapture             — email capture.
-            FinalCta                — close. Call My Team is now the
-                                      lead conversion action.
-            StickyCta               — mobile-only conversion pill,
-                                      defaults to Call My Team. */}
-      {/* ── B2C funnel (top of page) ─────────────────────────────
-           2026-06 repositioning. The homepage now opens with a
-           consumer-friendly "Don't Buy Blind" hero, routes by
-           persona, shows what the free AI check returns, then
-           compares free vs Pro before transitioning into the
-           existing Pro positioning. The Pro funnel is preserved
-           intact below the #pro anchor for the 2-50 property
-           owner cohort. */}
+            FinalCta                — close.
+            StickyCta               — mobile-only conversion pill. */}
+
+      {/* ── B2C funnel (top of page) ───────────────────────────── */}
       <DontBuyBlindHero />
       <WhatToCheckSection />
       <FreeAIResultSection />
+      <FreeToolsGridSection />
       <FreeVsProSection />
 
       {/* ── Pro positioning (preserved below the #pro anchor) ──── */}
@@ -92,8 +95,8 @@ export default function HomePage() {
       <GetStartedSection />
       <div id="how-it-works" />
       <GetDataInSection />
-      <CalculatorsCta />
       <PricingPreview />
+      <PartnerStripSection />
       <LeadCapture />
       <FinalCta />
       <StickyCta />

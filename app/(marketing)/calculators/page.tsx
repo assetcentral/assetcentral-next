@@ -59,6 +59,27 @@ const calcs: Calc[] = [
     inputs: ["Purchase price", "LTV options", "Mortgage rate", "Annual rent", "Hold period"],
   },
   {
+    slug: "sell-or-hold",
+    name: "Sell or Hold Checker",
+    blurb:
+      "Should you keep this property or sell? Compares ending wealth from holding against selling and reinvesting the equity.",
+    inputs: ["Current value", "Mortgage balance", "Monthly cash flow", "Growth %", "Alt return %", "Horizon"],
+  },
+  {
+    slug: "rent-out",
+    name: "Rent-Out Checker",
+    blurb:
+      "Find the rent you need to cover every monthly cost, plus the rent you need to hit your target margin.",
+    inputs: ["Mortgage", "Service charge", "Insurance", "Maintenance %", "Management %", "Vacancy"],
+  },
+  {
+    slug: "refinance",
+    name: "Refinance Checker",
+    blurb:
+      "Compare your current loan against a new offer — monthly saving, payback period for fees, 5- and 10-year net.",
+    inputs: ["Current balance", "Current rate", "New rate", "New term", "Arrangement fee", "Exit fee"],
+  },
+  {
     slug: "off-plan",
     name: "Off-Plan Rolling-Return Calculator",
     blurb:

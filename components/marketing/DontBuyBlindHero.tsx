@@ -1,27 +1,23 @@
-// "Don't buy blind" — the new B2C top-of-funnel hero.
+// Top-of-funnel B2C hero — "Run the numbers first."
 //
-// 2026-06 repositioning: the homepage now speaks first to the person
-// thinking about buying / refinancing / renovating ONE property, not
-// only to portfolio owners. The Pro positioning (5-agent team, IC-grade
-// underwriting, etc.) moves further down the page and remains intact
-// for the 2-50 property owner cohort.
+// 2026-06 repositioning (Phase 2). AssetCentral.ai is repositioned as
+// the default place people go BEFORE making any property decision —
+// buy, sell, mortgage, refinance, renovate, rent out. The hero leads
+// with the behavioural ask ("run the numbers first") and the eyebrow
+// keeps the "Don't buy blind" brand line.
 //
-// Primary CTA points at /calculators/mortgage — that's the current
-// best entry point to the free flow until the dedicated /check
-// experience ships. Secondary CTA scrolls to the persona router so
-// non-buyers can find their path.
+// Component name kept as DontBuyBlindHero for import-history reasons.
 
 import Link from "next/link";
 
 export function DontBuyBlindHero() {
   return (
     <section
-      id="dont-buy-blind"
-      aria-label="Before you buy, run the numbers — AssetCentral"
+      id="run-the-numbers"
+      aria-label="Run the numbers first — AssetCentral"
       className="bg-white pt-16 lg:pt-24 pb-12 lg:pb-16"
     >
       <div className="mx-auto max-w-5xl px-6 lg:px-10">
-        {/* ── Eyebrow ─────────────────────────────────────────── */}
         <p
           className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-accent)] font-semibold mb-5"
           style={{ fontFamily: "var(--font-sans)" }}
@@ -29,34 +25,23 @@ export function DontBuyBlindHero() {
           DON&rsquo;T BUY BLIND
         </p>
 
-        {/* ── H1 ───────────────────────────────────────────────
-             Display-serif headline. Two-line break tuned so the
-             second line ("run the numbers.") sits in accent blue and
-             reads as the call to action. */}
         <h1
           className="text-[44px] md:text-[58px] lg:text-[68px] leading-[1.02] tracking-tight text-[color:var(--color-navy)] font-semibold"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Before you buy,{" "}
-          <span className="text-[color:var(--color-accent)] italic">
-            run the numbers.
-          </span>
+          Run the numbers{" "}
+          <span className="text-[color:var(--color-accent)] italic">first.</span>
         </h1>
 
-        {/* ── Subhead — plain English, no jargon ─────────────── */}
         <p
           className="mt-6 text-[18px] lg:text-[22px] leading-[1.5] text-[color:var(--color-ink)] max-w-3xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          AssetCentral helps property buyers and owners check whether a property
-          makes financial sense — before they commit. Free AI property check.
-          No card. No spam.
+          Before you buy, sell, mortgage, refinance, renovate or rent out a
+          property, AssetCentral helps you check whether the numbers actually
+          make sense.
         </p>
 
-        {/* ── CTAs ────────────────────────────────────────────
-             Primary lands on the mortgage calculator which is the
-             biggest current ad-funnel entry; secondary scrolls down
-             to the persona router. */}
         <div
           className="mt-9 flex flex-col sm:flex-row gap-3"
           style={{ fontFamily: "var(--font-sans)" }}
@@ -69,20 +54,18 @@ export function DontBuyBlindHero() {
             <span aria-hidden>→</span>
           </Link>
           <Link
-            href="#what-to-check"
+            href="#example-analysis"
             className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-[52px] px-6 py-3.5 rounded-md border border-[color:var(--color-border)] bg-white text-[color:var(--color-navy)] text-[15.5px] font-semibold transition hover:border-[color:var(--color-navy)]"
           >
-            See how it works
+            See example analysis
           </Link>
         </div>
 
-        {/* ── Reassurance line ────────────────────────────────── */}
         <p
           className="mt-4 text-[13px] text-[color:var(--color-muted)]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Free AI check covers monthly mortgage payment, rental yield, cash
-          flow, one red flag and one improvement suggestion. Takes 60 seconds.
+          Free AI property checks. Upgrade only when you need deeper analysis.
         </p>
       </div>
     </section>

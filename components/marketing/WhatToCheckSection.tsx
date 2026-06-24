@@ -1,68 +1,76 @@
-// "What do you want to check?" — persona router below the new top
-// hero. Routes each visitor to the entry point that fits them:
+// "What do you want to check?" — decision router under the new
+// "Run the numbers first" hero.
 //
-//   I'm buying            → /calculators/mortgage (free check)
-//   I own a property      → /calculators/irr      (free check + save)
-//   I have 2-50           → Pro section anchor (#pro)
-//   I advise clients      → /partners
-//
-// The two B2C cards (buying + owning one) sit on the left and lead
-// to the free flow. The two upgrade cards (portfolio + partner) sit
-// on the right and lead deeper into the existing product. Card style
-// stays plain — no edge stripes — colour-coded only by left-side dot.
+// 2026-06 Phase 2 repositioning. The grid lists the seven property
+// decisions AssetCentral helps people think through, each landing on
+// the matching free tool or, in the portfolio case, the Pro story.
+// The seven B2C cards lead with the user's situation; the eighth
+// (portfolio owner) is intentionally smaller / quieter so the front
+// door stays consumer-friendly.
 
 import Link from "next/link";
 
-interface PersonaCard {
-  /** Tiny header chip. */
+interface DecisionCard {
+  /** First-person framing — "I'm …". */
   who: string;
-  /** Card headline. */
-  headline: string;
-  /** Body — what they get next. */
+  /** Card body — what AssetCentral checks for them. */
   body: string;
-  /** Where the card lands. */
+  /** Free tool the CTA opens. */
   href: string;
-  /** Link label inside the card. */
+  /** CTA label inside the card. */
   cta: string;
-  /** Dot colour — uses existing role tokens. */
+  /** Coloured dot — uses an existing role / state token. */
   dotColor: string;
-  /** True for the two free-flow cards (slightly more emphasis). */
-  free?: boolean;
 }
 
-const PERSONAS: PersonaCard[] = [
+const DECISIONS: DecisionCard[] = [
   {
     who: "I'm buying a property",
-    headline: "Check the deal before you make an offer.",
-    body: "Free mortgage check + rental yield + AI sense-check. Verdict in 60 seconds — attractive, borderline or risky, with one red flag and one improvement.",
+    body: "Check affordability, yield, cash flow and risk before you make an offer.",
     href: "/check",
-    cta: "Run a free check",
+    cta: "Check a purchase",
     dotColor: "var(--color-accent)",
-    free: true,
   },
   {
-    who: "I own a property",
-    headline: "Find out what your property is really earning.",
-    body: "Free yield + cash flow check on what you already own. Save the result and compare against alternatives — refinance, renovate, hold or sell.",
-    href: "/check",
-    cta: "Check what you own",
+    who: "I'm selling a property",
+    body: "Check whether selling now makes more sense than holding.",
+    href: "/calculators/sell-or-hold",
+    cta: "Run sell or hold",
     dotColor: "var(--color-positive)",
-    free: true,
   },
   {
-    who: "I own 2 to 50 properties",
-    headline: "Move from spreadsheets to an AI family-office layer.",
-    body: "AssetCentral Pro: 5-agent AI team, IC-grade underwriting, 16-report library, voice line, live monitoring. From €49/month.",
-    href: "#pro",
-    cta: "See the Pro product",
+    who: "I'm taking a mortgage",
+    body: "Calculate the payment, then check if the property still makes sense.",
+    href: "/calculators/mortgage",
+    cta: "Use mortgage calculator",
+    dotColor: "var(--color-cfo-mid)",
+  },
+  {
+    who: "I'm refinancing",
+    body: "Compare your current loan with a new loan and see the cash flow impact.",
+    href: "/calculators/refinance",
+    cta: "Check refinance",
     dotColor: "var(--color-cio-mid)",
   },
   {
-    who: "I advise clients",
-    headline: "Run institutional analysis for buyers and owners.",
-    body: "Brokers, mortgage advisors, accountants, buying agents — offer AI-grade analysis under your brand. Co-branded reports, partner revenue share.",
-    href: "/partners",
-    cta: "See the partner program",
+    who: "I'm doing works",
+    body: "Estimate whether renovation spend creates enough rent or value uplift.",
+    href: "/calculators/retrofit",
+    cta: "Check works ROI",
+    dotColor: "var(--color-warning)",
+  },
+  {
+    who: "I'm renting out",
+    body: "Find the rent you need to cover costs and hit your return target.",
+    href: "/calculators/rent-out",
+    cta: "Check rent",
+    dotColor: "var(--color-coo-mid)",
+  },
+  {
+    who: "I'm comparing short-let vs long-let",
+    body: "See whether short-term holiday letting would beat a normal tenant.",
+    href: "/calculators/str-yield",
+    cta: "Compare lets",
     dotColor: "var(--color-pa-mid)",
   },
 ];
@@ -71,10 +79,10 @@ export function WhatToCheckSection() {
   return (
     <section
       id="what-to-check"
-      aria-label="What do you want to check on AssetCentral?"
-      className="bg-[color:var(--color-surface)] border-y border-[color:var(--color-border)] py-16 lg:py-20"
+      aria-label="Decide what to check"
+      className="bg-[color:var(--color-surface)] py-16 lg:py-24"
     >
-      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-3xl">
           <p
             className="text-[12px] uppercase tracking-[0.14em] text-[color:var(--color-accent)] mb-4 font-semibold"
@@ -83,65 +91,83 @@ export function WhatToCheckSection() {
             START HERE
           </p>
           <h2
-            className="text-[30px] lg:text-[40px] leading-[1.1] text-[color:var(--color-navy)]"
+            className="text-[36px] lg:text-[48px] leading-[1.1] text-[color:var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
             What do you want to check?
           </h2>
           <p
-            className="mt-4 text-[16px] lg:text-[17px] leading-[1.55] text-[color:var(--color-muted)]"
+            className="mt-3 text-[16px] lg:text-[17px] leading-[1.55] text-[color:var(--color-ink)] max-w-2xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Pick the path that fits. Buyers and one-property owners start free.
-            Portfolio owners and advisors get the full product.
+            Pick the situation closest to yours. Each one runs in under a
+            minute and ends with a plain-English AI view — no card required.
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
-          {PERSONAS.map((p) => (
-            <Link
-              key={p.who}
-              href={p.href}
-              className="group block rounded-2xl border border-[color:var(--color-border)] bg-white p-6 lg:p-7 hover:border-[color:var(--color-navy)] hover:shadow-[0_12px_30px_-20px_rgba(15,23,42,0.25)] transition"
-              style={{ fontFamily: "var(--font-sans)" }}
-            >
-              <div className="flex items-center gap-2.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-2 w-2 rounded-full shrink-0"
-                  style={{ backgroundColor: p.dotColor }}
-                />
-                <p className="text-[11.5px] uppercase tracking-[0.1em] text-[color:var(--color-muted)] font-semibold">
-                  {p.who}
-                </p>
-                {p.free ? (
-                  <span
-                    className="ml-auto text-[10px] uppercase tracking-[0.1em] font-bold rounded-full px-2 py-0.5"
-                    style={{
-                      backgroundColor: "rgba(22, 163, 74, 0.10)",
-                      color: "var(--color-positive)",
-                    }}
-                  >
-                    Free
-                  </span>
-                ) : null}
-              </div>
-              <h3
-                className="mt-3 text-[20px] lg:text-[22px] leading-[1.2] text-[color:var(--color-navy)] font-semibold"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {p.headline}
-              </h3>
-              <p className="mt-3 text-[14.5px] leading-[1.55] text-[color:var(--color-ink)]">
-                {p.body}
-              </p>
-              <p className="mt-5 text-[13.5px] font-semibold text-[color:var(--color-accent)] group-hover:underline">
-                {p.cta} →
-              </p>
-            </Link>
+        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {DECISIONS.map((d) => (
+            <DecisionCardItem key={d.who} card={d} />
           ))}
+        </div>
+
+        {/* Quiet eighth row — portfolio owner sit-down. Visually
+            separated so the consumer journey above stays the lead. */}
+        <div
+          className="mt-8 rounded-2xl border border-[color:var(--color-border)] bg-white p-6 lg:p-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          <div className="max-w-2xl">
+            <div
+              className="text-[12px] uppercase tracking-[0.12em] text-[color:var(--color-muted)] font-semibold mb-1"
+            >
+              OR
+            </div>
+            <h3
+              className="text-[20px] lg:text-[22px] text-[color:var(--color-navy)] font-semibold"
+            >
+              I own multiple properties
+            </h3>
+            <p className="mt-1.5 text-[14.5px] text-[color:var(--color-ink)]">
+              Move from spreadsheets to AssetCentral Pro — five AI agents,
+              monitoring, lender-ready packs.
+            </p>
+          </div>
+          <Link
+            href="#pro"
+            className="inline-flex items-center justify-center min-h-[44px] px-5 rounded-md border border-[color:var(--color-navy)] text-[color:var(--color-navy)] text-[14px] font-semibold transition hover:bg-[color:var(--color-navy)] hover:text-white"
+          >
+            Explore Pro →
+          </Link>
         </div>
       </div>
     </section>
+  );
+}
+
+function DecisionCardItem({ card }: { card: DecisionCard }) {
+  return (
+    <Link
+      href={card.href}
+      className="group block rounded-2xl bg-white border border-[color:var(--color-border)] p-6 transition hover:border-[color:var(--color-navy)] hover:shadow-[0_12px_32px_-18px_rgba(15,23,42,0.25)]"
+      style={{ fontFamily: "var(--font-sans)" }}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <span
+          aria-hidden
+          className="inline-block w-2.5 h-2.5 rounded-full"
+          style={{ background: card.dotColor }}
+        />
+        <p className="text-[13px] uppercase tracking-[0.08em] text-[color:var(--color-muted)] font-semibold">
+          {card.who}
+        </p>
+      </div>
+      <p className="text-[15.5px] leading-[1.55] text-[color:var(--color-ink)]">
+        {card.body}
+      </p>
+      <p className="mt-4 text-[14px] font-semibold text-[color:var(--color-accent)] group-hover:underline">
+        {card.cta} →
+      </p>
+    </Link>
   );
 }
