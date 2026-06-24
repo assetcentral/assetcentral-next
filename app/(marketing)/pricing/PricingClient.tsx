@@ -201,13 +201,21 @@ export function PricingClient() {
                 Unlock the full property report
               </p>
               <PriceBlock
-                price={formatPrice(starterPrice.monthly, bill)}
+                price={formatPrice(
+                  billing === "annual"
+                    ? annualMonthlyEquiv(starterPrice.annual)
+                    : starterPrice.monthly,
+                  bill,
+                )}
                 sub={
                   billing === "monthly"
                     ? "per month after 7-day trial"
-                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(starterPrice.annual), bill)}/mo (${formatPrice(starterPrice.annual, bill)}/year, save ${annualSavings(starterPrice, bill)})`
+                    : `per month billed annually (${formatPrice(starterPrice.annual, bill)}/year, save ${annualSavings(starterPrice, bill)})`
                 }
-                annualDiscount={annualDiscountPct(starterPrice)}
+                // Per-card "Save X% with annual" nudge is only useful while
+                // the user is on the monthly toggle. Once they've flipped
+                // to annual the top-of-page chip already confirms the win.
+                annualDiscount={billing === "monthly" ? annualDiscountPct(starterPrice) : undefined}
               />
               <DualCTA
                 trialHref={`/signup?plan=individual_${billing}`}
@@ -251,13 +259,18 @@ export function PricingClient() {
                 Model, monitor and manage your portfolio
               </p>
               <PriceBlock
-                price={formatPrice(proPrice.monthly, bill)}
+                price={formatPrice(
+                  billing === "annual"
+                    ? annualMonthlyEquiv(proPrice.annual)
+                    : proPrice.monthly,
+                  bill,
+                )}
                 sub={
                   billing === "monthly"
                     ? "per month after 7-day trial"
-                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(proPrice.annual), bill)}/mo (${formatPrice(proPrice.annual, bill)}/year, save ${annualSavings(proPrice, bill)})`
+                    : `per month billed annually (${formatPrice(proPrice.annual, bill)}/year, save ${annualSavings(proPrice, bill)})`
                 }
-                annualDiscount={annualDiscountPct(proPrice)}
+                annualDiscount={billing === "monthly" ? annualDiscountPct(proPrice) : undefined}
               />
               <DualCTA
                 trialHref={`/signup?plan=pro_${billing}`}
@@ -301,7 +314,12 @@ export function PricingClient() {
                 className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold mb-2"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Team — {formatPrice(teamPrice.monthly, bill)}/mo
+                Team — {formatPrice(
+                  billing === "annual"
+                    ? annualMonthlyEquiv(teamPrice.annual)
+                    : teamPrice.monthly,
+                  bill,
+                )}/mo{billing === "annual" ? " (billed annually)" : ""}
               </p>
               <h3
                 className="text-[20px] lg:text-[22px] text-[var(--color-navy)] font-semibold"
