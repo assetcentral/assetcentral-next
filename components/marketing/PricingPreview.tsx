@@ -51,7 +51,14 @@ export function PricingPreview() {
             tagline="Run the first numbers"
             price={formatPrice(0, bill)}
             cadence="forever"
-            blurb="Every Level 1 calculator + the free AI property check. 1 saved property. No card. Build the habit before you buy."
+            blurb="For anyone thinking about a property — no card, no commitment."
+            features={[
+              "8 free Level 1 calculators",
+              "Free AI property check — verdict + red flag",
+              "3-row stress test on every calculator",
+              "1 saved property — track over time",
+              "Email or save your result",
+            ]}
             cta={{ label: "Run a free check", href: "/check" }}
           />
           <PlanCard
@@ -60,7 +67,15 @@ export function PricingPreview() {
             price={formatPrice(starter.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(starter)}
-            blurb="For a serious decision on one or several properties. Full report, 10-year forecast, scenarios, PDF export, saved properties + comparison."
+            blurb="For a serious decision on one or several properties. 7-day trial, no card."
+            features={[
+              "Everything in Free, plus:",
+              "Full property decision report (PDF + Word)",
+              "10-year cash-flow forecast",
+              "Rate / rent / capital-growth scenarios",
+              "Sell-vs-hold + refinance modelling",
+              "Property comparison · up to 3 saved",
+            ]}
             cta={{ label: "Try free for 7 days", href: "/signup?plan=individual_monthly" }}
             altCta={{ label: "Subscribe now", href: "/signup?plan=individual_monthly&intent=direct" }}
             popular
@@ -71,7 +86,16 @@ export function PricingPreview() {
             price={formatPrice(pro.monthly, bill)}
             cadence="per month"
             annualDiscount={annualDiscountPct(pro)}
-            blurb="For owners and investors with 2–50 properties. Portfolio dashboard, the 5-agent AI team, alerts, document vault, decision memos."
+            blurb="For owners and investors with 2–50 properties. 7-day trial, no card."
+            features={[
+              "Everything in Starter, plus:",
+              "Up to 50 properties + portfolio dashboard",
+              "5-agent AI team (CIO · CFO · COO · CEO · PA)",
+              "22 monitoring alerts (email + WhatsApp)",
+              "Document vault + AI extraction",
+              "Voice line — call your AI team",
+              "Lender packs: Refinancing · Investor · Tax",
+            ]}
             cta={{ label: "Try free for 7 days", href: "/signup?plan=pro_monthly" }}
             altCta={{ label: "Subscribe now", href: "/signup?plan=pro_monthly&intent=direct" }}
           />
@@ -112,6 +136,10 @@ type Plan = {
    *  framing: "Run the first numbers" / "Unlock the full property
    *  report" / "Model, monitor and manage your portfolio". */
   tagline?: string;
+  /** 5–7 concrete feature bullets shown beneath the blurb. The first
+   *  bullet on a paid card typically reads "Everything in X, plus:"
+   *  so the visitor can see the upgrade chain at a glance. */
+  features?: readonly string[];
   price: string;
   cadence: string;
   blurb: string;
@@ -128,7 +156,7 @@ type Plan = {
   annualDiscount?: number;
 };
 
-function PlanCard({ name, tagline, price, cadence, blurb, cta, altCta, popular, annualDiscount }: Plan) {
+function PlanCard({ name, tagline, features, price, cadence, blurb, cta, altCta, popular, annualDiscount }: Plan) {
   return (
     <article
       className={`relative rounded-2xl bg-white p-7 lg:p-8 flex flex-col ${
@@ -240,17 +268,34 @@ function PlanCard({ name, tagline, price, cadence, blurb, cta, altCta, popular, 
         </Link>
       )}
 
-      {/* Blurb moved BELOW the CTAs as part of the 2026-06 reorder so
-          the principal subscribe action sits directly under the price.
-          Readers who want detail still see it; readers who already know
-          what they want hit the button without scrolling past the
-          marketing copy. */}
+      {/* Blurb + feature bullets sit BELOW the CTAs (2026-06 reorder) so
+          the principal subscribe action stays directly under the price.
+          Readers who want detail get the full picture below — the
+          quantified feature list is what converts a curious visitor
+          into a Free signup, and matches the strengths each card needs
+          to argue against the cheaper tier above it. */}
       <p
         className="mt-6 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
         style={{ fontFamily: "var(--font-sans)" }}
       >
         {blurb}
       </p>
+      {features && features.length > 0 && (
+        <ul
+          className="mt-4 space-y-1.5 text-[13.5px] leading-[1.5] text-[var(--color-ink)]"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          {features.map((f) => (
+            <li key={f} className="flex items-start gap-2">
+              <span
+                aria-hidden
+                className="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-positive)] flex-shrink-0"
+              />
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
   );
 }

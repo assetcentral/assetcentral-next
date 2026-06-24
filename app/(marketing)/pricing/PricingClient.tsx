@@ -15,7 +15,6 @@ import {
   PLAN_PRICES,
 } from "@/lib/pricing";
 import { PRICING_FAQS } from "@/lib/pricing-faqs";
-import { PricingConversionGrid } from "@/components/marketing/PricingConversionGrid";
 
 type Billing = "monthly" | "annual";
 
@@ -144,8 +143,6 @@ export function PricingClient() {
         </div>
       </section>
 
-      <PricingConversionGrid />
-
       <section className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mb-10 max-w-3xl">
@@ -175,17 +172,17 @@ export function PricingClient() {
               <CTA href="/check" variant="ghost">
                 Run a free check
               </CTA>
-              <Blurb>1 saved property. The no-card way to use the free AI check, save the result and come back to it.</Blurb>
+              <Blurb>For anyone thinking about a property. No card, no commitment, no expiry.</Blurb>
               <FeatureList
                 items={[
-                  { label: "Unlimited free /check runs", on: true },
-                  { label: "AI verdict + red flag + one-thing-to-fix", on: true },
-                  { label: "Email the result", on: true },
-                  { label: "All public calculators", on: true },
-                  { label: "1 saved property", on: true },
-                  { label: "Up to 3 properties", on: false },
-                  { label: "Five-agent AI team", on: false },
-                  { label: "Reports library + scenarios", on: false },
+                  { label: "8 free Level 1 calculators (mortgage, BTL, yield, sell-or-hold, retrofit, refinance, rent-out, short-vs-long)", on: true },
+                  { label: "Free AI property check — verdict + red flag + next move", on: true },
+                  { label: "3-row stress test on every calculator (rate, rent, vacancy)", on: true },
+                  { label: "1 saved property — come back and re-run as rates / rent move", on: true },
+                  { label: "Email the result to yourself or your broker", on: true },
+                  { label: "Unlimited runs, no card, ever", on: true },
+                  { label: "Full property decision report + 10-year forecast", on: false },
+                  { label: "Portfolio dashboard + 5-agent AI team", on: false },
                 ]}
               />
             </PlanCardLayout>
@@ -217,18 +214,19 @@ export function PricingClient() {
                 directHref={`/signup?plan=individual_${billing}&intent=direct`}
                 directLabel={`Subscribe now`}
               />
-              <Blurb>For a serious decision on one or several properties. Up to 3 saved properties, single user.</Blurb>
+              <Blurb>For a serious decision on one or several properties. Up to 3 saved, single user. 7-day trial, no card.</Blurb>
               <FeatureList
                 items={[
-                  { label: "Full property decision report", on: true },
-                  { label: "10-year cash-flow forecast", on: true },
-                  { label: "Scenario analysis (rate / rent / capital growth)", on: true },
-                  { label: "Sell vs hold + refinance scenarios", on: true },
-                  { label: "Property comparison", on: true },
-                  { label: "PDF + Word export", on: true },
-                  { label: "Up to 3 saved properties", on: true },
-                  { label: "All Level 1 calculators + multi-currency", on: true },
-                  { label: "Portfolio dashboard + AI agents", on: false },
+                  { label: "Everything in Free, plus:", on: true },
+                  { label: "Full property decision report — 10-page PDF + Word", on: true },
+                  { label: "10-year cash-flow forecast with debt amortisation", on: true },
+                  { label: "Scenario analysis — rate, rent growth, capital growth", on: true },
+                  { label: "Sell-vs-hold analyser + refinance modelling", on: true },
+                  { label: "Side-by-side property comparison (up to 3 at once)", on: true },
+                  { label: "Tax-adjusted analysis per country", on: true },
+                  { label: "Multi-currency tracking (EUR · GBP · USD · AED)", on: true },
+                  { label: "Up to 3 saved properties · email + WhatsApp support", on: true },
+                  { label: "Portfolio dashboard + 5-agent AI team", on: false },
                 ]}
               />
             </PlanCardLayout>
@@ -267,17 +265,19 @@ export function PricingClient() {
                 directLabel={`Subscribe now`}
                 trialVariant="ghost"
               />
-              <Blurb>Owners and investors with 2&ndash;50 properties. Portfolio dashboard, AI agents, alerts, decision memos.</Blurb>
+              <Blurb>Owners and investors with 2&ndash;50 properties. Portfolio command centre with the AI team built in. 7-day trial, no card.</Blurb>
               <FeatureList
                 items={[
                   { label: "Everything in Starter, plus:", on: true },
-                  { label: "Up to 50 properties", on: true },
-                  { label: "Portfolio dashboard + per-asset deep-dives", on: true },
-                  { label: "5-agent AI team (CIO · CFO · COO · PA · CEO)", on: true },
-                  { label: "Monitoring alerts (22 types, email + WhatsApp)", on: true },
-                  { label: "Document vault + AI extraction", on: true },
-                  { label: "Voice line to your AI team", on: true },
-                  { label: "Lender-ready packs (Refinancing / Investor / Tax)", on: true },
+                  { label: "Up to 50 properties + per-asset deep-dives", on: true },
+                  { label: "Portfolio dashboard with real-time net-yield monitoring", on: true },
+                  { label: "5-agent AI team — CIO, CFO, COO, CEO, PA", on: true },
+                  { label: "22 monitoring alert types (email + WhatsApp)", on: true },
+                  { label: "Document vault — upload statements, AI extracts the figures", on: true },
+                  { label: "Data ingestion: WhatsApp · email · file → structured data", on: true },
+                  { label: "Voice line — phone in and talk to your AI team", on: true },
+                  { label: "Lender-ready packs: Refinancing · Investor · Tax", on: true },
+                  { label: "Daily briefing — what changed, what to act on", on: true },
                   { label: "Team members + multi-workspace", on: false },
                 ]}
               />
