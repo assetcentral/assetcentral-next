@@ -16,17 +16,22 @@ export const BILLING_CURRENCY_LABEL: Record<BillingCurrency, string> = {
   AED: "AED · د.إ",
 };
 
-// PlanId — Free retired in the 2026-06 pricing change. Individual
-// (€19/mo for up to 3 properties, 1 user) replaces it as the entry-level
-// paid tier. Pro and Team unchanged in price; their scope statements
-// shifted to "more than 3 properties" to make the ladder obvious.
+// PlanId — Free reinstated alongside Individual / Pro / Team /
+// Enterprise as of the "Don't Buy Blind" repositioning. The 2026-06
+// retirement note (Individual replaces Free) no longer applies — the
+// B2C funnel landing on /check needs a no-card entry point above
+// Individual so visitors who run the AI verdict can save the result
+// and come back without paying anything.
 //
-// We KEEP "free" in the enum for backwards compatibility with any
-// app-side reads of legacy users whose subscription_plan was set to
-// 'free' before the change. New signups go to 'individual'. The Stripe
-// product setup for individual_monthly / individual_annual is a
-// follow-up ship — until those are configured the signup flow may
-// need to short-circuit to the trial path.
+// Tier ladder now reads:
+//   Free        — 1 saved property + unlimited /check runs
+//   Individual  — €19/mo, 1-3 properties
+//   Pro         — €49/mo, up to 50 properties (popular)
+//   Team        — €199/mo, 2-5 users
+//   Enterprise  — custom
+//
+// PLAN_PRICES still excludes "free" because there's nothing to charge.
+// The tier exists for UI/feature-gating only.
 export type PlanId =
   | "free"
   | "individual"

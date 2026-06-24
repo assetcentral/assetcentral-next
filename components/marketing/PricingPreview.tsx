@@ -44,7 +44,14 @@ export function PricingPreview() {
           </p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-5">
+        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <PlanCard
+            name="Free"
+            price={formatPrice(0, bill)}
+            cadence="forever"
+            blurb="1 saved property. Unlimited free /check runs, AI verdict, email the result. The no-card on-ramp."
+            cta={{ label: "Run a free check", href: "/check" }}
+          />
           <PlanCard
             name="Individual"
             price={formatPrice(individual.monthly, bill)}

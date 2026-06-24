@@ -143,7 +143,7 @@ export function PricingClient() {
               className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-3"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              The three tiers
+              Five tiers
             </p>
             <h2
               className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)]"
@@ -152,11 +152,38 @@ export function PricingClient() {
               Same architecture. Priced to the size of your portfolio.
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Individual — replaces the Free tier as of the 2026-06
-                pricing change. €19/mo for 1-3 properties, single user,
-                full Model · Monitor · Manage framework. The entry tier
-                is now paid; the trial is the no-card path. */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {/* Free — re-instated as the no-card on-ramp for the
+                "Don't Buy Blind" funnel. 1 saved property + unlimited
+                /check runs + AI verdict + email. Once you own a second
+                property you need Individual. */}
+            <PlanCardLayout name="Free">
+              <PriceBlock
+                price={formatPrice(0, bill)}
+                sub="forever"
+              />
+              <CTA href="/check" variant="ghost">
+                Run a free check
+              </CTA>
+              <Blurb>1 saved property. The no-card way to use the free AI check, save the result and come back to it.</Blurb>
+              <FeatureList
+                items={[
+                  { label: "Unlimited free /check runs", on: true },
+                  { label: "AI verdict + red flag + one-thing-to-fix", on: true },
+                  { label: "Email the result", on: true },
+                  { label: "All public calculators", on: true },
+                  { label: "1 saved property", on: true },
+                  { label: "Up to 3 properties", on: false },
+                  { label: "Five-agent AI team", on: false },
+                  { label: "Reports library + scenarios", on: false },
+                ]}
+              />
+            </PlanCardLayout>
+
+            {/* Individual — €19/mo entry-level paid tier for 1-3
+                properties, single user, full Model · Monitor · Manage
+                framework. Free is the on-ramp; Individual is the first
+                paid step. */}
             <PlanCardLayout name="Individual">
               <PriceBlock
                 price={formatPrice(individualPrice.monthly, bill)}

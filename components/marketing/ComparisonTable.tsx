@@ -5,40 +5,43 @@ import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 
 // Plan-comparison rows. 2026-06 pricing rework moved the platform from a
 // feature-gated model (Free vs Paid drove which agents and surfaces a
-// user could see) to a SCOPE-gated model: every tier gets every feature;
-// the difference is how many properties, how many seats, and how many
-// voice minutes you get. Source of truth lives in
+// user could see) to a SCOPE-gated model: every paid tier gets every
+// feature; the difference is how many properties, how many seats, and
+// how many voice minutes you get. Source of truth lives in
 // assetcentral-app/lib/billing/limits.ts.
 //
-// The retired "Free" column has been replaced by Individual €19/mo. All
-// four columns now mark every capability as included; tier-specific
-// scope shows up in the cap rows (properties, seats, voice minutes,
-// workspaces, SSO/DPA, support level).
+// Free was retired in mid-2026 and then re-instated as the no-card
+// on-ramp for the "Don't Buy Blind" funnel. Free gets the public
+// /check experience + saving a single property; the four paid tiers
+// (Individual / Pro / Team / Enterprise) get the full platform. Values
+// arrays are now 5-wide in this order:
+//   [Free, Individual, Pro, Team, Enterprise]
 const rows = [
-  { group: "AC Agent Team", label: "Personal Assistant", values: [true, true, true, true] },
-  { group: "AC Agent Team", label: "Chief Financial Officer", values: [true, true, true, true] },
-  { group: "AC Agent Team", label: "Chief Investment Officer", values: [true, true, true, true] },
-  { group: "AC Agent Team", label: "Chief Operations Officer", values: [true, true, true, true] },
-  { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [true, true, true, true] },
-  { group: "Portfolio", label: "Properties tracked", values: ["Up to 3", "Up to 50", "Up to 50", "Unlimited"] },
-  { group: "Portfolio", label: "Calculators (IRR, Short-term Rental, Retrofit, Ownership)", values: [true, true, true, true] },
-  { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [true, true, true, true] },
-  { group: "Intelligence", label: "Real net yield + benchmarks", values: [true, true, true, true] },
-  { group: "Intelligence", label: "Sell vs hold analyser", values: [true, true, true, true] },
-  { group: "Intelligence", label: "Acquisition simulator", values: [true, true, true, true] },
-  { group: "Alerts", label: "22 alert types (email + WhatsApp)", values: [true, true, true, true] },
-  { group: "Documents", label: "Document vault + AI extraction", values: [true, true, true, true] },
-  { group: "Documents", label: "Data ingestion (WhatsApp / email / file)", values: [true, true, true, true] },
-  { group: "Reports", label: "Refinancing pack, investor pack, tax report", values: [true, true, true, true] },
-  { group: "Voice", label: "Voice line to your AI team (per month)", values: ["30 min", "120 min", "Unlimited", "Unlimited"] },
-  { group: "Team seats", label: "Users included", values: ["1 user", "1 user", "2–5 users", "Unlimited"] },
-  { group: "Team seats", label: "Additional seats (accountant / advisor)", values: [false, false, "Up to 4", "Unlimited"] },
-  { group: "Team seats", label: "Multiple portfolio workspaces", values: [false, false, true, true] },
-  { group: "Team seats", label: "SSO + audit logging", values: [false, false, false, true] },
-  { group: "Team seats", label: "Custom DPA + data residency", values: [false, false, false, true] },
-  { group: "Support", label: "Email support", values: [true, true, true, true] },
-  { group: "Support", label: "Priority support", values: [false, false, true, true] },
-  { group: "Support", label: "Dedicated account manager", values: [false, false, false, true] },
+  { group: "AC Agent Team", label: "Personal Assistant", values: [false, true, true, true, true] },
+  { group: "AC Agent Team", label: "Chief Financial Officer", values: [false, true, true, true, true] },
+  { group: "AC Agent Team", label: "Chief Investment Officer", values: [false, true, true, true, true] },
+  { group: "AC Agent Team", label: "Chief Operations Officer", values: [false, true, true, true, true] },
+  { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [false, true, true, true, true] },
+  { group: "Portfolio", label: "Properties tracked", values: ["1 saved", "Up to 3", "Up to 50", "Up to 50", "Unlimited"] },
+  { group: "Portfolio", label: "Free /check runs (verdict + red flag + improvement)", values: ["Unlimited", "Unlimited", "Unlimited", "Unlimited", "Unlimited"] },
+  { group: "Portfolio", label: "Calculators (IRR, Short-term Rental, Retrofit, Ownership)", values: [true, true, true, true, true] },
+  { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [false, true, true, true, true] },
+  { group: "Intelligence", label: "Real net yield + benchmarks", values: [false, true, true, true, true] },
+  { group: "Intelligence", label: "Sell vs hold analyser", values: [false, true, true, true, true] },
+  { group: "Intelligence", label: "Acquisition simulator", values: [false, true, true, true, true] },
+  { group: "Alerts", label: "22 alert types (email + WhatsApp)", values: [false, true, true, true, true] },
+  { group: "Documents", label: "Document vault + AI extraction", values: [false, true, true, true, true] },
+  { group: "Documents", label: "Data ingestion (WhatsApp / email / file)", values: [false, true, true, true, true] },
+  { group: "Reports", label: "Refinancing pack, investor pack, tax report", values: [false, true, true, true, true] },
+  { group: "Voice", label: "Voice line to your AI team (per month)", values: [false, "30 min", "120 min", "Unlimited", "Unlimited"] },
+  { group: "Team seats", label: "Users included", values: ["1 user", "1 user", "1 user", "2–5 users", "Unlimited"] },
+  { group: "Team seats", label: "Additional seats (accountant / advisor)", values: [false, false, false, "Up to 4", "Unlimited"] },
+  { group: "Team seats", label: "Multiple portfolio workspaces", values: [false, false, false, true, true] },
+  { group: "Team seats", label: "SSO + audit logging", values: [false, false, false, false, true] },
+  { group: "Team seats", label: "Custom DPA + data residency", values: [false, false, false, false, true] },
+  { group: "Support", label: "Email support", values: [true, true, true, true, true] },
+  { group: "Support", label: "Priority support", values: [false, false, false, true, true] },
+  { group: "Support", label: "Dedicated account manager", values: [false, false, false, false, true] },
 ];
 
 function Cell({ v }: { v: boolean | string }) {
@@ -65,6 +68,7 @@ export function ComparisonTable() {
   const teamMonthly = formatPrice(PLAN_PRICES.team[bill].monthly, bill);
 
   const tiers = [
+    { name: "Free", price: `${formatPrice(0, bill)}` },
     { name: "Individual", price: `${individualMonthly}/mo` },
     { name: "Pro", price: `${proMonthly}/mo`, popular: true },
     { name: "Team", price: `${teamMonthly}/mo` },
