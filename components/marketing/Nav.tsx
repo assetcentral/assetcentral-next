@@ -63,9 +63,14 @@ const navItems: NavItem[] = [
     label: "Product",
     items: [
       {
-        href: "/check",
+        href: "/calculators",
         label: "Check the numbers",
-        description: "Free AI property check + eight Level 1 calculators with verdict + stress test.",
+        description: "All nine free Level 1 calculators — verdict + stress test on every one.",
+      },
+      {
+        href: "/#what-to-check",
+        label: "What do you want to check?",
+        description: "Buying · selling · mortgaging · refinancing · renovating · renting out · short-vs-long.",
       },
       {
         href: "/features",
@@ -90,23 +95,38 @@ const navItems: NavItem[] = [
       },
       {
         href: "/calculators/irr",
-        label: "IRR",
-        description: "Return over any hold period.",
+        label: "Buy-to-let (IRR)",
+        description: "Levered return over any hold period.",
       },
       {
-        href: "/calculators/str-yield",
-        label: "Short-let yield",
-        description: "Compare short-term vs long-term rental income.",
+        href: "/calculators/sell-or-hold",
+        label: "Sell or hold",
+        description: "Hold-vs-sell signal at your horizon.",
+      },
+      {
+        href: "/calculators/refinance",
+        label: "Refinance",
+        description: "Old payment vs new + fee payback.",
       },
       {
         href: "/calculators/retrofit",
-        label: "Retrofit cost",
-        description: "Upgrade costs vs yield improvement.",
+        label: "Renovation ROI",
+        description: "Upgrade cost vs rent + value uplift.",
+      },
+      {
+        href: "/calculators/rent-out",
+        label: "Rent-out",
+        description: "Rent needed to cover costs + hit target margin.",
+      },
+      {
+        href: "/calculators/str-yield",
+        label: "Short-let vs long-let",
+        description: "Annual income each way + recommendation.",
       },
       {
         href: "/calculators/ownership",
         label: "Ownership comparator",
-        description: "Personal, company, long-let side-by-side.",
+        description: "Cash vs mortgage at two LTVs side-by-side.",
       },
       {
         href: "/calculators/off-plan",
