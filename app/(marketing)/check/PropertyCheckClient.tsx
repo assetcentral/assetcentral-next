@@ -340,7 +340,7 @@ export function PropertyCheckClient() {
         <div ref={verdictRef}>
           <VerdictCard result={result} />
           <EmailCaptureCard inputs={inputs} result={result} />
-          <ProUpgradeCard />
+          <ProUpgradeCard inputs={inputs} />
         </div>
       ) : null}
     </div>
@@ -688,7 +688,17 @@ function EmailCaptureCard({
 
 // ── Pro upgrade card ────────────────────────────────────────────────
 
-function ProUpgradeCard() {
+function ProUpgradeCard({ inputs }: { inputs: CheckInputs }) {
+  // Carry the just-run /check numbers through to the app's Free signup
+  // path. The app reads these as `check_*` form fields in the
+  // provisionFree action and seeds the user's 1 saved property with
+  // them — so the dashboard isn't empty on first login.
+  const freeQs = new URLSearchParams({
+    plan: "free",
+    price: String(Math.round(inputs.price)),
+    rent: String(Math.round(inputs.monthlyRent)),
+    currency: "GBP",
+  }).toString();
   return (
     <section
       className="mt-6 rounded-2xl bg-[color:var(--color-navy)] text-white p-6 lg:p-7"
@@ -698,26 +708,34 @@ function ProUpgradeCard() {
         className="text-[11.5px] uppercase tracking-[0.12em] font-bold mb-2"
         style={{ color: "var(--color-accent)" }}
       >
-        Going deeper · AssetCentral Pro
+        Save what you just ran
       </p>
       <h2
         className="text-[22px] lg:text-[28px] leading-tight font-semibold"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        Save this property and run the rest of the decision.
+        Track this property over time — free, no card.
       </h2>
       <p className="mt-3 text-[14.5px] leading-[1.55] text-white/80">
-        Pro adds the 10-year cash-flow forecast, rate-shock + lease-rollover
-        stress tests, hold-vs-sell and refinance scenarios, lender-ready credit
-        packs, and the full 5-agent AI team — from €49/month.
+        Free saves the property you just ran and lets you come back as the
+        numbers change. Step up to Pro when you want the full 5-agent AI team
+        — 10-year cash-flow forecast, rate-shock + lease-rollover stress
+        tests, hold-vs-sell and refinance scenarios, lender-ready credit
+        packs.
       </p>
       <div className="mt-5 flex flex-col sm:flex-row gap-3">
-        <Link
-          href="/signup?plan=pro_monthly&intent=direct"
+        <a
+          href={`https://app.assetcentral.ai/signup?${freeQs}`}
           className="inline-flex items-center justify-center rounded-md bg-white text-[color:var(--color-navy)] px-5 py-3 text-[14.5px] font-semibold transition hover:bg-white/90"
         >
-          Start a 7-day Pro trial
-        </Link>
+          Save it free — 1 property
+        </a>
+        <a
+          href="https://app.assetcentral.ai/signup?plan=pro_monthly&intent=direct"
+          className="inline-flex items-center justify-center rounded-md bg-[color:var(--color-accent)] text-white px-5 py-3 text-[14.5px] font-semibold transition hover:opacity-90"
+        >
+          Start 7-day Pro trial
+        </a>
         <Link
           href="/pricing"
           className="inline-flex items-center justify-center rounded-md border border-white/25 text-white px-5 py-3 text-[14.5px] font-semibold transition hover:bg-white/5"
@@ -725,6 +743,10 @@ function ProUpgradeCard() {
           See pricing
         </Link>
       </div>
+      <p className="mt-3 text-[12px] text-white/55">
+        Free: 1 saved property, no card. Pro: up to 50 properties + the full
+        AI team, from €49/mo after the trial.
+      </p>
     </section>
   );
 }
