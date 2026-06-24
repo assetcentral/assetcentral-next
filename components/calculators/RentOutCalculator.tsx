@@ -6,6 +6,7 @@
 import { useMemo, useState } from "react";
 import { annuityPayment, fmtMoneyFull, fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
 
 export function RentOutCalculator() {
@@ -116,6 +117,43 @@ export function RentOutCalculator() {
           </div>
         </CalcCard>
       </div>
+      <CalculatorVerdictCard
+        tone={
+          (r.targetRent === null
+            ? "risky"
+            : targetMarginPct > 25
+              ? "borderline"
+              : "strong") as VerdictTone
+        }
+        label={
+          r.targetRent === null
+            ? "Margin not reachable"
+            : targetMarginPct > 25
+              ? "Aggressive target"
+              : "Workable"
+        }
+        keyMetric={{
+          label: "Rent to hit your target",
+          value: fmtMoneyFull(r.targetRent),
+        }}
+        summary={
+          r.targetRent === null
+            ? `A ${targetMarginPct}% margin isn't reachable at these cost assumptions — the variable costs alone (maintenance + management + vacancy) eat ${fmtPct(r.variablePct)} of every euro of rent. Either trim costs or accept a lower margin.`
+            : `To clear your ${targetMarginPct}% margin after every cost — including ${maintenancePctOfRent}% maintenance, ${managementPctOfRent}% management and ${vacancyMonthsPerYear} months of vacancy — you need to charge ${fmtMoneyFull(r.targetRent)}/month. Anything below ${fmtMoneyFull(r.breakEvenRent)} loses money outright.`
+        }
+        redFlag={
+          vacancyMonthsPerYear > 1
+            ? `${vacancyMonthsPerYear} months of vacancy per year is a heavy assumption — every extra half-month adds about ${fmtMoneyFull((r.targetRent ?? 0) * 0.04)} to the rent you need.`
+            : managementPctOfRent + maintenancePctOfRent > 25
+              ? `Combined maintenance + management at ${managementPctOfRent + maintenancePctOfRent}% of rent is high — this is the lever a Pro plan would help you compress with operator benchmarking.`
+              : `Insurance, service charge and ground rent are fixed costs — they don't scale with rent, so any rent below ${fmtMoneyFull(r.breakEvenRent)} produces a monthly loss.`
+        }
+        nextMove={
+          r.targetRent === null
+            ? `Drop your target margin to 10% and re-run — see whether that's even reachable at these cost levels before deciding to rent the property out.`
+            : `Benchmark your target rent against the local market on /check — if it's above what comparable units achieve, the property doesn't work as a long-let at your margin.`
+        }
+      />
       <SaveResultForm calc="rent-out" calcName="Rent-out" summary={summary} />
     </>
   );

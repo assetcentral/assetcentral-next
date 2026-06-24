@@ -79,9 +79,52 @@ const TONE_COLORS = {
 
 // ── Component ───────────────────────────────────────────────────────
 
+/** Prefill check inputs from URL query params. Used when the user
+ *  arrives from /calculators/mortgage's investment funnel — saves them
+ *  re-entering the price/deposit/rent they already typed.
+ *
+ *  Accepts: price, deposit, rate, term, rent, serviceCharge,
+ *  maintenance, managementPct, vacancyMonths. Any missing param keeps
+ *  the default. Any non-numeric or out-of-range value is silently
+ *  ignored — the calculator should never crash on a bad URL. */
+function inputsFromSearchParams(sp: URLSearchParams): CheckInputs {
+  const num = (key: string, fallback: number): number => {
+    const raw = sp.get(key);
+    if (raw === null) return fallback;
+    const n = Number(raw);
+    return Number.isFinite(n) && n >= 0 ? n : fallback;
+  };
+  return {
+    price: num("price", DEFAULTS.price),
+    deposit: num("deposit", DEFAULTS.deposit),
+    ratePct: num("rate", DEFAULTS.ratePct),
+    termYrs: num("term", DEFAULTS.termYrs),
+    monthlyRent: num("rent", DEFAULTS.monthlyRent),
+    monthlyServiceCharge: num("serviceCharge", DEFAULTS.monthlyServiceCharge),
+    monthlyMaintenance: num("maintenance", DEFAULTS.monthlyMaintenance),
+    managementPct: num("managementPct", DEFAULTS.managementPct),
+    vacancyMonths: num("vacancyMonths", DEFAULTS.vacancyMonths),
+  };
+}
+
 export function PropertyCheckClient() {
-  const [inputs, setInputs] = useState<CheckInputs>(DEFAULTS);
-  const [isInvestment, setIsInvestment] = useState<IsInvestment>(null);
+  // Hydrate from URL query string on first render so a deep-link from
+  // the mortgage calculator's investment funnel lands here with the
+  // numbers the user already typed. Re-runs would mean changing the
+  // URL → the user is in a different session, so we don't bother
+  // re-syncing on subsequent updates.
+  const [inputs, setInputs] = useState<CheckInputs>(() => {
+    if (typeof window === "undefined") return DEFAULTS;
+    const sp = new URLSearchParams(window.location.search);
+    return inputsFromSearchParams(sp);
+  });
+  // If we arrived with rent + price set, auto-flip to "yes, it's an
+  // investment" so the user lands one click from the verdict.
+  const [isInvestment, setIsInvestment] = useState<IsInvestment>(() => {
+    if (typeof window === "undefined") return null;
+    const sp = new URLSearchParams(window.location.search);
+    return sp.get("rent") && sp.get("price") ? "yes" : null;
+  });
   const [verdictRevealed, setVerdictRevealed] = useState(false);
   const verdictRef = useRef<HTMLDivElement | null>(null);
 
@@ -128,7 +171,7 @@ export function PropertyCheckClient() {
             <input
               type="number"
               inputMode="decimal"
-              defaultValue={DEFAULTS.price}
+              defaultValue={inputs.price}
               onChange={update("price")}
               className={INPUT}
             />
@@ -137,7 +180,7 @@ export function PropertyCheckClient() {
             <input
               type="number"
               inputMode="decimal"
-              defaultValue={DEFAULTS.deposit}
+              defaultValue={inputs.deposit}
               onChange={update("deposit")}
               className={INPUT}
             />
@@ -147,7 +190,7 @@ export function PropertyCheckClient() {
               type="number"
               step="0.01"
               inputMode="decimal"
-              defaultValue={DEFAULTS.ratePct}
+              defaultValue={inputs.ratePct}
               onChange={update("ratePct")}
               className={INPUT}
             />
@@ -156,7 +199,7 @@ export function PropertyCheckClient() {
             <input
               type="number"
               inputMode="decimal"
-              defaultValue={DEFAULTS.termYrs}
+              defaultValue={inputs.termYrs}
               onChange={update("termYrs")}
               className={INPUT}
             />
@@ -260,7 +303,7 @@ export function PropertyCheckClient() {
               <input
                 type="number"
                 inputMode="decimal"
-                defaultValue={DEFAULTS.monthlyRent}
+                defaultValue={inputs.monthlyRent}
                 onChange={update("monthlyRent")}
                 className={INPUT}
               />
@@ -269,7 +312,7 @@ export function PropertyCheckClient() {
               <input
                 type="number"
                 inputMode="decimal"
-                defaultValue={DEFAULTS.monthlyServiceCharge}
+                defaultValue={inputs.monthlyServiceCharge}
                 onChange={update("monthlyServiceCharge")}
                 className={INPUT}
               />
@@ -278,7 +321,7 @@ export function PropertyCheckClient() {
               <input
                 type="number"
                 inputMode="decimal"
-                defaultValue={DEFAULTS.monthlyMaintenance}
+                defaultValue={inputs.monthlyMaintenance}
                 onChange={update("monthlyMaintenance")}
                 className={INPUT}
               />
@@ -288,7 +331,7 @@ export function PropertyCheckClient() {
                 type="number"
                 step="0.5"
                 inputMode="decimal"
-                defaultValue={DEFAULTS.managementPct}
+                defaultValue={inputs.managementPct}
                 onChange={update("managementPct")}
                 className={INPUT}
               />
@@ -298,7 +341,7 @@ export function PropertyCheckClient() {
                 type="number"
                 step="0.5"
                 inputMode="decimal"
-                defaultValue={DEFAULTS.vacancyMonths}
+                defaultValue={inputs.vacancyMonths}
                 onChange={update("vacancyMonths")}
                 className={INPUT}
               />

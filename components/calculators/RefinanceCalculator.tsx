@@ -7,6 +7,7 @@
 import { useMemo, useState } from "react";
 import { annuityPayment, fmtMoneyFull } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
 
 export function RefinanceCalculator() {
@@ -111,6 +112,41 @@ export function RefinanceCalculator() {
           </div>
         </CalcCard>
       </div>
+      <CalculatorVerdictCard
+        tone={
+          (verdict === "worth_it"
+            ? "strong"
+            : verdict === "borderline"
+              ? "borderline"
+              : "risky") as VerdictTone
+        }
+        label={verdictLabel}
+        keyMetric={{
+          label: "Monthly saving",
+          value: fmtMoneyFull(r.monthlySaving),
+        }}
+        summary={
+          verdict === "worth_it"
+            ? `New rate cuts your monthly payment by ${fmtMoneyFull(r.monthlySaving)} and the ${fmtMoneyFull(r.totalFees)} of fees pay back in ${r.paybackMonths && isFinite(r.paybackMonths) ? r.paybackMonths.toFixed(0) : "—"} months. Over 5 years you keep ${fmtMoneyFull(r.fiveYearSaving)} net.`
+            : verdict === "borderline"
+              ? `The new rate saves ${fmtMoneyFull(r.monthlySaving)}/month but the fees take ${r.paybackMonths && isFinite(r.paybackMonths) ? r.paybackMonths.toFixed(0) : "—"} months to claw back. Only worth it if you're certain to hold the loan past the 5-year mark.`
+              : `Either the rate isn't low enough, or fees of ${fmtMoneyFull(r.totalFees)} out-run the saving on any reasonable horizon. ${r.monthlySaving > 0 ? `You'd save ${fmtMoneyFull(r.monthlySaving)}/month, but` : "The new payment is higher, and"} the 10-year net is ${fmtMoneyFull(r.tenYearSaving)}.`
+        }
+        redFlag={
+          newTermYears > currentRemainingYears + 2
+            ? `Your new term (${newTermYears} yrs) extends ${newTermYears - currentRemainingYears} years beyond your current remaining term. Lower monthly payment, but you'll pay more total interest.`
+            : exitFee > 0 && exitFee > r.monthlySaving * 12
+              ? `The exit fee on your current loan (${fmtMoneyFull(exitFee)}) is over a year's worth of savings — most of the benefit goes back to the old lender.`
+              : `Arrangement + exit fees together total ${fmtMoneyFull(r.totalFees)}. Verify both numbers from a written offer before committing — broker quotes often understate.`
+        }
+        nextMove={
+          verdict === "skip"
+            ? `Wait for rates to drop another 0.5% before re-running this — at today's spread the move doesn't pay.`
+            : verdict === "borderline"
+              ? `Ask the new lender to waive the arrangement fee — even half off would tip this firmly into worth-it territory.`
+              : `Lock the rate now if it's a tracker — the saving is real but rate volatility can erase the 5-year net quickly.`
+        }
+      />
       <SaveResultForm calc="refinance" calcName="Refinance" summary={summary} />
     </>
   );

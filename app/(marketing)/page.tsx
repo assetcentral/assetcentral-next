@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BrandCampaignSection } from "@/components/marketing/BrandCampaignSection";
 import { DontBuyBlindHero } from "@/components/marketing/DontBuyBlindHero";
 import { FinalCta } from "@/components/marketing/FinalCta";
 import { FreeAIResultSection } from "@/components/marketing/FreeAIResultSection";
@@ -86,6 +87,7 @@ export default function HomePage() {
       <FreeAIResultSection />
       <FreeToolsGridSection />
       <FreeVsProSection />
+      <BrandCampaignSection />
 
       {/* ── Pro positioning (preserved below the #pro anchor) ──── */}
       <ProTransitionBand />

@@ -8,6 +8,7 @@
 import { useMemo, useState } from "react";
 import { fmtMoneyFull, fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
 
 export function SellOrHoldCalculator() {
@@ -72,6 +73,28 @@ export function SellOrHoldCalculator() {
   const signalTone =
     r.signal === "hold" ? "positive" : r.signal === "sell" ? "negative" : "neutral";
 
+  // ── Verdict card copy ────────────────────────────────────────────
+  const verdictTone: VerdictTone =
+    r.signal === "hold" ? "strong" : r.signal === "sell" ? "risky" : "borderline";
+  const verdictSummary =
+    r.signal === "hold"
+      ? `Holding leaves you ${fmtMoneyFull(Math.abs(r.holdAdvantage))} ahead at ${horizonYears} years versus selling and reinvesting at ${altReturnPct}%/yr. The cash flow plus expected growth is doing more than your alternative would.`
+      : r.signal === "sell"
+        ? `Selling and reinvesting at ${altReturnPct}%/yr would leave you ${fmtMoneyFull(Math.abs(r.holdAdvantage))} ahead at ${horizonYears} years. The freed equity earns more elsewhere than this property's cash flow + growth combined.`
+        : `The two paths land within 5% of each other at ${horizonYears} years — close enough that model uncertainty alone could flip the answer. Treat this as a coin toss and decide on softer factors.`;
+  const verdictRedFlag =
+    expectedCapitalGrowthPct > 4
+      ? `Your ${expectedCapitalGrowthPct}%/yr growth assumption is bullish — drop it to 2% and the hold case weakens fast.`
+      : r.cashOnEquityPct && r.cashOnEquityPct < 0.04
+        ? `Cash-on-equity is only ${fmtPct(r.cashOnEquityPct)} — well below what dividend equities or even cash deposits return today.`
+        : `Selling costs of ${sellingCostsPct}% are a real haircut on the equity. Verify the local rate (agent + legal + capital-gains) before betting on a hold-vs-sell call.`;
+  const verdictNextMove =
+    r.signal === "sell"
+      ? `Refinance once before selling — pulling equity tax-free at today's rates may beat the disposal entirely.`
+      : r.signal === "hold"
+        ? `Pressure-test the growth assumption at 1% and 5%. If the hold case holds at 1%, the signal is robust.`
+        : `Model a refinance to release equity while keeping the asset — the third path most calculators miss.`;
+
   const summary = [
     "Sell-or-hold checker result",
     `Inputs: value €${currentValue.toLocaleString()}, mortgage €${outstandingMortgage.toLocaleString()}, monthly net cashflow €${monthlyNetCashflow}, expected growth ${expectedCapitalGrowthPct}%/yr, alt return ${altReturnPct}%/yr, horizon ${horizonYears} yrs, selling costs ${sellingCostsPct}%`,
@@ -117,6 +140,17 @@ export function SellOrHoldCalculator() {
           </div>
         </CalcCard>
       </div>
+      <CalculatorVerdictCard
+        tone={verdictTone}
+        label={signalLabel}
+        keyMetric={{
+          label: "Hold advantage at horizon",
+          value: fmtMoneyFull(r.holdAdvantage),
+        }}
+        summary={verdictSummary}
+        redFlag={verdictRedFlag}
+        nextMove={verdictNextMove}
+      />
       <SaveResultForm calc="sell-or-hold" calcName="Sell or hold" summary={summary} />
     </>
   );

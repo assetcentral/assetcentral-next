@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import {
   amortiseSchedule,
   type CountryCode,
+  currencySymbol,
   formatLocalMoney,
   getRule,
   type LoanType,
@@ -13,6 +14,7 @@ import { displayNameForCode } from "@/lib/countries-catalogue";
 import { fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
 import { CountryPickerWithCoverage } from "./CountryPickerWithCoverage";
+import { MortgageInvestmentPanel } from "./MortgageInvestmentPanel";
 import { SaveResultForm } from "./SaveResultForm";
 
 type RateStructure = "fixed" | "fix-revert" | "variable";
@@ -577,6 +579,20 @@ export function MortgageCalculator() {
       </div>
 
       <SaveResultForm calc="mortgage" calcName="Mortgage" summary={summary} />
+
+      {/* Investment funnel — the "is this an investment property?"
+          follow-up. Hidden behind a toggle so owner-occupiers aren't
+          asked questions that don't apply to them. */}
+      {result && (
+        <MortgageInvestmentPanel
+          price={price}
+          deposit={result.deposit}
+          ratePct={initialRate}
+          termYrs={years}
+          currencyPrefix={currencySymbol(rule.currency)}
+          currencyCode={rule.currency}
+        />
+      )}
     </>
   );
 }
