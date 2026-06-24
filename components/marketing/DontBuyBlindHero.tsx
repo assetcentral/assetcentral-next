@@ -62,7 +62,7 @@ export function DontBuyBlindHero() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           <Link
-            href="/calculators/mortgage"
+            href="/check"
             className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-[52px] px-6 py-3.5 rounded-md bg-[color:var(--color-navy)] text-white text-[15.5px] font-semibold shadow-sm transition hover:bg-[color:var(--color-navy-light)]"
           >
             Check a property for free

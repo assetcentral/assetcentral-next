@@ -32,7 +32,7 @@ export function FinalCta() {
               Secondary  "Start a Pro trial"           — Pro conversion */}
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/calculators/mortgage"
+            href="/check"
             className="plausible-event-name=free_check_cta_click plausible-event-location=final_check inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-6 rounded-md bg-white text-[var(--color-navy)] text-[15.5px] font-semibold hover:bg-slate-100 transition-colors"
             style={{ fontFamily: "var(--font-sans)" }}
           >

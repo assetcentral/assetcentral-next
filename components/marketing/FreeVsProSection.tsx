@@ -155,7 +155,7 @@ export function FreeVsProSection() {
             </span>
             <div className="flex gap-3">
               <Link
-                href="/calculators/mortgage"
+                href="/check"
                 className="text-[13px] font-semibold text-[color:var(--color-positive)] hover:underline"
               >
                 Run a free check →

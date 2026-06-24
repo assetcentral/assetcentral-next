@@ -170,7 +170,7 @@ export function FreeAIResultSection() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           <Link
-            href="/calculators/mortgage"
+            href="/check"
             className="inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-navy)] px-6 py-3.5 text-[15px] font-semibold text-white shadow-sm transition hover:bg-[color:var(--color-navy-light)]"
           >
             Run yours now
