@@ -298,6 +298,12 @@ export function MortgageInvestmentPanel({
               nextMove={result.verdict.improvement.body}
               upgradeHref={checkLink}
               upgradeLabel="Get the full free AI check + email the report"
+              freeSavePrefill={{
+                price: Math.round(price),
+                rent: Math.round(monthlyRent),
+                currency: currencyCode,
+                address: "Property from mortgage calculator",
+              }}
             />
           )}
         </>

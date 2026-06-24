@@ -3,7 +3,34 @@
 import { useMemo, useState } from "react";
 import { fmtMoneyFull, fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
+import { StressTestTable } from "./StressTestTable";
+
+// Compute the STR-vs-long-let delta with overridden inputs. Used by
+// the stress test to show how the recommendation moves under
+// occupancy / ADR / commission shocks.
+function computeStrDelta(args: {
+  adr: number;
+  occ: number;
+  commission: number;
+  cleaningPerStay: number;
+  avgStayNights: number;
+  fixedCostsYr: number;
+  longLetMonthly: number;
+  longLetMgmt: number;
+  longLetCostsYr: number;
+}): number {
+  const days = 365;
+  const nightsBooked = days * (args.occ / 100);
+  const stays = nightsBooked / Math.max(1, args.avgStayNights);
+  const gross = nightsBooked * args.adr;
+  const netStr =
+    gross - gross * (args.commission / 100) - stays * args.cleaningPerStay - args.fixedCostsYr;
+  const longGross = args.longLetMonthly * 12;
+  const netLong = longGross - longGross * (args.longLetMgmt / 100) - args.longLetCostsYr;
+  return netStr - netLong;
+}
 
 export function STRYieldCalculator() {
   const [propertyValue, setPropertyValue] = useState(400_000);
@@ -140,6 +167,108 @@ export function STRYieldCalculator() {
         </div>
       </CalcCard>
     </div>
+    <CalculatorVerdictCard
+      tone={
+        (r.delta > 5000
+          ? "strong"
+          : r.delta > 0
+            ? "borderline"
+            : "weak") as VerdictTone
+      }
+      label={
+        r.delta > 5000
+          ? "Short-let wins"
+          : r.delta > 0
+            ? "Marginal short-let"
+            : "Long-let wins"
+      }
+      keyMetric={{
+        label: "Short-let vs long-let (annual)",
+        value: fmtMoneyFull(r.delta),
+      }}
+      summary={
+        r.delta > 5000
+          ? `Short-term lettings produce ${fmtMoneyFull(r.delta)} more per year than a long-let after ${commission}% commission, cleaning and fixed costs. Net yield is ${fmtPct(r.strYield)} vs ${fmtPct(r.longYield)} long-let.`
+          : r.delta > 0
+            ? `Short-let beats long-let by ${fmtMoneyFull(r.delta)}/yr — but at much higher operational complexity. The premium probably doesn't justify the work; consider whether a hands-off long-let at ${fmtPct(r.longYield)} is the better life choice.`
+            : `Long-let actually beats short-let by ${fmtMoneyFull(-r.delta)}/yr at this occupancy and commission level. The agency commission of ${commission}% is eating most of the gross — worth questioning whether the operator is the right partner.`
+      }
+      redFlag={
+        occ > 70
+          ? `${occ}% occupancy assumed — that's an above-average year-round number. Drop to 60% and the short-let case can flip.`
+          : commission > 25
+            ? `${commission}% operator commission is on the high end. Two operators in most markets do the same job for 18-20%; that delta is real money.`
+            : `Fixed costs of ${fmtMoneyFull(fixedCostsYr)}/yr stay constant whether you book 200 nights or 20. The short-let case depends entirely on staying above break-even occupancy.`
+      }
+      nextMove={
+        r.delta > 0
+          ? `Cross-check the ADR assumption against AirDNA or similar for your specific submarket — short-let revenue is the most volatile number in this calculation.`
+          : `Renegotiate the operator commission OR move to a long-let with a regulated tenancy. The work-vs-return ratio of short-let only makes sense when the delta is meaningful.`
+      }
+      freeSavePrefill={{
+        price: Math.round(propertyValue),
+        rent: Math.round((adr * 365 * (occ / 100)) / 12),
+        currency: "EUR",
+        address: "Short-let property",
+      }}
+    />
+    <StressTestTable
+      metricLabel="Short-let vs long-let delta under stress"
+      rows={[
+        {
+          label: "Occupancy −10pp",
+          base: fmtMoneyFull(r.delta),
+          stressed: fmtMoneyFull(
+            computeStrDelta({
+              adr,
+              occ: Math.max(0, occ - 10),
+              commission,
+              cleaningPerStay,
+              avgStayNights,
+              fixedCostsYr,
+              longLetMonthly,
+              longLetMgmt,
+              longLetCostsYr,
+            }),
+          ),
+        },
+        {
+          label: "ADR −10%",
+          base: fmtMoneyFull(r.delta),
+          stressed: fmtMoneyFull(
+            computeStrDelta({
+              adr: adr * 0.9,
+              occ,
+              commission,
+              cleaningPerStay,
+              avgStayNights,
+              fixedCostsYr,
+              longLetMonthly,
+              longLetMgmt,
+              longLetCostsYr,
+            }),
+          ),
+        },
+        {
+          label: "Operator commission +5pp",
+          base: fmtMoneyFull(r.delta),
+          stressed: fmtMoneyFull(
+            computeStrDelta({
+              adr,
+              occ,
+              commission: commission + 5,
+              cleaningPerStay,
+              avgStayNights,
+              fixedCostsYr,
+              longLetMonthly,
+              longLetMgmt,
+              longLetCostsYr,
+            }),
+          ),
+        },
+      ]}
+      caption="Each row holds everything else constant. Short-let revenue is volatile — Starter models the full distribution over the hold period, not just three shocks."
+    />
     <SaveResultForm calc="str-yield" calcName="Short-term rental yield" summary={summary} />
     </>
   );

@@ -8,6 +8,32 @@ import { annuityPayment, fmtMoneyFull, fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
 import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
+import { StressTestTable } from "./StressTestTable";
+
+// Recompute target rent given overridden inputs. Used by stress
+// rows below — solves the same equation as the main hook.
+function computeTargetRent(args: {
+  mortgageBalance: number;
+  mortgageRatePct: number;
+  mortgageYears: number;
+  serviceChargeMonthly: number;
+  maintenancePctOfRent: number;
+  insuranceMonthly: number;
+  managementPctOfRent: number;
+  vacancyMonthsPerYear: number;
+  targetMarginPct: number;
+}): number | null {
+  const mortgagePayment =
+    args.mortgageBalance > 0
+      ? annuityPayment(args.mortgageBalance, args.mortgageRatePct / 100, args.mortgageYears)
+      : 0;
+  const fixedCosts = mortgagePayment + args.serviceChargeMonthly + args.insuranceMonthly;
+  const variablePct =
+    (args.maintenancePctOfRent + args.managementPctOfRent) / 100 +
+    args.vacancyMonthsPerYear / 12;
+  const denom = 1 - variablePct - args.targetMarginPct / 100;
+  return denom > 0 ? fixedCosts / denom : null;
+}
 
 export function RentOutCalculator() {
   const [mortgageBalance, setMortgageBalance] = useState(200_000);
@@ -153,6 +179,69 @@ export function RentOutCalculator() {
             ? `Drop your target margin to 10% and re-run — see whether that's even reachable at these cost levels before deciding to rent the property out.`
             : `Benchmark your target rent against the local market on /check — if it's above what comparable units achieve, the property doesn't work as a long-let at your margin.`
         }
+        freeSavePrefill={{
+          price: Math.round(mortgageBalance * 1.5),
+          rent: Math.round(r.targetRent ?? r.breakEvenRent ?? 0),
+          currency: "EUR",
+          address: "Property — rent-out check",
+        }}
+      />
+      <StressTestTable
+        metricLabel="Rent needed to hit your target margin"
+        rows={[
+          {
+            label: "Mortgage rate +200bps",
+            base: fmtMoneyFull(r.targetRent),
+            stressed: fmtMoneyFull(
+              computeTargetRent({
+                mortgageBalance,
+                mortgageRatePct: mortgageRatePct + 2,
+                mortgageYears,
+                serviceChargeMonthly,
+                maintenancePctOfRent,
+                insuranceMonthly,
+                managementPctOfRent,
+                vacancyMonthsPerYear,
+                targetMarginPct,
+              }),
+            ),
+          },
+          {
+            label: "Vacancy +1 month/yr",
+            base: fmtMoneyFull(r.targetRent),
+            stressed: fmtMoneyFull(
+              computeTargetRent({
+                mortgageBalance,
+                mortgageRatePct,
+                mortgageYears,
+                serviceChargeMonthly,
+                maintenancePctOfRent,
+                insuranceMonthly,
+                managementPctOfRent,
+                vacancyMonthsPerYear: vacancyMonthsPerYear + 1,
+                targetMarginPct,
+              }),
+            ),
+          },
+          {
+            label: "Service charge +25%",
+            base: fmtMoneyFull(r.targetRent),
+            stressed: fmtMoneyFull(
+              computeTargetRent({
+                mortgageBalance,
+                mortgageRatePct,
+                mortgageYears,
+                serviceChargeMonthly: serviceChargeMonthly * 1.25,
+                maintenancePctOfRent,
+                insuranceMonthly,
+                managementPctOfRent,
+                vacancyMonthsPerYear,
+                targetMarginPct,
+              }),
+            ),
+          },
+        ]}
+        caption="Each row shows how much rent you'd need to charge if one assumption moves against you. If the stressed rent is above local market rates, the property doesn't work as a long-let."
       />
       <SaveResultForm calc="rent-out" calcName="Rent-out" summary={summary} />
     </>

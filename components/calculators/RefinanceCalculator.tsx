@@ -9,6 +9,30 @@ import { annuityPayment, fmtMoneyFull } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
 import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
+import { StressTestTable } from "./StressTestTable";
+
+// Compute the 5-year net saving with overridden inputs. Used by the
+// stress test rows beneath the verdict.
+function computeFiveYearNet(args: {
+  currentBalance: number;
+  currentRatePct: number;
+  currentRemainingYears: number;
+  newRatePct: number;
+  newTermYears: number;
+  arrangementFee: number;
+  exitFee: number;
+}): number {
+  const currentPayment =
+    args.currentBalance > 0 && args.currentRemainingYears > 0
+      ? annuityPayment(args.currentBalance, args.currentRatePct / 100, args.currentRemainingYears)
+      : 0;
+  const newPayment =
+    args.currentBalance > 0 && args.newTermYears > 0
+      ? annuityPayment(args.currentBalance, args.newRatePct / 100, args.newTermYears)
+      : 0;
+  const monthlySaving = currentPayment - newPayment;
+  return monthlySaving * 60 - (args.arrangementFee + args.exitFee);
+}
 
 export function RefinanceCalculator() {
   const [currentBalance, setCurrentBalance] = useState(180_000);
@@ -146,6 +170,64 @@ export function RefinanceCalculator() {
               ? `Ask the new lender to waive the arrangement fee — even half off would tip this firmly into worth-it territory.`
               : `Lock the rate now if it's a tracker — the saving is real but rate volatility can erase the 5-year net quickly.`
         }
+        freeSavePrefill={{
+          price: Math.round(currentBalance * 1.4),
+          rent: Math.round(r.newPayment * 1.6),
+          currency: "EUR",
+          address: "Property under refinance consideration",
+        }}
+      />
+      <StressTestTable
+        metricLabel="5-year net saving under stress"
+        rows={[
+          {
+            label: "New rate +0.5%",
+            base: fmtMoneyFull(r.fiveYearSaving),
+            stressed: fmtMoneyFull(
+              computeFiveYearNet({
+                currentBalance,
+                currentRatePct,
+                currentRemainingYears,
+                newRatePct: newRatePct + 0.5,
+                newTermYears,
+                arrangementFee,
+                exitFee,
+              }),
+            ),
+          },
+          {
+            label: "Arrangement fee +50%",
+            base: fmtMoneyFull(r.fiveYearSaving),
+            stressed: fmtMoneyFull(
+              computeFiveYearNet({
+                currentBalance,
+                currentRatePct,
+                currentRemainingYears,
+                newRatePct,
+                newTermYears,
+                arrangementFee: arrangementFee * 1.5,
+                exitFee,
+              }),
+            ),
+          },
+          {
+            label: "Term extended +5 yrs",
+            base: fmtMoneyFull(r.fiveYearSaving),
+            stressed: fmtMoneyFull(
+              computeFiveYearNet({
+                currentBalance,
+                currentRatePct,
+                currentRemainingYears,
+                newRatePct,
+                newTermYears: newTermYears + 5,
+                arrangementFee,
+                exitFee,
+              }),
+              ),
+            tone: "positive",
+          },
+        ]}
+        caption="The term-extension row looks better in year 5 — but you pay more total interest. Starter models the full life of the loan."
       />
       <SaveResultForm calc="refinance" calcName="Refinance" summary={summary} />
     </>

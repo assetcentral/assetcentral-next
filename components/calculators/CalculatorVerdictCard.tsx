@@ -80,6 +80,14 @@ export interface CalculatorVerdictCardProps {
    *  the inputs prefilled) override this. */
   upgradeHref?: string;
   upgradeLabel?: string;
+  /** When provided, render a primary "Save this scenario free" CTA that
+   *  deep-links into the app's Free signup with the inputs prefilled —
+   *  so the visitor's calculator run becomes their first saved property
+   *  the moment they create the account. Keys/values are url-encoded
+   *  into the query string. Pass the same `check_*` keys the
+   *  provisionFree action reads (address, price, rent, currency) plus
+   *  any calc-specific values for forensic context. */
+  freeSavePrefill?: Record<string, string | number>;
 }
 
 export function CalculatorVerdictCard({
@@ -91,8 +99,22 @@ export function CalculatorVerdictCard({
   nextMove,
   upgradeHref = "/signup?plan=individual_monthly",
   upgradeLabel = "Try full analysis free for 7 days",
+  freeSavePrefill,
 }: CalculatorVerdictCardProps) {
   const t = TONE[tone];
+  // Build the Free-save deep link when prefill is provided. The full
+  // app URL is used because the marketing site is statically exported
+  // — relative /signup links would hit the marketing 404, not the
+  // app's signup route. Always plan=free; the rest is calc-specific.
+  const freeSaveHref =
+    freeSavePrefill !== undefined
+      ? `https://app.assetcentral.ai/signup?${new URLSearchParams({
+          plan: "free",
+          ...Object.fromEntries(
+            Object.entries(freeSavePrefill).map(([k, v]) => [k, String(v)]),
+          ),
+        }).toString()}`
+      : null;
   return (
     <section
       aria-label="AI verdict"
@@ -146,16 +168,46 @@ export function CalculatorVerdictCard({
         </div>
       </div>
 
+      {/* CTA hierarchy:
+            1) Save free — when freeSavePrefill is provided, this is
+               the PRIMARY action (emerald, filled). Lowest-friction
+               conversion: the user already ran the numbers, this just
+               saves the result. No card, no trial countdown.
+            2) Try full analysis — secondary, navy, links to the
+               Starter trial. The higher-intent step.
+          When no Free-save prefill is given (calculators without a
+          natural property model to save), Starter trial stays primary. */}
       <div className="mt-5 flex flex-col sm:flex-row gap-3">
-        <Link
-          href={upgradeHref}
-          className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-md bg-[color:var(--color-navy)] text-white text-[14px] font-semibold transition hover:bg-[color:var(--color-navy-light)]"
-        >
-          {upgradeLabel}
-          <span aria-hidden>→</span>
-        </Link>
+        {freeSaveHref ? (
+          <>
+            <a
+              href={freeSaveHref}
+              className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-md bg-[color:var(--color-positive)] text-white text-[14px] font-semibold transition hover:opacity-90"
+            >
+              Save this scenario — free
+              <span aria-hidden>→</span>
+            </a>
+            <Link
+              href={upgradeHref}
+              className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-md bg-[color:var(--color-navy)] text-white text-[14px] font-semibold transition hover:bg-[color:var(--color-navy-light)]"
+            >
+              {upgradeLabel}
+              <span aria-hidden>→</span>
+            </Link>
+          </>
+        ) : (
+          <Link
+            href={upgradeHref}
+            className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 rounded-md bg-[color:var(--color-navy)] text-white text-[14px] font-semibold transition hover:bg-[color:var(--color-navy-light)]"
+          >
+            {upgradeLabel}
+            <span aria-hidden>→</span>
+          </Link>
+        )}
         <p className="text-[12px] text-[color:var(--color-muted)] sm:self-center">
-          7-day Starter trial. No card required.
+          {freeSaveHref
+            ? "Free saves the scenario. Trial unlocks the full report."
+            : "7-day Starter trial. No card required."}
         </p>
       </div>
     </section>

@@ -3,7 +3,45 @@
 import { useMemo, useState } from "react";
 import { annuityPayment, fmtMoneyFull, fmtPct, irr } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
+import { StressTestTable } from "./StressTestTable";
+
+// Re-runs the IRR engine with overridden inputs — used by the stress
+// test to compute what-if scenarios without duplicating the math.
+function computeIrr(args: {
+  price: number;
+  depositPct: number;
+  mortRate: number;
+  mortYears: number;
+  annualRent: number;
+  growthPct: number;
+  costsPct: number;
+  holdYears: number;
+  exitGrowthPct: number;
+}): number | null {
+  const deposit = (args.price * args.depositPct) / 100;
+  const loan = args.price - deposit;
+  const monthlyPay = annuityPayment(loan, args.mortRate / 100, args.mortYears);
+  const annualPay = monthlyPay * 12;
+  let principal = loan;
+  let rent = args.annualRent;
+  const cashflows: number[] = [-deposit];
+  for (let y = 1; y <= args.holdYears; y++) {
+    const net = rent * (1 - args.costsPct / 100);
+    for (let m = 0; m < 12; m++) {
+      if (principal <= 0) break;
+      const interest = principal * (args.mortRate / 100 / 12);
+      const principalPaid = Math.max(0, monthlyPay - interest);
+      principal = Math.max(0, principal - principalPaid);
+    }
+    cashflows.push(net - annualPay);
+    rent *= 1 + args.growthPct / 100;
+  }
+  const exit = args.price * Math.pow(1 + args.exitGrowthPct / 100, args.holdYears);
+  cashflows[cashflows.length - 1] += exit - principal;
+  return irr(cashflows);
+}
 
 export function IRRCalculator() {
   const [price, setPrice] = useState(500_000);
@@ -134,6 +172,123 @@ export function IRRCalculator() {
         </div>
       </CalcCard>
     </div>
+    {result && (
+      <>
+        <CalculatorVerdictCard
+          tone={
+            (result.irr === null || result.irr < 0.05
+              ? "risky"
+              : result.irr < 0.08
+                ? "borderline"
+                : "strong") as VerdictTone
+          }
+          label={
+            result.irr === null
+              ? "Numbers don't compute"
+              : result.irr < 0.05
+                ? "Weak"
+                : result.irr < 0.08
+                  ? "Borderline"
+                  : "Strong"
+          }
+          keyMetric={{
+            label: "Levered IRR over hold",
+            value: fmtPct(result.irr ?? null, 1),
+          }}
+          summary={
+            result.irr === null
+              ? `These inputs don't produce a sensible IRR — usually means the cash flow is negative every year and the exit doesn't recover the deposit. Either drop the price assumption or accept that this property is a capital-growth bet, not an income bet.`
+              : result.irr < 0.05
+                ? `${fmtPct(result.irr, 1)} over ${holdYears} years lags inflation in most markets and undershoots what dividend equities or even cash deposits offer today. The year-1 cashflow of ${fmtMoneyFull(result.yr1Net)} confirms this is a capital-growth bet — if growth disappoints, you lose.`
+                : result.irr < 0.08
+                  ? `${fmtPct(result.irr, 1)} is reasonable but not great — it beats inflation and ties up your capital for ${holdYears} years to do so. The year-1 cashflow of ${fmtMoneyFull(result.yr1Net)} gives you some income while you wait for the exit to crystallise.`
+                  : `${fmtPct(result.irr, 1)} over ${holdYears} years comfortably beats the 7-8% threshold most private investors use as a "go" line. The combination of ${fmtPct(result.cashOnCashYr1 ?? null)} year-1 cash-on-cash and ${exitGrowthPct}%/yr capital growth is doing the work.`
+          }
+          redFlag={
+            exitGrowthPct > 4
+              ? `${exitGrowthPct}%/yr capital growth is a bold assumption — drop it to 2% and the IRR halves. This deal is leaning on the exit, not the income.`
+              : costsPct < 15
+                ? `${costsPct}% operating cost is optimistic — most long-let portfolios run 18-22% once management, voids, repairs and insurance are honest. Stress-test at 25%.`
+                : result.yr1Net < 0
+                  ? `Year-1 cashflow is negative (${fmtMoneyFull(result.yr1Net)}/yr). You're funding the property every month until rent growth catches up — make sure you have the reserve to do so.`
+                  : `Mortgage rate locked at ${mortRate}% for ${mortYears} years. If your fix expires before exit and rates step up 200bps, the yr-1 cashflow falls by ${fmtMoneyFull((annualRent * (1 - costsPct / 100)) - annuityPayment(price * (1 - depositPct / 100), (mortRate + 2) / 100, mortYears) * 12 - result.yr1Net)}.`
+          }
+          nextMove={
+            result.irr === null || result.irr < 0.05
+              ? `Negotiate the price down 10% and re-run — every euro off the price drops straight into your IRR.`
+              : result.irr < 0.08
+                ? `Stress-test the exit price assumption. If the IRR holds at 0% capital growth, the deal stands on income alone — that's the strong version of this bet.`
+                : `Run the same property through a different LTV (try 80% in the Ownership Comparator). Leverage amplifies IRR when capital growth is positive — this is where the real number is.`
+          }
+          freeSavePrefill={{
+            price: Math.round(price),
+            rent: Math.round(annualRent / 12),
+            currency: "EUR",
+            address: "Property from IRR calculator",
+          }}
+        />
+        <StressTestTable
+          metricLabel="Levered IRR under stress"
+          rows={[
+            {
+              label: "Mortgage rate +200bps",
+              base: fmtPct(result.irr, 1),
+              stressed: fmtPct(
+                computeIrr({
+                  price,
+                  depositPct,
+                  mortRate: mortRate + 2,
+                  mortYears,
+                  annualRent,
+                  growthPct,
+                  costsPct,
+                  holdYears,
+                  exitGrowthPct,
+                }),
+                1,
+              ),
+            },
+            {
+              label: "Rent growth −1%/yr",
+              base: fmtPct(result.irr, 1),
+              stressed: fmtPct(
+                computeIrr({
+                  price,
+                  depositPct,
+                  mortRate,
+                  mortYears,
+                  annualRent,
+                  growthPct: growthPct - 1,
+                  costsPct,
+                  holdYears,
+                  exitGrowthPct,
+                }),
+                1,
+              ),
+            },
+            {
+              label: "Capital growth −2%/yr",
+              base: fmtPct(result.irr, 1),
+              stressed: fmtPct(
+                computeIrr({
+                  price,
+                  depositPct,
+                  mortRate,
+                  mortYears,
+                  annualRent,
+                  growthPct,
+                  costsPct,
+                  holdYears,
+                  exitGrowthPct: Math.max(0, exitGrowthPct - 2),
+                }),
+                1,
+              ),
+            },
+          ]}
+          caption="Each row holds everything else constant and shifts one assumption. The full sensitivity grid (every combination, year by year) lives in Starter."
+        />
+      </>
+    )}
     <SaveResultForm calc="irr" calcName="IRR" summary={summary} />
     </>
   );

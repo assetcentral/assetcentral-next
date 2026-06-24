@@ -64,23 +64,18 @@ const navItems: NavItem[] = [
     items: [
       {
         href: "/check",
-        label: "Free AI property check",
-        description: "Mortgage, yield, cash flow, red flag — in 60 seconds.",
-      },
-      {
-        href: "/calculators",
-        label: "Eight free Level 1 calculators",
-        description: "Mortgage, buy-to-let, yield, sell-or-hold, renovation, refinance, rent-out, short-vs-long.",
+        label: "Check the numbers",
+        description: "Free AI property check + eight Level 1 calculators with verdict + stress test.",
       },
       {
         href: "/features",
-        label: "Starter & Pro features",
-        description: "Full report, 10-year forecast, scenarios, portfolio dashboard, AI team.",
+        label: "AI Team",
+        description: "Your five-agent property team — CIO, CFO, COO, CEO and PA.",
       },
       {
-        href: "/pricing",
-        label: "Pricing",
-        description: "Free, Starter and Pro plans. Team and Enterprise below.",
+        href: "/features",
+        label: "Pro Tools",
+        description: "Full property report, 10-year forecast, scenarios, portfolio dashboard, alerts.",
       },
     ],
   },

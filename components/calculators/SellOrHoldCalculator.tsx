@@ -10,6 +10,36 @@ import { fmtMoneyFull, fmtPct } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
 import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
+import { StressTestTable } from "./StressTestTable";
+
+// Compute the hold-vs-sell ending-wealth gap with overridden
+// assumptions — used by the stress test rows beneath the verdict.
+function computeHoldAdvantage(args: {
+  currentValue: number;
+  outstandingMortgage: number;
+  monthlyNetCashflow: number;
+  expectedCapitalGrowthPct: number;
+  sellingCostsPct: number;
+  altReturnPct: number;
+  horizonYears: number;
+}): number {
+  const sellingCosts = args.currentValue * (args.sellingCostsPct / 100);
+  const netEquityIfSold = Math.max(
+    0,
+    args.currentValue - args.outstandingMortgage - sellingCosts,
+  );
+  const cashflowOverHorizon = args.monthlyNetCashflow * 12 * args.horizonYears;
+  const valueAtHorizon =
+    args.currentValue *
+    Math.pow(1 + args.expectedCapitalGrowthPct / 100, args.horizonYears);
+  const equityAtHorizon = Math.max(0, valueAtHorizon - args.outstandingMortgage);
+  const sellingCostsAtHorizon = valueAtHorizon * (args.sellingCostsPct / 100);
+  const netEquityAtHorizon = Math.max(0, equityAtHorizon - sellingCostsAtHorizon);
+  const holdEndingWealth = netEquityAtHorizon + cashflowOverHorizon;
+  const sellEndingWealth =
+    netEquityIfSold * Math.pow(1 + args.altReturnPct / 100, args.horizonYears);
+  return holdEndingWealth - sellEndingWealth;
+}
 
 export function SellOrHoldCalculator() {
   const [currentValue, setCurrentValue] = useState(350_000);
@@ -150,6 +180,64 @@ export function SellOrHoldCalculator() {
         summary={verdictSummary}
         redFlag={verdictRedFlag}
         nextMove={verdictNextMove}
+        freeSavePrefill={{
+          price: Math.round(currentValue),
+          rent: Math.round(monthlyNetCashflow),
+          currency: "EUR",
+          address: "Property — hold-vs-sell decision",
+        }}
+      />
+      <StressTestTable
+        metricLabel="Hold advantage at horizon under stress"
+        rows={[
+          {
+            label: "Capital growth −2%/yr",
+            base: fmtMoneyFull(r.holdAdvantage),
+            stressed: fmtMoneyFull(
+              computeHoldAdvantage({
+                currentValue,
+                outstandingMortgage,
+                monthlyNetCashflow,
+                expectedCapitalGrowthPct: Math.max(0, expectedCapitalGrowthPct - 2),
+                sellingCostsPct,
+                altReturnPct,
+                horizonYears,
+              }),
+            ),
+          },
+          {
+            label: "Alt return +2%/yr",
+            base: fmtMoneyFull(r.holdAdvantage),
+            stressed: fmtMoneyFull(
+              computeHoldAdvantage({
+                currentValue,
+                outstandingMortgage,
+                monthlyNetCashflow,
+                expectedCapitalGrowthPct,
+                sellingCostsPct,
+                altReturnPct: altReturnPct + 2,
+                horizonYears,
+              }),
+            ),
+          },
+          {
+            label: "Selling costs +2pp",
+            base: fmtMoneyFull(r.holdAdvantage),
+            stressed: fmtMoneyFull(
+              computeHoldAdvantage({
+                currentValue,
+                outstandingMortgage,
+                monthlyNetCashflow,
+                expectedCapitalGrowthPct,
+                sellingCostsPct: sellingCostsPct + 2,
+                altReturnPct,
+                horizonYears,
+              }),
+            ),
+            tone: "positive",
+          },
+        ]}
+        caption="A positive number favours holding; negative favours selling. Starter models tax-adjusted disposal scenarios."
       />
       <SaveResultForm calc="sell-or-hold" calcName="Sell or hold" summary={summary} />
     </>

@@ -3,7 +3,25 @@
 import { useMemo, useState } from "react";
 import { fmtMoneyFull, fmtPct, npv } from "@/lib/calc-math";
 import { CalcCard, NumberField, Stat } from "./CalcUI";
+import { CalculatorVerdictCard, type VerdictTone } from "./CalculatorVerdictCard";
 import { SaveResultForm } from "./SaveResultForm";
+import { StressTestTable } from "./StressTestTable";
+
+function computeRetrofitNpv(args: {
+  upgradeCost: number;
+  monthlyRentUplift: number;
+  valuationUplift: number;
+  holdYears: number;
+  discountRate: number;
+  voidsLostMonths: number;
+  voidsLostRent: number;
+}): number {
+  const annualUplift = args.monthlyRentUplift * 12;
+  const cfs: number[] = [-args.upgradeCost - args.voidsLostMonths * args.voidsLostRent];
+  for (let y = 1; y <= args.holdYears; y++) cfs.push(annualUplift);
+  cfs[cfs.length - 1] += args.valuationUplift;
+  return npv(args.discountRate / 100, cfs);
+}
 
 export function RetrofitCalculator() {
   const [propertyValue, setPropertyValue] = useState(350_000);
@@ -112,6 +130,102 @@ export function RetrofitCalculator() {
         </div>
       </CalcCard>
     </div>
+    <CalculatorVerdictCard
+      tone={
+        (r.projectNpv > 10000
+          ? "strong"
+          : r.projectNpv > 0
+            ? "borderline"
+            : "risky") as VerdictTone
+      }
+      label={
+        r.projectNpv > 10000
+          ? "Worth doing"
+          : r.projectNpv > 0
+            ? "Marginal"
+            : "Skip"
+      }
+      keyMetric={{
+        label: "Project NPV at your hurdle",
+        value: fmtMoneyFull(r.projectNpv),
+      }}
+      summary={
+        r.projectNpv > 10000
+          ? `The project clears your ${discountRate}% hurdle by ${fmtMoneyFull(r.projectNpv)}. ${r.paybackYears && isFinite(r.paybackYears) ? r.paybackYears.toFixed(1) + "-year payback" : "Long payback"}, ${fmtPct(r.upliftPctOfCost)} annual yield on the works.`
+          : r.projectNpv > 0
+            ? `NPV is positive (${fmtMoneyFull(r.projectNpv)}) but only just — the project clears your hurdle with little margin. Easy for cost overruns or void extensions to flip it negative.`
+            : `NPV is negative (${fmtMoneyFull(r.projectNpv)}) at your ${discountRate}% hurdle. Your capital does better elsewhere — bonds, equities or a different property.`
+      }
+      redFlag={
+        voidsLostMonths < 2
+          ? `Void during refurb assumed at ${voidsLostMonths} months. Most retrofits over-run — 3-month voids are common and add ${fmtMoneyFull(voidsLostRent)} of lost rent. Re-run at 3 months before committing.`
+          : monthlyRentUplift > propertyValue * 0.0005
+            ? `Rent uplift of ${fmtMoneyFull(monthlyRentUplift)}/mo on a €${(propertyValue / 1000).toFixed(0)}k property is aggressive. Verify against actual let comps in your area before betting.`
+            : `Upgrade cost of ${fmtMoneyFull(upgradeCost)} is the most-underestimated input in retrofits. Add a 20% contingency; if NPV still works, the project is robust.`
+      }
+      nextMove={
+        r.projectNpv < 0
+          ? `Phase the works — defer cosmetic upgrades and only do what's needed for tenancy. Most "wishlist" retrofits don't earn their NPV.`
+          : `Get a fixed-price quote rather than a day-rate quote. The single biggest NPV killer here is the 20-40% cost overrun on a renovation that started without one.`
+      }
+      freeSavePrefill={{
+        price: Math.round(propertyValue),
+        rent: Math.round(voidsLostRent),
+        currency: "EUR",
+        address: "Property under retrofit consideration",
+      }}
+    />
+    <StressTestTable
+      metricLabel="Project NPV under stress"
+      rows={[
+        {
+          label: "Upgrade cost +20%",
+          base: fmtMoneyFull(r.projectNpv),
+          stressed: fmtMoneyFull(
+            computeRetrofitNpv({
+              upgradeCost: upgradeCost * 1.2,
+              monthlyRentUplift,
+              valuationUplift,
+              holdYears,
+              discountRate,
+              voidsLostMonths,
+              voidsLostRent,
+            }),
+          ),
+        },
+        {
+          label: "Rent uplift −20%",
+          base: fmtMoneyFull(r.projectNpv),
+          stressed: fmtMoneyFull(
+            computeRetrofitNpv({
+              upgradeCost,
+              monthlyRentUplift: monthlyRentUplift * 0.8,
+              valuationUplift,
+              holdYears,
+              discountRate,
+              voidsLostMonths,
+              voidsLostRent,
+            }),
+          ),
+        },
+        {
+          label: "Void +1 month",
+          base: fmtMoneyFull(r.projectNpv),
+          stressed: fmtMoneyFull(
+            computeRetrofitNpv({
+              upgradeCost,
+              monthlyRentUplift,
+              valuationUplift,
+              holdYears,
+              discountRate,
+              voidsLostMonths: voidsLostMonths + 1,
+              voidsLostRent,
+            }),
+          ),
+        },
+      ]}
+      caption="Retrofits are sensitive to cost overruns and void extensions — the three rows above are the most common ways NPV gets eaten."
+    />
     <SaveResultForm calc="retrofit" calcName="Retrofit" summary={summary} />
     </>
   );
