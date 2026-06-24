@@ -14,7 +14,18 @@ export const metadata: Metadata = {
 interface Calc {
   slug: string
   name: string
-  blurb: string
+  /** Plain-English question the calculator answers — what the visitor
+   *  is actually trying to find out. Sits above the output line so the
+   *  card reads as Q → A from top to bottom. */
+  question: string
+  /** What the calculator returns — the four-or-so numbers the visitor
+   *  walks away with. */
+  output: string
+  /** CTA label specific to the calculator. "Run mortgage numbers" /
+   *  "Check buy-to-let" etc — more useful than a generic "Open". */
+  cta: string
+  /** Inputs the visitor will be asked for. Shown small at the bottom
+   *  of the card as a transparency cue. */
   inputs: string[]
   /** Gated calculators land on a marketing-LP rather than a live tool.
    *  The tile shows a "Trial required" pill and CTA copy nudging signup;
@@ -25,65 +36,74 @@ interface Calc {
 const calcs: Calc[] = [
   {
     slug: "mortgage",
-    name: "Mortgage Calculator",
-    blurb:
-      "Country-specific rules for 10 markets including the full GCC. Monthly payment, stamp duty / transfer tax, LTV limits, cash needed at completion.",
+    name: "Mortgage calculator",
+    question: "Can I afford this property?",
+    output: "Monthly payment, deposit, total interest, stamp duty / transfer tax, affordability warning.",
+    cta: "Run mortgage numbers",
     inputs: ["Country", "Resident or non-resident", "Property price", "Deposit", "Rate", "Term", "Loan type"],
   },
   {
     slug: "irr",
-    name: "IRR Calculator",
-    blurb:
-      "Model your full return over any hold period — gross yield, cash-on-cash, and IRR after exit.",
+    name: "Buy-to-let calculator",
+    question: "Does this property make money?",
+    output: "Gross yield, net yield, monthly cash flow, levered IRR — plus AssetCentral verdict.",
+    cta: "Check buy-to-let",
     inputs: ["Purchase price", "Deposit", "Mortgage rate", "Annual rent", "Exit price", "Hold period"],
   },
   {
-    slug: "str-yield",
-    name: "Short-term Rental Yield Calculator",
-    blurb:
-      "Short-term rental vs long-let. See whether the agency commission and seasonality leave you better or worse off.",
-    inputs: ["ADR", "Occupancy %", "Operator commission", "Annual costs"],
-  },
-  {
-    slug: "retrofit",
-    name: "Retrofit Cost Calculator",
-    blurb:
-      "Estimate upgrade costs and the rent uplift they unlock. See payback period and net yield change.",
-    inputs: ["Upgrade cost", "Monthly rent uplift", "Hold period", "Discount rate"],
-  },
-  {
-    slug: "ownership",
-    name: "Ownership Comparator",
-    blurb:
-      "Outright vs mortgaged. Compare cash-on-cash, leverage, and total return for the same property.",
-    inputs: ["Purchase price", "LTV options", "Mortgage rate", "Annual rent", "Hold period"],
-  },
-  {
     slug: "sell-or-hold",
-    name: "Sell or Hold Checker",
-    blurb:
-      "Should you keep this property or sell? Compares ending wealth from holding against selling and reinvesting the equity.",
+    name: "Sell or hold checker",
+    question: "Should I keep this property or sell?",
+    output: "Equity today, hold-vs-sell ending wealth, return on equity, simple hold/sell signal.",
+    cta: "Run sell or hold",
     inputs: ["Current value", "Mortgage balance", "Monthly cash flow", "Growth %", "Alt return %", "Horizon"],
   },
   {
-    slug: "rent-out",
-    name: "Rent-Out Checker",
-    blurb:
-      "Find the rent you need to cover every monthly cost, plus the rent you need to hit your target margin.",
-    inputs: ["Mortgage", "Service charge", "Insurance", "Maintenance %", "Management %", "Vacancy"],
-  },
-  {
     slug: "refinance",
-    name: "Refinance Checker",
-    blurb:
-      "Compare your current loan against a new offer — monthly saving, payback period for fees, 5- and 10-year net.",
+    name: "Refinance checker",
+    question: "Would a new mortgage improve my return?",
+    output: "Old payment vs new payment, monthly saving, fee payback, 5- and 10-year net.",
+    cta: "Check refinance",
     inputs: ["Current balance", "Current rate", "New rate", "New term", "Arrangement fee", "Exit fee"],
   },
   {
+    slug: "retrofit",
+    name: "Renovation ROI checker",
+    question: "Are the works worth doing?",
+    output: "Works cost, rent uplift, value uplift, project NPV, payback period.",
+    cta: "Check works ROI",
+    inputs: ["Upgrade cost", "Monthly rent uplift", "Valuation uplift", "Hold period", "Discount rate"],
+  },
+  {
+    slug: "rent-out",
+    name: "Rent-out checker",
+    question: "What rent do I need to cover my costs?",
+    output: "Break-even rent, rent needed to hit your target margin, monthly margin after costs.",
+    cta: "Check rent needed",
+    inputs: ["Mortgage", "Service charge", "Insurance", "Maintenance %", "Management %", "Vacancy"],
+  },
+  {
+    slug: "str-yield",
+    name: "Short-let vs long-let checker",
+    question: "Would short-term rental outperform a long tenant?",
+    output: "Annual income each way, occupancy sensitivity, cost difference, basic recommendation.",
+    cta: "Compare rental options",
+    inputs: ["ADR", "Occupancy %", "Operator commission", "Annual costs"],
+  },
+  {
+    slug: "ownership",
+    name: "Ownership comparator",
+    question: "Cash purchase or mortgage — which wins?",
+    output: "Cash-on-cash, levered IRR, year-1 cashflow at two LTVs side-by-side.",
+    cta: "Compare ownership",
+    inputs: ["Purchase price", "LTV options", "Mortgage rate", "Annual rent", "Hold period"],
+  },
+  {
     slug: "off-plan",
-    name: "Off-Plan Rolling-Return Calculator",
-    blurb:
-      "Should you assign now or hold to handover? Rolling launch-to-handover model with cost of money, payment plan, scenario snapshots, value-path chart, and live DLD market comps. Dubai-focused but works for any off-plan market.",
+    name: "Off-plan rolling-return calculator",
+    question: "Does this off-plan investment still make sense?",
+    output: "Deposit exposure, remaining payments, estimated value, rolling return, exit options.",
+    cta: "Check off-plan return",
     inputs: ["Launch date", "Payment plan", "Growth periods", "Current market value", "Cost of money", "Project / area"],
     gated: true,
   },
@@ -105,13 +125,15 @@ export default function CalculatorsHubPage() {
               className="text-[44px] lg:text-[56px] leading-[1.05] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Free tools for smarter property decisions.
+              Free tools to run the numbers first.
             </h1>
             <p
               className="mt-5 text-[17px] lg:text-[19px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Used by thousands of investors before they buy, sell, or refinance. No account required. Save your results and import them into your portfolio later.
+              Before you buy, sell, mortgage, refinance, renovate or rent out a
+              property, use AssetCentral&rsquo;s free calculators and AI property
+              checks to see whether the numbers make sense. No account required.
             </p>
           </div>
         </div>
@@ -142,16 +164,25 @@ export default function CalculatorsHubPage() {
                   </div>
                 )}
                 <h2
-                  className="text-[24px] lg:text-[28px] leading-[1.15] text-[var(--color-navy)] mb-3"
+                  className="text-[22px] lg:text-[26px] leading-[1.15] text-[var(--color-navy)] mb-2"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {c.name}
                 </h2>
+                {/* Plain-English question, italic, muted — primes the
+                    visitor to read the output that follows as the
+                    answer. Reads as Q → A from top to bottom. */}
                 <p
-                  className="text-[14.5px] leading-[1.6] text-[var(--color-ink)] mb-4"
+                  className="text-[14px] italic text-[var(--color-muted)] mb-3"
                   style={{ fontFamily: "var(--font-sans)" }}
                 >
-                  {c.blurb}
+                  {c.question}
+                </p>
+                <p
+                  className="text-[14.5px] leading-[1.55] text-[var(--color-ink)] mb-4"
+                  style={{ fontFamily: "var(--font-sans)" }}
+                >
+                  {c.output}
                 </p>
                 <div
                   className="text-[12px] text-[var(--color-muted)] mb-5"
@@ -160,12 +191,12 @@ export default function CalculatorsHubPage() {
                   Inputs: {c.inputs.join(" · ")}
                 </div>
                 <span
-                  className={`inline-flex items-center text-[14px] font-medium group-hover:underline ${
+                  className={`inline-flex items-center text-[14px] font-semibold group-hover:underline ${
                     c.gated ? "text-emerald-700" : "text-[var(--color-accent)]"
                   }`}
                   style={{ fontFamily: "var(--font-sans)" }}
                 >
-                  {c.gated ? "See what's inside →" : "Use calculator →"}
+                  {c.gated ? "See what's inside →" : `${c.cta} →`}
                 </span>
               </Link>
             ))}

@@ -37,50 +37,49 @@ type DropdownGroup = {
 type NavItem = FlatLink | DropdownGroup;
 
 const navItems: NavItem[] = [
+  // Nav order matches the user journey: understand (How it works),
+  // try (Calculators), buy (Product → Pricing), distribute (Partners),
+  // learn (Resources). This is the "Run the Numbers First" repositioning
+  // taken into the top nav — How it works is the journey explainer that
+  // sits before the free tools, not behind them.
   {
     kind: "dropdown",
     label: "How it works",
     items: [
       {
-        href: "/check",
-        label: "Run a free AI property check",
-        description: "60 seconds. Verdict, red flag, one thing to fix.",
+        href: "/how-it-works#run-the-numbers",
+        label: "Run the numbers first",
+        description: "Pick the decision you need to check.",
       },
       {
-        href: "/pricing",
-        label: "Free vs Starter vs Pro",
-        description: "Three tiers. Free, then 7-day no-card trial when the decision gets serious.",
+        href: "/how-it-works#ai-check",
+        label: "Get a free AI property check",
+        description: "Strong / Borderline / Weak / Risky — verdict + red flag + next move.",
       },
       {
-        href: "/demo/60",
-        label: "Watch the 60-second explainer",
-        description: "The product walked through in under a minute.",
-      },
-    ],
-  },
-  {
-    kind: "dropdown",
-    label: "Product",
-    items: [
-      {
-        href: "/calculators",
-        label: "Check the numbers",
-        description: "All nine free Level 1 calculators — verdict + stress test on every one.",
+        href: "/how-it-works#full-report",
+        label: "Unlock the full report",
+        description: "10-year forecast, scenarios, sensitivities, decision summary.",
       },
       {
-        href: "/#what-to-check",
-        label: "What do you want to check?",
-        description: "Buying · selling · mortgaging · refinancing · renovating · renting out · short-vs-long.",
+        href: "/how-it-works#save-compare",
+        label: "Save and compare properties",
+        description: "Build a record of decisions over time.",
       },
       {
-        href: "/features",
-        label: "AI Team",
-        description: "Your five-agent property team — CIO, CFO, COO, CEO and PA.",
+        href: "/how-it-works#portfolio",
+        label: "Track your portfolio",
+        description: "Move into Model · Monitor · Manage for 2-50 properties.",
       },
       {
-        href: "/features",
-        label: "Pro Tools",
-        description: "Full property report, 10-year forecast, scenarios, portfolio dashboard, alerts.",
+        href: "/how-it-works#ai-team",
+        label: "Talk to your AI property team",
+        description: "CIO · CFO · COO · CEO · PA — deeper support when it matters.",
+      },
+      {
+        href: "/#example-analysis",
+        label: "See example analysis",
+        description: "What a free AI property check actually returns.",
       },
     ],
   },
@@ -137,6 +136,57 @@ const navItems: NavItem[] = [
         href: "/calculators",
         label: "All calculators",
         description: "Every calculator in one page.",
+      },
+    ],
+  },
+  {
+    kind: "dropdown",
+    label: "Product",
+    items: [
+      {
+        href: "/features",
+        label: "Product overview",
+        description: "What you get when you subscribe.",
+      },
+      {
+        href: "/model",
+        label: "Model",
+        description: "Analyse decisions before you act.",
+      },
+      {
+        href: "/monitor",
+        label: "Monitor",
+        description: "Track what happens after the decision.",
+      },
+      {
+        href: "/manage",
+        label: "Manage",
+        description: "Turn analysis into action.",
+      },
+      {
+        href: "/features",
+        label: "AI Property Team",
+        description: "CIO · CFO · COO · CEO · PA — your five-agent team.",
+      },
+      {
+        href: "/features",
+        label: "Portfolio Dashboard",
+        description: "One workspace for 2-50 properties.",
+      },
+      {
+        href: "/features",
+        label: "Reports & Documents",
+        description: "Decision memos, PDFs, lender packs, document vault.",
+      },
+      {
+        href: "/monitor",
+        label: "Alerts & Monitoring",
+        description: "22 alert types across rent, debt, voids, costs.",
+      },
+      {
+        href: "/pricing",
+        label: "For owners with 2–50 properties",
+        description: "Pro pricing + what's included.",
       },
     ],
   },
