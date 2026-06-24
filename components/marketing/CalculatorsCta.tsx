@@ -43,13 +43,13 @@ export function CalculatorsCta() {
             className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Free tools
+            Free tools · check before you commit
           </p>
           <h2
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Try our calculator tools
+            Run any property through AssetCentral.
           </h2>
           <p
             className="mt-4 text-[16.5px] leading-[1.6] text-[var(--color-muted)] max-w-2xl"
