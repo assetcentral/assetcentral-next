@@ -18,10 +18,21 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 // side; visitors who want to see the product land on /demo/60.
 
 type FlatLink = { href: string; label: string; kind?: "flat" };
+type DropdownItem = {
+  href: string;
+  label: string;
+  description?: string;
+  /** Optional subhead the item belongs to. When the section value
+   *  changes between two consecutive items the dropdown renders a
+   *  small uppercase caption above the next group — used in Product
+   *  to separate Free tools from Starter/Pro surfaces and the
+   *  AI-team SEO landing pages. */
+  section?: string;
+};
 type DropdownGroup = {
   kind: "dropdown";
   label: string;
-  items: { href: string; label: string; description?: string }[];
+  items: DropdownItem[];
 };
 type NavItem = FlatLink | DropdownGroup;
 
@@ -31,19 +42,40 @@ const navItems: NavItem[] = [
     label: "How it works",
     items: [
       {
-        href: "/#how-it-works",
-        label: "What the team unlocks",
-        description: "Family-office capabilities in six cards on the homepage.",
+        section: "Start free",
+        href: "/check",
+        label: "Run a free AI property check",
+        description: "60 seconds. Verdict + one red flag + one thing to fix.",
       },
       {
+        section: "Start free",
+        href: "/#what-to-check",
+        label: "What do you want to check?",
+        description: "Seven decision routes — buy, sell, refi, renovate, rent out, short-vs-long.",
+      },
+      {
+        section: "Start free",
+        href: "/#example-analysis",
+        label: "See example analysis",
+        description: "What a free check looks like — verdict card, red flag, next move.",
+      },
+      {
+        section: "Upgrade when it matters",
+        href: "/pricing",
+        label: "Free vs Starter vs Pro",
+        description: "Three tiers. Run the first numbers free, unlock the full report, run the portfolio.",
+      },
+      {
+        section: "Upgrade when it matters",
         href: "/demo/60",
         label: "Watch the 60-second explainer",
         description: "The product walked through in under a minute.",
       },
       {
+        section: "Upgrade when it matters",
         href: "/compare/",
-        label: "Compare options",
-        description: "AssetCentral vs spreadsheets, property management software, accounting software, broker valuation and family office.",
+        label: "AssetCentral vs the alternatives",
+        description: "vs spreadsheets, property-management software, broker valuation, family office.",
       },
     ],
   },
@@ -52,46 +84,73 @@ const navItems: NavItem[] = [
     label: "Product",
     items: [
       {
-        href: "/model",
-        label: "Model",
-        description: "Every property, on paper, in 10 minutes.",
+        section: "Free — run the first numbers",
+        href: "/check",
+        label: "Free AI property check",
+        description: "Mortgage, yield, cash flow, red flag — in 60 seconds.",
       },
       {
+        section: "Free — run the first numbers",
+        href: "/calculators",
+        label: "Eight free Level 1 calculators",
+        description: "Mortgage, buy-to-let, yield, sell-or-hold, renovation, refinance, rent-out, short-vs-long.",
+      },
+      {
+        section: "Starter — unlock the full report",
+        href: "/pricing",
+        label: "Full property decision report",
+        description: "10-year forecast, scenarios, PDF, saved properties, comparison. 7-day trial, no card.",
+      },
+      {
+        section: "Pro — model, monitor, manage your portfolio",
+        href: "/model",
+        label: "Model",
+        description: "Every property on paper in 10 minutes.",
+      },
+      {
+        section: "Pro — model, monitor, manage your portfolio",
         href: "/monitor",
         label: "Monitor",
         description: "Catch the drift before it costs you.",
       },
       {
+        section: "Pro — model, monitor, manage your portfolio",
         href: "/manage",
         label: "Manage",
         description: "Make the call the agents would make.",
       },
       {
+        section: "Pro — your 5-agent AI team",
         href: "/ai-property-ceo",
-        label: "Meet your AI CEO",
-        description: "Portfolio strategy + ranked priorities.",
+        label: "AI CEO",
+        description: "Ranked priorities + portfolio strategy.",
       },
       {
+        section: "Pro — your 5-agent AI team",
         href: "/ai-property-cio",
-        label: "Meet your AI CIO",
-        description: "Investment modelling — hold, sell, refinance.",
+        label: "AI CIO",
+        description: "Hold, sell, refinance modelling.",
       },
       {
+        section: "Pro — your 5-agent AI team",
         href: "/ai-property-cfo",
-        label: "Meet your AI CFO",
+        label: "AI CFO",
         description: "Net yield, cash flow, debt, liquidity.",
       },
       {
+        section: "Pro — your 5-agent AI team",
         href: "/ai-property-coo",
-        label: "Meet your AI COO",
+        label: "AI COO",
         description: "Leases, occupancy, operational risk.",
       },
       {
+        section: "Pro — your 5-agent AI team",
         href: "/ai-property-pa",
-        label: "Meet your AI PA",
+        label: "AI PA",
         description: "Documents, reminders, briefings.",
       },
       {
+        section: "Everything",
         href: "/features",
         label: "All features",
         description: "Every surface and capability in one page.",
@@ -432,29 +491,49 @@ function DesktopDropdownInner(
 
       {isOpen && (
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[320px] rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2"
-          // Pad the top with a transparent overlay so the user can move
-          // from the button to the menu without the mouseLeave firing
-          // (the gap would otherwise trigger close).
+          // Dropdown widens to 360px because the new section subheads
+          // need horizontal room to read at a glance. Product has 12
+          // items split across 5 sections — without the wider canvas
+          // the section captions would crowd the labels.
+          className="absolute right-0 top-full mt-3 w-[360px] rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          {item.items.map((sub) => (
-            <Link
-              key={sub.href}
-              href={sub.href}
-              onClick={onClose}
-              className="block px-3 py-2.5 rounded-md hover:bg-[var(--color-surface)] transition-colors"
-            >
-              <div className="text-[14px] font-medium text-[var(--color-navy)]">
-                {sub.label}
-              </div>
-              {sub.description && (
-                <div className="text-[12.5px] leading-[1.4] text-[var(--color-muted)] mt-0.5">
-                  {sub.description}
+          {(() => {
+            // Render the items with a small uppercase caption whenever
+            // the `section` value changes from the previous item. Lets
+            // the Product dropdown group Free / Starter / Pro / agents
+            // / All without restructuring the data into a nested
+            // shape.
+            let lastSection: string | undefined;
+            return item.items.map((sub) => {
+              const showSection =
+                sub.section !== undefined && sub.section !== lastSection;
+              lastSection = sub.section;
+              return (
+                <div key={sub.href}>
+                  {showSection && (
+                    <div className="px-3 pt-3 pb-1 text-[10.5px] uppercase tracking-[0.12em] text-[var(--color-muted)] font-semibold">
+                      {sub.section}
+                    </div>
+                  )}
+                  <Link
+                    href={sub.href}
+                    onClick={onClose}
+                    className="block px-3 py-2 rounded-md hover:bg-[var(--color-surface)] transition-colors"
+                  >
+                    <div className="text-[14px] font-medium text-[var(--color-navy)]">
+                      {sub.label}
+                    </div>
+                    {sub.description && (
+                      <div className="text-[12px] leading-[1.4] text-[var(--color-muted)] mt-0.5">
+                        {sub.description}
+                      </div>
+                    )}
+                  </Link>
                 </div>
-              )}
-            </Link>
-          ))}
+              );
+            });
+          })()}
         </div>
       )}
     </div>
@@ -503,16 +582,34 @@ function MobileGroup({
       </button>
       {isOpen && (
         <div className="ml-3 pl-3 border-l border-[var(--color-border)] mt-1 mb-1 flex flex-col gap-0.5">
-          {item.items.map((sub) => (
-            <Link
-              key={sub.href}
-              href={sub.href}
-              onClick={onLinkClick}
-              className="flex items-center min-h-[44px] px-3 rounded-md text-[14px] text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition-colors"
-            >
-              {sub.label}
-            </Link>
-          ))}
+          {(() => {
+            // Same section-divider pattern as the desktop dropdown so
+            // the Product menu reads as Free / Starter / Pro on mobile
+            // too. Captions are a touch larger here for legibility on
+            // small viewports.
+            let lastSection: string | undefined;
+            return item.items.map((sub) => {
+              const showSection =
+                sub.section !== undefined && sub.section !== lastSection;
+              lastSection = sub.section;
+              return (
+                <div key={sub.href}>
+                  {showSection && (
+                    <div className="px-3 pt-3 pb-1 text-[11px] uppercase tracking-[0.1em] text-[var(--color-muted)] font-semibold">
+                      {sub.section}
+                    </div>
+                  )}
+                  <Link
+                    href={sub.href}
+                    onClick={onLinkClick}
+                    className="flex items-center min-h-[44px] px-3 rounded-md text-[14px] text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition-colors"
+                  >
+                    {sub.label}
+                  </Link>
+                </div>
+              );
+            });
+          })()}
         </div>
       )}
     </div>
