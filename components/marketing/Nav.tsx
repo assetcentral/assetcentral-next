@@ -42,40 +42,19 @@ const navItems: NavItem[] = [
     label: "How it works",
     items: [
       {
-        section: "Start free",
         href: "/check",
         label: "Run a free AI property check",
-        description: "60 seconds. Verdict + one red flag + one thing to fix.",
+        description: "60 seconds. Verdict, red flag, one thing to fix.",
       },
       {
-        section: "Start free",
-        href: "/#what-to-check",
-        label: "What do you want to check?",
-        description: "Seven decision routes — buy, sell, refi, renovate, rent out, short-vs-long.",
-      },
-      {
-        section: "Start free",
-        href: "/#example-analysis",
-        label: "See example analysis",
-        description: "What a free check looks like — verdict card, red flag, next move.",
-      },
-      {
-        section: "Upgrade when it matters",
         href: "/pricing",
         label: "Free vs Starter vs Pro",
-        description: "Three tiers. Run the first numbers free, unlock the full report, run the portfolio.",
+        description: "Three tiers. Free, then 7-day no-card trial when the decision gets serious.",
       },
       {
-        section: "Upgrade when it matters",
         href: "/demo/60",
         label: "Watch the 60-second explainer",
         description: "The product walked through in under a minute.",
-      },
-      {
-        section: "Upgrade when it matters",
-        href: "/compare/",
-        label: "AssetCentral vs the alternatives",
-        description: "vs spreadsheets, property-management software, broker valuation, family office.",
       },
     ],
   },
@@ -84,76 +63,24 @@ const navItems: NavItem[] = [
     label: "Product",
     items: [
       {
-        section: "Free — run the first numbers",
         href: "/check",
         label: "Free AI property check",
         description: "Mortgage, yield, cash flow, red flag — in 60 seconds.",
       },
       {
-        section: "Free — run the first numbers",
         href: "/calculators",
         label: "Eight free Level 1 calculators",
         description: "Mortgage, buy-to-let, yield, sell-or-hold, renovation, refinance, rent-out, short-vs-long.",
       },
       {
-        section: "Starter — unlock the full report",
-        href: "/pricing",
-        label: "Full property decision report",
-        description: "10-year forecast, scenarios, PDF, saved properties, comparison. 7-day trial, no card.",
-      },
-      {
-        section: "Pro — model, monitor, manage your portfolio",
-        href: "/model",
-        label: "Model",
-        description: "Every property on paper in 10 minutes.",
-      },
-      {
-        section: "Pro — model, monitor, manage your portfolio",
-        href: "/monitor",
-        label: "Monitor",
-        description: "Catch the drift before it costs you.",
-      },
-      {
-        section: "Pro — model, monitor, manage your portfolio",
-        href: "/manage",
-        label: "Manage",
-        description: "Make the call the agents would make.",
-      },
-      {
-        section: "Pro — your 5-agent AI team",
-        href: "/ai-property-ceo",
-        label: "AI CEO",
-        description: "Ranked priorities + portfolio strategy.",
-      },
-      {
-        section: "Pro — your 5-agent AI team",
-        href: "/ai-property-cio",
-        label: "AI CIO",
-        description: "Hold, sell, refinance modelling.",
-      },
-      {
-        section: "Pro — your 5-agent AI team",
-        href: "/ai-property-cfo",
-        label: "AI CFO",
-        description: "Net yield, cash flow, debt, liquidity.",
-      },
-      {
-        section: "Pro — your 5-agent AI team",
-        href: "/ai-property-coo",
-        label: "AI COO",
-        description: "Leases, occupancy, operational risk.",
-      },
-      {
-        section: "Pro — your 5-agent AI team",
-        href: "/ai-property-pa",
-        label: "AI PA",
-        description: "Documents, reminders, briefings.",
-      },
-      {
-        section: "Everything",
         href: "/features",
-        label: "All features",
-        description: "Every surface and capability in one page.",
+        label: "Starter & Pro features",
+        description: "Full report, 10-year forecast, scenarios, portfolio dashboard, AI team.",
+      },
+      {
+        href: "/pricing",
+        label: "Pricing",
+        description: "Free, Starter and Pro plans. Team and Enterprise below.",
       },
     ],
   },
@@ -491,11 +418,7 @@ function DesktopDropdownInner(
 
       {isOpen && (
         <div
-          // Dropdown widens to 360px because the new section subheads
-          // need horizontal room to read at a glance. Product has 12
-          // items split across 5 sections — without the wider canvas
-          // the section captions would crowd the labels.
-          className="absolute right-0 top-full mt-3 w-[360px] rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2"
+          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[320px] rounded-xl border border-[var(--color-border)] bg-white shadow-xl p-2"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           {(() => {
