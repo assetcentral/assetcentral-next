@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 const DISMISS_KEY = "ac_sticky_dismissed_v1";
 
 export function StickyCta({
-  label = "Call My Team",
-  href = "/signup?plan=pro_monthly&intent=call-team",
-  message = "Five AI experts on one call. Already briefed. From €19/month.",
+  label = "Check a property — free",
+  href = "/check",
+  message = "Run the numbers first for free. Upgrade when the decision gets serious.",
   /** Show after scrolling this fraction of the page (0–1). */
   threshold = 0.4,
 }: {

@@ -1,47 +1,45 @@
 "use client";
 
+import Link from "next/link";
 import { useCurrency } from "./CurrencyProvider";
 import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 
-// Plan-comparison rows. 2026-06 pricing rework moved the platform from a
-// feature-gated model (Free vs Paid drove which agents and surfaces a
-// user could see) to a SCOPE-gated model: every paid tier gets every
-// feature; the difference is how many properties, how many seats, and
-// how many voice minutes you get. Source of truth lives in
-// assetcentral-app/lib/billing/limits.ts.
+// 2026-06 "Run the numbers first" repositioning. Three-tier ladder
+// matches the new freemium/trial model:
+//   • Free      — Run the first numbers (calculators + 1 saved property)
+//   • Starter   — Unlock the full property report (7-day trial, no card)
+//   • Pro       — Model, monitor and manage your portfolio
 //
-// Free was retired in mid-2026 and then re-instated as the no-card
-// on-ramp for the "Don't Buy Blind" funnel. Free gets the public
-// /check experience + saving a single property; the four paid tiers
-// (Individual / Pro / Team / Enterprise) get the full platform. Values
-// arrays are now 5-wide in this order:
-//   [Free, Individual, Pro, Team, Enterprise]
+// Team and Enterprise still exist for brokers, family offices and 50+
+// property portfolios — but they're surfaced as a footer strip rather
+// than as competing columns, so the 3-tier ladder reads cleanly for
+// the dominant B2C visitor.
+//
+// Source of truth for the underlying capability split lives in
+// assetcentral-app/lib/billing/limits.ts. The marketing label
+// "Starter" maps to the app's `individual` tier — only the
+// presentation differs.
 const rows = [
-  { group: "AC Agent Team", label: "Personal Assistant", values: [false, true, true, true, true] },
-  { group: "AC Agent Team", label: "Chief Financial Officer", values: [false, true, true, true, true] },
-  { group: "AC Agent Team", label: "Chief Investment Officer", values: [false, true, true, true, true] },
-  { group: "AC Agent Team", label: "Chief Operations Officer", values: [false, true, true, true, true] },
-  { group: "AC Agent Team", label: "Your CEO — ranked actions, Decision Room", values: [false, true, true, true, true] },
-  { group: "Portfolio", label: "Properties tracked", values: ["1 saved", "Up to 3", "Up to 50", "Up to 50", "Unlimited"] },
-  { group: "Portfolio", label: "Free /check runs (verdict + red flag + improvement)", values: ["Unlimited", "Unlimited", "Unlimited", "Unlimited", "Unlimited"] },
-  { group: "Portfolio", label: "Calculators (IRR, Short-term Rental, Retrofit, Ownership)", values: [true, true, true, true, true] },
-  { group: "Portfolio", label: "Multi-currency (AED, EUR, GBP, USD…)", values: [false, true, true, true, true] },
-  { group: "Intelligence", label: "Real net yield + benchmarks", values: [false, true, true, true, true] },
-  { group: "Intelligence", label: "Sell vs hold analyser", values: [false, true, true, true, true] },
-  { group: "Intelligence", label: "Acquisition simulator", values: [false, true, true, true, true] },
-  { group: "Alerts", label: "22 alert types (email + WhatsApp)", values: [false, true, true, true, true] },
-  { group: "Documents", label: "Document vault + AI extraction", values: [false, true, true, true, true] },
-  { group: "Documents", label: "Data ingestion (WhatsApp / email / file)", values: [false, true, true, true, true] },
-  { group: "Reports", label: "Refinancing pack, investor pack, tax report", values: [false, true, true, true, true] },
-  { group: "Voice", label: "Voice line to your AI team (per month)", values: [false, "30 min", "120 min", "Unlimited", "Unlimited"] },
-  { group: "Team seats", label: "Users included", values: ["1 user", "1 user", "1 user", "2–5 users", "Unlimited"] },
-  { group: "Team seats", label: "Additional seats (accountant / advisor)", values: [false, false, false, "Up to 4", "Unlimited"] },
-  { group: "Team seats", label: "Multiple portfolio workspaces", values: [false, false, false, true, true] },
-  { group: "Team seats", label: "SSO + audit logging", values: [false, false, false, false, true] },
-  { group: "Team seats", label: "Custom DPA + data residency", values: [false, false, false, false, true] },
-  { group: "Support", label: "Email support", values: [true, true, true, true, true] },
-  { group: "Support", label: "Priority support", values: [false, false, false, true, true] },
-  { group: "Support", label: "Dedicated account manager", values: [false, false, false, false, true] },
+  { group: "What you can do", label: "Run the eight Level 1 calculators", values: [true, true, true] },
+  { group: "What you can do", label: "Free AI property check (verdict + red flag + next move)", values: [true, true, true] },
+  { group: "What you can do", label: "Email the check result", values: [true, true, true] },
+  { group: "What you can do", label: "Full property decision report", values: [false, true, true] },
+  { group: "What you can do", label: "10-year cash-flow forecast", values: [false, true, true] },
+  { group: "What you can do", label: "Scenario analysis (rate-shock, rent-growth, capital-growth)", values: [false, true, true] },
+  { group: "What you can do", label: "Sell vs hold analyser", values: [false, true, true] },
+  { group: "What you can do", label: "Refinance scenarios", values: [false, true, true] },
+  { group: "What you can do", label: "Property comparison", values: [false, true, true] },
+  { group: "What you can do", label: "PDF + Word export", values: [false, true, true] },
+  { group: "Properties", label: "Saved properties", values: ["1", "Up to 3", "Up to 50"] },
+  { group: "Properties", label: "Multi-currency tracking", values: [false, true, true] },
+  { group: "Portfolio (Pro only)", label: "Portfolio dashboard", values: [false, false, true] },
+  { group: "Portfolio (Pro only)", label: "5-agent AI team (CIO · CFO · COO · PA · CEO)", values: [false, false, true] },
+  { group: "Portfolio (Pro only)", label: "Monitoring alerts (22 alert types)", values: [false, false, true] },
+  { group: "Portfolio (Pro only)", label: "Document vault + AI extraction", values: [false, false, true] },
+  { group: "Portfolio (Pro only)", label: "Voice line to your AI team", values: [false, false, true] },
+  { group: "Portfolio (Pro only)", label: "Lender-ready packs (Refinancing / Investor / Tax)", values: [false, false, true] },
+  { group: "Support", label: "Email support", values: [true, true, true] },
+  { group: "Support", label: "Priority support", values: [false, false, true] },
 ];
 
 function Cell({ v }: { v: boolean | string }) {
@@ -63,16 +61,13 @@ function Cell({ v }: { v: boolean | string }) {
 export function ComparisonTable() {
   const { code } = useCurrency();
   const bill = billingFor(code);
-  const individualMonthly = formatPrice(PLAN_PRICES.individual[bill].monthly, bill);
+  const starterMonthly = formatPrice(PLAN_PRICES.individual[bill].monthly, bill);
   const proMonthly = formatPrice(PLAN_PRICES.pro[bill].monthly, bill);
-  const teamMonthly = formatPrice(PLAN_PRICES.team[bill].monthly, bill);
 
   const tiers = [
-    { name: "Free", price: `${formatPrice(0, bill)}` },
-    { name: "Individual", price: `${individualMonthly}/mo` },
-    { name: "Pro", price: `${proMonthly}/mo`, popular: true },
-    { name: "Team", price: `${teamMonthly}/mo` },
-    { name: "Enterprise", price: "Custom" },
+    { name: "Free", price: formatPrice(0, bill), sub: "Run the first numbers" },
+    { name: "Starter", price: `${starterMonthly}/mo`, sub: "Unlock the full report", popular: true },
+    { name: "Pro", price: `${proMonthly}/mo`, sub: "Portfolio command centre" },
   ];
 
   let lastGroup = "";
@@ -80,14 +75,22 @@ export function ComparisonTable() {
     <section className="bg-white border-t border-[var(--color-border)]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-20">
         <h2
-          className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)] mb-10"
+          className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)] mb-2"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Compare plans
+          Compare Free, Starter and Pro
         </h2>
+        <p
+          className="text-[14px] text-[var(--color-muted)] mb-10 max-w-2xl"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          Free is the on-ramp. Starter unlocks the full decision report.
+          Pro adds the portfolio dashboard, AI agents and monitoring for
+          owners of 2&ndash;50 properties.
+        </p>
         <div className="overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0">
           <table
-            className="min-w-[640px] w-full text-left border-collapse"
+            className="min-w-[560px] w-full text-left border-collapse"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <thead>
@@ -96,7 +99,7 @@ export function ComparisonTable() {
                   Feature
                 </th>
                 {tiers.map((t) => (
-                  <th key={t.name} className="py-3 px-4 text-center min-w-[120px]">
+                  <th key={t.name} className="py-3 px-4 text-center min-w-[140px]">
                     <div
                       className={`text-[15px] font-semibold ${
                         t.popular ? "text-[var(--color-navy)]" : "text-[var(--color-ink)]"
@@ -105,6 +108,9 @@ export function ComparisonTable() {
                       {t.name}
                     </div>
                     <div className="text-[12px] text-[var(--color-muted)]">{t.price}</div>
+                    <div className="text-[11px] text-[var(--color-muted)] italic mt-0.5">
+                      {t.sub}
+                    </div>
                   </th>
                 ))}
               </tr>
@@ -133,6 +139,43 @@ export function ComparisonTable() {
               })}
             </tbody>
           </table>
+        </div>
+
+        {/* Team + Enterprise footer — kept off the main three-column grid
+            so the freemium → trial → portfolio ladder reads cleanly for
+            the dominant B2C visitor. Brokers / family offices / 50+
+            property buyers self-select into this strip. */}
+        <div className="mt-12 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:p-7 grid lg:grid-cols-[1.4fr_1fr] gap-6 items-center">
+          <div>
+            <p
+              className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold mb-2"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Team &amp; Enterprise
+            </p>
+            <h3
+              className="text-[20px] lg:text-[24px] text-[var(--color-navy)] font-semibold"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Brokers, family offices, advisor firms or 50+ properties.
+            </h3>
+            <p
+              className="mt-2 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              Team adds 2&ndash;5 users with role-based access, multiple
+              portfolio workspaces and partner co-branding. Enterprise lifts
+              the cap to unlimited properties + SSO + DPA + a dedicated
+              account manager.
+            </p>
+          </div>
+          <Link
+            href="/pricing"
+            className="inline-flex items-center justify-center min-h-[48px] px-6 rounded-md bg-[var(--color-navy)] text-white text-[14.5px] font-semibold transition hover:bg-[var(--color-navy-light)] justify-self-start lg:justify-self-end"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            See Team &amp; Enterprise →
+          </Link>
         </div>
       </div>
     </section>

@@ -33,7 +33,10 @@ export function PricingClient() {
   const [billOverride, setBillOverride] = useState<BillingCurrency | null>(null);
   const bill: BillingCurrency = billOverride ?? billingFor(display.code);
 
-  const individualPrice = PLAN_PRICES.individual[bill];
+  // Marketing label "Starter" maps to the app's `individual` tier — only
+  // the presentation differs. App-side billing keeps the existing tier
+  // value so signups, Stripe price IDs and feature flags are unchanged.
+  const starterPrice = PLAN_PRICES.individual[bill];
   const proPrice = PLAN_PRICES.pro[bill];
   const teamPrice = PLAN_PRICES.team[bill];
 
@@ -52,13 +55,20 @@ export function PricingClient() {
               className="text-[44px] lg:text-[56px] leading-[1.05] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Three tiers. Pick the size of your portfolio.
+              Run the numbers first for free.
+              <br />
+              Upgrade when the decision gets serious.
             </h1>
             <p
               className="mt-5 text-[17px] leading-[1.55] text-[var(--color-muted)] max-w-2xl"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Individual covers 1–3 properties for a single owner. Pro lifts the cap to 50 properties (still solo). Team adds up to 5 users for brokers, family offices, and advisor workspaces. Same Model · Monitor · Manage framework across every tier. 7-day free trial on all three.
+              Free covers the Level 1 calculators and the AI property check — for
+              casual visitors and early-stage buyers. Starter unlocks the full
+              property decision report on a 7-day trial. Pro adds the portfolio
+              dashboard and 5-agent AI team for owners of 2&ndash;50 properties.
+              Team and Enterprise sit below for brokers, family offices and
+              larger portfolios.
             </p>
           </div>
 
@@ -143,16 +153,16 @@ export function PricingClient() {
               className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-muted)] mb-3"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Five tiers
+              The three tiers
             </p>
             <h2
               className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Same architecture. Priced to the size of your portfolio.
+              Free. Starter. Pro.
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {/* Free — re-instated as the no-card on-ramp for the
                 "Don't Buy Blind" funnel. 1 saved property + unlimited
                 /check runs + AI verdict + email. Once you own a second
@@ -180,38 +190,45 @@ export function PricingClient() {
               />
             </PlanCardLayout>
 
-            {/* Individual — €19/mo entry-level paid tier for 1-3
-                properties, single user, full Model · Monitor · Manage
-                framework. Free is the on-ramp; Individual is the first
-                paid step. */}
-            <PlanCardLayout name="Individual">
+            {/* Starter — marketing label for the app's `individual` tier.
+                Positioned as "unlock the full property report" — the
+                natural step up from the free /check for anyone seriously
+                evaluating one or several properties. 7-day no-card trial
+                is the default CTA so the credit-card-required intent flag
+                is hidden behind a secondary link. */}
+            <PlanCardLayout name="Starter" popular>
+              <p
+                className="mt-1 text-[12px] uppercase tracking-[0.08em] text-[var(--color-accent)] font-semibold"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Unlock the full property report
+              </p>
               <PriceBlock
-                price={formatPrice(individualPrice.monthly, bill)}
+                price={formatPrice(starterPrice.monthly, bill)}
                 sub={
                   billing === "monthly"
-                    ? "per month"
-                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(individualPrice.annual), bill)}/mo (${formatPrice(individualPrice.annual, bill)}/year, save ${annualSavings(individualPrice, bill)})`
+                    ? "per month after 7-day trial"
+                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(starterPrice.annual), bill)}/mo (${formatPrice(starterPrice.annual, bill)}/year, save ${annualSavings(starterPrice, bill)})`
                 }
-                annualDiscount={annualDiscountPct(individualPrice)}
+                annualDiscount={annualDiscountPct(starterPrice)}
               />
               <DualCTA
                 trialHref={`/signup?plan=individual_${billing}`}
                 directHref={`/signup?plan=individual_${billing}&intent=direct`}
                 directLabel={`Subscribe now`}
-                trialVariant="ghost"
               />
-              <Blurb>1–3 properties, just you. Getting your model on paper for the first time.</Blurb>
+              <Blurb>For a serious decision on one or several properties. Up to 3 saved properties, single user.</Blurb>
               <FeatureList
                 items={[
-                  { label: "Up to 3 properties", on: true },
-                  { label: "1 user", on: true },
-                  { label: "Full Model · Monitor · Manage framework", on: true },
-                  { label: "All five AI agents", on: true },
-                  { label: "All calculators + market data", on: true },
-                  { label: "Document vault + AI extraction", on: true },
-                  { label: "Standard reports (PDF + Word)", on: true },
-                  { label: "Multi-currency tracking", on: true },
-                  { label: "Team members", on: false },
+                  { label: "Full property decision report", on: true },
+                  { label: "10-year cash-flow forecast", on: true },
+                  { label: "Scenario analysis (rate / rent / capital growth)", on: true },
+                  { label: "Sell vs hold + refinance scenarios", on: true },
+                  { label: "Property comparison", on: true },
+                  { label: "PDF + Word export", on: true },
+                  { label: "Up to 3 saved properties", on: true },
+                  { label: "All Level 1 calculators + multi-currency", on: true },
+                  { label: "Portfolio dashboard + AI agents", on: false },
                 ]}
               />
             </PlanCardLayout>
@@ -225,98 +242,43 @@ export function PricingClient() {
                 Subscribe now sits directly under the price so high-intent
                 visitors hit the button without scrolling past the
                 feature list. */}
-            <PlanCardLayout name="Pro" popular>
+            {/* Pro — for portfolio owners (2-50 properties). Trial CTA
+                drops the "popular" badge (which now lives on Starter)
+                but keeps the same DualCTA pattern. */}
+            <PlanCardLayout name="Pro">
+              <p
+                className="mt-1 text-[12px] uppercase tracking-[0.08em] text-[var(--color-accent)] font-semibold"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Model, monitor and manage your portfolio
+              </p>
               <PriceBlock
                 price={formatPrice(proPrice.monthly, bill)}
                 sub={
                   billing === "monthly"
-                    ? "per month"
+                    ? "per month after 7-day trial"
                     : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(proPrice.annual), bill)}/mo (${formatPrice(proPrice.annual, bill)}/year, save ${annualSavings(proPrice, bill)})`
                 }
                 annualDiscount={annualDiscountPct(proPrice)}
               />
-              {/* CTAs FIRST — Subscribe now (primary, filled navy) sits
-                  immediately under the price so the principal action is
-                  the next thing the visitor sees. Trial drops below as
-                  the outlined secondary. The plan key carries the cadence
-                  (pro_monthly / pro_annual) so the in-app signup page can
-                  validate it against STRIPE_PRICE_*; the intent flag
-                  tells signup to skip the trial and go straight to
-                  Checkout. */}
               <DualCTA
                 trialHref={`/signup?plan=pro_${billing}`}
                 directHref={`/signup?plan=pro_${billing}&intent=direct`}
                 directLabel={`Subscribe now`}
-              />
-              <Blurb>More than 3 properties, just you. Full portfolio scale, single user.</Blurb>
-              <FeatureList
-                items={[
-                  { label: "Everything in Individual, plus:", on: true },
-                  { label: "Up to 50 properties", on: true },
-                  { label: "Advanced scenario sim (sell/hold, refi, STR)", on: true },
-                  { label: "Board Report + Refinancing Pack + Investor Pitch", on: true },
-                  { label: "Per-property deep-dive reports", on: true },
-                  { label: "Priority document parsing", on: true },
-                  { label: "All five AI agents at full capacity", on: true },
-                  { label: "Team members", on: false },
-                ]}
-              />
-            </PlanCardLayout>
-
-            {/* Team */}
-            <PlanCardLayout name="Team">
-              <PriceBlock
-                price={formatPrice(teamPrice.monthly, bill)}
-                sub={
-                  billing === "monthly"
-                    ? "per month"
-                    : `per month billed annually — effective ${formatPrice(annualMonthlyEquiv(teamPrice.annual), bill)}/mo (${formatPrice(teamPrice.annual, bill)}/year, save ${annualSavings(teamPrice, bill)})`
-                }
-                annualDiscount={annualDiscountPct(teamPrice)}
-              />
-              <DualCTA
-                trialHref={`/signup?plan=team_${billing}`}
-                directHref={`/signup?plan=team_${billing}&intent=direct`}
-                directLabel={`Subscribe now`}
                 trialVariant="ghost"
               />
-              <Blurb>Up to 50 properties, 2–5 users. Brokers, family offices, advisory firms.</Blurb>
+              <Blurb>Owners and investors with 2&ndash;50 properties. Portfolio dashboard, AI agents, alerts, decision memos.</Blurb>
               <FeatureList
                 items={[
-                  { label: "Everything in Pro, plus:", on: true },
-                  { label: "2 to 5 team members", on: true },
-                  { label: "Role-based access (admin, analyst, viewer)", on: true },
-                  { label: "Multiple portfolio workspaces", on: true },
-                  { label: "Partner co-branding on reports", on: true },
-                  { label: "Priority support", on: true },
-                ]}
-              />
-            </PlanCardLayout>
-
-            {/* Enterprise — element order matches the three paid plans
-                (PriceBlock → CTA → Blurb → FeatureList) so the "Contact
-                sales" button sits at the same vertical anchor as the
-                three "Subscribe now" buttons. Previously the CTA was at
-                the bottom of the card after FeatureList, leaving it well
-                below the Subscribe row. */}
-            <PlanCardLayout name="Enterprise">
-              <PriceBlock price="Custom" sub="Talk to us about a tailored plan and onboarding programme." />
-              <CTA
-                href="mailto:hello@assetcentral.ai?subject=Enterprise%20enquiry"
-                variant="ghost"
-              >
-                Contact sales
-              </CTA>
-              <Blurb>More than 50 properties, multiple teams, or specific compliance needs.</Blurb>
-              <FeatureList
-                items={[
-                  { label: "Everything in Team, plus:", on: true },
-                  { label: "Unlimited properties", on: true },
-                  { label: "Unlimited team members", on: true },
-                  { label: "SSO and audit logging", on: true },
-                  { label: "Custom DPA and data residency", on: true },
-                  { label: "Dedicated onboarding", on: true },
-                  { label: "Account manager", on: true },
+                  { label: "Everything in Starter, plus:", on: true },
+                  { label: "Up to 50 properties", on: true },
+                  { label: "Portfolio dashboard + per-asset deep-dives", on: true },
+                  { label: "5-agent AI team (CIO · CFO · COO · PA · CEO)", on: true },
+                  { label: "Monitoring alerts (22 types, email + WhatsApp)", on: true },
+                  { label: "Document vault + AI extraction", on: true },
+                  { label: "Voice line to your AI team", on: true },
+                  { label: "Lender-ready packs (Refinancing / Investor / Tax)", on: true },
+                  { label: "Team members + multi-workspace", on: false },
                 ]}
               />
             </PlanCardLayout>
@@ -326,8 +288,74 @@ export function PricingClient() {
             className="mt-8 text-center text-[14px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            7-day free trial on every paid tier — no credit card required to start. Cancel anytime. VAT applied per local regulations.
+            7-day Starter and Pro trials — no credit card required to start. Cancel anytime. VAT applied per local regulations.
           </p>
+
+          {/* Team + Enterprise — kept off the 3-tier ladder so the freemium
+              → trial → portfolio ladder reads cleanly for the dominant
+              B2C visitor. Brokers, family offices and 50+ property buyers
+              self-select into this strip. */}
+          <div className="mt-12 grid lg:grid-cols-2 gap-5">
+            <article className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:p-7">
+              <p
+                className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold mb-2"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Team — {formatPrice(teamPrice.monthly, bill)}/mo
+              </p>
+              <h3
+                className="text-[20px] lg:text-[22px] text-[var(--color-navy)] font-semibold"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                For brokers, family offices and advisory firms.
+              </h3>
+              <p
+                className="mt-2 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Everything in Pro + 2&ndash;5 team members, role-based access,
+                multiple portfolio workspaces and partner co-branding on
+                reports.
+              </p>
+              <Link
+                href={`/signup?plan=team_${billing}`}
+                className="mt-4 inline-flex items-center justify-center min-h-[44px] px-5 rounded-md border border-[var(--color-navy)] text-[var(--color-navy)] text-[14px] font-semibold transition hover:bg-[var(--color-navy)] hover:text-white"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Start 7-day Team trial →
+              </Link>
+            </article>
+
+            <article className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 lg:p-7">
+              <p
+                className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-accent)] font-semibold mb-2"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Enterprise — Custom
+              </p>
+              <h3
+                className="text-[20px] lg:text-[22px] text-[var(--color-navy)] font-semibold"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                50+ properties, multiple teams or compliance needs.
+              </h3>
+              <p
+                className="mt-2 text-[14.5px] leading-[1.55] text-[var(--color-ink)]"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Everything in Team + unlimited properties and seats, SSO and
+                audit logging, custom DPA, dedicated onboarding and a named
+                account manager.
+              </p>
+              <a
+                href="mailto:hello@assetcentral.ai?subject=Enterprise%20enquiry"
+                className="mt-4 inline-flex items-center justify-center min-h-[44px] px-5 rounded-md border border-[var(--color-navy)] text-[var(--color-navy)] text-[14px] font-semibold transition hover:bg-[var(--color-navy)] hover:text-white"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                Contact sales →
+              </a>
+            </article>
+          </div>
         </div>
       </section>
 

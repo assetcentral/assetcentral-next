@@ -13,9 +13,8 @@ import {
 export function PricingPreview() {
   const { code } = useCurrency();
   const bill = billingFor(code);
-  const individual = PLAN_PRICES.individual[bill];
+  const starter = PLAN_PRICES.individual[bill];
   const pro = PLAN_PRICES.pro[bill];
-  const team = PLAN_PRICES.team[bill];
 
   return (
     <section className="bg-[var(--color-surface)]">
@@ -31,7 +30,9 @@ export function PricingPreview() {
             className="text-[36px] lg:text-[48px] leading-[1.1] text-[var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Three tiers. Pick the size of your portfolio.
+            Run the numbers first for free.
+            <br />
+            Upgrade when the decision gets serious.
           </h2>
           <p
             className="mt-3 text-[14px] text-[var(--color-muted)]"
@@ -44,41 +45,35 @@ export function PricingPreview() {
           </p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mt-12 grid md:grid-cols-3 gap-5">
           <PlanCard
             name="Free"
+            tagline="Run the first numbers"
             price={formatPrice(0, bill)}
             cadence="forever"
-            blurb="1 saved property. Unlimited free /check runs, AI verdict, email the result. The no-card on-ramp."
+            blurb="Every Level 1 calculator + the free AI property check. 1 saved property. No card. Build the habit before you buy."
             cta={{ label: "Run a free check", href: "/check" }}
           />
           <PlanCard
-            name="Individual"
-            price={formatPrice(individual.monthly, bill)}
+            name="Starter"
+            tagline="Unlock the full property report"
+            price={formatPrice(starter.monthly, bill)}
             cadence="per month"
-            annualDiscount={annualDiscountPct(individual)}
-            blurb="1–3 properties, just you. The full Model · Monitor · Manage framework, for owners getting started."
-            cta={{ label: "Start 7-day trial", href: "/signup?plan=individual_monthly" }}
+            annualDiscount={annualDiscountPct(starter)}
+            blurb="For a serious decision on one or several properties. Full report, 10-year forecast, scenarios, PDF export, saved properties + comparison."
+            cta={{ label: "Try free for 7 days", href: "/signup?plan=individual_monthly" }}
             altCta={{ label: "Subscribe now", href: "/signup?plan=individual_monthly&intent=direct" }}
-          />
-          <PlanCard
-            name="Pro"
-            price={formatPrice(pro.monthly, bill)}
-            cadence="per month"
-            annualDiscount={annualDiscountPct(pro)}
-            blurb="More than 3 properties, just you. Full agent team, up to 50 properties, every report type."
-            cta={{ label: "Start 7-day trial", href: "/signup?plan=pro_monthly" }}
-            altCta={{ label: "Subscribe now", href: "/signup?plan=pro_monthly&intent=direct" }}
             popular
           />
           <PlanCard
-            name="Team"
-            price={formatPrice(team.monthly, bill)}
+            name="Pro"
+            tagline="Model, monitor and manage your portfolio"
+            price={formatPrice(pro.monthly, bill)}
             cadence="per month"
-            annualDiscount={annualDiscountPct(team)}
-            blurb="Up to 50 properties, 2–5 users. For brokers, family offices, advisors with shared workspaces."
-            cta={{ label: "Start 7-day trial", href: "/signup?plan=team_monthly" }}
-            altCta={{ label: "Subscribe now", href: "/signup?plan=team_monthly&intent=direct" }}
+            annualDiscount={annualDiscountPct(pro)}
+            blurb="For owners and investors with 2–50 properties. Portfolio dashboard, the 5-agent AI team, alerts, document vault, decision memos."
+            cta={{ label: "Try free for 7 days", href: "/signup?plan=pro_monthly" }}
+            altCta={{ label: "Subscribe now", href: "/signup?plan=pro_monthly&intent=direct" }}
           />
         </div>
 
@@ -86,7 +81,7 @@ export function PricingPreview() {
           className="mt-8 text-[14px] text-[var(--color-muted)] text-center"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          7-day free trial on every tier. No credit card required to start.{" "}
+          7-day Starter and Pro trials — no credit card required to start.{" "}
           <Link
             href="/pricing"
             className="text-[var(--color-accent)] font-medium hover:underline"
@@ -98,13 +93,13 @@ export function PricingPreview() {
           className="mt-2 text-[14px] text-[var(--color-muted)] text-center"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          More than 50 properties?{" "}
-          <a
-            href="mailto:hello@assetcentral.ai?subject=Enterprise%20enquiry"
+          Brokers, family offices, advisor firms or 50+ properties?{" "}
+          <Link
+            href="/pricing"
             className="text-[var(--color-accent)] font-medium hover:underline"
           >
-            Talk to us about Enterprise →
-          </a>
+            See Team &amp; Enterprise →
+          </Link>
         </p>
       </div>
     </section>
@@ -113,6 +108,10 @@ export function PricingPreview() {
 
 type Plan = {
   name: string;
+  /** Short tagline shown beneath the plan name — the new tier-spec
+   *  framing: "Run the first numbers" / "Unlock the full property
+   *  report" / "Model, monitor and manage your portfolio". */
+  tagline?: string;
   price: string;
   cadence: string;
   blurb: string;
@@ -129,7 +128,7 @@ type Plan = {
   annualDiscount?: number;
 };
 
-function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDiscount }: Plan) {
+function PlanCard({ name, tagline, price, cadence, blurb, cta, altCta, popular, annualDiscount }: Plan) {
   return (
     <article
       className={`relative rounded-2xl bg-white p-7 lg:p-8 flex flex-col ${
@@ -149,15 +148,25 @@ function PlanCard({ name, price, cadence, blurb, cta, altCta, popular, annualDis
       {/* Fixed-height header zone — locks the position of the Subscribe
           button below so all three Subscribe buttons align horizontally
           across cards regardless of which has a discount chip / longer
-          plan name. min-h covers: h3 (28px) + mt-3 + price line (40px)
-          + mt-2 + discount slot (22px) + buffer. */}
-      <div className="min-h-[110px]">
+          plan name. min-h bumped from 110 → 138 to accommodate the new
+          tagline line ("Run the first numbers" / "Unlock the full
+          report" / "Model, monitor and manage your portfolio") that
+          sits between the plan name and the price. */}
+      <div className="min-h-[138px]">
         <h3
           className="text-[22px] font-semibold text-[var(--color-navy)]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
           {name}
         </h3>
+        {tagline && (
+          <p
+            className="mt-1 text-[13px] uppercase tracking-[0.08em] text-[var(--color-accent)] font-semibold"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            {tagline}
+          </p>
+        )}
         <div className="mt-3 flex items-baseline gap-1.5">
           <span className="num text-[36px] lg:text-[40px] font-semibold text-[var(--color-ink)] leading-none">
             {price}

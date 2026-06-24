@@ -65,7 +65,7 @@ export function DontBuyBlindHero() {
           className="mt-4 text-[13px] text-[color:var(--color-muted)]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Free AI property checks. Upgrade only when you need deeper analysis.
+          Run the numbers first for free. Upgrade when the decision gets serious.
         </p>
       </div>
     </section>

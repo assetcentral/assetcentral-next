@@ -72,8 +72,12 @@ export interface CalculatorVerdictCardProps {
   redFlag: string;
   /** One thing the user could do next to improve the picture. */
   nextMove: string;
-  /** Optional upgrade CTA shown beneath the card. Defaults to the
-   *  /check funnel which is the closest paid step from any calculator. */
+  /** Optional upgrade CTA shown beneath the card. The default is the
+   *  high-intent Starter trial — the user just ran a Level-1 number and
+   *  the next step is the full property decision report, which lives
+   *  behind a 7-day no-card trial. Calculators with a more specific
+   *  next step (e.g. the mortgage funnel deep-links into /check with
+   *  the inputs prefilled) override this. */
   upgradeHref?: string;
   upgradeLabel?: string;
 }
@@ -85,8 +89,8 @@ export function CalculatorVerdictCard({
   summary,
   redFlag,
   nextMove,
-  upgradeHref = "/check",
-  upgradeLabel = "Unlock the full property decision report",
+  upgradeHref = "/signup?plan=individual_monthly",
+  upgradeLabel = "Try full analysis free for 7 days",
 }: CalculatorVerdictCardProps) {
   const t = TONE[tone];
   return (
@@ -151,7 +155,7 @@ export function CalculatorVerdictCard({
           <span aria-hidden>→</span>
         </Link>
         <p className="text-[12px] text-[color:var(--color-muted)] sm:self-center">
-          Free check. Email only when you save or send the report.
+          7-day Starter trial. No card required.
         </p>
       </div>
     </section>
