@@ -178,8 +178,14 @@ export function FreeVsProSection() {
             </span>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
               <Link
-                href="/check"
+                href="/signup?plan=free"
                 className="text-[13px] font-semibold text-[color:var(--color-positive)] hover:underline"
+              >
+                Sign up free →
+              </Link>
+              <Link
+                href="/check"
+                className="text-[13px] font-semibold text-[color:var(--color-muted)] hover:underline"
               >
                 Run a free check →
               </Link>

@@ -170,9 +170,28 @@ export function PricingClient() {
                 price={formatPrice(0, bill)}
                 sub="forever"
               />
-              <CTA href="/check" variant="ghost">
-                Run a free check
-              </CTA>
+              {/* Free now leads with a direct "Sign up free" CTA — the
+                  prior single "Run a free check" link meant visitors on
+                  /pricing could only reach the Free signup by detouring
+                  through /check first. Now: dark primary = sign up,
+                  small secondary = run a check first (the original
+                  funnel path is preserved, just demoted from primary). */}
+              <div className="mt-6 space-y-3">
+                <Link
+                  href="/signup?plan=free"
+                  className="flex w-full items-center justify-center min-h-[48px] px-4 rounded-md bg-[var(--color-navy)] text-white text-[14.5px] font-semibold hover:bg-[var(--color-navy-light)] transition-colors"
+                  style={{ fontFamily: "var(--font-sans)" }}
+                >
+                  Sign up free →
+                </Link>
+                <Link
+                  href="/check"
+                  className="flex w-full items-center justify-center min-h-[40px] px-4 text-[13px] font-medium text-[var(--color-muted)] hover:text-[var(--color-navy)] transition-colors"
+                  style={{ fontFamily: "var(--font-sans)" }}
+                >
+                  Or run a free check first →
+                </Link>
+              </div>
               <Blurb>For anyone thinking about a property. No card, no commitment, no expiry.</Blurb>
               <FeatureList
                 items={[
