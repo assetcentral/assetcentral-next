@@ -209,8 +209,9 @@ export function DontBuyBlindHero() {
             className="mt-6 text-[17px] lg:text-[20px] leading-[1.5] text-[color:var(--color-ink)] max-w-xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Before you buy, sell, refinance, renovate or rent out, check whether
-            the numbers make sense.
+            Buying, selling, refinancing, renovating, renting, managing,
+            investing — run the numbers with our AI team to make better
+            decisions.
           </p>
 
           <h2
