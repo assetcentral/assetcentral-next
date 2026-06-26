@@ -24,7 +24,6 @@
 //
 // Component name kept as DontBuyBlindHero for import-history reasons.
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface OrbitMetric {
@@ -315,35 +314,23 @@ export function DontBuyBlindHero() {
           </div>
         </div>
 
-        {/* ── Text bottom (CTAs + trust line) ───────────────────────── */}
-        <div className="ac-hero-bot">
-          <div
-            className="flex flex-col sm:flex-row gap-3"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <Link
-              href="/check"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-[52px] px-6 py-3.5 rounded-md bg-[color:var(--color-navy)] text-white text-[15.5px] font-semibold shadow-sm transition hover:bg-[color:var(--color-navy-light)]"
-            >
-              Start free property check
-              <span aria-hidden>→</span>
-            </Link>
-            <Link
-              href="#example-analysis"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-[52px] px-5 py-3 rounded-md border border-[color:var(--color-border)] bg-white text-[color:var(--color-navy)] text-[14.5px] font-semibold transition hover:border-[color:var(--color-navy)]"
-            >
-              See example analysis
-            </Link>
-          </div>
+        {/* CTA block (Start free property check / See example analysis /
+            trust line) intentionally removed from the hero in 2026-06
+            — the same CTAs already render further down the page on the
+            FreeAIResultSection and the bottom strap, so a hero copy was
+            redundant chrome. The next-section divider below replaces
+            that visual full-stop. */}
+      </div>
 
-          <p
-            className="mt-5 flex items-center gap-2 text-[13px] text-[color:var(--color-muted)]"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <ShieldCheck className="w-4 h-4 text-[color:var(--color-positive)]" aria-hidden />
-            Free first check. No card required.
-          </p>
-        </div>
+      {/* ── Section divider ───────────────────────────────────────────
+           Subtle hairline to mark the end of the hero, since the hero
+           no longer terminates in a CTA block. Sits inside the section
+           so it scrolls with the hero rather than the next section. */}
+      <div
+        aria-hidden
+        className="mx-auto mt-10 lg:mt-14 max-w-7xl px-6 lg:px-10"
+      >
+        <div className="h-px w-full bg-[color:var(--color-border)]" />
       </div>
     </section>
   );
@@ -576,24 +563,6 @@ function RulerIcon() {
     >
       <path d="M3 16l13-13 5 5L8 21z" />
       <path d="M7 14l2 2M10 11l2 2M13 8l2 2" />
-    </svg>
-  );
-}
-
-function ShieldCheck({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z" />
-      <path d="M9 12l2 2 4-4" />
     </svg>
   );
 }
