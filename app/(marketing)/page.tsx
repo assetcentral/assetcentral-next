@@ -11,6 +11,7 @@ import { GetStartedSection } from "@/components/marketing/GetStartedSection";
 import { InfrastructureSection } from "@/components/marketing/InfrastructureSection";
 import { LeadCapture } from "@/components/marketing/LeadCapture";
 import { MeetTheTeamSection } from "@/components/marketing/MeetTheTeamSection";
+import { MessyInClearOutSection } from "@/components/marketing/MessyInClearOutSection";
 import { PartnerStripSection } from "@/components/marketing/PartnerStripSection";
 import { PricingPreview } from "@/components/marketing/PricingPreview";
 import { StickyCta } from "@/components/marketing/StickyCta";
@@ -83,6 +84,7 @@ export default function HomePage() {
 
       {/* ── B2C funnel (top of page) ───────────────────────────── */}
       <DontBuyBlindHero />
+      <MessyInClearOutSection />
       <WhatToCheckSection />
       <FreeAIResultSection />
       <FreeToolsGridSection />
