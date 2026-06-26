@@ -45,53 +45,35 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "How it works",
-    // Restructured 2026-06 to be benefit-led — answers "what do I get
-    // out of this?" not "what does the product do?" (that's Product).
-    // The 5-stage framework gets one entry as a jump-link; the rest of
-    // this menu is outcomes the owner cares about. Concrete features
-    // (AI Team, Calculators, Dashboard, etc.) live under Product.
+    // Benefit-led, kept to five items. Each line names an outcome an
+    // owner can actually feel. The last entry is the catch-all page
+    // jump for visitors who want the full explanation rather than a
+    // single benefit.
     items: [
       {
-        section: "What you get",
         href: "/check",
         label: "Don't buy blind",
         description: "Free AI verdict in 60 seconds before you commit.",
       },
       {
-        section: "What you get",
         href: "/monitor",
         label: "See your real net yield",
         description: "Live, after vacancy, costs, mortgage, fees and tax.",
       },
       {
-        section: "What you get",
         href: "/monitor",
         label: "Catch problems weeks early",
         description: "22 alert types across rent, debt, voids, costs.",
       },
       {
-        section: "What you get",
         href: "/manage",
         label: "Free up your weekend",
         description: "Your AI team owns the operational busywork.",
       },
       {
-        section: "The journey",
         href: "/how-it-works",
-        label: "The five stages explained",
+        label: "See the full journey",
         description: "Capture → Structure → Model → Monitor → Manage.",
-      },
-      {
-        section: "Try it",
-        href: "/check",
-        label: "Run a free property check",
-        description: "No card, no signup. Verdict in 60 seconds.",
-      },
-      {
-        section: "Try it",
-        href: "/#example-analysis",
-        label: "See example analysis",
-        description: "What a free AI property check actually returns.",
       },
     ],
   },
@@ -154,64 +136,40 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "Product",
-    // Restructured 2026-06 to be capability-led — answers "what does
-    // the product actually contain?" not "what do I get out of it?"
-    // (that's How it works). Lists the concrete features an owner
-    // would tick off when evaluating: agents, dashboard, calculators,
-    // reports, alerts, voice line, pricing.
+    // Capability-led, kept to six items. Each line is a discrete
+    // product surface a visitor evaluating the tool would expect to
+    // see. Voice line, document vault and reports are absorbed into
+    // "AI Property Team" — they're features of the team, not parallel
+    // selling points.
     items: [
       {
-        section: "Overview",
         href: "/features",
         label: "Product overview",
         description: "Everything that ships with the subscription.",
       },
       {
-        section: "Capabilities",
         href: "/features",
         label: "AI Property Team",
-        description: "CIO · CFO · COO · CEO · PA — your five-agent team.",
+        description: "CIO · CFO · COO · CEO · PA — five agents, voice line, vault.",
       },
       {
-        section: "Capabilities",
         href: "/features",
         label: "Portfolio dashboard",
         description: "One workspace for 2–50 properties.",
       },
       {
-        section: "Capabilities",
         href: "/calculators",
         label: "Free calculators",
         description: "8 Level-1 tools — mortgage, IRR, sell-or-hold, refinance, more.",
       },
       {
-        section: "Capabilities",
-        href: "/features",
-        label: "Reports & lender packs",
-        description: "Decision memos, Refinancing · Investor · Tax PDFs + Word.",
-      },
-      {
-        section: "Capabilities",
         href: "/monitor",
         label: "Alerts & monitoring",
         description: "22 alert types across rent, debt, voids, costs.",
       },
       {
-        section: "Capabilities",
-        href: "/features",
-        label: "Voice line",
-        description: "Phone in and talk to your AI team.",
-      },
-      {
-        section: "Capabilities",
-        href: "/features",
-        label: "Document vault + AI extraction",
-        description: "Forward, photograph, drop — we file it against the right asset.",
-      },
-      {
-        section: "Pricing",
         href: "/pricing",
-        label: "See pricing",
+        label: "Pricing",
         description: "Free · Individual €19 · Pro €49 · Team · Enterprise.",
       },
     ],
