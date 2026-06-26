@@ -62,7 +62,7 @@ export function PricingPreview() {
             cta={{ label: "Run a free check", href: "/check" }}
           />
           <PlanCard
-            name="Starter"
+            name="Individual"
             tagline="Unlock the full property report"
             price={formatPrice(starter.monthly, bill)}
             cadence="per month"
@@ -88,7 +88,7 @@ export function PricingPreview() {
             annualDiscount={annualDiscountPct(pro)}
             blurb="For owners and investors with 2–50 properties. 7-day trial, no card."
             features={[
-              "Everything in Starter, plus:",
+              "Everything in Individual, plus:",
               "Up to 50 properties + portfolio dashboard",
               "5-agent AI team (CIO · CFO · COO · CEO · PA)",
               "22 monitoring alerts (email + WhatsApp)",
@@ -105,7 +105,7 @@ export function PricingPreview() {
           className="mt-8 text-[14px] text-[var(--color-muted)] text-center"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          7-day Starter and Pro trials — no credit card required to start.{" "}
+          7-day Individual and Pro trials — no credit card required to start.{" "}
           <Link
             href="/pricing"
             className="text-[var(--color-accent)] font-medium hover:underline"

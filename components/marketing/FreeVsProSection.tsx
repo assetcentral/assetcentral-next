@@ -1,6 +1,6 @@
-// FreeVsProSection — 3-column comparison (Free · Starter · Pro) on the
+// FreeVsProSection — 3-column comparison (Free · Individual · Pro) on the
 // homepage. Reads as the upgrade ladder from the freemium repositioning:
-// Free runs the first numbers, Starter unlocks the full property
+// Free runs the first numbers, Individual unlocks the full property
 // decision report, Pro adds the portfolio command centre.
 //
 // Component name kept for import-history reasons even though it's now
@@ -16,34 +16,34 @@ interface Row {
   /** Capability label. */
   label: string;
   free: boolean | string;
-  starter: boolean | string;
+  individual: boolean | string;
   pro: boolean | string;
 }
 
 const ROWS: Row[] = [
   // Everyone-gets group — establishes that Free is real.
-  { label: "8 free Level 1 calculators", free: true, starter: true, pro: true },
-  { label: "Free AI property check — verdict + red flag + next move", free: true, starter: true, pro: true },
-  { label: "3-row stress test on every calculator", free: true, starter: true, pro: true },
-  { label: "Email or save the result", free: true, starter: true, pro: true },
-  { label: "Saved properties", free: "1", starter: "Up to 3", pro: "Up to 50" },
+  { label: "8 free Level 1 calculators", free: true, individual: true, pro: true },
+  { label: "Free AI property check — verdict + red flag + next move", free: true, individual: true, pro: true },
+  { label: "3-row stress test on every calculator", free: true, individual: true, pro: true },
+  { label: "Email or save the result", free: true, individual: true, pro: true },
+  { label: "Saved properties", free: "1", individual: "Up to 3", pro: "Up to 50" },
 
-  // Starter unlocks — the full property decision report.
-  { label: "Full property decision report (PDF + Word)", free: false, starter: true, pro: true },
-  { label: "10-year cash-flow forecast", free: false, starter: true, pro: true },
-  { label: "Scenario analysis (rate · rent · capital growth)", free: false, starter: true, pro: true },
-  { label: "Sell-vs-hold + refinance modelling", free: false, starter: true, pro: true },
-  { label: "Side-by-side property comparison", free: false, starter: true, pro: true },
-  { label: "Tax-adjusted analysis per country", free: false, starter: true, pro: true },
-  { label: "Multi-currency tracking (EUR · GBP · USD · AED)", free: false, starter: true, pro: true },
+  // Individual unlocks — the full property decision report.
+  { label: "Full property decision report (PDF + Word)", free: false, individual: true, pro: true },
+  { label: "10-year cash-flow forecast", free: false, individual: true, pro: true },
+  { label: "Scenario analysis (rate · rent · capital growth)", free: false, individual: true, pro: true },
+  { label: "Sell-vs-hold + refinance modelling", free: false, individual: true, pro: true },
+  { label: "Side-by-side property comparison", free: false, individual: true, pro: true },
+  { label: "Tax-adjusted analysis per country", free: false, individual: true, pro: true },
+  { label: "Multi-currency tracking (EUR · GBP · USD · AED)", free: false, individual: true, pro: true },
 
   // Pro unlocks — the portfolio command centre.
-  { label: "Portfolio dashboard + real-time net-yield monitoring", free: false, starter: false, pro: true },
-  { label: "5-agent AI team — CIO · CFO · COO · CEO · PA", free: false, starter: false, pro: true },
-  { label: "22 monitoring alert types (email + WhatsApp)", free: false, starter: false, pro: true },
-  { label: "Document vault + AI extraction", free: false, starter: false, pro: true },
-  { label: "Voice line — phone in and talk to your AI team", free: false, starter: false, pro: true },
-  { label: "Lender packs (Refinancing · Investor · Tax)", free: false, starter: false, pro: true },
+  { label: "Portfolio dashboard + real-time net-yield monitoring", free: false, individual: false, pro: true },
+  { label: "5-agent AI team — CIO · CFO · COO · CEO · PA", free: false, individual: false, pro: true },
+  { label: "22 monitoring alert types (email + WhatsApp)", free: false, individual: false, pro: true },
+  { label: "Document vault + AI extraction", free: false, individual: false, pro: true },
+  { label: "Voice line — phone in and talk to your AI team", free: false, individual: false, pro: true },
+  { label: "Lender packs (Refinancing · Investor · Tax)", free: false, individual: false, pro: true },
 ];
 
 function Cell({ v }: { v: boolean | string }) {
@@ -78,7 +78,7 @@ export function FreeVsProSection() {
   return (
     <section
       id="free-vs-pro"
-      aria-label="Free vs Starter vs Pro — what each tier gives you"
+      aria-label="Free vs Individual vs Pro — what each tier gives you"
       className="bg-[color:var(--color-surface)] border-y border-[color:var(--color-border)] py-16 lg:py-20"
     >
       <div className="mx-auto max-w-5xl px-6 lg:px-10">
@@ -93,15 +93,15 @@ export function FreeVsProSection() {
             className="text-[30px] lg:text-[40px] leading-[1.1] text-[color:var(--color-navy)]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Free for the first numbers. Starter for the full report. Pro for the
+            Free for the first numbers. Individual for the full report. Pro for the
             portfolio.
           </h2>
           <p
             className="mt-4 text-[16px] lg:text-[17px] leading-[1.55] text-[color:var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Free is real — the same calculator and AI verdict a Starter or Pro
-            user runs on every property. Starter unlocks the full decision
+            Free is real — the same calculator and AI verdict a Individual or Pro
+            user runs on every property. Individual unlocks the full decision
             report. Pro adds the portfolio command centre — dashboard, agents,
             monitoring, lender packs.
           </p>
@@ -115,7 +115,7 @@ export function FreeVsProSection() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-[14px] text-[color:var(--color-ink)]">
               <caption className="sr-only">
-                Side-by-side comparison of what AssetCentral Free, Starter and
+                Side-by-side comparison of what AssetCentral Free, Individual and
                 Pro each include.
               </caption>
               <thead className="bg-[color:var(--color-surface)] text-[11.5px] uppercase tracking-[0.1em] text-[color:var(--color-muted)]">
@@ -130,7 +130,7 @@ export function FreeVsProSection() {
                     </div>
                   </th>
                   <th scope="col" className="px-5 py-3 font-semibold text-center">
-                    <div className="text-[color:var(--color-navy)]">Starter</div>
+                    <div className="text-[color:var(--color-navy)]">Individual</div>
                     <div className="font-normal normal-case tracking-normal text-[11px] text-[color:var(--color-muted)]">
                       €19 / month · 7-day trial
                     </div>
@@ -161,7 +161,7 @@ export function FreeVsProSection() {
                       <Cell v={r.free} />
                     </td>
                     <td className="px-5 py-3 text-center align-top">
-                      <Cell v={r.starter} />
+                      <Cell v={r.individual} />
                     </td>
                     <td className="px-5 py-3 text-center align-top">
                       <Cell v={r.pro} />
@@ -193,7 +193,7 @@ export function FreeVsProSection() {
                 href="/signup?plan=individual_monthly"
                 className="text-[13px] font-semibold text-[color:var(--color-accent)] hover:underline"
               >
-                Try Starter free for 7 days →
+                Try Individual free for 7 days →
               </Link>
               <Link
                 href="/pricing"

@@ -227,7 +227,7 @@ export function RefinanceCalculator() {
             tone: "positive",
           },
         ]}
-        caption="The term-extension row looks better in year 5 — but you pay more total interest. Starter models the full life of the loan."
+        caption="The term-extension row looks better in year 5 — but you pay more total interest. Individual models the full life of the loan."
       />
       <SaveResultForm calc="refinance" calcName="Refinance" summary={summary} />
     </>

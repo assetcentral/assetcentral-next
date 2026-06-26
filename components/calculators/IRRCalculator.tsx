@@ -285,7 +285,7 @@ export function IRRCalculator() {
               ),
             },
           ]}
-          caption="Each row holds everything else constant and shifts one assumption. The full sensitivity grid (every combination, year by year) lives in Starter."
+          caption="Each row holds everything else constant and shifts one assumption. The full sensitivity grid (every combination, year by year) lives in Individual."
         />
       </>
     )}

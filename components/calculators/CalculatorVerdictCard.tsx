@@ -73,7 +73,7 @@ export interface CalculatorVerdictCardProps {
   /** One thing the user could do next to improve the picture. */
   nextMove: string;
   /** Optional upgrade CTA shown beneath the card. The default is the
-   *  high-intent Starter trial — the user just ran a Level-1 number and
+   *  high-intent Individual trial — the user just ran a Level-1 number and
    *  the next step is the full property decision report, which lives
    *  behind a 7-day no-card trial. Calculators with a more specific
    *  next step (e.g. the mortgage funnel deep-links into /check with
@@ -174,9 +174,9 @@ export function CalculatorVerdictCard({
                conversion: the user already ran the numbers, this just
                saves the result. No card, no trial countdown.
             2) Try full analysis — secondary, navy, links to the
-               Starter trial. The higher-intent step.
+               Individual trial. The higher-intent step.
           When no Free-save prefill is given (calculators without a
-          natural property model to save), Starter trial stays primary. */}
+          natural property model to save), Individual trial stays primary. */}
       <div className="mt-5 flex flex-col sm:flex-row gap-3">
         {freeSaveHref ? (
           <>
@@ -207,7 +207,7 @@ export function CalculatorVerdictCard({
         <p className="text-[12px] text-[color:var(--color-muted)] sm:self-center">
           {freeSaveHref
             ? "Free saves the scenario. Trial unlocks the full report."
-            : "7-day Starter trial. No card required."}
+            : "7-day Individual trial. No card required."}
         </p>
       </div>
     </section>

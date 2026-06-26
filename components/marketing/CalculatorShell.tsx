@@ -186,7 +186,7 @@ export function CalculatorShell({
                 className="mt-3 text-[11.5px] text-[var(--color-muted)] leading-[1.5]"
                 style={{ fontFamily: "var(--font-sans)" }}
               >
-                Import into portfolio uses the free Starter trial — no card to
+                Import into portfolio uses the free Individual trial — no card to
                 start. Upgrade to Pro adds the full AI team and portfolio
                 dashboard.
               </p>

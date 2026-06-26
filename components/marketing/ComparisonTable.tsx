@@ -7,7 +7,7 @@ import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 // 2026-06 "Run the numbers first" repositioning. Three-tier ladder
 // matches the new freemium/trial model:
 //   • Free      — Run the first numbers (calculators + 1 saved property)
-//   • Starter   — Unlock the full property report (7-day trial, no card)
+//   • Individual   — Unlock the full property report (7-day trial, no card)
 //   • Pro       — Model, monitor and manage your portfolio
 //
 // Team and Enterprise still exist for brokers, family offices and 50+
@@ -17,7 +17,7 @@ import { billingFor, formatPrice, PLAN_PRICES } from "@/lib/pricing";
 //
 // Source of truth for the underlying capability split lives in
 // assetcentral-app/lib/billing/limits.ts. The marketing label
-// "Starter" maps to the app's `individual` tier — only the
+// "Individual" maps to the app's `individual` tier — only the
 // presentation differs.
 const rows = [
   { group: "What you can do", label: "Run the eight Level 1 calculators", values: [true, true, true] },
@@ -61,12 +61,12 @@ function Cell({ v }: { v: boolean | string }) {
 export function ComparisonTable() {
   const { code } = useCurrency();
   const bill = billingFor(code);
-  const starterMonthly = formatPrice(PLAN_PRICES.individual[bill].monthly, bill);
+  const individualMonthly = formatPrice(PLAN_PRICES.individual[bill].monthly, bill);
   const proMonthly = formatPrice(PLAN_PRICES.pro[bill].monthly, bill);
 
   const tiers = [
     { name: "Free", price: formatPrice(0, bill), sub: "Run the first numbers" },
-    { name: "Starter", price: `${starterMonthly}/mo`, sub: "Unlock the full report", popular: true },
+    { name: "Individual", price: `${individualMonthly}/mo`, sub: "Unlock the full report", popular: true },
     { name: "Pro", price: `${proMonthly}/mo`, sub: "Portfolio command centre" },
   ];
 
@@ -78,13 +78,13 @@ export function ComparisonTable() {
           className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)] mb-2"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Compare Free, Starter and Pro
+          Compare Free, Individual and Pro
         </h2>
         <p
           className="text-[14px] text-[var(--color-muted)] mb-10 max-w-2xl"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          Free is the on-ramp. Starter unlocks the full decision report.
+          Free is the on-ramp. Individual unlocks the full decision report.
           Pro adds the portfolio dashboard, AI agents and monitoring for
           owners of 2&ndash;50 properties.
         </p>

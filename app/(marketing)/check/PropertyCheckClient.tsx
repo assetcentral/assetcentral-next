@@ -873,7 +873,7 @@ function EmailCaptureCard({
 function ProUpgradeCard({ inputs }: { inputs: CheckInputs }) {
   // Three CTAs, three intent levels matched to the post-verdict moment:
   //   1) Free — save the property you just ran (no card, no commitment)
-  //   2) Starter trial — unlock the FULL property report (10y forecast,
+  //   2) Individual trial — unlock the FULL property report (10y forecast,
   //      scenarios, PDF export). The intended next step for anyone
   //      seriously evaluating this property. 7-day trial, no card.
   //   3) Pro — only for portfolio owners self-selecting upward.
@@ -904,7 +904,7 @@ function ProUpgradeCard({ inputs }: { inputs: CheckInputs }) {
         Unlock the full AssetCentral report — free for 7 days.
       </h2>
       <p className="mt-3 text-[14.5px] leading-[1.55] text-white/80">
-        Starter unlocks the full property decision report: 10-year cash-flow
+        Individual unlocks the full property decision report: 10-year cash-flow
         forecast, rate-shock and rent-growth scenarios, capital-growth model,
         PDF export, property comparison and saved properties. No credit card
         to start the trial.
@@ -930,7 +930,7 @@ function ProUpgradeCard({ inputs }: { inputs: CheckInputs }) {
         </Link>
       </div>
       <p className="mt-3 text-[12px] text-white/55">
-        Starter from €19/mo after the 7-day trial. Pro (5-agent team + portfolio
+        Individual from €19/mo after the 7-day trial. Pro (5-agent team + portfolio
         dashboard) from €49/mo, for owners of 2–50 properties.
       </p>
     </section>

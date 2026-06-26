@@ -25,7 +25,7 @@ type DropdownItem = {
   /** Optional subhead the item belongs to. When the section value
    *  changes between two consecutive items the dropdown renders a
    *  small uppercase caption above the next group — used in Product
-   *  to separate Free tools from Starter/Pro surfaces and the
+   *  to separate Free tools from Individual/Pro surfaces and the
    *  AI-team SEO landing pages. */
   section?: string;
 };
@@ -54,7 +54,7 @@ const navItems: NavItem[] = [
       {
         href: "/how-it-works#ai-check",
         label: "Get a free AI property check",
-        description: "Strong / Borderline / Weak / Risky — verdict + red flag + next move.",
+        description: "Attractive / Borderline / Risky — verdict + red flag + next move.",
       },
       {
         href: "/how-it-works#full-report",
@@ -69,7 +69,7 @@ const navItems: NavItem[] = [
       {
         href: "/how-it-works#portfolio",
         label: "Track your portfolio",
-        description: "Move into Model · Monitor · Manage for 2-50 properties.",
+        description: "Capture · Structure · Model · Monitor · Manage — the five stages for 2-50 properties.",
       },
       {
         href: "/how-it-works#ai-team",
@@ -498,7 +498,7 @@ function DesktopDropdownInner(
           {(() => {
             // Render the items with a small uppercase caption whenever
             // the `section` value changes from the previous item. Lets
-            // the Product dropdown group Free / Starter / Pro / agents
+            // the Product dropdown group Free / Individual / Pro / agents
             // / All without restructuring the data into a nested
             // shape.
             let lastSection: string | undefined;
@@ -582,7 +582,7 @@ function MobileGroup({
         <div className="ml-3 pl-3 border-l border-[var(--color-border)] mt-1 mb-1 flex flex-col gap-0.5">
           {(() => {
             // Same section-divider pattern as the desktop dropdown so
-            // the Product menu reads as Free / Starter / Pro on mobile
+            // the Product menu reads as Free / Individual / Pro on mobile
             // too. Captions are a touch larger here for legibility on
             // small viewports.
             let lastSection: string | undefined;

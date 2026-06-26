@@ -33,7 +33,7 @@ export function PricingClient() {
   const [billOverride, setBillOverride] = useState<BillingCurrency | null>(null);
   const bill: BillingCurrency = billOverride ?? billingFor(display.code);
 
-  // Marketing label "Starter" maps to the app's `individual` tier — only
+  // Marketing label "Individual" maps to the app's `individual` tier — only
   // the presentation differs. App-side billing keeps the existing tier
   // value so signups, Stripe price IDs and feature flags are unchanged.
   const starterPrice = PLAN_PRICES.individual[bill];
@@ -64,7 +64,7 @@ export function PricingClient() {
               style={{ fontFamily: "var(--font-sans)" }}
             >
               Free covers the Level 1 calculators and the AI property check — for
-              casual visitors and early-stage buyers. Starter unlocks the full
+              casual visitors and early-stage buyers. Individual unlocks the full
               property decision report on a 7-day trial. Pro adds the portfolio
               dashboard and 5-agent AI team for owners of 2&ndash;50 properties.
               Team and Enterprise sit below for brokers, family offices and
@@ -157,7 +157,7 @@ export function PricingClient() {
               className="text-[28px] lg:text-[36px] leading-[1.1] text-[var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Free. Starter. Pro.
+              Free. Individual. Pro.
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -207,13 +207,13 @@ export function PricingClient() {
               />
             </PlanCardLayout>
 
-            {/* Starter — marketing label for the app's `individual` tier.
+            {/* Individual — marketing label for the app's `individual` tier.
                 Positioned as "unlock the full property report" — the
                 natural step up from the free /check for anyone seriously
                 evaluating one or several properties. 7-day no-card trial
                 is the default CTA so the credit-card-required intent flag
                 is hidden behind a secondary link. */}
-            <PlanCardLayout name="Starter" popular>
+            <PlanCardLayout name="Individual" popular>
               <p
                 className="mt-1 text-[12px] uppercase tracking-[0.08em] text-[var(--color-accent)] font-semibold"
                 style={{ fontFamily: "var(--font-sans)" }}
@@ -269,7 +269,7 @@ export function PricingClient() {
                 visitors hit the button without scrolling past the
                 feature list. */}
             {/* Pro — for portfolio owners (2-50 properties). Trial CTA
-                drops the "popular" badge (which now lives on Starter)
+                drops the "popular" badge (which now lives on Individual)
                 but keeps the same DualCTA pattern. */}
             <PlanCardLayout name="Pro">
               <p
@@ -301,7 +301,7 @@ export function PricingClient() {
               <Blurb>Owners and investors with 2&ndash;50 properties. Portfolio command centre with the AI team built in. 7-day trial, no card.</Blurb>
               <FeatureList
                 items={[
-                  { label: "Everything in Starter, plus:", on: true },
+                  { label: "Everything in Individual, plus:", on: true },
                   { label: "Up to 50 properties + per-asset deep-dives", on: true },
                   { label: "Portfolio dashboard with real-time net-yield monitoring", on: true },
                   { label: "5-agent AI team — CIO, CFO, COO, CEO, PA", on: true },
@@ -321,7 +321,7 @@ export function PricingClient() {
             className="mt-8 text-center text-[14px] text-[var(--color-muted)]"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            7-day Starter and Pro trials — no credit card required to start. Cancel anytime. VAT applied per local regulations.
+            7-day Individual and Pro trials — no credit card required to start. Cancel anytime. VAT applied per local regulations.
           </p>
 
           {/* Team + Enterprise — kept off the 3-tier ladder so the freemium
@@ -399,12 +399,12 @@ export function PricingClient() {
 
       {/* ── Team faces — the Pro tier sells the 5-agent team, so the
            team strip sits directly under the tier cards and above the
-           FAQ. Visitors comparing Starter vs Pro see the faces that
+           FAQ. Visitors comparing Individual vs Pro see the faces that
            come with the Pro tier without having to click Features. ── */}
       <TeamGalleryStrip
         eyebrow="What Pro unlocks"
         heading="Five AI agents — the team built into Pro."
-        body="Starter unlocks the full property decision report. Pro adds these five — modelling, monitoring and managing your portfolio month after month."
+        body="Individual unlocks the full property decision report. Pro adds these five — modelling, monitoring and managing your portfolio month after month."
         background="white"
       />
 

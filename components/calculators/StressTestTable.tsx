@@ -3,7 +3,7 @@
 // 3-row stress-test mini-table that drops beneath any calculator's
 // result panel. Shows how the headline metric moves under three
 // plausible stresses — gives the visitor a free "wow" without
-// duplicating the full scenario-analysis surface that Starter
+// duplicating the full scenario-analysis surface that Individual
 // unlocks (10y forecast, sensitivities across the whole life of
 // the investment, capital-growth scenarios, etc).
 //
@@ -30,7 +30,7 @@ export interface StressTestTableProps {
    *  flow under stress" or "Net yield under stress"). */
   metricLabel: string;
   /** Three rows. Always three — fewer would feel skimpy, more would
-   *  start to leak the Starter scenario-analysis surface. */
+   *  start to leak the Individual scenario-analysis surface. */
   rows: [StressRow, StressRow, StressRow];
   /** Optional one-line interpretation under the table. */
   caption?: string;
@@ -60,7 +60,7 @@ export function StressTestTable({ metricLabel, rows, caption }: StressTestTableP
           </h3>
         </div>
         <p className="text-[11.5px] text-[color:var(--color-muted)] italic">
-          Three what-ifs. Starter unlocks the full sensitivity grid.
+          Three what-ifs. Individual unlocks the full sensitivity grid.
         </p>
       </div>
 

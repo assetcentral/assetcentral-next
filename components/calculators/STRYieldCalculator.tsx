@@ -267,7 +267,7 @@ export function STRYieldCalculator() {
           ),
         },
       ]}
-      caption="Each row holds everything else constant. Short-let revenue is volatile — Starter models the full distribution over the hold period, not just three shocks."
+      caption="Each row holds everything else constant. Short-let revenue is volatile — Individual models the full distribution over the hold period, not just three shocks."
     />
     <SaveResultForm calc="str-yield" calcName="Short-term rental yield" summary={summary} />
     </>

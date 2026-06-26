@@ -258,7 +258,7 @@ export function OwnershipCalculator() {
                 ),
               },
             ]}
-            caption="Leverage amplifies both wins and losses — the same property at a different LTV reacts very differently to these shocks. Starter models the full grid."
+            caption="Leverage amplifies both wins and losses — the same property at a different LTV reacts very differently to these shocks. Individual models the full grid."
           />
         </>
       );

@@ -237,7 +237,7 @@ export function SellOrHoldCalculator() {
             tone: "positive",
           },
         ]}
-        caption="A positive number favours holding; negative favours selling. Starter models tax-adjusted disposal scenarios."
+        caption="A positive number favours holding; negative favours selling. Individual models tax-adjusted disposal scenarios."
       />
       <SaveResultForm calc="sell-or-hold" calcName="Sell or hold" summary={summary} />
     </>

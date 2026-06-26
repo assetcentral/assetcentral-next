@@ -23,14 +23,14 @@ export function FinalCta() {
           style={{ fontFamily: "var(--font-sans)" }}
         >
           Free AI check on any property — mortgage, yield, cash flow, red flags.
-          Starter unlocks the full property report, 10-year forecast, scenarios
+          Individual unlocks the full property report, 10-year forecast, scenarios
           and saved properties. Pro adds the portfolio dashboard, AI agents and
           monitoring.
         </p>
 
         {/* CTA hierarchy:
               Primary    "Check a property for free"        — top-of-funnel
-              Secondary  "Try full analysis free for 7 days" — Starter trial,
+              Secondary  "Try full analysis free for 7 days" — Individual trial,
                                                               no card required.
             Pro lives below the fold for users who self-select into portfolio
             mode; pushing it as a competing primary CTA here would muddy the

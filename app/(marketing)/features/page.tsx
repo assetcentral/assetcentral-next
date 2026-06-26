@@ -1,20 +1,21 @@
-// /features — restructured around Model · Monitor · Manage + the
-// 5-agent team. Replaces the prior "Set-Up / Uplift / Workhorse /
-// Winners" jobs taxonomy with the pillar framing the rest of the
-// site already uses (see /model, /monitor, /manage and the homepage
-// MMM chips).
+// /features — restructured around the full five-stage AssetCentral
+// framework that the homepage MessyInClearOutSection introduces:
+//
+//   01 · Capture   →  PA  — get every scrap of property data in
+//   02 · Structure →  CFO — clean it into a comparable asset record
+//   03 · Model     →  CIO — project it forward across scenarios
+//   04 · Monitor   →  CEO — watch yield, cash flow, debt and risk
+//   05 · Manage    →  COO — turn insight into recommended actions
 //
 // Reading order:
 //   1. Hero — what the page is for
 //   2. TeamGalleryStrip — the 5 portraits. Sits high so visitors
 //      coming from "AI team" entries in nav land on faces fast.
-//   3. Three pillar blocks — Model · Monitor · Manage. Each pillar
-//      lists the lead agent(s), three capabilities and a mini
-//      mockup from FeatureMinis.
+//   3. Five pillar blocks. Each pillar lists the lead agent(s), 2–5
+//      capabilities and a mini mockup from FeatureMinis (with the
+//      Capture and Structure pillars using lightweight inline mockups
+//      defined at the bottom of this file).
 //   4. ComparisonTable + final CTA — unchanged from prior version.
-//
-// We deliberately keep the FeatureMinis components so the page still
-// shows the product, not just lists of capabilities.
 
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -35,9 +36,9 @@ import {
 } from "@/components/marketing/FeatureMinis";
 
 export const metadata: Metadata = {
-  title: "Features — Model · Monitor · Manage",
+  title: "Features — Capture · Structure · Model · Monitor · Manage",
   description:
-    "Model decisions before committing capital. Monitor yield, cash flow and debt. Manage the work that protects returns. Run by five AI agents — CIO · CFO · COO · CEO · PA.",
+    "Five stages, five AI agents. Capture every scrap of data, structure it into a clean property record, model the decision, monitor live, manage the recommended actions.",
   alternates: { canonical: "/features" },
 };
 
@@ -49,10 +50,10 @@ interface Capability {
 }
 
 interface Pillar {
-  /** Anchor + identifier. Matches the corresponding /model · /monitor
-   *  · /manage landing page slug. */
-  id: "model" | "monitor" | "manage";
-  /** Step label, e.g. "01 · Model". */
+  /** Anchor + identifier. Matches the corresponding stage on
+   *  /how-it-works (#capture, #structure, …). */
+  id: "capture" | "structure" | "model" | "monitor" | "manage";
+  /** Step label, e.g. "01 · Capture". */
   number: string;
   /** Headline H2. */
   headline: string;
@@ -63,7 +64,7 @@ interface Pillar {
    *  under the headline so the team faces above tie to specific
    *  pillars below. */
   leads: { acronym: string; title: string; bandClass: string; href: string }[];
-  /** Three or fewer capability blocks. Each one alternates left/right
+  /** Two or more capability blocks. Each one alternates left/right
    *  layout. */
   capabilities: Capability[];
   /** Background colour for the pillar section — alternates surface
@@ -73,8 +74,82 @@ interface Pillar {
 
 const PILLARS: Pillar[] = [
   {
+    id: "capture",
+    number: "01 · Capture",
+    headline: "Capture every scrap of property data — automatically.",
+    intro:
+      "Forward emails, photograph invoices, drop spreadsheets, talk to your team by voice. Your Personal Assistant catches it all and routes it to the right asset before anything is asked of you.",
+    leads: [
+      {
+        acronym: "PA",
+        title: "Personal Assistant",
+        bandClass: "bg-[color:var(--color-pa-mid)]",
+        href: "/ai-property-pa",
+      },
+    ],
+    capabilities: [
+      {
+        title: "Forward it. We read it. Nothing slips through.",
+        bullets: [
+          "Email statements, WhatsApp documents, photographed invoices",
+          "AI extracts dates and amounts; everything filed against the right asset",
+          "22 distinct alert types fed straight from incoming data",
+        ],
+        mockup: <IngestionMini />,
+      },
+      {
+        title: "Voice in. Spreadsheet in. CSV in.",
+        bullets: [
+          "Call your AI team and talk through a new property — no typing",
+          "Paste an existing portfolio spreadsheet — AI maps the columns for you",
+          "API + email ingestion for power users",
+        ],
+        mockup: <CaptureChannelsMini />,
+        flip: true,
+      },
+    ],
+    background: "white",
+  },
+  {
+    id: "structure",
+    number: "02 · Structure",
+    headline: "Structure raw inputs into a clean, comparable property record.",
+    intro:
+      "Mixed currencies, country-specific tax, irregular statements, photographed contracts — your CFO normalises all of it into one comparable record per asset, so every downstream stage works off the same numbers.",
+    leads: [
+      {
+        acronym: "CFO",
+        title: "Chief Financial Officer",
+        bandClass: "bg-[color:var(--color-cfo-mid)]",
+        href: "/ai-property-cfo",
+      },
+    ],
+    capabilities: [
+      {
+        title: "One asset record. Every field. Every currency.",
+        bullets: [
+          "Multi-currency conversion to your base currency, daily FX",
+          "Country-specific tax framing applied per asset",
+          "Lease, loan, ownership and statement fields normalised",
+        ],
+        mockup: <StructureRecordMini />,
+      },
+      {
+        title: "A free AI verdict from the structured data.",
+        bullets: [
+          "Attractive / Borderline / Risky — instant read on any new property",
+          "Key number + biggest red flag + suggested next move",
+          "Same engine the Individual and Pro tiers run on every asset",
+        ],
+        mockup: <ScoreMini />,
+        flip: true,
+      },
+    ],
+    background: "surface",
+  },
+  {
     id: "model",
-    number: "01 · Model",
+    number: "03 · Model",
     headline: "Model decisions before committing capital.",
     intro:
       "Underwrite every purchase, refinance, renovation, sale and acquisition the way a fund would — with 10-year cash-flow forecasts and proper scenario maths.",
@@ -126,7 +201,7 @@ const PILLARS: Pillar[] = [
   },
   {
     id: "monitor",
-    number: "02 · Monitor",
+    number: "04 · Monitor",
     headline: "Monitor yield, cash flow, debt and risk — live.",
     intro:
       "Most owners can't tell you their real net yield. AssetCentral can — to the basis point, after vacancy, costs, mortgage, fees and tax, in your currency.",
@@ -178,7 +253,7 @@ const PILLARS: Pillar[] = [
   },
   {
     id: "manage",
-    number: "03 · Manage",
+    number: "05 · Manage",
     headline: "Manage the work that actually protects returns.",
     intro:
       "Operators, statements, leases, rate reviews, document chases — the unglamorous monthly work that erodes returns when nobody owns it. Your AI team owns it.",
@@ -204,13 +279,13 @@ const PILLARS: Pillar[] = [
     ],
     capabilities: [
       {
-        title: "One score. The reasoning underneath.",
+        title: "Ranked actions, with the reasoning underneath.",
         bullets: [
           "Yield vs benchmark, leverage levels, cashflow resilience",
-          "Upcoming risk events combined into a single score",
+          "Risk events combined into a single ranked action list",
           "Plain-English action bullets, ranked by impact",
         ],
-        mockup: <ScoreMini />,
+        mockup: <AlertsMini />,
       },
       {
         title: "Your short-term rental operator — audited monthly.",
@@ -230,25 +305,6 @@ const PILLARS: Pillar[] = [
           "Rent review date tracked per tenancy",
         ],
         mockup: <YieldOptMini />,
-      },
-      {
-        title: "Forward it. We read it. Nothing slips through.",
-        bullets: [
-          "Email statements, WhatsApp documents, photographed invoices",
-          "AI extracts key dates and amounts; everything filed against the right asset",
-          "22 distinct alert types across loans, cashflow, yield, documents",
-        ],
-        mockup: <IngestionMini />,
-        flip: true,
-      },
-      {
-        title: "Alerts that move with the portfolio.",
-        bullets: [
-          "Daily email digest or instant WhatsApp for critical alerts",
-          "Snooze, dismiss, or convert to a task",
-          "Briefed daily — the next 7 things worth your attention",
-        ],
-        mockup: <AlertsMini />,
       },
     ],
     background: "white",
@@ -272,7 +328,7 @@ export default function FeaturesPage() {
               className="text-[44px] lg:text-[56px] leading-[1.05] text-[color:var(--color-navy)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Model · Monitor · Manage.
+              Capture · Structure · Model · Monitor · Manage.
               <br />
               Run by five AI agents.
             </h1>
@@ -281,31 +337,29 @@ export default function FeaturesPage() {
               style={{ fontFamily: "var(--font-sans)" }}
             >
               The infrastructure a property fund runs on, scaled to private
-              owners with 2&ndash;50 properties. Five named AI agents do the
-              modelling, monitoring and managing — you make the decisions.
+              owners with 2&ndash;50 properties. Five stages, one per agent —
+              capture, structure, model, monitor, manage. You make the
+              decisions, the team does everything else.
             </p>
             <div
-              className="mt-7 flex flex-wrap gap-3 text-[13px]"
+              className="mt-7 flex flex-wrap gap-2.5 text-[13px]"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              <Link
-                href="#model"
-                className="inline-flex items-center justify-center min-h-[40px] px-4 rounded-md border border-[color:var(--color-border)] bg-white text-[color:var(--color-navy)] font-semibold transition hover:border-[color:var(--color-navy)]"
-              >
-                Jump to Model
-              </Link>
-              <Link
-                href="#monitor"
-                className="inline-flex items-center justify-center min-h-[40px] px-4 rounded-md border border-[color:var(--color-border)] bg-white text-[color:var(--color-navy)] font-semibold transition hover:border-[color:var(--color-navy)]"
-              >
-                Jump to Monitor
-              </Link>
-              <Link
-                href="#manage"
-                className="inline-flex items-center justify-center min-h-[40px] px-4 rounded-md border border-[color:var(--color-border)] bg-white text-[color:var(--color-navy)] font-semibold transition hover:border-[color:var(--color-navy)]"
-              >
-                Jump to Manage
-              </Link>
+              {[
+                { id: "capture", label: "01 · Capture" },
+                { id: "structure", label: "02 · Structure" },
+                { id: "model", label: "03 · Model" },
+                { id: "monitor", label: "04 · Monitor" },
+                { id: "manage", label: "05 · Manage" },
+              ].map((s) => (
+                <Link
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="inline-flex items-center justify-center min-h-[40px] px-3.5 rounded-md border border-[color:var(--color-border)] bg-white text-[color:var(--color-navy)] font-semibold transition hover:border-[color:var(--color-navy)]"
+                >
+                  {s.label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -316,8 +370,8 @@ export default function FeaturesPage() {
            entry sees faces before walls of capability bullets. ── */}
       <TeamGalleryStrip
         eyebrow="Your AI property team"
-        heading="The team that runs the model · monitor · manage loop."
-        body="Five agents, each with a defined remit. Click any face to read the per-agent detail page."
+        heading="One agent per stage. Five stages, five agents."
+        body="PA captures. CFO structures. CIO models. CEO monitors. COO manages. Click any face to read the per-agent detail page."
       />
 
       {/* ── Three pillars ──────────────────────────────────────── */}
@@ -363,6 +417,145 @@ export default function FeaturesPage() {
         </div>
       </section>
     </>
+  );
+}
+
+// ── Capture pillar inline mockup ────────────────────────────────────
+//
+// Three intake channels in a column: Voice, Spreadsheet, Email/API. Each
+// row shows a small chip + a one-line "what came in" example so the
+// reader sees that ingestion is genuinely multi-modal, not just email
+// forwarding. Stays inline (no SVG file) because the visual is just a
+// three-row table — adding a separate FeatureMinis export for one page
+// would be overhead.
+function CaptureChannelsMini() {
+  const ROWS = [
+    {
+      label: "Voice",
+      bandClass: "bg-[color:var(--color-pa-mid)]",
+      example: "“Add 12 Maple View, three beds, valued at £312,000.”",
+    },
+    {
+      label: "Spreadsheet",
+      bandClass: "bg-[color:var(--color-cfo-mid)]",
+      example: "portfolio.xlsx — 14 rows · AI mapped 18 of 19 columns",
+    },
+    {
+      label: "Email / API",
+      bandClass: "bg-[color:var(--color-cio-mid)]",
+      example: "ops@hostingco.com → SR statement Aug 2026 — filed",
+    },
+  ];
+  return (
+    <div className="rounded-2xl border border-[color:var(--color-border)] bg-white p-5 lg:p-6 shadow-[0_18px_48px_-30px_rgba(15,23,42,0.25)]">
+      <p
+        className="text-[11px] uppercase tracking-[0.12em] text-[color:var(--color-muted)] font-semibold mb-4"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        Today · 3 inputs captured
+      </p>
+      <ul className="space-y-3" style={{ fontFamily: "var(--font-sans)" }}>
+        {ROWS.map((r) => (
+          <li
+            key={r.label}
+            className="flex items-start gap-3 rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-2.5"
+          >
+            <span
+              className={`${r.bandClass} inline-flex items-center justify-center min-w-[80px] rounded-full px-2.5 py-1 text-white text-[10.5px] font-semibold tracking-wide`}
+            >
+              {r.label}
+            </span>
+            <span className="text-[12.5px] leading-[1.4] text-[color:var(--color-ink)]">
+              {r.example}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ── Structure pillar inline mockup ──────────────────────────────────
+//
+// Two-pane "before / after" — raw inputs on the left, structured asset
+// record on the right. The visual story: messy stuff goes in, one clean
+// record comes out. Mirrors the homepage MessyInClearOutSection idea on
+// a per-asset scale.
+function StructureRecordMini() {
+  const RAW = [
+    "“rent went up to 1,650 in march”",
+    "loan-statement-q2.pdf",
+    "AED 4.2m purchase price (form)",
+    "voice memo · service charge",
+  ];
+  const RECORD: { label: string; value: string; subdued?: boolean }[] = [
+    { label: "Address", value: "Apt 1204, Marina Heights, Dubai" },
+    { label: "Price (AED)", value: "4,200,000" },
+    { label: "Price (EUR)", value: "1,054,318", subdued: true },
+    { label: "Monthly rent", value: "AED 8,250 · from Mar 2026" },
+    { label: "Service charge", value: "AED 16,200 / year" },
+    { label: "Loan balance", value: "AED 2,310,000 · 5.4%" },
+  ];
+  return (
+    <div className="rounded-2xl border border-[color:var(--color-border)] bg-white p-5 lg:p-6 shadow-[0_18px_48px_-30px_rgba(15,23,42,0.25)]">
+      <div
+        className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-3"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {/* Raw inputs (left) */}
+        <div>
+          <p className="text-[10.5px] uppercase tracking-[0.12em] text-[color:var(--color-muted)] font-semibold mb-2">
+            Raw in
+          </p>
+          <ul className="space-y-1.5">
+            {RAW.map((r) => (
+              <li
+                key={r}
+                className="rounded-md border border-dashed border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-2.5 py-1.5 text-[11.5px] leading-[1.35] text-[color:var(--color-muted)]"
+              >
+                {r}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Arrow */}
+        <div
+          aria-hidden
+          className="flex items-center justify-center text-[color:var(--color-accent)] text-[20px] font-bold"
+        >
+          →
+        </div>
+
+        {/* Structured record (right) */}
+        <div>
+          <p className="text-[10.5px] uppercase tracking-[0.12em] text-[color:var(--color-accent)] font-semibold mb-2">
+            Asset record
+          </p>
+          <ul className="rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-surface)] divide-y divide-[color:var(--color-border)]">
+            {RECORD.map((r) => (
+              <li
+                key={r.label}
+                className="flex items-baseline justify-between gap-2 px-2.5 py-1.5"
+              >
+                <span className="text-[10.5px] text-[color:var(--color-muted)]">
+                  {r.label}
+                </span>
+                <span
+                  className={`text-[11.5px] font-semibold tabular-nums ${
+                    r.subdued
+                      ? "text-[color:var(--color-muted)]"
+                      : "text-[color:var(--color-ink)]"
+                  }`}
+                >
+                  {r.value}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 }
 
