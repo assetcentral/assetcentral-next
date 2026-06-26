@@ -96,8 +96,13 @@ export function DontBuyBlindHero() {
         </div>
 
         {/* ── Orbit visual ─────────────────────────────────────────── */}
+        {/* Mobile max-w is tight (300px) on purpose: with px-6 page
+            padding the section's content area on a 375px viewport is
+            ~327px wide, and the orbiting pills extend ~50px beyond
+            the orbit radius before clipping at the section's
+            overflow-hidden edge. 300px keeps them comfortably inside. */}
         <div
-          className="ac-hero-vis relative mx-auto w-full max-w-[360px] sm:max-w-[420px] lg:max-w-[440px] aspect-square"
+          className="ac-hero-vis relative mx-auto w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[440px] aspect-square"
           aria-hidden
         >
           {/* Dashed orbit ring + arrow markers — purely decorative,
@@ -276,16 +281,16 @@ function MetricPill({
 }
 
 function PropertyCenterCard() {
-  // Photo lives in /public/property/oakfield-road.webp — drop a real
-  // photo there before deploy. The CSS gradient is the fallback while
-  // the file is missing; `loading="eager"` because this image is above
-  // the fold and `decoding="async"` lets the browser keep painting.
+  // Photo lives in /public/property/oakfield-road.png. The CSS
+  // gradient is the fallback while the file is missing;
+  // `loading="eager"` because this image is above the fold and
+  // `decoding="async"` lets the browser keep painting.
   return (
-    <div className="w-[220px] sm:w-[240px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
+    <div className="w-[168px] sm:w-[210px] lg:w-[240px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
       <div className="relative aspect-[5/3] bg-gradient-to-br from-[#e0e7ff] via-[#e2e8f0] to-[#f1f5f9]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/property/oakfield-road.webp"
+          src="/property/oakfield-road.png"
           alt="Modern townhouse on 12 Oakfield Road, Manchester"
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
