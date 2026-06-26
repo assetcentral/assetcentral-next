@@ -34,7 +34,9 @@ const CAPTURE_CHIPS: Chip[] = [
   { label: "Email", icon: "email" },
   { label: "WhatsApp photo", icon: "whatsapp" },
   { label: "Calculator", icon: "calculator" },
+  { label: "Voice note", icon: "voice" },
   { label: "Rough notes", icon: "notes" },
+  { label: "External data", icon: "external" },
 ];
 
 const STRUCTURE_CHIPS: Chip[] = [
@@ -44,6 +46,7 @@ const STRUCTURE_CHIPS: Chip[] = [
   { label: "Dates", icon: "calendar" },
   { label: "Valuation", icon: "trend" },
   { label: "Yield", icon: "percent" },
+  { label: "Tenancy", icon: "tenancy" },
   { label: "Cash flow", icon: "flow" },
 ];
 
@@ -54,6 +57,18 @@ const MODEL_CHIPS: Chip[] = [
   { label: "Renovate", icon: "tools" },
   { label: "Rent-out", icon: "key" },
   { label: "Hold", icon: "lock" },
+  { label: "Portfolio", icon: "portfolio" },
+];
+
+const MONITOR_CHIPS: Chip[] = [
+  { label: "Mortgage resets", icon: "refresh" },
+  { label: "Rent drift", icon: "trend" },
+  { label: "Yield movement", icon: "percent" },
+  { label: "Vacancies", icon: "key" },
+  { label: "Service charges", icon: "wallet" },
+  { label: "Document dates", icon: "calendar" },
+  { label: "Alerts", icon: "bell" },
+  { label: "Portfolio risk", icon: "shield" },
 ];
 
 // AssetCentral's 5-agent AI team — wired into the flow so the user sees
@@ -69,34 +84,38 @@ interface Agent {
   accent: string;
 }
 
-const AGENT_CEO: Agent = {
-  acronym: "CEO",
-  avatarSrc: "/team/ceo.webp",
-  description: "Strategic oversight & final decision view",
-  accent: "var(--color-ceo-mid)",
-};
+// CEO moves from "orchestrator above the flow" to the Monitor stage in
+// the 5-step framework. The new mapping mirrors how the team works in
+// production: PA captures, CFO validates the financials, CIO models
+// scenarios, CEO watches what's changing, COO turns it into action.
 const AGENT_PA: Agent = {
   acronym: "PA",
   avatarSrc: "/team/pa.webp",
-  description: "Gathers and organises what you have",
+  description: "Gathers and organises documents, emails, WhatsApp photos, notes and reminders",
   accent: "var(--color-pa-mid)",
 };
 const AGENT_CFO: Agent = {
   acronym: "CFO",
   avatarSrc: "/team/cfo.webp",
-  description: "Structures and validates the financials",
+  description: "Validates rent, mortgage, costs, dates, valuations, yields and cash flow",
   accent: "var(--color-cfo-mid)",
 };
 const AGENT_CIO: Agent = {
   acronym: "CIO",
   avatarSrc: "/team/cio.webp",
-  description: "Models scenarios and tests the best options",
+  description: "Tests buy, sell, refinance, renovate, rent-out and hold scenarios",
   accent: "var(--color-cio-mid)",
+};
+const AGENT_CEO: Agent = {
+  acronym: "CEO",
+  avatarSrc: "/team/ceo.webp",
+  description: "Watches portfolio priorities, risk, opportunities and strategic decisions",
+  accent: "var(--color-ceo-mid)",
 };
 const AGENT_COO: Agent = {
   acronym: "COO",
   avatarSrc: "/team/coo.webp",
-  description: "Turns insights into action and keeps you on track",
+  description: "Turns intelligence into execution, tasks, follow-up and next actions",
   accent: "var(--color-coo-mid)",
 };
 
@@ -126,50 +145,52 @@ export function MessyInClearOutSection() {
           </span>
         </h2>
 
-        {/* ── Sub-message + CEO orchestrator ──────────────────────── */}
+        {/* ── Sub-message ─────────────────────────────────────────── */}
         <p
-          className="mt-5 text-center text-[14px] lg:text-[16px] leading-[1.55] text-[color:var(--color-muted)]"
+          className="mt-5 mx-auto max-w-xl text-center text-[14px] lg:text-[16px] leading-[1.55] text-[color:var(--color-muted)]"
           style={{ fontFamily: "var(--font-sans)" }}
         >
-          From scattered inputs to confident decisions.{" "}
-          <span className="text-[color:var(--color-accent)] font-semibold">
-            That&rsquo;s AssetCentral.
-          </span>
+          AssetCentral captures your property data, structures it, models the
+          decision, monitors what changes and helps you take action.
         </p>
-        <CeoOrchestrator agent={AGENT_CEO} />
-
-        <Connector />
 
         {/* ── 1. Capture ──────────────────────────────────────────── */}
-        <FlowStage step={1} title="Capture" copy="Documents, emails, WhatsApp photos, calculators and rough numbers." agent={AGENT_PA}>
+        <FlowStage step={1} title="Capture" copy="Documents, emails, WhatsApp photos, calculators, voice notes, rough numbers and external data." agent={AGENT_PA}>
           <ChipCluster chips={CAPTURE_CHIPS} variant="capture" />
         </FlowStage>
 
         <Connector />
 
         {/* ── 2. Structure ────────────────────────────────────────── */}
-        <FlowStage step={2} title="Structure" copy="Rent, mortgage, costs, dates, valuations, yields and cash flow." agent={AGENT_CFO}>
+        <FlowStage step={2} title="Structure" copy="Rent, mortgage, costs, dates, valuations, yields, tenancy details and cash flow." agent={AGENT_CFO}>
           <ChipCluster chips={STRUCTURE_CHIPS} variant="structure" />
         </FlowStage>
 
         <Connector />
 
-        {/* ── AC AI hub ───────────────────────────────────────────── */}
+        {/* ── 3. Model ────────────────────────────────────────────── */}
+        <FlowStage step={3} title="Model" copy="Buy, sell, refinance, renovate, rent-out, hold and portfolio scenarios." agent={AGENT_CIO}>
+          <ChipCluster chips={MODEL_CHIPS} variant="model" />
+        </FlowStage>
+
+        <Connector />
+
+        {/* ── AC AI hub (centre of the 5-stage flow) ──────────────── */}
         <div className="my-2 flex justify-center">
           <AcHub />
         </div>
 
         <Connector />
 
-        {/* ── 3. Model ────────────────────────────────────────────── */}
-        <FlowStage step={3} title="Model" copy="Buy, sell, refinance, renovate, rent-out and hold scenarios." agent={AGENT_CIO}>
-          <ChipCluster chips={MODEL_CHIPS} variant="model" />
+        {/* ── 4. Monitor ──────────────────────────────────────────── */}
+        <FlowStage step={4} title="Monitor" copy="Mortgage resets, rent drift, yield movement, vacancies, service charges, document dates, alerts and portfolio risk." agent={AGENT_CEO}>
+          <ChipCluster chips={MONITOR_CHIPS} variant="monitor" />
         </FlowStage>
 
         <Connector />
 
-        {/* ── 4. Output ───────────────────────────────────────────── */}
-        <FlowStage step={4} title="Output" copy="Reports, dashboards, alerts and next actions." agent={AGENT_COO}>
+        {/* ── 5. Action ───────────────────────────────────────────── */}
+        <FlowStage step={5} title="Action" copy="Reports, alerts, lender packs, reminders, task lists, follow-up calls and next steps." agent={AGENT_COO}>
           <OutputGrid />
         </FlowStage>
 
@@ -297,24 +318,9 @@ function AgentBadge({ agent }: { agent: Agent }) {
 
 // ─── CEO orchestrator above the flow ─────────────────────────────────
 
-function CeoOrchestrator({ agent }: { agent: Agent }) {
-  return (
-    <div className="mt-10 flex items-center justify-center gap-4">
-      <div className="w-[88px] shrink-0">
-        <AgentBadge agent={agent} />
-      </div>
-      <p
-        className="max-w-[200px] text-[12px] sm:text-[13px] leading-[1.4] text-[color:var(--color-muted)]"
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
-        <span className="block text-[10px] uppercase tracking-[0.14em] font-semibold text-[color:var(--color-accent)] mb-0.5">
-          Orchestrator
-        </span>
-        Frames each decision and joins the dots across every stage.
-      </p>
-    </div>
-  );
-}
+// CeoOrchestrator removed — CEO is now embedded in the Monitor stage
+// (step 4) of the 5-step framework rather than orchestrating from
+// above. The five agents now sit one-per-stage in production order.
 
 // ─── Bottom strip ────────────────────────────────────────────────────
 
@@ -324,12 +330,15 @@ interface TeamFooterRole {
   accent: string;
 }
 
+// Order matches the production flow above: Capture → Structure →
+// Model → Monitor → Action. Reader sees the same sequence twice
+// (stages above, agents below), reinforcing the mapping.
 const TEAM_FOOTER_ROLES: TeamFooterRole[] = [
-  { acronym: "CEO", description: "Strategic oversight", accent: "var(--color-ceo-mid)" },
-  { acronym: "CIO", description: "Investment intelligence", accent: "var(--color-cio-mid)" },
-  { acronym: "CFO", description: "Financial accuracy", accent: "var(--color-cfo-mid)" },
-  { acronym: "COO", description: "Execution & actions", accent: "var(--color-coo-mid)" },
-  { acronym: "PA", description: "Capture & organisation", accent: "var(--color-pa-mid)" },
+  { acronym: "PA", description: "Captures everything", accent: "var(--color-pa-mid)" },
+  { acronym: "CFO", description: "Validates the financials", accent: "var(--color-cfo-mid)" },
+  { acronym: "CIO", description: "Tests the scenarios", accent: "var(--color-cio-mid)" },
+  { acronym: "CEO", description: "Watches what changes", accent: "var(--color-ceo-mid)" },
+  { acronym: "COO", description: "Drives the next action", accent: "var(--color-coo-mid)" },
 ];
 
 function TeamFooterStrip() {
@@ -366,20 +375,26 @@ function TeamFooterStrip() {
 
 // ─── Chip cluster ───────────────────────────────────────────────────
 
-function ChipCluster({ chips, variant }: { chips: Chip[]; variant: "capture" | "structure" | "model" }) {
+function ChipCluster({
+  chips,
+  variant,
+}: {
+  chips: Chip[];
+  variant: "capture" | "structure" | "model" | "monitor";
+}) {
+  const ariaLabel: Record<typeof variant, string> = {
+    capture: "Example input sources",
+    structure: "Structured data fields",
+    model: "Decision scenarios modelled",
+    monitor: "Things AssetCentral keeps watching",
+  };
   return (
     <ul
       className={
         "ac-chip-cluster flex flex-wrap justify-center gap-2.5 " +
         (variant === "capture" ? "ac-chips-float" : "")
       }
-      aria-label={
-        variant === "capture"
-          ? "Example input sources"
-          : variant === "structure"
-            ? "Structured data fields"
-            : "Decision scenarios modelled"
-      }
+      aria-label={ariaLabel[variant]}
     >
       {chips.map((c, i) => (
         <li
@@ -572,6 +587,8 @@ const CHIP_ICONS = {
   whatsapp: "whatsapp",
   calculator: "calculator",
   notes: "notes",
+  voice: "voice",
+  external: "external",
   pound: "pound",
   house: "house",
   wallet: "wallet",
@@ -579,12 +596,16 @@ const CHIP_ICONS = {
   trend: "trend",
   percent: "percent",
   flow: "flow",
+  tenancy: "tenancy",
   cart: "cart",
   tag: "tag",
   refresh: "refresh",
   tools: "tools",
   key: "key",
   lock: "lock",
+  portfolio: "portfolio",
+  bell: "bell",
+  shield: "shield",
 } as const;
 
 type ChipIconName = keyof typeof CHIP_ICONS;
@@ -638,6 +659,21 @@ function ChipIcon({ name }: { name: ChipIconName }) {
           <path d="M9 9h6M9 13h6M9 17h3" />
         </svg>
       );
+    case "voice":
+      return (
+        <svg {...common} aria-hidden>
+          <rect x="9" y="3" width="6" height="11" rx="3" />
+          <path d="M5 11a7 7 0 0 0 14 0" />
+          <path d="M12 18v3" />
+        </svg>
+      );
+    case "external":
+      return (
+        <svg {...common} aria-hidden>
+          <path d="M18 16a4 4 0 0 0 0-8 6 6 0 0 0-12 1 4 4 0 0 0 1 8h11z" />
+          <path d="M12 12v6M9 15l3 3 3-3" />
+        </svg>
+      );
     case "pound":
       return (
         <svg {...common} aria-hidden>
@@ -688,6 +724,14 @@ function ChipIcon({ name }: { name: ChipIconName }) {
           <path d="M4 17c4 0 4-4 8-4s4 4 8 4" />
         </svg>
       );
+    case "tenancy":
+      return (
+        <svg {...common} aria-hidden>
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3 19a6 6 0 0 1 12 0" />
+          <path d="M17 11h4M19 9v4" />
+        </svg>
+      );
     case "cart":
       return (
         <svg {...common} aria-hidden>
@@ -730,6 +774,28 @@ function ChipIcon({ name }: { name: ChipIconName }) {
         <svg {...common} aria-hidden>
           <rect x="5" y="11" width="14" height="10" rx="2" />
           <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+        </svg>
+      );
+    case "portfolio":
+      return (
+        <svg {...common} aria-hidden>
+          <rect x="3" y="6" width="18" height="14" rx="2" />
+          <path d="M9 6V4h6v2" />
+          <path d="M3 12h18" />
+        </svg>
+      );
+    case "bell":
+      return (
+        <svg {...common} aria-hidden>
+          <path d="M6 8a6 6 0 1 1 12 0v5l2 2H4l2-2z" />
+          <path d="M10 19a2 2 0 0 0 4 0" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg {...common} aria-hidden>
+          <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z" />
+          <path d="M12 9v4M12 16h.01" />
         </svg>
       );
   }
