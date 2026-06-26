@@ -71,27 +71,27 @@ const navItems: NavItem[] = [
     // the user-journey steps inside it are spelled out.
     items: [
       {
-        href: "/how-it-works#capture",
+        href: "/capture",
         label: "01 · Capture",
         description: "Get every scrap of property data in. Led by your PA.",
       },
       {
-        href: "/how-it-works#structure",
+        href: "/structure",
         label: "02 · Structure",
         description: "Free AI verdict + clean asset record. Led by your CFO.",
       },
       {
-        href: "/how-it-works#model",
+        href: "/model",
         label: "03 · Model",
         description: "10-year forecast, scenarios, decision report. Led by your CIO.",
       },
       {
-        href: "/how-it-works#monitor",
+        href: "/monitor",
         label: "04 · Monitor",
         description: "Live portfolio tracking + 22 alert types. Led by your CEO.",
       },
       {
-        href: "/how-it-works#manage",
+        href: "/manage",
         label: "05 · Manage",
         description: "Talk to your AI property team. Led by your COO.",
       },
