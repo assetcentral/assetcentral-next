@@ -33,13 +33,17 @@ interface OrbitMetric {
   tone: "neutral" | "positive" | "negative";
 }
 
+// Seven pills equally spaced around the orbit (360 / 7 ≈ 51.43° apart).
+// Price sits at the top as the headline number — everything else
+// (mortgage, rent, yield, cash flow, works, refinance) flows from it.
 const METRICS: OrbitMetric[] = [
-  { angle: 0, value: "£1,780", label: "Mortgage", tone: "neutral" },
-  { angle: 60, value: "£2,100", label: "Rent", tone: "neutral" },
-  { angle: 120, value: "5.6%", label: "Yield", tone: "positive" },
-  { angle: 180, value: "−£140", label: "Cash flow", tone: "negative" },
-  { angle: 240, value: "£25k", label: "Works", tone: "neutral" },
-  { angle: 300, value: "+£190", label: "Refinance", tone: "positive" },
+  { angle: 0, value: "£300k", label: "Price", tone: "neutral" },
+  { angle: 51.43, value: "£1,780", label: "Mortgage", tone: "neutral" },
+  { angle: 102.86, value: "£2,100", label: "Rent", tone: "neutral" },
+  { angle: 154.29, value: "5.6%", label: "Yield", tone: "positive" },
+  { angle: 205.71, value: "−£140", label: "Cash flow", tone: "negative" },
+  { angle: 257.14, value: "£25k", label: "Works", tone: "neutral" },
+  { angle: 308.57, value: "+£190", label: "Refinance", tone: "positive" },
 ];
 
 export function DontBuyBlindHero() {
@@ -286,7 +290,7 @@ function PropertyCenterCard() {
   // `loading="eager"` because this image is above the fold and
   // `decoding="async"` lets the browser keep painting.
   return (
-    <div className="w-[148px] sm:w-[180px] lg:w-[210px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
+    <div className="w-[124px] sm:w-[160px] lg:w-[200px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
       <div className="relative aspect-[5/3] bg-gradient-to-br from-[#e0e7ff] via-[#e2e8f0] to-[#f1f5f9]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -297,22 +301,27 @@ function PropertyCenterCard() {
           decoding="async"
         />
       </div>
-      <div className="px-3.5 py-3" style={{ fontFamily: "var(--font-sans)" }}>
-        <p className="text-[14.5px] font-semibold text-[color:var(--color-navy)] leading-tight">
-          12 Oakfield Road
+      <div className="px-3 py-2.5 sm:px-3.5 sm:py-3" style={{ fontFamily: "var(--font-sans)" }}>
+        {/* Fictive address — Maple View doesn't exist on M20, and the
+            "ZZ" postcode suffix is reserved for sample/test data so it
+            never resolves to a real property. */}
+        <p className="text-[12.5px] sm:text-[14.5px] font-semibold text-[color:var(--color-navy)] leading-tight">
+          12 Maple View
         </p>
-        <p className="mt-0.5 text-[11.5px] text-[color:var(--color-muted)]">
-          Manchester, M20 2AF
+        <p className="mt-0.5 text-[10.5px] sm:text-[11.5px] text-[color:var(--color-muted)]">
+          Manchester, M20 1ZZ
         </p>
-        <div className="mt-2 flex items-center gap-3 text-[11px] text-[color:var(--color-muted)]">
-          <span className="inline-flex items-center gap-1">
+        <div className="mt-1.5 flex items-center gap-1.5 sm:gap-2.5 text-[9.5px] sm:text-[11px] text-[color:var(--color-muted)] whitespace-nowrap">
+          <span className="inline-flex items-center gap-0.5">
             <BedIcon /> 3
           </span>
-          <span className="inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-0.5">
             <BathIcon /> 2
           </span>
-          <span className="inline-flex items-center gap-1">
-            <RulerIcon /> 1,024 sq ft
+          <span className="inline-flex items-center gap-0.5">
+            <RulerIcon />
+            <span className="hidden sm:inline">1,024 sq ft</span>
+            <span className="sm:hidden">1,024 ft²</span>
           </span>
         </div>
       </div>
