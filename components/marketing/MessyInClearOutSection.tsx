@@ -56,6 +56,50 @@ const MODEL_CHIPS: Chip[] = [
   { label: "Hold", icon: "lock" },
 ];
 
+// AssetCentral's 5-agent AI team — wired into the flow so the user sees
+// not just data moving, but a specialist agent owning each stage. Role
+// → stage mapping per the design brief: PA captures, CFO structures,
+// CIO models, COO outputs, CEO orchestrates. Accent colours map to the
+// CSS variables in globals.css so they stay in sync with the standalone
+// MeetTheTeamSection further down the page.
+interface Agent {
+  acronym: "CEO" | "CIO" | "CFO" | "COO" | "PA";
+  avatarSrc: string;
+  description: string;
+  accent: string;
+}
+
+const AGENT_CEO: Agent = {
+  acronym: "CEO",
+  avatarSrc: "/team/ceo.webp",
+  description: "Strategic oversight & final decision view",
+  accent: "var(--color-ceo-mid)",
+};
+const AGENT_PA: Agent = {
+  acronym: "PA",
+  avatarSrc: "/team/pa.webp",
+  description: "Gathers and organises what you have",
+  accent: "var(--color-pa-mid)",
+};
+const AGENT_CFO: Agent = {
+  acronym: "CFO",
+  avatarSrc: "/team/cfo.webp",
+  description: "Structures and validates the financials",
+  accent: "var(--color-cfo-mid)",
+};
+const AGENT_CIO: Agent = {
+  acronym: "CIO",
+  avatarSrc: "/team/cio.webp",
+  description: "Models scenarios and tests the best options",
+  accent: "var(--color-cio-mid)",
+};
+const AGENT_COO: Agent = {
+  acronym: "COO",
+  avatarSrc: "/team/coo.webp",
+  description: "Turns insights into action and keeps you on track",
+  accent: "var(--color-coo-mid)",
+};
+
 export function MessyInClearOutSection() {
   return (
     <section
@@ -82,15 +126,29 @@ export function MessyInClearOutSection() {
           </span>
         </h2>
 
+        {/* ── Sub-message + CEO orchestrator ──────────────────────── */}
+        <p
+          className="mt-5 text-center text-[14px] lg:text-[16px] leading-[1.55] text-[color:var(--color-muted)]"
+          style={{ fontFamily: "var(--font-sans)" }}
+        >
+          From scattered inputs to confident decisions.{" "}
+          <span className="text-[color:var(--color-accent)] font-semibold">
+            That&rsquo;s AssetCentral.
+          </span>
+        </p>
+        <CeoOrchestrator agent={AGENT_CEO} />
+
+        <Connector />
+
         {/* ── 1. Capture ──────────────────────────────────────────── */}
-        <FlowStage step={1} title="Capture" copy="Documents, emails, WhatsApp photos, calculators and rough numbers.">
+        <FlowStage step={1} title="Capture" copy="Documents, emails, WhatsApp photos, calculators and rough numbers." agent={AGENT_PA}>
           <ChipCluster chips={CAPTURE_CHIPS} variant="capture" />
         </FlowStage>
 
         <Connector />
 
         {/* ── 2. Structure ────────────────────────────────────────── */}
-        <FlowStage step={2} title="Structure" copy="Rent, mortgage, costs, dates, valuations, yields and cash flow.">
+        <FlowStage step={2} title="Structure" copy="Rent, mortgage, costs, dates, valuations, yields and cash flow." agent={AGENT_CFO}>
           <ChipCluster chips={STRUCTURE_CHIPS} variant="structure" />
         </FlowStage>
 
@@ -104,34 +162,24 @@ export function MessyInClearOutSection() {
         <Connector />
 
         {/* ── 3. Model ────────────────────────────────────────────── */}
-        <FlowStage step={3} title="Model" copy="Buy, sell, refinance, renovate, rent-out and hold scenarios.">
+        <FlowStage step={3} title="Model" copy="Buy, sell, refinance, renovate, rent-out and hold scenarios." agent={AGENT_CIO}>
           <ChipCluster chips={MODEL_CHIPS} variant="model" />
         </FlowStage>
 
         <Connector />
 
         {/* ── 4. Output ───────────────────────────────────────────── */}
-        <FlowStage step={4} title="Output" copy="Reports, dashboards, alerts and next actions.">
+        <FlowStage step={4} title="Output" copy="Reports, dashboards, alerts and next actions." agent={AGENT_COO}>
           <OutputGrid />
         </FlowStage>
 
-        {/* ── Bottom message + CTAs ───────────────────────────────── */}
-        <div className="mt-12 lg:mt-16 text-center">
-          <p
-            className="mx-auto max-w-xl flex items-start justify-center gap-2 text-[14.5px] lg:text-[16px] leading-[1.55] text-[color:var(--color-ink)]"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            <ShieldCheck className="w-4 h-4 mt-1 shrink-0 text-[color:var(--color-positive)]" aria-hidden />
-            <span>
-              From scattered inputs to confident decisions.{" "}
-              <span className="text-[color:var(--color-accent)] font-semibold">
-                That&rsquo;s AssetCentral.
-              </span>
-            </span>
-          </p>
+        {/* ── Bottom team strip ──────────────────────────────────── */}
+        <TeamFooterStrip />
 
+        {/* ── CTAs ─────────────────────────────────────────────────── */}
+        <div className="mt-10 lg:mt-12 text-center">
           <div
-            className="mt-7 flex flex-col sm:flex-row justify-center gap-3"
+            className="flex flex-col sm:flex-row justify-center gap-3"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             <Link
@@ -160,39 +208,158 @@ function FlowStage({
   step,
   title,
   copy,
+  agent,
   children,
 }: {
   step: number;
   title: string;
   copy: string;
+  agent: Agent;
   children: React.ReactNode;
 }) {
   return (
     <div className="mt-10 lg:mt-12">
-      <div className="mx-auto max-w-md rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_60px_-24px_rgba(15,23,42,0.18)] px-6 py-6">
-        <div className="flex items-center gap-3">
+      {/* Agent badge sits to the left of the card on mobile + desktop.
+          The badge column is intentionally narrow so the card keeps
+          enough room for the copy on a 375px viewport. A short dashed
+          line connects the badge to the card. */}
+      <div className="flex items-stretch gap-2 sm:gap-3">
+        <div className="w-[68px] sm:w-[88px] shrink-0 flex flex-col items-center">
+          <AgentBadge agent={agent} />
+        </div>
+        <div className="flex-1 relative">
+          {/* connector tick from agent to card */}
           <span
             aria-hidden
-            className="inline-flex w-7 h-7 items-center justify-center rounded-full bg-[color:var(--color-accent)] text-white text-[13px] font-semibold tabular-nums"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            {step}
-          </span>
-          <h3
-            className="text-[22px] lg:text-[24px] font-semibold text-[color:var(--color-navy)]"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            {title}
-          </h3>
+            className="absolute -left-2 sm:-left-3 top-9 w-2 sm:w-3 border-t border-dashed border-[color:var(--color-accent)]/40"
+          />
+          <div className="rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_60px_-24px_rgba(15,23,42,0.18)] px-5 py-5 sm:px-6 sm:py-6">
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden
+                className="inline-flex w-7 h-7 items-center justify-center rounded-full bg-[color:var(--color-accent)] text-white text-[13px] font-semibold tabular-nums"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                {step}
+              </span>
+              <h3
+                className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold text-[color:var(--color-navy)]"
+                style={{ fontFamily: "var(--font-sans)" }}
+              >
+                {title}
+              </h3>
+            </div>
+            <p
+              className="mt-3 text-[13.5px] sm:text-[14.5px] lg:text-[15.5px] leading-[1.55] text-[color:var(--color-ink)]"
+              style={{ fontFamily: "var(--font-sans)" }}
+            >
+              {copy}
+            </p>
+          </div>
         </div>
-        <p
-          className="mt-3 text-[14.5px] lg:text-[15.5px] leading-[1.55] text-[color:var(--color-ink)]"
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          {copy}
-        </p>
       </div>
       <div className="mt-5">{children}</div>
+    </div>
+  );
+}
+
+// ─── Agent badge (used inside each stage + by the CEO orchestrator) ──
+
+function AgentBadge({ agent }: { agent: Agent }) {
+  return (
+    <div className="flex flex-col items-center text-center">
+      <div className="relative">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={agent.avatarSrc}
+          alt={`${agent.acronym} portrait`}
+          loading="lazy"
+          decoding="async"
+          className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover ring-2 ring-white shadow-sm"
+        />
+        <span
+          aria-hidden
+          className="absolute -right-2 -bottom-1 inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-white text-[9px] font-bold tracking-wide shadow-sm"
+          style={{ backgroundColor: agent.accent, fontFamily: "var(--font-sans)" }}
+        >
+          {agent.acronym}
+        </span>
+      </div>
+      <p
+        className="mt-2 text-[10.5px] sm:text-[11px] leading-[1.25] text-[color:var(--color-muted)]"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        {agent.description}
+      </p>
+    </div>
+  );
+}
+
+// ─── CEO orchestrator above the flow ─────────────────────────────────
+
+function CeoOrchestrator({ agent }: { agent: Agent }) {
+  return (
+    <div className="mt-10 flex items-center justify-center gap-4">
+      <div className="w-[88px] shrink-0">
+        <AgentBadge agent={agent} />
+      </div>
+      <p
+        className="max-w-[200px] text-[12px] sm:text-[13px] leading-[1.4] text-[color:var(--color-muted)]"
+        style={{ fontFamily: "var(--font-sans)" }}
+      >
+        <span className="block text-[10px] uppercase tracking-[0.14em] font-semibold text-[color:var(--color-accent)] mb-0.5">
+          Orchestrator
+        </span>
+        Frames each decision and joins the dots across every stage.
+      </p>
+    </div>
+  );
+}
+
+// ─── Bottom strip ────────────────────────────────────────────────────
+
+interface TeamFooterRole {
+  acronym: Agent["acronym"];
+  description: string;
+  accent: string;
+}
+
+const TEAM_FOOTER_ROLES: TeamFooterRole[] = [
+  { acronym: "CEO", description: "Strategic oversight", accent: "var(--color-ceo-mid)" },
+  { acronym: "CIO", description: "Investment intelligence", accent: "var(--color-cio-mid)" },
+  { acronym: "CFO", description: "Financial accuracy", accent: "var(--color-cfo-mid)" },
+  { acronym: "COO", description: "Execution & actions", accent: "var(--color-coo-mid)" },
+  { acronym: "PA", description: "Capture & organisation", accent: "var(--color-pa-mid)" },
+];
+
+function TeamFooterStrip() {
+  return (
+    <div
+      className="mt-12 rounded-xl bg-white border border-[color:var(--color-border)] px-4 py-4 sm:px-5 sm:py-4 shadow-sm"
+      style={{ fontFamily: "var(--font-sans)" }}
+    >
+      <div className="flex items-center gap-2">
+        <ShieldCheck className="w-4 h-4 shrink-0 text-[color:var(--color-positive)]" aria-hidden />
+        <p className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[color:var(--color-navy)]">
+          Powered by your AI property team
+        </p>
+      </div>
+      <ul className="mt-3 grid grid-cols-5 gap-1 sm:gap-2">
+        {TEAM_FOOTER_ROLES.map((r) => (
+          <li key={r.acronym} className="flex flex-col items-center text-center">
+            <span
+              aria-hidden
+              className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-white text-[10px] font-bold tracking-wide"
+              style={{ backgroundColor: r.accent }}
+            >
+              {r.acronym}
+            </span>
+            <span className="mt-1 text-[9.5px] sm:text-[10.5px] leading-[1.25] text-[color:var(--color-muted)]">
+              {r.description}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
