@@ -45,35 +45,34 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "How it works",
-    // Benefit-led, kept to five items. Each line names an outcome an
-    // owner can actually feel. The last entry is the catch-all page
-    // jump for visitors who want the full explanation rather than a
-    // single benefit.
+    // The five stages of the product motion — this IS how AssetCentral
+    // works. Each stage deep-links to its anchor on /how-it-works where
+    // the user-journey steps inside it are spelled out.
     items: [
       {
-        href: "/check",
-        label: "Don't buy blind",
-        description: "Free AI verdict in 60 seconds before you commit.",
+        href: "/how-it-works#capture",
+        label: "01 · Capture",
+        description: "Get every scrap of property data in. Led by your PA.",
       },
       {
-        href: "/monitor",
-        label: "See your real net yield",
-        description: "Live, after vacancy, costs, mortgage, fees and tax.",
+        href: "/how-it-works#structure",
+        label: "02 · Structure",
+        description: "Free AI verdict + clean asset record. Led by your CFO.",
       },
       {
-        href: "/monitor",
-        label: "Catch problems weeks early",
-        description: "22 alert types across rent, debt, voids, costs.",
+        href: "/how-it-works#model",
+        label: "03 · Model",
+        description: "10-year forecast, scenarios, decision report. Led by your CIO.",
       },
       {
-        href: "/manage",
-        label: "Free up your weekend",
-        description: "Your AI team owns the operational busywork.",
+        href: "/how-it-works#monitor",
+        label: "04 · Monitor",
+        description: "Live portfolio tracking + 22 alert types. Led by your CEO.",
       },
       {
-        href: "/how-it-works",
-        label: "See the full journey",
-        description: "Capture → Structure → Model → Monitor → Manage.",
+        href: "/how-it-works#manage",
+        label: "05 · Manage",
+        description: "Talk to your AI property team. Led by your COO.",
       },
     ],
   },
@@ -136,11 +135,10 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "Product",
-    // Capability-led, kept to six items. Each line is a discrete
-    // product surface a visitor evaluating the tool would expect to
-    // see. Voice line, document vault and reports are absorbed into
-    // "AI Property Team" — they're features of the team, not parallel
-    // selling points.
+    // Capability-led — what's in the box. Pricing lives as its own
+    // top-level nav link, so we drop the duplicate from here. Voice
+    // line, document vault and reports are absorbed into the AI
+    // Property Team line.
     items: [
       {
         href: "/features",
@@ -166,11 +164,6 @@ const navItems: NavItem[] = [
         href: "/monitor",
         label: "Alerts & monitoring",
         description: "22 alert types across rent, debt, voids, costs.",
-      },
-      {
-        href: "/pricing",
-        label: "Pricing",
-        description: "Free · Individual €19 · Pro €49 · Team · Enterprise.",
       },
     ],
   },
