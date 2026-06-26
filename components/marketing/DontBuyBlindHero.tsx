@@ -39,7 +39,7 @@ const METRICS: OrbitMetric[] = [
   { angle: 120, value: "5.6%", label: "Yield", tone: "positive" },
   { angle: 180, value: "−£140", label: "Cash flow", tone: "negative" },
   { angle: 240, value: "£25k", label: "Works", tone: "neutral" },
-  { angle: 300, value: "+£190", label: "Refinance saving", tone: "positive" },
+  { angle: 300, value: "+£190", label: "Refinance", tone: "positive" },
 ];
 
 export function DontBuyBlindHero() {
@@ -286,7 +286,7 @@ function PropertyCenterCard() {
   // `loading="eager"` because this image is above the fold and
   // `decoding="async"` lets the browser keep painting.
   return (
-    <div className="w-[168px] sm:w-[210px] lg:w-[240px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
+    <div className="w-[148px] sm:w-[180px] lg:w-[210px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
       <div className="relative aspect-[5/3] bg-gradient-to-br from-[#e0e7ff] via-[#e2e8f0] to-[#f1f5f9]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
