@@ -1,3 +1,5 @@
+"use client";
+
 // Top-of-funnel B2C hero — "Run the numbers first." with orbiting metrics.
 //
 // 2026-06 repositioning (Phase 2). AssetCentral.ai is positioned as the
@@ -23,6 +25,7 @@
 // Component name kept as DontBuyBlindHero for import-history reasons.
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface OrbitMetric {
   label: string;
@@ -33,20 +36,134 @@ interface OrbitMetric {
   tone: "neutral" | "positive" | "negative";
 }
 
+interface RegionData {
+  key: "uk" | "uae" | "ie" | "sa";
+  /** IANA timezones that map to this region. Looked up via
+   *  Intl.DateTimeFormat().resolvedOptions().timeZone on mount. */
+  timezones: string[];
+  address: { line1: string; line2: string };
+  /** Property facts — separate area strings for mobile vs desktop so
+   *  the row fits the narrower mobile card. */
+  facts: { beds: string; baths: string; areaShort: string; areaLong: string };
+  metrics: OrbitMetric[];
+}
+
 // Seven pills equally spaced around the orbit (360 / 7 ≈ 51.43° apart).
-// Price sits at the top as the headline number — everything else
-// (mortgage, rent, yield, cash flow, works, refinance) flows from it.
-const METRICS: OrbitMetric[] = [
-  { angle: 0, value: "£300k", label: "Price", tone: "neutral" },
-  { angle: 51.43, value: "£1,780", label: "Mortgage", tone: "neutral" },
-  { angle: 102.86, value: "£2,100", label: "Rent", tone: "neutral" },
-  { angle: 154.29, value: "5.6%", label: "Yield", tone: "positive" },
-  { angle: 205.71, value: "−£140", label: "Cash flow", tone: "negative" },
-  { angle: 257.14, value: "£25k", label: "Works", tone: "neutral" },
-  { angle: 308.57, value: "+£190", label: "Refinance", tone: "positive" },
-];
+// Price sits at the top as the headline number — every other pill
+// (mortgage, rent, yield, cash flow, works, refinance) follows.
+const ORBIT_ANGLES = [0, 51.43, 102.86, 154.29, 205.71, 257.14, 308.57] as const;
+
+type MetricTuple = readonly [string, string, "neutral" | "positive" | "negative"];
+
+function buildMetrics(tuples: readonly MetricTuple[]): OrbitMetric[] {
+  return tuples.map(([value, label, tone], i) => ({
+    angle: ORBIT_ANGLES[i],
+    value,
+    label,
+    tone,
+  }));
+}
+
+// Region map. UK is the default — anything outside the listed
+// timezones falls back to it. KPIs are plausible mid-market values
+// for a typical 2- or 3-bedroom property in each region; addresses
+// are deliberately fictive (Maple View doesn't exist on M20, Marina
+// Heights is a made-up tower name, Liffey View has a reserved
+// "XX00" postcode, Al-Olaya is a real Riyadh district but villa
+// numbers are invented).
+const REGION_UK: RegionData = {
+  key: "uk",
+  timezones: ["Europe/London"],
+  address: { line1: "12 Maple View", line2: "Manchester, M20 1ZZ" },
+  facts: { beds: "3", baths: "2", areaShort: "1,024 ft²", areaLong: "1,024 sq ft" },
+  metrics: buildMetrics([
+    ["£300k", "Price", "neutral"],
+    ["£1,780", "Mortgage", "neutral"],
+    ["£2,100", "Rent", "neutral"],
+    ["5.6%", "Yield", "positive"],
+    ["−£140", "Cash flow", "negative"],
+    ["£25k", "Works", "neutral"],
+    ["+£190", "Refinance", "positive"],
+  ]),
+};
+
+const REGION_UAE: RegionData = {
+  key: "uae",
+  timezones: ["Asia/Dubai", "Asia/Abu_Dhabi", "Asia/Muscat"],
+  address: { line1: "Apt 1204, Marina Heights", line2: "Dubai Marina, Dubai" },
+  facts: { beds: "2", baths: "2", areaShort: "1,200 ft²", areaLong: "1,200 sq ft" },
+  metrics: buildMetrics([
+    ["AED 1.4m", "Price", "neutral"],
+    ["AED 6,300", "Mortgage", "neutral"],
+    ["AED 9,200", "Rent", "neutral"],
+    ["7.5%", "Yield", "positive"],
+    ["+AED 650", "Cash flow", "positive"],
+    ["AED 80k", "Works", "neutral"],
+    ["+AED 850", "Refinance", "positive"],
+  ]),
+};
+
+const REGION_IE: RegionData = {
+  key: "ie",
+  timezones: ["Europe/Dublin"],
+  address: { line1: "12 Liffey View", line2: "Dublin 8, D08 XX00" },
+  facts: { beds: "3", baths: "2", areaShort: "1,100 ft²", areaLong: "1,100 sq ft" },
+  metrics: buildMetrics([
+    ["€450k", "Price", "neutral"],
+    ["€2,000", "Mortgage", "neutral"],
+    ["€2,400", "Rent", "neutral"],
+    ["5.0%", "Yield", "positive"],
+    ["−€60", "Cash flow", "negative"],
+    ["€25k", "Works", "neutral"],
+    ["+€150", "Refinance", "positive"],
+  ]),
+};
+
+const REGION_SA: RegionData = {
+  key: "sa",
+  timezones: ["Asia/Riyadh", "Asia/Jeddah", "Asia/Bahrain", "Asia/Qatar"],
+  address: { line1: "Villa 12, Al-Olaya District", line2: "Riyadh" },
+  facts: { beds: "4", baths: "3", areaShort: "1,800 ft²", areaLong: "1,800 sq ft" },
+  metrics: buildMetrics([
+    ["SAR 1.5m", "Price", "neutral"],
+    ["SAR 7,500", "Mortgage", "neutral"],
+    ["SAR 8,500", "Rent", "neutral"],
+    ["6.8%", "Yield", "positive"],
+    ["+SAR 250", "Cash flow", "positive"],
+    ["SAR 60k", "Works", "neutral"],
+    ["+SAR 600", "Refinance", "positive"],
+  ]),
+};
+
+const ALL_REGIONS: RegionData[] = [REGION_UAE, REGION_IE, REGION_SA];
+const DEFAULT_REGION = REGION_UK;
+
+/** Client-side region detection via the visitor's IANA timezone. Falls
+ *  back to UK for any unknown timezone or any environment that doesn't
+ *  expose Intl (very old browsers / SSR). Pure read — no network. */
+function detectRegion(): RegionData {
+  if (typeof Intl === "undefined") return DEFAULT_REGION;
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return ALL_REGIONS.find((r) => r.timezones.includes(tz)) ?? DEFAULT_REGION;
+  } catch {
+    return DEFAULT_REGION;
+  }
+}
 
 export function DontBuyBlindHero() {
+  // Region defaults to UK so the static-exported HTML pre-renders with
+  // GBP + Manchester. On mount we read the visitor's IANA timezone and
+  // swap to the matching region (UAE / Ireland / Saudi) if there is one.
+  // First paint may briefly flash UK content before hydration settles —
+  // acceptable for a marketing hero; the alternative (SSR detection)
+  // doesn't work on a static-exported Netlify build.
+  const [region, setRegion] = useState<RegionData>(DEFAULT_REGION);
+  useEffect(() => {
+    setRegion(detectRegion());
+  }, []);
+  const metrics = region.metrics;
+
   return (
     <section
       id="run-the-numbers"
@@ -162,7 +279,7 @@ export function DontBuyBlindHero() {
               independent — CSS animation on the inner div can't clobber
               the inline anchor on the outer one. */}
           <div className="absolute inset-0 ac-orbit-ring">
-            {METRICS.map((m) => {
+            {metrics.map((m) => {
               const rad = (m.angle * Math.PI) / 180;
               const radius = 42; // % of parent
               const left = 50 + radius * Math.sin(rad);
@@ -187,7 +304,7 @@ export function DontBuyBlindHero() {
 
           {/* Central property card — sits dead-centre, doesn't rotate. */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <PropertyCenterCard />
+            <PropertyCenterCard region={region} />
           </div>
         </div>
 
@@ -284,44 +401,44 @@ function MetricPill({
   );
 }
 
-function PropertyCenterCard() {
+function PropertyCenterCard({ region }: { region: RegionData }) {
   // Photo lives in /public/property/oakfield-road.png. The CSS
   // gradient is the fallback while the file is missing;
   // `loading="eager"` because this image is above the fold and
-  // `decoding="async"` lets the browser keep painting.
+  // `decoding="async"` lets the browser keep painting. The address
+  // and facts are region-driven (see REGION_* constants up top);
+  // the photo itself stays UK-default for now — swapping per region
+  // is a follow-up that needs licensed/owned photos per market.
   return (
     <div className="w-[124px] sm:w-[160px] lg:w-[200px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
       <div className="relative aspect-[5/3] bg-gradient-to-br from-[#e0e7ff] via-[#e2e8f0] to-[#f1f5f9]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/property/oakfield-road.png"
-          alt="Modern townhouse on 12 Oakfield Road, Manchester"
+          alt={`Sample property in ${region.address.line2}`}
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
           decoding="async"
         />
       </div>
       <div className="px-3 py-2.5 sm:px-3.5 sm:py-3" style={{ fontFamily: "var(--font-sans)" }}>
-        {/* Fictive address — Maple View doesn't exist on M20, and the
-            "ZZ" postcode suffix is reserved for sample/test data so it
-            never resolves to a real property. */}
         <p className="text-[12.5px] sm:text-[14.5px] font-semibold text-[color:var(--color-navy)] leading-tight">
-          12 Maple View
+          {region.address.line1}
         </p>
         <p className="mt-0.5 text-[10.5px] sm:text-[11.5px] text-[color:var(--color-muted)]">
-          Manchester, M20 1ZZ
+          {region.address.line2}
         </p>
         <div className="mt-1.5 flex items-center gap-1.5 sm:gap-2.5 text-[9.5px] sm:text-[11px] text-[color:var(--color-muted)] whitespace-nowrap">
           <span className="inline-flex items-center gap-0.5">
-            <BedIcon /> 3
+            <BedIcon /> {region.facts.beds}
           </span>
           <span className="inline-flex items-center gap-0.5">
-            <BathIcon /> 2
+            <BathIcon /> {region.facts.baths}
           </span>
           <span className="inline-flex items-center gap-0.5">
             <RulerIcon />
-            <span className="hidden sm:inline">1,024 sq ft</span>
-            <span className="sm:hidden">1,024 ft²</span>
+            <span className="hidden sm:inline">{region.facts.areaLong}</span>
+            <span className="sm:hidden">{region.facts.areaShort}</span>
           </span>
         </div>
       </div>
