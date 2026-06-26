@@ -190,21 +190,19 @@ export function DontBuyBlindHero() {
       >
         <style>{GRID_AREA_DESKTOP_STYLES}</style>
 
-        {/* ── Text top (eyebrow / headline / subheading) ─────────────── */}
+        {/* ── Text top (hero / subhead / secondary headline) ──────────
+             Order: the primary hero ("Make better property decisions")
+             names the outcome the owner cares about; the subhead names
+             the decisions in scope; the secondary headline ("Run the
+             numbers first") states the behavioural ask. The accent
+             italic moves with the ask so the eye still lands on the
+             action verb. ── */}
         <div className="ac-hero-top">
-          <p
-            className="text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-accent)] font-semibold mb-5"
-            style={{ fontFamily: "var(--font-sans)" }}
-          >
-            MAKE BETTER PROPERTY DECISIONS
-          </p>
-
           <h1
             className="text-[44px] md:text-[58px] lg:text-[68px] leading-[1.02] tracking-tight text-[color:var(--color-navy)] font-semibold"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Run the numbers{" "}
-            <span className="text-[color:var(--color-accent)] italic">first.</span>
+            Make better property decisions.
           </h1>
 
           <p
@@ -214,6 +212,14 @@ export function DontBuyBlindHero() {
             Before you buy, sell, refinance, renovate or rent out, check whether
             the numbers make sense.
           </p>
+
+          <h2
+            className="mt-8 text-[26px] md:text-[34px] lg:text-[40px] leading-[1.1] tracking-tight text-[color:var(--color-navy)] font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Run the numbers{" "}
+            <span className="text-[color:var(--color-accent)] italic">first.</span>
+          </h2>
         </div>
 
         {/* ── Orbit visual ─────────────────────────────────────────── */}
