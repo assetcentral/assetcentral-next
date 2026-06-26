@@ -13,7 +13,7 @@ import {
 export function PricingPreview() {
   const { code } = useCurrency();
   const bill = billingFor(code);
-  const starter = PLAN_PRICES.individual[bill];
+  const individual = PLAN_PRICES.individual[bill];
   const pro = PLAN_PRICES.pro[bill];
 
   return (
@@ -64,9 +64,9 @@ export function PricingPreview() {
           <PlanCard
             name="Individual"
             tagline="Unlock the full property report"
-            price={formatPrice(starter.monthly, bill)}
+            price={formatPrice(individual.monthly, bill)}
             cadence="per month"
-            annualDiscount={annualDiscountPct(starter)}
+            annualDiscount={annualDiscountPct(individual)}
             blurb="For a serious decision on one or several properties. 7-day trial, no card."
             features={[
               "Everything in Free, plus:",
