@@ -45,53 +45,47 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "How it works",
-    // Restructured 2026-06 to mirror the page itself: the five-stage
-    // framework leads, with the individual user-journey steps tucked
-    // into each stage anchor below. The "Try it" tail keeps the
-    // free-check + example-analysis entry points reachable directly
-    // from the nav for high-intent visitors.
+    // Restructured 2026-06 to be benefit-led — answers "what do I get
+    // out of this?" not "what does the product do?" (that's Product).
+    // The 5-stage framework gets one entry as a jump-link; the rest of
+    // this menu is outcomes the owner cares about. Concrete features
+    // (AI Team, Calculators, Dashboard, etc.) live under Product.
     items: [
       {
-        section: "Framework",
+        section: "What you get",
+        href: "/check",
+        label: "Don't buy blind",
+        description: "Free AI verdict in 60 seconds before you commit.",
+      },
+      {
+        section: "What you get",
+        href: "/monitor",
+        label: "See your real net yield",
+        description: "Live, after vacancy, costs, mortgage, fees and tax.",
+      },
+      {
+        section: "What you get",
+        href: "/monitor",
+        label: "Catch problems weeks early",
+        description: "22 alert types across rent, debt, voids, costs.",
+      },
+      {
+        section: "What you get",
+        href: "/manage",
+        label: "Free up your weekend",
+        description: "Your AI team owns the operational busywork.",
+      },
+      {
+        section: "The journey",
         href: "/how-it-works",
-        label: "The five stages",
-        description: "Capture · Structure · Model · Monitor · Manage.",
-      },
-      {
-        section: "Framework",
-        href: "/how-it-works#capture",
-        label: "01 · Capture",
-        description: "Get every scrap of property data in. Led by your PA.",
-      },
-      {
-        section: "Framework",
-        href: "/how-it-works#structure",
-        label: "02 · Structure",
-        description: "Free AI verdict: Attractive / Borderline / Risky. Led by your CFO.",
-      },
-      {
-        section: "Framework",
-        href: "/how-it-works#model",
-        label: "03 · Model",
-        description: "10-year forecast, scenarios, decision report. Led by your CIO.",
-      },
-      {
-        section: "Framework",
-        href: "/how-it-works#monitor",
-        label: "04 · Monitor",
-        description: "Live portfolio tracking + 22 alert types. Led by your CEO.",
-      },
-      {
-        section: "Framework",
-        href: "/how-it-works#manage",
-        label: "05 · Manage",
-        description: "Talk to your AI property team. Led by your COO.",
+        label: "The five stages explained",
+        description: "Capture → Structure → Model → Monitor → Manage.",
       },
       {
         section: "Try it",
         href: "/check",
         label: "Run a free property check",
-        description: "Verdict in 60 seconds. No card, no signup.",
+        description: "No card, no signup. Verdict in 60 seconds.",
       },
       {
         section: "Try it",
@@ -160,65 +154,64 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "Product",
-    // Restructured 2026-06 to surface all five stages (Capture +
-    // Structure are now first-class pillars on /features alongside
-    // Model · Monitor · Manage). Capture/Structure deep-link to the
-    // /features anchors; Model/Monitor/Manage point at their own
-    // landing pages. The Browse group surfaces the cross-stage
-    // entries (team, dashboard, pricing).
+    // Restructured 2026-06 to be capability-led — answers "what does
+    // the product actually contain?" not "what do I get out of it?"
+    // (that's How it works). Lists the concrete features an owner
+    // would tick off when evaluating: agents, dashboard, calculators,
+    // reports, alerts, voice line, pricing.
     items: [
       {
         section: "Overview",
         href: "/features",
         label: "Product overview",
-        description: "What you get when you subscribe — all five stages.",
+        description: "Everything that ships with the subscription.",
       },
       {
-        section: "Stages",
-        href: "/features#capture",
-        label: "01 · Capture",
-        description: "Get every scrap of property data in. (PA)",
-      },
-      {
-        section: "Stages",
-        href: "/features#structure",
-        label: "02 · Structure",
-        description: "Turn raw inputs into a clean asset record. (CFO)",
-      },
-      {
-        section: "Stages",
-        href: "/model",
-        label: "03 · Model",
-        description: "Analyse decisions before you act. (CIO)",
-      },
-      {
-        section: "Stages",
-        href: "/monitor",
-        label: "04 · Monitor",
-        description: "Track yield, cash flow, debt and risk — live. (CEO)",
-      },
-      {
-        section: "Stages",
-        href: "/manage",
-        label: "05 · Manage",
-        description: "Turn analysis into recommended actions. (COO)",
-      },
-      {
-        section: "Browse",
+        section: "Capabilities",
         href: "/features",
         label: "AI Property Team",
         description: "CIO · CFO · COO · CEO · PA — your five-agent team.",
       },
       {
-        section: "Browse",
+        section: "Capabilities",
         href: "/features",
         label: "Portfolio dashboard",
         description: "One workspace for 2–50 properties.",
       },
       {
-        section: "Browse",
+        section: "Capabilities",
+        href: "/calculators",
+        label: "Free calculators",
+        description: "8 Level-1 tools — mortgage, IRR, sell-or-hold, refinance, more.",
+      },
+      {
+        section: "Capabilities",
+        href: "/features",
+        label: "Reports & lender packs",
+        description: "Decision memos, Refinancing · Investor · Tax PDFs + Word.",
+      },
+      {
+        section: "Capabilities",
+        href: "/monitor",
+        label: "Alerts & monitoring",
+        description: "22 alert types across rent, debt, voids, costs.",
+      },
+      {
+        section: "Capabilities",
+        href: "/features",
+        label: "Voice line",
+        description: "Phone in and talk to your AI team.",
+      },
+      {
+        section: "Capabilities",
+        href: "/features",
+        label: "Document vault + AI extraction",
+        description: "Forward, photograph, drop — we file it against the right asset.",
+      },
+      {
+        section: "Pricing",
         href: "/pricing",
-        label: "Pricing",
+        label: "See pricing",
         description: "Free · Individual €19 · Pro €49 · Team · Enterprise.",
       },
     ],
