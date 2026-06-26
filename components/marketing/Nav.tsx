@@ -37,11 +37,32 @@ type DropdownGroup = {
 type NavItem = FlatLink | DropdownGroup;
 
 const navItems: NavItem[] = [
-  // Nav order matches the user journey: understand (How it works),
-  // try (Calculators), buy (Product → Pricing), distribute (Partners),
-  // learn (Resources). This is the "Run the Numbers First" repositioning
-  // taken into the top nav — How it works is the journey explainer that
-  // sits before the free tools, not behind them.
+  // Nav order: watch (lowest-commitment intro), understand (How it
+  // works), try (Calculators), buy (Product → Pricing), distribute
+  // (Partners), learn (Resources). The "Run the Numbers First"
+  // repositioning kept How it works prominent; the 2026-06 video
+  // CTA reinstatement puts "Watch" first as the no-commitment entry
+  // for first-time visitors.
+  {
+    kind: "dropdown",
+    label: "▶ Watch",
+    // Two existing demo videos live at /demo/60 (60-second product
+    // tour) and /demo/get-started (beginner walkthrough). Dropdown
+    // surfaces both so visitors pick the one matching their intent —
+    // skeptics watch the tour, sign-up-ready users watch the tutorial.
+    items: [
+      {
+        href: "/demo/60",
+        label: "60-second tour",
+        description: "What is AssetCentral? Five AI agents in one minute.",
+      },
+      {
+        href: "/demo/get-started",
+        label: "How to use it",
+        description: "Beginner walkthrough — add a property, see the numbers.",
+      },
+    ],
+  },
   {
     kind: "dropdown",
     label: "How it works",
