@@ -33,7 +33,7 @@ export function HeroSection() {
               className="text-[12px] uppercase tracking-[0.14em] text-[var(--color-accent)] mb-4"
               style={{ fontFamily: "var(--font-sans)" }}
             >
-              Model. Monitor. Manage.
+              Capture. Structure. Model. Monitor. Manage.
             </p>
             <h1
               className="text-[40px] leading-[1.05] sm:text-[52px] lg:text-[60px] lg:leading-[1.04] text-[var(--color-navy)]"

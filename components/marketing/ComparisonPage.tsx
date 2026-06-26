@@ -443,7 +443,7 @@ export function ComparisonPage({ config }: ComparisonPageProps) {
             className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Model. Monitor. Manage.
+            Capture. Structure. Model. Monitor. Manage.
           </h2>
           <div className="mt-10 grid md:grid-cols-3 gap-4" style={{ fontFamily: "var(--font-sans)" }}>
             {MMM_PILLARS.map((p) => (

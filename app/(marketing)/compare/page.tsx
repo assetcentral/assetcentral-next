@@ -169,13 +169,13 @@ export default function CompareIndexPage() {
             className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Model. Monitor. Manage.
+            Capture. Structure. Model. Monitor. Manage.
           </h2>
           <p
             className="mt-5 text-[16px] leading-[1.65] text-[var(--color-muted)] max-w-3xl"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Three disciplines, one operating layer. The framework every comparison below is built around.
+            Five stages, one operating layer. The framework every comparison below is built around.
           </p>
           <div className="mt-10 grid md:grid-cols-3 gap-4" style={{ fontFamily: "var(--font-sans)" }}>
             {MMM.map((p) => (

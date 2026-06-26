@@ -326,7 +326,7 @@ export function AgentSeoPage({ agent }: AgentSeoPageProps) {
             className="text-[28px] lg:text-[40px] leading-[1.1] text-[var(--color-navy)] max-w-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Model. Monitor. Manage.
+            Capture. Structure. Model. Monitor. Manage.
           </h2>
           <p
             className="mt-5 text-[16.5px] leading-[1.65] text-[var(--color-ink)] max-w-3xl"

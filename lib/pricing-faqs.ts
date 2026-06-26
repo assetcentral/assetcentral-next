@@ -37,7 +37,7 @@ export const PRICING_FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Which tier should I pick?",
-    a: "Three properties or fewer → Individual. Four to 50 properties, just you → Pro. Four to 50 properties with collaborators (broker, accountant, family member) → Team. The Model · Monitor · Manage framework is identical across all three tiers — only the property cap and user count differ.",
+    a: "Three properties or fewer → Individual. Four to 50 properties, just you → Pro. Four to 50 properties with collaborators (broker, accountant, family member) → Team. The Capture · Structure · Model · Monitor · Manage framework is identical across all three tiers — only the property cap and user count differ.",
   },
   {
     q: "I have more than 50 properties. What do I do?",
