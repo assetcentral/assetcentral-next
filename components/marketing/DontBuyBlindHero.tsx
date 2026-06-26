@@ -276,10 +276,21 @@ function MetricPill({
 }
 
 function PropertyCenterCard() {
+  // Photo lives in /public/property/oakfield-road.webp — drop a real
+  // photo there before deploy. The CSS gradient is the fallback while
+  // the file is missing; `loading="eager"` because this image is above
+  // the fold and `decoding="async"` lets the browser keep painting.
   return (
     <div className="w-[220px] sm:w-[240px] rounded-2xl bg-white border border-[color:var(--color-border)] shadow-[0_18px_50px_-18px_rgba(15,23,42,0.18)] overflow-hidden">
       <div className="relative aspect-[5/3] bg-gradient-to-br from-[#e0e7ff] via-[#e2e8f0] to-[#f1f5f9]">
-        <PropertyIllustration className="absolute inset-0 w-full h-full" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/property/oakfield-road.webp"
+          alt="Modern townhouse on 12 Oakfield Road, Manchester"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
       </div>
       <div className="px-3.5 py-3" style={{ fontFamily: "var(--font-sans)" }}>
         <p className="text-[14.5px] font-semibold text-[color:var(--color-navy)] leading-tight">
@@ -371,56 +382,6 @@ function PillIcon({ label }: { label: string }) {
         </svg>
       );
   }
-}
-
-function PropertyIllustration({ className }: { className?: string }) {
-  // Flat-style stylised townhouse. Navy roof + accent door + soft
-  // window glow. Designed for 5:3 aspect; viewBox is wider than tall
-  // so it sits nicely above the card text.
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 300 180"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      {/* Sky gradient inherited from parent background */}
-      {/* Trees */}
-      <circle cx="34" cy="118" r="22" fill="#86efac" />
-      <circle cx="50" cy="124" r="18" fill="#4ade80" />
-      <rect x="40" y="130" width="4" height="18" fill="#15803d" />
-      <circle cx="262" cy="116" r="20" fill="#86efac" />
-      <circle cx="276" cy="124" r="16" fill="#4ade80" />
-      <rect x="268" y="130" width="4" height="18" fill="#15803d" />
-      {/* House body */}
-      <rect x="78" y="74" width="144" height="76" fill="#f8fafc" stroke="#cbd5e1" />
-      {/* Roof */}
-      <path d="M70 76 L150 26 L230 76 Z" fill="#1a1a2e" />
-      {/* Door */}
-      <rect x="138" y="106" width="24" height="44" fill="#4f6ef7" />
-      <circle cx="156" cy="128" r="1.4" fill="#fde68a" />
-      {/* Windows */}
-      <g fill="#bae6fd" stroke="#1a1a2e" strokeWidth="1.4">
-        <rect x="92" y="88" width="28" height="22" />
-        <rect x="180" y="88" width="28" height="22" />
-        <rect x="92" y="122" width="28" height="22" />
-        <rect x="180" y="122" width="28" height="22" />
-      </g>
-      {/* Window crosses */}
-      <g stroke="#1a1a2e" strokeWidth="0.8">
-        <line x1="106" y1="88" x2="106" y2="110" />
-        <line x1="92" y1="99" x2="120" y2="99" />
-        <line x1="194" y1="88" x2="194" y2="110" />
-        <line x1="180" y1="99" x2="208" y2="99" />
-        <line x1="106" y1="122" x2="106" y2="144" />
-        <line x1="92" y1="133" x2="120" y2="133" />
-        <line x1="194" y1="122" x2="194" y2="144" />
-        <line x1="180" y1="133" x2="208" y2="133" />
-      </g>
-      {/* Ground line */}
-      <rect x="0" y="150" width="300" height="30" fill="#e2e8f0" />
-    </svg>
-  );
 }
 
 function BedIcon() {
