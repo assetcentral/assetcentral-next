@@ -45,38 +45,56 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "How it works",
+    // Restructured 2026-06 to mirror the page itself: the five-stage
+    // framework leads, with the individual user-journey steps tucked
+    // into each stage anchor below. The "Try it" tail keeps the
+    // free-check + example-analysis entry points reachable directly
+    // from the nav for high-intent visitors.
     items: [
       {
-        href: "/how-it-works#run-the-numbers",
-        label: "Run the numbers first",
-        description: "Pick the decision you need to check.",
+        section: "Framework",
+        href: "/how-it-works",
+        label: "The five stages",
+        description: "Capture · Structure · Model · Monitor · Manage.",
       },
       {
-        href: "/how-it-works#ai-check",
-        label: "Get a free AI property check",
-        description: "Attractive / Borderline / Risky — verdict + red flag + next move.",
+        section: "Framework",
+        href: "/how-it-works#capture",
+        label: "01 · Capture",
+        description: "Get every scrap of property data in. Led by your PA.",
       },
       {
-        href: "/how-it-works#full-report",
-        label: "Unlock the full report",
-        description: "10-year forecast, scenarios, sensitivities, decision summary.",
+        section: "Framework",
+        href: "/how-it-works#structure",
+        label: "02 · Structure",
+        description: "Free AI verdict: Attractive / Borderline / Risky. Led by your CFO.",
       },
       {
-        href: "/how-it-works#save-compare",
-        label: "Save and compare properties",
-        description: "Build a record of decisions over time.",
+        section: "Framework",
+        href: "/how-it-works#model",
+        label: "03 · Model",
+        description: "10-year forecast, scenarios, decision report. Led by your CIO.",
       },
       {
-        href: "/how-it-works#portfolio",
-        label: "Track your portfolio",
-        description: "Capture · Structure · Model · Monitor · Manage — the five stages for 2-50 properties.",
+        section: "Framework",
+        href: "/how-it-works#monitor",
+        label: "04 · Monitor",
+        description: "Live portfolio tracking + 22 alert types. Led by your CEO.",
       },
       {
-        href: "/how-it-works#ai-team",
-        label: "Talk to your AI property team",
-        description: "CIO · CFO · COO · CEO · PA — deeper support when it matters.",
+        section: "Framework",
+        href: "/how-it-works#manage",
+        label: "05 · Manage",
+        description: "Talk to your AI property team. Led by your COO.",
       },
       {
+        section: "Try it",
+        href: "/check",
+        label: "Run a free property check",
+        description: "Verdict in 60 seconds. No card, no signup.",
+      },
+      {
+        section: "Try it",
         href: "/#example-analysis",
         label: "See example analysis",
         description: "What a free AI property check actually returns.",
@@ -142,51 +160,66 @@ const navItems: NavItem[] = [
   {
     kind: "dropdown",
     label: "Product",
+    // Restructured 2026-06 to surface all five stages (Capture +
+    // Structure are now first-class pillars on /features alongside
+    // Model · Monitor · Manage). Capture/Structure deep-link to the
+    // /features anchors; Model/Monitor/Manage point at their own
+    // landing pages. The Browse group surfaces the cross-stage
+    // entries (team, dashboard, pricing).
     items: [
       {
+        section: "Overview",
         href: "/features",
         label: "Product overview",
-        description: "What you get when you subscribe.",
+        description: "What you get when you subscribe — all five stages.",
       },
       {
+        section: "Stages",
+        href: "/features#capture",
+        label: "01 · Capture",
+        description: "Get every scrap of property data in. (PA)",
+      },
+      {
+        section: "Stages",
+        href: "/features#structure",
+        label: "02 · Structure",
+        description: "Turn raw inputs into a clean asset record. (CFO)",
+      },
+      {
+        section: "Stages",
         href: "/model",
-        label: "Model",
-        description: "Analyse decisions before you act.",
+        label: "03 · Model",
+        description: "Analyse decisions before you act. (CIO)",
       },
       {
+        section: "Stages",
         href: "/monitor",
-        label: "Monitor",
-        description: "Track what happens after the decision.",
+        label: "04 · Monitor",
+        description: "Track yield, cash flow, debt and risk — live. (CEO)",
       },
       {
+        section: "Stages",
         href: "/manage",
-        label: "Manage",
-        description: "Turn analysis into action.",
+        label: "05 · Manage",
+        description: "Turn analysis into recommended actions. (COO)",
       },
       {
+        section: "Browse",
         href: "/features",
         label: "AI Property Team",
         description: "CIO · CFO · COO · CEO · PA — your five-agent team.",
       },
       {
+        section: "Browse",
         href: "/features",
-        label: "Portfolio Dashboard",
-        description: "One workspace for 2-50 properties.",
+        label: "Portfolio dashboard",
+        description: "One workspace for 2–50 properties.",
       },
       {
-        href: "/features",
-        label: "Reports & Documents",
-        description: "Decision memos, PDFs, lender packs, document vault.",
-      },
-      {
-        href: "/monitor",
-        label: "Alerts & Monitoring",
-        description: "22 alert types across rent, debt, voids, costs.",
-      },
-      {
+        section: "Browse",
         href: "/pricing",
-        label: "For owners with 2–50 properties",
-        description: "Pro pricing + what's included.",
+        label: "Pricing",
+        description: "Free · Individual €19 · Pro €49 · Team · Enterprise.",
       },
     ],
   },
