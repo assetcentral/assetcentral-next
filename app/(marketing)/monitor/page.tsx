@@ -14,6 +14,7 @@ import {
   MonitoringAlertsSection,
   MonitoringRolePanelsSection,
 } from "@/components/marketing/mmm/monitor-visuals";
+import { PillarFaq } from "@/components/marketing/PillarFaq";
 
 const TITLE = "Monitor Property Portfolio Yield and Cash Flow | AssetCentral";
 const DESCRIPTION =
@@ -112,6 +113,45 @@ export default function MonitorPage() {
         </div>
       </section>
 
+      {/* ── Definition intro (200 words) — owns "What is portfolio
+           monitoring?" type informational queries. ── */}
+      <section
+        aria-label="What is property portfolio monitoring?"
+        className="bg-white border-t border-[var(--color-border)]"
+      >
+        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-12 lg:py-16">
+          <h2
+            className="text-[22px] lg:text-[26px] leading-[1.2] text-[var(--color-navy)] font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            What is property portfolio monitoring?
+          </h2>
+          <p
+            className="mt-4 text-[15.5px] lg:text-[16.5px] leading-[1.7] text-[var(--color-ink)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Property portfolio monitoring is the live operational picture of
+            what every asset in a portfolio is earning, costing and exposing
+            you to right now. The everyday version most owners run is a
+            year-end accounting summary: the agent sends a P&amp;L statement,
+            the tax return goes in, the variance against the original plan
+            shows up too late to do anything about it. Modern monitoring
+            inverts that &mdash; net yield, cash flow, debt cost and risk
+            events are tracked continuously, with thresholds and alerts that
+            flag drift weeks before it lands in the bank account. A rate
+            reset on a fix-then-revert mortgage is flagged 90 days out, not
+            on the day the new direct debit fails. Service-charge invoices
+            that drift above the historic baseline are caught the day they
+            arrive. Voids that mount past the local average surface a
+            re-pricing recommendation before the next vacancy. Monitoring is
+            the fourth of five stages in the AssetCentral framework
+            (Capture &middot; Structure &middot; Model &middot; Monitor
+            &middot; Manage) and is led by your AI Chief Executive &mdash;
+            the agent that ranks what's worth your attention this week.
+          </p>
+        </div>
+      </section>
+
       {/* ── Why monitoring matters ──────────────────────────────────── */}
       <section className="bg-[var(--color-surface)] border-y border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-20">
@@ -174,6 +214,32 @@ export default function MonitorPage() {
       <YieldByPropertyChartSection />
       <MonitoringAlertsSection />
       <MonitoringRolePanelsSection />
+
+      {/* ── FAQ + JSON-LD FAQPage schema ───────────────────────────── */}
+      <PillarFaq
+        faqs={[
+          {
+            q: "How is portfolio monitoring different from property accounting?",
+            a: "Accounting is rear-view — a P&L statement that summarises last quarter or last year. Monitoring is forward-view — live tracking of net yield, cash flow, debt cost and risk events as they unfold, with alerts that fire weeks before something hits the bank account. Accounting tells you what happened; monitoring lets you act before it does.",
+          },
+          {
+            q: "What kinds of alerts does AssetCentral fire?",
+            a: "22 distinct alert types across rent, debt, voids and costs. The most common: mortgage rate reset 90 days out, lease coming up for renewal, rent drifting below local market median, service-charge invoice above historic baseline, void days mounting past the market average, cashflow projected to go negative within 60 days. Each alert links to the action you'd take in response and the calculator that quantifies the impact.",
+          },
+          {
+            q: "How current is the data — is it real-time?",
+            a: "As close to real-time as the source data allows. Rents and rate changes update the moment a new statement is captured or a rate reset hits. Yield calculations recalculate continuously off the latest costs. Market benchmarks refresh daily. The dashboard is never more than 24 hours behind the source data on any field — usually within minutes.",
+          },
+          {
+            q: "What does \"real net yield\" mean here?",
+            a: "Gross rent minus vacancy, minus management and agency fees, minus service charges and repairs, minus mortgage interest, minus country-specific tax — all converted to your base currency and shown as a single percentage per property and per portfolio. It's the figure that tells you what the asset is actually earning, after everything that has to be paid. Gross yield is almost always 30–50% higher and usually misleading.",
+          },
+          {
+            q: "Can I get alerts on WhatsApp instead of email?",
+            a: "Yes. Critical alerts (cashflow gap, rate reset within 7 days, void over 30 days) can fire to WhatsApp for immediate attention. Lower-priority alerts (rent drift, monthly variance, document expiry within 60 days) bundle into a single daily email digest. You set the threshold for each alert type, and the routing rule applies per type.",
+          },
+        ]}
+      />
 
       {/* ── Next pillar nav ─────────────────────────────────────────── */}
       <section style={{ backgroundColor: NAVY }} className="text-white">

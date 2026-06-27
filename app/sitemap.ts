@@ -10,7 +10,7 @@ const BASE = "https://assetcentral.ai";
 // a stable signal that beats `new Date()` on every build (which Google
 // reads as noise and may discount). When you ship a substantive change to
 // a route, bump the date here in the same commit.
-const ROUTE_LAST_MODIFIED = "2026-06-26";
+const ROUTE_LAST_MODIFIED = "2026-06-27";
 
 // Per-resource-article publish dates — kept in sync with the
 // `datePublished` constants inside each article's page.tsx.
@@ -25,6 +25,12 @@ const ARTICLE_DATES: Record<string, string> = {
   "yield-protection": "2026-05-22",
   "portfolio-baseline-audit": "2026-05-16",
   "lift-yield-90-days": "2026-05-20",
+  // SEO content batch (2026-06-27): long-tail informational articles.
+  "should-i-sell-or-hold-my-buy-to-let": "2026-06-27",
+  "what-is-dscr": "2026-06-27",
+  "section-24-explained": "2026-06-27",
+  "stamp-duty-second-home": "2026-06-27",
+  "dubai-vs-uk-property-investment": "2026-06-27",
 };
 
 type Entry = {
@@ -105,6 +111,12 @@ const routes: Entry[] = [
   { path: "/resources/yield-protection", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["yield-protection"] },
   { path: "/resources/portfolio-baseline-audit", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["portfolio-baseline-audit"] },
   { path: "/resources/lift-yield-90-days", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["lift-yield-90-days"] },
+  // SEO content batch (2026-06-27)
+  { path: "/resources/should-i-sell-or-hold-my-buy-to-let", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["should-i-sell-or-hold-my-buy-to-let"] },
+  { path: "/resources/what-is-dscr", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["what-is-dscr"] },
+  { path: "/resources/section-24-explained", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["section-24-explained"] },
+  { path: "/resources/stamp-duty-second-home", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["stamp-duty-second-home"] },
+  { path: "/resources/dubai-vs-uk-property-investment", priority: 0.7, changeFrequency: "monthly", lastModified: ARTICLE_DATES["dubai-vs-uk-property-investment"] },
 
   // Campaign landing pages
   { path: "/uk-dubai", priority: 0.8, changeFrequency: "monthly" },

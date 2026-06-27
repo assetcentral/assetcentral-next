@@ -12,6 +12,7 @@ import {
   MissingDocumentsSection,
   BeforeAfterSection,
 } from "@/components/marketing/mmm/manage-visuals";
+import { PillarFaq } from "@/components/marketing/PillarFaq";
 
 const TITLE = "Manage Property Portfolio Actions | AssetCentral";
 const DESCRIPTION =
@@ -139,6 +140,46 @@ export default function ManagePage() {
         </div>
       </section>
 
+      {/* ── Definition intro (200 words) — owns "What is property
+           portfolio management?" type informational queries. ── */}
+      <section
+        aria-label="What is property portfolio management?"
+        className="bg-white border-t border-[var(--color-border)]"
+      >
+        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-12 lg:py-16">
+          <h2
+            className="text-[22px] lg:text-[26px] leading-[1.2] text-[var(--color-navy)] font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            What is property portfolio management?
+          </h2>
+          <p
+            className="mt-4 text-[15.5px] lg:text-[16.5px] leading-[1.7] text-[var(--color-ink)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Property portfolio management is the operational layer that turns
+            insight into action across a group of properties. It's the work
+            that protects returns once the underwriting is done and the
+            monitoring is in place: chasing the operator who's a month late
+            on a statement, rebalancing the cashflow forecast when a rate
+            resets, generating a lender-ready refinance pack on demand,
+            auditing the short-term-rental performance against the contract,
+            re-pricing a long-let against the local market median. The
+            unglamorous monthly work is what erodes net yield when nobody
+            owns it &mdash; and for most private landlords nobody does,
+            because hiring a full-time portfolio manager costs more than the
+            yield uplift would justify. Modern portfolio management
+            substitutes a five-agent AI team for that headcount: your CIO
+            handles the modelling decisions, the CFO owns the financial
+            health, the CEO ranks the weekly priorities, the COO drives the
+            operator and lease workflow, and your Personal Assistant
+            captures and files everything that arrives. Management is the
+            fifth and final stage in the AssetCentral framework, where the
+            work that's measured in the previous stages actually gets done.
+          </p>
+        </div>
+      </section>
+
       {/* ── Why management matters ──────────────────────────────────── */}
       <section className="bg-[var(--color-surface)] border-y border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-20">
@@ -246,6 +287,32 @@ export default function ManagePage() {
       <CeoBriefingSection />
       <MissingDocumentsSection />
       <BeforeAfterSection />
+
+      {/* ── FAQ + JSON-LD FAQPage schema ───────────────────────────── */}
+      <PillarFaq
+        faqs={[
+          {
+            q: "What does the AI team actually do day-to-day on a portfolio?",
+            a: "Your Personal Assistant captures every new input (forwarded emails, photographed invoices, voice notes). Your CFO normalises the data into clean asset records. Your CIO re-models any property where inputs have changed. Your CEO compiles a ranked weekly priority list — \"the next 5 things worth your attention\". Your COO drives the operator and lease workflow (chasing late statements, flagging rent-review windows, generating refinance packs). You make the strategic calls; they handle the work in between.",
+          },
+          {
+            q: "How is this different from hiring a property manager?",
+            a: "A property manager (typical fee: 8–12% of rent, more for short-let) handles tenant-facing work on individual properties. Portfolio management is one level up — it's about decisions across the whole portfolio: when to refinance, which property to sell, where to buy next, what's drifting from the original investment thesis. Hiring a portfolio analyst for that work costs €60–120k/year. The AI team does it for €49/month and is on every Saturday morning if you are.",
+          },
+          {
+            q: "Can the AI team generate documents for my lender or accountant?",
+            a: "Yes. Three production-ready report types: Refinancing pack (rent roll, valuation evidence, DSCR calculation, comparable transactions — branded PDF ready to send to a lender), Investor presentation (portfolio summary, performance vs benchmark, growth narrative), and Tax pack (per-property cashflow with country-specific tax framing, ready for your accountant). All exported as PDF and Word in a single click.",
+          },
+          {
+            q: "What happens if I disagree with a recommendation?",
+            a: "The AI team makes recommendations, not commitments — every ranked action has a \"dismiss\" or \"defer\" option, with the reason captured so the team learns your preferences over time. A recommendation to refinance, for instance, can be deferred by 90 days if you want to wait for a specific rate band. The system re-evaluates at the deferred date rather than nagging weekly. You stay in control of every decision.",
+          },
+          {
+            q: "Does the COO actually contact my agents and operators?",
+            a: "It can. With your permission, the COO sends scheduled status requests to operators (\"Aug statement is 14 days overdue — please confirm timing\"), forwards lease renewals to your tenant's email with a personalised cover note, and chases service-charge invoices that haven't arrived within the expected window. All correspondence is logged against the asset and visible in your inbox, so you see exactly what's been sent on your behalf.",
+          },
+        ]}
+      />
 
       {/* ── Back-to-pillars nav ─────────────────────────────────────── */}
       <section style={{ backgroundColor: NAVY }} className="text-white">

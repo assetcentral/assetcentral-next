@@ -8,6 +8,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PillarFaq } from "@/components/marketing/PillarFaq";
 
 const TITLE = "Capture Property Data Automatically | AssetCentral";
 const DESCRIPTION =
@@ -120,6 +121,47 @@ export default function CapturePage() {
         </div>
       </section>
 
+      {/* ── Definition intro (200 words) — owns the "What is property
+           data capture?" type informational query in search. Sits
+           right under the hero so the SERP definition box pulls from
+           here. ── */}
+      <section
+        aria-label="What is property data capture?"
+        className="bg-white border-t border-[color:var(--color-border)]"
+      >
+        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-12 lg:py-16">
+          <h2
+            className="text-[22px] lg:text-[26px] leading-[1.2] text-[color:var(--color-navy)] font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            What is property data capture?
+          </h2>
+          <p
+            className="mt-4 text-[15.5px] lg:text-[16.5px] leading-[1.7] text-[color:var(--color-ink)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Property data capture is the process of getting every piece of
+            information about a property &mdash; address, purchase price, mortgage,
+            tenancy, statements, invoices, photographs &mdash; into one place where
+            it can be measured against. For most private landlords, capture
+            happens slowly and incompletely: a service-charge invoice that sits
+            in an email inbox for six weeks, a rent-review email that arrives on
+            holiday, a mortgage statement that gets archived without being
+            checked against the previous month. Each missed input is a decision
+            made without the right context. Modern property capture moves the
+            work off the owner and onto an AI Personal Assistant that accepts
+            inputs through whichever channel suits the moment &mdash; voice,
+            email, WhatsApp, photo, spreadsheet upload &mdash; extracts the dates
+            and amounts, files them against the right asset and starts the
+            downstream clock. Capture is the first of the five stages in the
+            AssetCentral framework (Capture &middot; Structure &middot; Model
+            &middot; Monitor &middot; Manage) because every later stage
+            &mdash; modelling, alerting, action ranking &mdash; depends on the
+            data being there in the first place.
+          </p>
+        </div>
+      </section>
+
       {/* ── Why capture matters ──────────────────────────────────────── */}
       <section className="bg-[var(--color-surface)] border-y border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-20">
@@ -209,6 +251,32 @@ export default function CapturePage() {
           </ul>
         </div>
       </section>
+
+      {/* ── FAQ + JSON-LD FAQPage schema ───────────────────────────── */}
+      <PillarFaq
+        faqs={[
+          {
+            q: "What kinds of property data can AssetCentral capture?",
+            a: "Address and ownership details, mortgage statements and rate changes, lease agreements and rent reviews, operator and agency statements, service-charge and capex invoices, utility bills, maintenance receipts, insurance and tax notices, and cross-border currency-conversion notes. Anything that arrives by email, WhatsApp, photo, PDF, CSV or voice gets parsed and filed against the right asset.",
+          },
+          {
+            q: "Do I need to type any of this in manually?",
+            a: "No. Capture is designed around the channels you already use. Forward an email and your AI Personal Assistant extracts dates and amounts. Photograph a paper invoice and the image is OCR'd into structured fields. Drop a CSV from your existing portfolio and the column mapping is handled for you. Voice intake means you can call your AI team and dictate a new property without typing.",
+          },
+          {
+            q: "How fast does an input become visible in the portfolio?",
+            a: "Most inputs are filed within seconds of arriving. A forwarded email triggers the extraction immediately, with the asset record updated and downstream alerts re-evaluated in the same minute. Photographed documents take a few extra seconds for OCR. Spreadsheet imports run through a review-before-commit step so you can verify the column mapping before anything is saved.",
+          },
+          {
+            q: "What happens to the data after capture?",
+            a: "It moves through the next four stages of the framework. Structure normalises the inputs into a clean asset record (multi-currency, country-aware). Model runs the underwriting (yield, IRR, scenarios). Monitor watches for drift and triggers alerts. Manage turns the alerts into ranked actions you and your team can execute. Capture is the gate; once it's open, the rest happens automatically.",
+          },
+          {
+            q: "Is voice intake really practical, or is it a gimmick?",
+            a: "It's practical for the use cases owners actually have. Adding a new property while walking through it, dictating a rent change you just agreed by phone, asking what the current cashflow is on a specific asset — all of these are faster spoken than typed. The voice line is connected to the same five AI agents who run every other stage, so a voice instruction becomes a structured asset update in the same database your dashboard reads.",
+          },
+        ]}
+      />
 
       {/* ── Next stage nav ──────────────────────────────────────────── */}
       <section style={{ backgroundColor: NAVY }} className="text-white">

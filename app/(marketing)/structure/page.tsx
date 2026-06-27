@@ -9,6 +9,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PillarFaq } from "@/components/marketing/PillarFaq";
 
 const TITLE = "Structure Property Data into Clean Records | AssetCentral";
 const DESCRIPTION =
@@ -121,6 +122,46 @@ export default function StructurePage() {
         </div>
       </section>
 
+      {/* ── Definition intro (200 words) — owns the "What is property
+           data structuring?" type informational query. ── */}
+      <section
+        aria-label="What is property data structuring?"
+        className="bg-white border-t border-[color:var(--color-border)]"
+      >
+        <div className="mx-auto max-w-3xl px-6 lg:px-10 py-12 lg:py-16">
+          <h2
+            className="text-[22px] lg:text-[26px] leading-[1.2] text-[color:var(--color-navy)] font-semibold"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            What is property data structuring?
+          </h2>
+          <p
+            className="mt-4 text-[15.5px] lg:text-[16.5px] leading-[1.7] text-[color:var(--color-ink)]"
+            style={{ fontFamily: "var(--font-sans)" }}
+          >
+            Property data structuring is the step that takes raw inputs &mdash;
+            mixed currencies, country-specific tax frameworks, irregular
+            operator statements, photographed contracts &mdash; and normalises
+            them into one clean, comparable record per asset. A spreadsheet that
+            blends AED and GBP figures, a rent number that's actually gross of
+            management fees, a purchase price that ignored stamp duty and
+            conveyancing: these are the inputs that produce bad decisions
+            downstream, even when the modelling logic is sound. Structuring
+            removes that whole class of error before it can reach a model. Every
+            field is held in the same units. Every property is comparable to
+            every other. Currency conversion runs against daily FX. Tax framing
+            is applied per country. The result is a single asset record that's
+            ready for every downstream stage &mdash; modelling, monitoring,
+            managing &mdash; without manual reformatting at each step. Structure
+            is also where AssetCentral produces its free AI verdict
+            (Attractive, Borderline or Risky) on any new property, because the
+            verdict can only be trusted when the underlying numbers are. The
+            stage is led by your AI Chief Financial Officer, the second of five
+            agents in the framework.
+          </p>
+        </div>
+      </section>
+
       {/* ── Why structure matters ────────────────────────────────────── */}
       <section className="bg-[var(--color-surface)] border-y border-[var(--color-border)]">
         <div className="mx-auto max-w-5xl px-6 lg:px-10 py-16 lg:py-20">
@@ -210,6 +251,32 @@ export default function StructurePage() {
           </ul>
         </div>
       </section>
+
+      {/* ── FAQ + JSON-LD FAQPage schema ───────────────────────────── */}
+      <PillarFaq
+        faqs={[
+          {
+            q: "What does \"structuring\" property data actually mean?",
+            a: "It means taking raw inputs in whatever form they arrive (spreadsheet, email, photograph, voice memo) and turning them into a single clean record per asset, with every field in standard units. Currencies converted to your base. Costs separated from gross figures. Tax framing applied per country. The result is one row per property that's directly comparable to every other property in your portfolio.",
+          },
+          {
+            q: "How does AssetCentral handle multi-currency portfolios?",
+            a: "Daily FX conversion to your base currency, with every original-currency figure retained for audit. If you own in AED, GBP and EUR, the dashboard shows everything in your chosen base (typically your home currency for tax purposes) while letting you drill into the original-currency figures on any asset. Reports and lender packs render in the base currency by default but can be re-rendered in any other.",
+          },
+          {
+            q: "Does the AI verdict really only take 60 seconds?",
+            a: "Yes — the free AI property check on /check takes typical inputs (price, rent, mortgage, costs) and returns one of three verdicts (Attractive, Borderline or Risky) plus the single biggest red flag and one suggested next move. The same engine runs on every paid property added later; the structuring step is what makes that verdict trustworthy, because the numbers underneath have been normalised first.",
+          },
+          {
+            q: "What if my country has unusual tax rules?",
+            a: "AssetCentral applies country-specific tax framing for the major markets it serves (UK Section 24, UAE freehold rules, Irish CGT, France SCI structures and so on). For markets outside the covered set, you can override the assumptions on a per-property basis and the modelling will respect them — the structuring layer simply needs the right framework label so downstream stages know which rules to apply.",
+          },
+          {
+            q: "Why is structuring separated out as its own stage?",
+            a: "Because modelling, monitoring and action-ranking all assume clean data. When property data lives in spreadsheets, structuring happens implicitly inside each calculation — and inconsistently, because every formula author makes slightly different assumptions. Separating structuring out as a stage makes those assumptions explicit, documented and auditable. Every downstream stage works off the same standardised baseline.",
+          },
+        ]}
+      />
 
       {/* ── Next stage nav ──────────────────────────────────────────── */}
       <section style={{ backgroundColor: NAVY }} className="text-white">
